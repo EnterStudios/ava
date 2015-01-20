@@ -1,23 +1,18 @@
 #region Configuration
 
-# Root OU below DomainRoot
-$RootOUName = "Marvel Small"
-#$RootOUName = "Marvel Medium"
-#$RootOUName = "Marvel Large"
+# How many users to create
+$UserCount = 150
 
-# DistinguishedName of Domain Root
-$DomainRoot = "DC=ava,DC=test,DC=domain"
-
-# Whatever the name of the $RootOUName Combined with Domain
-$CompanyRootDN = "OU=$RootOUName,$DomainRoot"
-
-# UPN Extension to the Domain
+# AD settings
 $UPNSuffix = "@ava.test.domain"
 
-# List of Office Names
-$CityList = "Avengers Mansion","Rikers Island","Stark Tower","Sanctum Sanctorum","Ravencroft","Asgard"
+# AD locations
+$DomainRoot = "DC=ava,DC=test,DC=domain"
+$CompanyRootOU = "Marvel Small"
+$CompanyRootDN = "OU=$CompanyRootOU,$DomainRoot"
 
-# List of Divisions Per Office
+# Lists for offices and divisions
+$CityList = "Avengers Mansion","Rikers Island","Stark Tower","Sanctum Sanctorum","Ravencroft","Asgard"
 $DivisionList = "IT","Sales","Marketing","HR","Architecture","Operations","Development","Strategy","Finance","Administration","Security","Logistics","Customer Services","Research & Development","Market Development","Business Development","Management","Engineering","Infrastructure"
 
 #endregion
@@ -68,8 +63,8 @@ Function Get-GroupInfo
     }
 }
 
-# Create base OU for Offices
-New-ADOrganizationalUnit -name $RootOUName -path $DomainRoot
+# Create company base OU
+New-ADOrganizationalUnit -Name $CompanyRootOU -Path $DomainRoot
 
 # Create OUs for cities and divisions
 foreach ($City in $CityList) 
@@ -80,32 +75,47 @@ foreach ($City in $CityList)
         New-ADOrganizationalUnit -path "OU=$City,$CompanyRootDN" -name $Division
 
         # Create division group
-        $GroupData = Get-GroupInfo –City $City –Division $Division
+        $GroupData = Get-GroupInfo -City $City -Division $Division
         New-ADGroup -Name $GroupData.Name -GroupScope Global -Description $GroupData.Description -Path "OU=$Division,OU=$City,$CompanyRootDN"
     }
 }
 
-# Select 150 random names from name list
+# Select $UserCount random names from name list
 # Only select names with two parts, and without possessive on first part (to exclude "So-and-so's twin")
-$NameList = Get-Content names.txt | Where-Object { ($_ -Split ' ').Count -eq 2 -and ($_ -notmatch "^\S+'s ") } | Get-Random -Count 150
+$NameList = Get-Content names.txt | Where-Object { ($_ -Split ' ').Count -eq 2 -and ($_ -notmatch "^\S+'s ") } | Get-Random -Count $UserCount
+# Keep track of existing usernames as new ones are created as they have to be unique
+$Usernames = Get-ADObject -LDAPFilter "(&(objectclass=user)(objectcategory=person))" -Property samaccountname -SearchBase $DomainRoot -ResultPageSize 100 | Select-Object samaccountname
 
 # Generate users from name list
 foreach ($Name in $NameList) {
-    $Firstname,$Lastname = $Name.Split(" ")
+    $Firstname,$Lastname = $Name -Split " "
     $City = Get-Random $CityList
     $Division = Get-Random $DivisionList
 
     $LoginID = $Firstname[0] + $Lastname
-    $userPrincipalName = $LoginID + $UPNSuffix
-    $sAMAccountName = [string]$LoginID[0..19]
+    # Create SAM account name without invalid characters
+    # Invalid characters: " [ ] : ; | = + * ? < > / \ ,
+    # Cannot end with: .
+    $sAMAccountName = [string]$LoginID[0..18] -Replace '("|\[|\]|:|;|\||=|\+|\*|\?|<|>|/|\\|,|\.$)'
 
-    # Define their path in Active Directory
+    # Make sure name does not conflict
+    if ($Usernames -contains $sAMAccountName) {
+        $Counter = 0
+        do {
+            $CountLen = ([string]$Counter).Length
+            $sAMAccountName = [string]$LoginID[0..(18-$CountLen)] + $Counter++
+        } until ($Usernames -notcontains $sAMAccountName)
+    }
+    $Usernames += $sAMAccountName
+
+    $userPrincipalName = $sAMAccountName + $UPNSuffix
+
     $ADPath = "OU=$Division,OU=$City,$CompanyRootDN"
-    # Create the user in Active Directory
-    New-ADUser -Enabled -GivenName $Firstname -Surname $Lastname -DisplayName $Displayname -UserPrincipalName $userPrincipalName -Division $Division -City $City -Path $ADPath -Name $Displayname -SamAccountName $sAMAccountName –UserPassword (Get-CrudePassword)
+    New-ADUser -Enabled $true -GivenName $Firstname -Surname $Lastname -DisplayName $Name -Name $Name -UserPrincipalName $userPrincipalName -Division $Division -City $City -Path $ADPath -SamAccountName $sAMAccountName -AccountPassword (Get-CrudePassword)
+
     # Add User to appropriate Security Group
-    $Groupname = (Get-GroupInfo –City $City –Division $Division).Name
-    Add-ADGroupmember $Groupname –Members $sAMAccountName
+    $Groupname = (Get-GroupInfo -City $City -Division $Division).Name
+    Add-ADGroupmember $Groupname -Members $sAMAccountName
 } 
 
 #endregion
