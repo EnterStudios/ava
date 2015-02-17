@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import validate_email,validate_slug,validate_ipv46_address
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
 
 from django.contrib.auth.models import User
 
@@ -19,6 +20,9 @@ class Person(TimeStampedModel):
 
     def __unicode__(self):
         return self.firstname+" "+self.surname or u''
+
+    def get_absolute_url(self):
+	    return reverse('person-detail',kwargs={'pk': self.pk})
     
     class Meta:
         verbose_name = ('person')
@@ -54,6 +58,9 @@ class Identifier(TimeStampedModel):
     def __unicode__(self):
         return self.identifier or u''
 
+    def get_absolute_url(self):
+	    return reverse('identifier-detail',kwargs={'pk': self.pk})
+    
     def clean(self):
         if self.identifiertype == 'EMAIL':
             try:

@@ -16,4 +16,4 @@ class PersonForm(ModelForm):
                 'surname': (''),
         }
 
-IdentifierFormSet = inlineformset_factory(Person,  Identifier)
+IdentifierFormSet = inlineformset_factory(Person,  Identifier, extra=0, min_num=1, fields=('identifier', 'identifiertype',))

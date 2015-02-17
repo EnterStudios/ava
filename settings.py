@@ -110,6 +110,7 @@ THIRD_PARTY_APPS = (
     'haystack',
     'ldap',
     'bootstrap3',
+    'bootstrapform',
     'd3',
     'djrill',
     'twython',
