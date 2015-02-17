@@ -1,22 +1,17 @@
-# from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
-# from django.core.urlresolvers import reverse
 from django.views import generic
-from django.views.generic import CreateView
-# from django.shortcuts import render_to_response
-from django.shortcuts import redirect, get_object_or_404
+from django.views.generic import CreateView, ListView
+from django.shortcuts import get_object_or_404
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
-from django.core.urlresolvers import reverse_lazy
 
-from django.contrib.auth.models import User
 from apps.ava_core_ldap.models import ActiveDirectoryUser, ActiveDirectoryGroup, QueryParameters, ActiveDirectoryHelper
 from apps.ava_core_ldap.forms import  QueryParametersForm
 from apps.ava_core_people.models import Identifier
 from apps.ava_core_org.models import GroupIdentifier, OrganisationGroup
 
 
-class ConfigurationIndexView(generic.ListView):
+class ConfigurationIndexView(ListView):
     template_name = 'ldap/index.html'
     context_object_name = 'ldap_config_list'
 
@@ -24,7 +19,7 @@ class ConfigurationIndexView(generic.ListView):
         """Return the last five created people."""
         return QueryParameters.objects.filter(user=self.request.user)
 
-class ConfigurationUserView(generic.ListView):
+class ConfigurationUserView(ListView):
     model = ActiveDirectoryUser
     template_name = 'ldap/itemindex.html'
 
@@ -36,7 +31,7 @@ class ConfigurationUserView(generic.ListView):
             context['ldap_user_list'] = ActiveDirectoryUser.objects.filter(queryParameters=instance,user=self.request.user)
         return context
 
-class ConfigurationGroupView(generic.ListView):
+class ConfigurationGroupView(ListView):
     model = ActiveDirectoryGroup
     template_name = 'ldap/itemindex.html'
 
@@ -48,7 +43,7 @@ class ConfigurationGroupView(generic.ListView):
             context['ldap_group_list'] = ActiveDirectoryGroup.objects.filter(queryParameters=instance,user=self.request.user)
         return context
 
-class ConfigurationItemView(generic.ListView):
+class ConfigurationItemView(ListView):
     model = ActiveDirectoryUser
     template_name = 'ldap/itemindex.html'
 
@@ -62,7 +57,7 @@ class ConfigurationItemView(generic.ListView):
 
         return context
 
-class ConfigurationDetailView(generic.DetailView):
+class ConfigurationDetailView(DetailView):
     model = QueryParameters
     context_object_name = 'ldap_config'
     template_name = 'ldap/view.html'
@@ -73,7 +68,7 @@ class ConfigurationUpdateView(UpdateView):
         form_class = QueryParametersForm
         success_url = '/ldap/'
 
-class ConfigurationGetUsers(generic.ListView):
+class ConfigurationGetUsers(ListView):
     model = ActiveDirectoryUser
     template_name = 'ldap/items.html'
 
@@ -89,7 +84,7 @@ class ConfigurationGetUsers(generic.ListView):
         context['ldap_item_list'] = ActiveDirectoryUser.objects.filter(queryParameters=instance,user=self.request.user)
         return context
 
-class ConfigurationGetAll(generic.ListView):
+class ConfigurationGetAll(ListView):
     model = ActiveDirectoryUser
     template_name = 'ldap/items.html'
 
@@ -126,9 +121,7 @@ class ConfigurationGetAll(generic.ListView):
         context['ldap_item_list'] = ActiveDirectoryUser.objects.filter(queryParameters=instance,user=self.request.user)
         return context
 
-
-
-class ConfigurationGetGroups(generic.ListView):
+class ConfigurationGetGroups(ListView):
     model = ActiveDirectoryGroup
     template_name = 'ldap/items.html'
 
@@ -162,7 +155,6 @@ class ConfigurationDeleteView(DeleteView):
 class ConfigurationCreateView(CreateView):
     model = QueryParameters
     template_name = 'ldap/configuration.html'
-    success_url = '/ldap/'
     form_class = QueryParametersForm
     page_title = 'create'
     button_value = 'Add Configuration'
