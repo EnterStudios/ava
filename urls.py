@@ -12,7 +12,6 @@ handler500 = 'dh5bp.views.server_error'
 urlpatterns = patterns('',
     url(r'^$', login_required(DashboardView.as_view()), name='index'),
     url(r'^ava/', include('apps.ava_core.urls')),
-    url(r'^accounts/', include('apps.ava_core_auth.urls')),
     url(r'^project/', include('apps.ava_core_project.urls')),
     url(r'^ldap/', include('apps.ava_core_ldap.urls')),
     url(r'^people/', include('apps.ava_core_people.urls')),

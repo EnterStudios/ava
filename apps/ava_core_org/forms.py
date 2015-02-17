@@ -19,10 +19,10 @@ class OrganisationForm(ModelForm):
         }
 
 
-class OrganisationUnitForm(ModelForm):
-    class Meta:
-        model = OrganisationUnit
-        fields = ('name','office','unittype','parent')
-
-OrganisationUnitFormSet = inlineformset_factory(Organisation,OrganisationUnit)
-EmployeeFormSet = inlineformset_factory(Organisation,Employee)
+#class OrganisationUnitForm(ModelForm):
+#     class Meta:
+#         model = OrganisationUnit
+#         fields = ('name','office','unittype','parent')
+#
+# OrganisationUnitFormSet = inlineformset_factory(Organisation,OrganisationUnit)
+# EmployeeFormSet = inlineformset_factory(Organisation,Employee)

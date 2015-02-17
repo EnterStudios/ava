@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.views import generic
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, DetailView
 from django.shortcuts import get_object_or_404
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
