@@ -10,7 +10,7 @@ from apps.ava_core_project.models import Project
 
 
 class OrganisationIndex(ListView):
-    template_name = 'org/index.html'
+    template_name = 'organisation/index.html'
     context_object_name = 'org_list'
 
     def get_queryset(self):
@@ -20,7 +20,7 @@ class OrganisationIndex(ListView):
 class OrganisationDetail(DetailView):
     model = Organisation
     context_object_name = 'organisation'
-    template_name = 'org/view.html'
+    template_name = 'organisation/view.html'
 
     def get_context_data(self, **kwargs):
         context = super(OrganisationDetail, self).get_context_data(**kwargs)
@@ -51,7 +51,7 @@ class OrganisationDelete(DeleteView):
 class OrganisationCreate(CreateView):
     model = Organisation
     form_class = OrganisationForm
-    template_name = 'org/organisation.html'
+    template_name = 'organisation/organisation.html'
     
     def form_valid(self, form):
         project_id = self.request.session['project']
@@ -63,5 +63,5 @@ class OrganisationCreate(CreateView):
 
 class OrganisationUpdate(UpdateView):
     model = Organisation
-    template_name = 'item.html'
+    template_name = 'organisation/organisation.html'
     form_class = OrganisationForm
