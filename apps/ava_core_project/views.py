@@ -42,7 +42,7 @@ class ProjectDeleteView(DeleteView):
 
 class ProjectCreate(CreateView):
     model = Project
-    template_name = 'project/list_modal.html'
+    template_name = 'project/project.html'
     form_class = ProjectForm
 
     def form_valid(self, form):
@@ -52,5 +52,5 @@ class ProjectCreate(CreateView):
 
 class ProjectUpdate(UpdateView):
     model = Project
-    template_name = 'item.html'
+    template_name = 'project/project.html'
     form_class = ProjectForm

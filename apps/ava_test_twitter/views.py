@@ -1,17 +1,15 @@
 from django.views import generic
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
-from django.http import HttpResponseRedirect
 
-from django.shortcuts import redirect, get_object_or_404
-from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from apps.ava_test_twitter.models import TwitterTest
 from apps.ava_test_twitter.forms import  TwitterTestForm
 #from twitter import *
 
 
-class TwitterTestIndexView(generic.ListView):
+class TwitterTestIndex(ListView):
     template_name = 'twitter/index.html'
     context_object_name = 'list'
 
@@ -19,7 +17,7 @@ class TwitterTestIndexView(generic.ListView):
         self.request.session['test']=None
         return TwitterTest.objects.filter(user=self.request.user)
 
-class TwitterTestDetailView(generic.DetailView):
+class TwitterTestDetail(DetailView):
     model = TwitterTest
     context_object_name = 'test'
     template_name = 'twitter/view.html'
@@ -29,51 +27,29 @@ class TwitterTestDetailView(generic.DetailView):
         if pk:
             test = get_object_or_404(TwitterTest, pk=pk)
             request.session['test']=test.id
-        return super(TwitterTestDetailView,self).get(self, request, *args, **kwargs)
+        return super(TwitterTestDetail,self).get(self, request, *args, **kwargs)
 
-class TwitterTestDeleteView(DeleteView):
+class TwitterTestDelete(DeleteView):
     model = TwitterTest
     template_name = 'confirm_delete.html'
     success_url = '/test/twitter/'
 
-class TwitterTestCreateView(CreateView):
+class TwitterTestCreate(CreateView):
     model = TwitterTest
-    template_name = 'twitter/list_modal.html'
-    success_url = '/test/twitter/'
+    template_name = 'twitter/twittertest.html'
     form_class = TwitterTestForm
-    page_title = 'Add a new twitter test'
-    button_value = 'Add twitter test'
-    item_type = 'twitter test'
-
-    def get_context_data(self, **kwargs):
-        context = super(TwitterTestCreateView, self).get_context_data(**kwargs)
-        context['form'] = self.get_form_class()
-        context['form_title'] = self.page_title
-        context['button_value'] = self.button_value
-        return context
 
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.user = self.request.user
-        self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
+        form.instance.user = self.request.user
+        return super(TwitterTestCreate, self).form_valid(form)
 
 
-class TwitterTestUpdateView(UpdateView):
+class TwitterTestUpdate(UpdateView):
     model = TwitterTest
-    template_name = 'item.html'
-    success_url = '/test/twitter/'
+    template_name = 'twitter/twittertest.html'
     form_class = TwitterTestForm
-    page_title = 'Update twitter test details'
-    button_value = 'Save changes'
 
-    def get_context_data(self, **kwargs):
-        context = super(TwitterTestUpdateView, self).get_context_data(**kwargs)
-        context['page_title'] = self.page_title
-        context['button_value'] = self.button_value
-        return context
-
-class TwitterTestSendTweetView(generic.View):
+class TwitterTestSendTweet(generic.View):
     success_url = '/test/twitter/'
 
     def get(self, request, *args, **kwargs):
