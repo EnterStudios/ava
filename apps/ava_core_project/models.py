@@ -9,14 +9,8 @@ class Project(TimeStampedModel):
 
     def __unicode__(self):
         return self.name or u''
-    
-#class ProjectRole(ReferenceModel):
-#    pass
 
-class ProjectTeamMembers(TimeStampedModel):
-    project=models.ForeignKey('Project')
-    user=models.ForeignKey(User)
-
-    def __unicode__(self):
-        return self.user or u''
+    def get_absolute_url(self):
+	    return reverse('project-detail',kwargs={'pk': self.pk})
     
+

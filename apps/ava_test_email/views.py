@@ -1,21 +1,20 @@
 from django.views import generic
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
-from django.shortcuts import redirect, get_object_or_404
-from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from apps.ava_core_org.models import Organisation
 from apps.ava_test_email.models import EmailTest, EmailTestTarget
-from apps.ava_test_email.forms import  EmailTestForm, EmailTargetForm
+from apps.ava_test_email.forms import  EmailTestForm
 from apps.ava_core_people.models import Person, Identifier
 
 from django.core.mail import send_mail
 
 
-class EmailTestIndexView(generic.ListView):
+class EmailTestIndexView(ListView):
     template_name = 'email/index.html'
     context_object_name = 'list'
 
@@ -23,7 +22,7 @@ class EmailTestIndexView(generic.ListView):
         self.request.session['test']=None
         return EmailTest.objects.filter(user=self.request.user)
 
-class EmailTestDetailView(generic.DetailView):
+class EmailTestDetailView(DetailView):
     model = EmailTest
     context_object_name = 'test'
     template_name = 'email/view.html'
@@ -40,28 +39,15 @@ class EmailTestDeleteView(DeleteView):
     template_name = 'confirm_delete.html'
     success_url = '/test/email/'
 
-class EmailTestCreateView(CreateView):
+class EmailTestCreate(CreateView):
     model = EmailTest
     template_name = 'email/list_modal.html'
-    success_url = '/test/email/'
     form_class = EmailTestForm
-    page_title = 'Add a new email test'
-    button_value = 'Add email test'
-    item_type = 'email test'
-
-    def get_context_data(self, **kwargs):
-        context = super(EmailTestCreateView, self).get_context_data(**kwargs)
-        context['form'] = self.get_form_class()
-        context['form_title'] = self.page_title
-        context['button_value'] = self.button_value
-        return context
 
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.user = self.request.user
-        self.object.save()
+        form.instance.user = self.request.user
         self.add_targets()
-        return HttpResponseRedirect(self.get_success_url())
+        return super(EmailTestCreate, self).form_valid(form)
 
     def add_targets(self):
         test = self.object
@@ -75,22 +61,10 @@ class EmailTestCreateView(CreateView):
                     test = EmailTestTarget
         return "OK"
 
-    #i#def generate_token(self):
-
-
 class EmailTestUpdateView(UpdateView):
     model = EmailTest
     template_name = 'item.html'
-    success_url = '/test/email/'
     form_class = EmailTestForm
-    page_title = 'Update email test details'
-    button_value = 'Save changes'
-
-    def get_context_data(self, **kwargs):
-        context = super(EmailTestUpdateView, self).get_context_data(**kwargs)
-        context['page_title'] = self.page_title
-        context['button_value'] = self.button_value
-        return context
 
 
 class EmailSendEmailView(generic.View):
