@@ -4,14 +4,13 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-
 from django.shortcuts import get_object_or_404
+from django.core.mail import send_mail
+
 from apps.ava_core_org.models import Organisation
 from apps.ava_test_email.models import EmailTest, EmailTestTarget
 from apps.ava_test_email.forms import EmailTestForm
 from apps.ava_core_people.models import Person, Identifier
-
-from django.core.mail import send_mail
 
 
 class EmailTestIndex(ListView):

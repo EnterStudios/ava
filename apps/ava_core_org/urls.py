@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from apps.ava_core_org import views
 
+
 urlpatterns = patterns('',
     
     url(r'^(?P<pk>\d+)/view/$', login_required(views.OrganisationDetail.as_view()), name='org-detail'),

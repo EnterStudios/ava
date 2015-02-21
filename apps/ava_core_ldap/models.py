@@ -1,11 +1,15 @@
 from django.db import models
+import ldap
+
 from apps.ava_core.models import TimeStampedModel
 from apps.ava_core_org.models import Organisation, OrganisationGroup, GroupIdentifier
 from apps.ava_core_people.models import Identifier, Person
+
 #from apps.ava_core_identity.models import Identity
 from django.utils.html import escape
 from django.contrib.auth.models import User
 from ldap import *
+from ldap.controls import *
 import ldif, sys, json
 from StringIO import StringIO
 from ldap.cidict import cidict
@@ -91,15 +95,24 @@ class QueryParameters(TimeStampedModel):
 
 class ActiveDirectoryHelper():
     
+    PAGESIZE=1000
+
 
     def getConnection(self, parameters):
         try:
-            connection = initialize(parameters.server)
+            #connection = initialize(parameters.server)
             print "user_dn = "+parameters.user_dn+" user_pw="+parameters.user_pw+"\n"
-            connection.set_option(OPT_REFERRALS, 0)    
-            connection.simple_bind_s(parameters.user_dn, parameters.user_pw)
+            
+    	    ldap.set_option(OPT_REFERRALS, 0)
+            ldap.protocol_version = 3
+    	    ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_ALLOW)
+
+            ldap_conn = initialize(parameters.server)
+            ldap_conn.simple_bind_s(parameters.user_dn, parameters.user_pw)
+
             print (connection.whoami_s())
-            return connection
+
+            return ldap_conn
 
         except LDAPError, e:
             if type(e.message) == dict:
@@ -109,29 +122,99 @@ class ActiveDirectoryHelper():
             else:
                 sys.stderr.write(e.message)
                 sys.exit(1)
-   
+
+    def create_controls(self, pagesize):
+        #if LDAP_VERSION >= '2.4':
+            return SimplePagedResultsControl(True, size=pagesize, cookie='')
+        #else:
+        #    return SimplePagedResultsControl(ldap.LDAP_CONTROL_PAGE_OID,True, (pagesize, ''))
+
+
+    def get_pctrls(self, serverctrls):
+        #if LDAP_VERSION >= 2.4:
+            return [c for c in serverctrls if c.controlType == SimplePagedResultsControl.controlType]
+        #else:
+        #    return [c for c in serverctrls if c.controlType == ldap.LDAP_CONTROL_PAGE_OID]
+
+
+    def set_cookie(self, lc_object, pctrls, pagesize):
+        #if LDAP_VERSION >= '2.4':
+            cookie = pctrls[0].cookie
+            lc_object.cookie = cookie
+            return cookie
+        #else:
+        #    est, cookie = pctrls[0].controlValue
+        #    lc_object.controlValue = (pagesize, cookie)
+        #    return cookie
     
     def search(self, parameters, filter, attrs):
-        connection = self.getConnection(parameters)
-        results = connection.search_s(parameters.dump_dn, SCOPE_SUBTREE, filter,attrs)
-        res = []
+       # connection = self.getConnection(parameters)
+        #connection = self.getConnection(parameters)
+        print "user_dn = "+parameters.user_dn+" user_pw="+parameters.user_pw+"\n"
 
-        if type(results) == tuple and len(results) == 2:
-            (code, arr) = results
-        elif type(results) == list:
-            arr = results
+        ldap.set_option(OPT_REFERRALS, 0)
+        ldap.protocol_version = 3
+    	ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_ALLOW)
 
-        if len(results) == 0:
-            return res
+        ldap_conn = initialize(parameters.server)
+        ldap_conn.simple_bind_s(parameters.user_dn, parameters.user_pw)
 
-        for item in arr:
-            res.append(LDAPSearchResult(item))
+        print (ldap_conn.whoami_s())
 
-        ret_res = []
-        for record in res:
-            ret_res.append(record.to_ldif())
 
-        connection.unbind()
+        res= []
+
+        lc = self.create_controls(self.PAGESIZE)
+
+        print lc
+
+        while True:
+
+            print "entered the while true"
+            result = ldap_conn.search_ext(parameters.dump_dn, ldap.SCOPE_SUBTREE, filter, attrs, serverctrls=[lc])
+
+
+            rtype, rdata, rmsgid, sctrls = ldap_conn.result3(result)
+            #result.extend([LdapObject(el) for el in rdata if not el[0] is None])
+            if type(rdata) == tuple and len(rdata) == 2:
+                (code, arr) = rdata
+            elif type(rdata) == list:
+                arr = rdata
+            for item in arr:
+                res.append(LDAPSearchResult(item))
+
+            ret_res = []
+            for record in res:
+                ret_res.append(record.to_ldif())
+
+
+            pctrls = self.get_pctrls(sctrls)
+            if not pctrls:
+                print >> sys.stderr, 'Warning: Server ignores RFC 2696 control.'
+                break
+            if not self.set_cookie(lc, pctrls, self.PAGESIZE):
+                break
+        #         return self.result
+
+        # results = connection.search_s(parameters.dump_dn, SCOPE_SUBTREE, filter,attrs)
+        # res = []
+        #
+        # if type(results) == tuple and len(results) == 2:
+        #     (code, arr) = results
+        # elif type(results) == list:
+        #     arr = results
+        #
+        # if len(results) == 0:
+        #     return res
+        #
+        # for item in arr:
+        #     res.append(LDAPSearchResult(item))
+        #
+        # ret_res = []
+        # for record in res:
+        #     ret_res.append(record.to_ldif())
+
+         #ldap_conn.unbind()
         return res
     
     def getAll(self,parameters,user):

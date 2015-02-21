@@ -2,11 +2,10 @@ from django.db import models
 from django.core.validators import validate_email,validate_slug,validate_ipv46_address
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
-
 from django.contrib.auth.models import User
 
 from apps.ava_core.models import TimeStampedModel
-import apps.ava_core_org.models
+
 
 
 # CORE TABLES: TARGETS

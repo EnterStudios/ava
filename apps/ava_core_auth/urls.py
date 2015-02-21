@@ -1,5 +1,7 @@
-from django.conf.urls import include, patterns, url
+from django.conf.urls import patterns, url
+
 from apps.ava_core_auth import views
+
 
 urlpatterns = patterns('',
     url(r'^login/$', views.user_login, name='login'),

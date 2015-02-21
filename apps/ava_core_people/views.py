@@ -5,7 +5,6 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
 
 from apps.ava_core.views import FormsetMixin
-
 from apps.ava_core_people.models import Person, Identifier
 from apps.ava_core_org.models import Organisation
 from apps.ava_core_people.forms import IdentifierFormSet, PersonForm

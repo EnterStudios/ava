@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from apps.ava_core_people import views
 
+
 urlpatterns = patterns('',
     
     url(r'^$', login_required(views.PersonIndex.as_view()), name='index'),

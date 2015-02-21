@@ -1,5 +1,7 @@
 import datetime
+
 from haystack import indexes
+
 from apps.ava_core_people.models import Person, Identifier
 
 

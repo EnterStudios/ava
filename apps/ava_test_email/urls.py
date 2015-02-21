@@ -1,7 +1,8 @@
-from django.conf.urls import include, patterns, url
+from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
 from apps.ava_test_email import views
+
 
 urlpatterns = patterns('',
     url(r'^$', login_required(views.EmailTestIndex.as_view()), name='emailtestindex'),

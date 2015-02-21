@@ -2,10 +2,11 @@ from django.views import generic
 from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
-
 from django.shortcuts import get_object_or_404
+
 from apps.ava_test_twitter.models import TwitterTest
 from apps.ava_test_twitter.forms import  TwitterTestForm
+
 #from twitter import *
 
 

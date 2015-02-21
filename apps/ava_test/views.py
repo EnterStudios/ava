@@ -1,6 +1,6 @@
 from django.views import generic
+from django.shortcuts import get_object_or_404
 
-from django.shortcuts import redirect, get_object_or_404
 from apps.ava_test.models import Test, TestType
 from apps.ava_test_email.models import EmailTest
 from apps.ava_test_twitter.models import TwitterTest

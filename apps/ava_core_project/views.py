@@ -1,10 +1,11 @@
 from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
-
 from django.shortcuts import get_object_or_404
+
 from apps.ava_core_project.models import Project
 from apps.ava_core_project.forms import  ProjectForm
+
 
 class DashboardView(ListView):
     template_name = 'project/home.html'

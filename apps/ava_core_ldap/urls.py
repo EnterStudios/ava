@@ -1,7 +1,8 @@
-from django.conf.urls import include, patterns, url
+from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
 from apps.ava_core_ldap import views
+
 
 urlpatterns = patterns('',
     

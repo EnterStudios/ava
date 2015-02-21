@@ -1,5 +1,7 @@
 from django.contrib import admin
+
 from apps.ava_core_org.models import *
+
 
 admin.site.register(Industry)
 admin.site.register(GroupIdentifier)
