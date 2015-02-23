@@ -20,6 +20,8 @@ If the terms of GPL are not suitable to your environment, please get in touch. W
 
 Eventually there may be paid services or components based around AVA. The core will always remain free and open source for those who want to run it internally.
 
+### Documentation
+* [Install guide](https://github.com/ladynerd/ava/blob/master/INSTALL.md)
 
 ### AVA is looking for collaborators
 We are on the look out for testers, Django/Python developers, documentation folk, graphics wizards, and UX people to help make AVA awesome. If you have some spare cycles and want to contribute get stuck in.
