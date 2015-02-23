@@ -2,6 +2,20 @@ from django.shortcuts import redirect
 
 
 class FormsetMixin(object):
+    '''
+    This is a generic mixin to provide clean functionality for creating and updating related models via FormSet
+    This mixin can be inherited and used as an alternative to generic.CreateView and generic.UpdateView
+
+
+    Example:
+
+    class PersonCreate(FormsetMixin, CreateView):
+        template_name = 'identity/person.html'
+        model = Person
+        form_class = PersonForm
+        formset_class = IdentifierFormSet
+    '''
+
     object = None
 
     def get(self, request, *args, **kwargs):
