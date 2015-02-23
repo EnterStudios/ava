@@ -3,7 +3,7 @@ from django.db import models
 
 from apps.ava_core.models import TimeStampedModel,ReferenceModel
 from apps.ava_test.models import Test
-from apps.ava_core_people.models import Identifier, Person
+from apps.ava_core_identity.models import Identifier, Person
 
 
 class TwitterTest(Test):
@@ -21,7 +21,7 @@ class TwitterTest(Test):
 
 class TwitterTestTarget(TimeStampedModel):
     twittertest=models.ForeignKey('TwitterTest', null=False)
-    target = models.ForeignKey('ava_core_people.Identifier', null=False)
+    target = models.ForeignKey('ava_core_identity.Identifier', null=False)
 
     class Meta:
         unique_together = ("twittertest", "target")

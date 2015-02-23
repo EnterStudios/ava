@@ -6,7 +6,7 @@ from django.views.generic.edit import DeleteView
 
 from apps.ava_core_ldap.models import ActiveDirectoryUser, ActiveDirectoryGroup, QueryParameters, ActiveDirectoryHelper
 from apps.ava_core_ldap.forms import  QueryParametersForm
-from apps.ava_core_people.models import Identifier
+from apps.ava_core_identity.models import Identifier
 from apps.ava_core_org.models import GroupIdentifier, OrganisationGroup
 
 

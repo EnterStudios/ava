@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block mainpage %}
+
+{% if identity_list %}
+    <table style="margin-left:auto;margin-right:auto">
+    {% for identity in identity_list %}
+    <tr>
+        <td class="left"><a href="{ url 'identity-detail' identity.id }">{{ identity.name }}</a></td>
+        <td><a href="{ url 'identity-update' identity.id }">[update]</td>
+        <td><a href="{ url 'identity-delete' identity.id }">[delete]</td>
+    </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <p>No identities are available.</p>
+{% endif %}
+
+{% endblock %}

@@ -97,7 +97,7 @@ LOCAL_APPS = (
     'apps.ava_core_auth',
     'apps.ava_core_project',
     'apps.ava_core_ldap',
-    'apps.ava_core_people',
+    'apps.ava_core_identity',
     'apps.ava_vis_graph',
     'apps.ava_test',
     'apps.ava_analyse',

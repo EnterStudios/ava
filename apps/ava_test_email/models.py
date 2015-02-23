@@ -30,7 +30,7 @@ class EmailMessageType(ReferenceModel):
 
 class EmailTestTarget(TimeStampedModel):
     emailtest = models.ForeignKey('EmailTest', null=False)
-    target = models.ForeignKey('ava_core_people.Identifier', null=False)
+    target = models.ForeignKey('ava_core_identity.Identifier', null=False)
     token = models.CharField(max_length=100, null=False, unique=True)
 
     class Meta:

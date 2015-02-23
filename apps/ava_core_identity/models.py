@@ -2,32 +2,46 @@ from django.db import models
 from django.core.validators import validate_email,validate_slug,validate_ipv46_address
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
 
-from apps.ava_core.models import TimeStampedModel
-
+from apps.ava_core.models import ReferenceModel, TimeStampedModel
 
 
-# CORE TABLES: TARGETS
+
+class Identity(ReferenceModel):
+    '''
+    TODO: DocString
+    '''
+    def get_absolute_url(self):
+        return reverse('identity-detail',kwargs={'pk': self.pk})
+
+    class Meta:
+        verbose_name = ('identity')
+        verbose_name_plural = ('identities')
 
 
 class Person(TimeStampedModel):
+    '''
+    TODO: DocString
+    '''
     firstname = models.CharField(max_length=75,validators=[validate_slug])
     surname = models.CharField(max_length=75,validators=[validate_slug])
-    user = models.ForeignKey(User)
-    organisation = models.ForeignKey('ava_core_org.Organisation')
+    identity = models.ManyToManyField('Identity')
 
     def __unicode__(self):
         return self.firstname+" "+self.surname or u''
 
     def get_absolute_url(self):
-	    return reverse('person-detail',kwargs={'pk': self.pk})
+        return reverse('person-detail',kwargs={'pk': self.pk})
     
     class Meta:
         verbose_name = ('person')
         verbose_name_plural = ('people')
 
+
 class Identifier(TimeStampedModel):
+    '''
+    TODO: DocString
+    '''
 
     EMAIL = 'EMAIL'
     SKYPE = 'SKYPE'
@@ -48,10 +62,10 @@ class Identifier(TimeStampedModel):
     identifiertype = models.CharField(max_length=7,
                             choices=IDENTIFIER_TYPE_CHOICES, default=EMAIL,
                                 verbose_name='Identifier Type')
-    person = models.ForeignKey('Person', null=True)
+    identity = models.ForeignKey('Identity')
 
     class Meta:
-        unique_together = ("identifier", "identifiertype","person")
+        unique_together = ("identifier", "identifiertype", "identity")
 
 
     def __unicode__(self):

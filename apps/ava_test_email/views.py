@@ -10,7 +10,7 @@ from django.core.mail import send_mail
 from apps.ava_core_org.models import Organisation
 from apps.ava_test_email.models import EmailTest, EmailTestTarget
 from apps.ava_test_email.forms import EmailTestForm
-from apps.ava_core_people.models import Person, Identifier
+from apps.ava_core_identity.models import Person, Identifier
 
 
 class EmailTestIndex(ListView):

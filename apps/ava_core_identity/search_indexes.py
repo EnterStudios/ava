@@ -2,7 +2,7 @@ import datetime
 
 from haystack import indexes
 
-from apps.ava_core_people.models import Person, Identifier
+from apps.ava_core_identity.models import Person, Identifier
 
 
 class PersonIndex(indexes.SearchIndex, indexes.Indexable):

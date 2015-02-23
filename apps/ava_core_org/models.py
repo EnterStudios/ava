@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from apps.ava_core.models import TimeStampedModel,ReferenceModel
-from apps.ava_core_people.models import Person, Identifier
+from apps.ava_core_identity.models import Person, Identifier
 from apps.ava_core_project.models import Project
 
 

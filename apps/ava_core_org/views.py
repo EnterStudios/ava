@@ -5,7 +5,7 @@ from django.views.generic.edit import DeleteView
 
 from apps.ava_core_org.models import Organisation
 from apps.ava_core_org.forms import OrganisationForm
-from apps.ava_core_people.models import Person
+from apps.ava_core_identity.models import Person
 from apps.ava_core_project.models import Project
 
 
