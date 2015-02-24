@@ -1,18 +1,40 @@
 {% extends 'base.html' %}
 {% block mainpage %}
 
+    <div class="page-header">
+     <h2 class="sub-header">Current Identities</h2>
+</div>
+
+    <div class="table-responsive">
 {% if identity_list %}
-    <table style="margin-left:auto;margin-right:auto">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>
+
+                                <a href="{% url 'identity-create' %}" class="glyphicon glyphicon-plus"></a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
     {% for identity in identity_list %}
     <tr>
-        <td class="left"><a href="{ url 'identity-detail' identity.id }">{{ identity.name }}</a></td>
-        <td><a href="{ url 'identity-update' identity.id }">[update]</td>
-        <td><a href="{ url 'identity-delete' identity.id }">[delete]</td>
+        <td>{{ identity.name }}</td>
+        <td>{{ identity.description }}</td>
+        <td>
+
+          <a href="{% url 'identity-detail' identity.id  %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
+          <a href="{% url 'identity-update' identity.id  %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
+          <a href="{% url 'identity-delete' identity.id  %}"><button type="button" class="btn btn-primary btn-sm">Delete</button></a>
     </tr>
     {% endfor %}
+     </tbody>
     </table>
 {% else %}
     <p>No identities are available.</p>
 {% endif %}
+
 
 {% endblock %}

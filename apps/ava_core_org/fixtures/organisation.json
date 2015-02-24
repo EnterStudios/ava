@@ -3,7 +3,6 @@
     "pk": 1,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Agriculture, Forestry and Fishing",
       "description": "Agriculture, Forestry and Fishing",
       "modified": "2014-04-23T08:17:52.627Z",
       "name": "Agriculture, Forestry and Fishing",
@@ -14,7 +13,6 @@
     "pk": 2,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Mining",
       "description": "Mining",
       "modified": "2014-04-23T08:18:07.207Z",
       "name": "Mining",
@@ -25,7 +23,6 @@
     "pk": 3,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Manufacturing",
       "description": "Manufacturing",
       "modified": "2014-04-23T08:18:31.561Z",
       "name": "Manufacturing",
@@ -36,7 +33,6 @@
     "pk": 4,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Electricity, Gas, Water and Waste Services",
       "description": "Electricity, Gas, Water and Waste Services",
       "modified": "2014-04-23T08:18:48.217Z",
       "name": "Electricity, Gas, Water and Waste Services",
@@ -47,7 +43,6 @@
     "pk": 5,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Construction",
       "description": "Construction",
       "modified": "2014-04-23T08:20:02.894Z",
       "name": "Construction",
@@ -58,7 +53,6 @@
     "pk": 6,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Wholesale Trade",
       "description": "Wholesale Trade",
       "modified": "2014-04-23T08:20:16.201Z",
       "name": "Wholesale Trade",
@@ -69,7 +63,6 @@
     "pk": 7,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Retail Trade",
       "description": "Retail Trade",
       "modified": "2014-04-23T08:20:28.199Z",
       "name": "Retail Trade",
@@ -80,7 +73,6 @@
     "pk": 8,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Accommodation and Food Services",
       "description": "Accommodation and Food Services",
       "modified": "2014-04-23T08:20:41.152Z",
       "name": "Accommodation and Food Services",
@@ -91,7 +83,6 @@
     "pk": 9,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Transport, Postal and Warehousing",
       "description": "Transport, Postal and Warehousing",
       "modified": "2014-04-23T08:20:55.236Z",
       "name": "Transport, Postal and Warehousing",
@@ -102,7 +93,6 @@
     "pk": 10,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Information, Media and Telecommunications",
       "description": "Information, Media and Telecommunications",
       "modified": "2014-04-23T08:21:16.833Z",
       "name": "Information, Media and Telecommunications",
@@ -113,7 +103,6 @@
     "pk": 12,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Financial and Insurance Services",
       "description": "Financial and Insurance Services",
       "modified": "2014-04-23T08:21:32.970Z",
       "name": "Financial and Insurance Services",
@@ -124,7 +113,6 @@
     "pk": 13,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Rental, Hiring and Real Estate Services",
       "description": "Rental, Hiring and Real Estate Services",
       "modified": "2014-04-23T08:21:48.729Z",
       "name": "Rental, Hiring and Real Estate Services",
@@ -135,7 +123,6 @@
     "pk": 14,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Professional, Scientific and Technical Services",
       "description": "Professional, Scientific and Technical Services",
       "modified": "2014-04-23T08:22:05.177Z",
       "name": "Professional, Scientific and Technical Services",
@@ -146,7 +133,6 @@
     "pk": 15,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Administrative and Support Services",
       "description": "Administrative and Support Services",
       "modified": "2014-04-23T08:22:24.884Z",
       "name": "Administrative and Support Services",
@@ -157,7 +143,6 @@
     "pk": 16,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Public Administration and Safety",
       "description": "Public Administration and Safety",
       "modified": "2014-04-23T08:22:37.289Z",
       "name": "Public Administration and Safety",
@@ -168,7 +153,6 @@
     "pk": 17,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Education and Training",
       "description": "Education and Training",
       "modified": "2014-04-23T08:22:48.543Z",
       "name": "Education and Training",
@@ -179,7 +163,6 @@
     "pk": 18,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Health Care and Social Assistance",
       "description": "Health Care and Social Assistance",
       "modified": "2014-04-23T08:23:10.965Z",
       "name": "Health Care and Social Assistance",
@@ -190,7 +173,6 @@
     "pk": 19,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Arts and Recreation Services",
       "description": "Arts and Recreation Services",
       "modified": "2014-04-23T08:23:24.160Z",
       "name": "Arts and Recreation Services",
@@ -201,7 +183,6 @@
     "pk": 20,
     "model": "ava_core_org.industry",
     "fields": {
-      "help_text": "Other",
       "description": "Other",
       "modified": "2014-04-23T08:23:38.516Z",
       "name": "Other",
@@ -212,7 +193,6 @@
     "pk": 1,
     "model": "ava_core_org.organisationunittype",
     "fields": {
-      "help_text": "Department",
       "description": "Department",
       "modified": "2014-04-22T09:23:28.794Z",
       "name": "Department",
@@ -223,7 +203,6 @@
     "pk": 2,
     "model": "ava_core_org.organisationunittype",
     "fields": {
-      "help_text": "Team",
       "description": "Team",
       "modified": "2014-04-22T09:23:36.250Z",
       "name": "Team",
@@ -234,7 +213,6 @@
     "pk": 3,
     "model": "ava_core_org.organisationunittype",
     "fields": {
-      "help_text": "Service Line",
       "description": "Service Line",
       "modified": "2014-04-22T09:24:05.135Z",
       "name": "Service Line",
@@ -245,7 +223,6 @@
     "pk": 4,
     "model": "ava_core_org.organisationunittype",
     "fields": {
-      "help_text": "SCRUM Team",
       "description": "SCRUM Team",
       "modified": "2014-04-22T09:26:55.097Z",
       "name": "SCRUM Team",
@@ -256,7 +233,6 @@
     "pk": 5,
     "model": "ava_core_org.organisationunittype",
     "fields": {
-      "help_text": "Region",
       "description": "Region",
       "modified": "2014-04-22T09:29:56.368Z",
       "name": "Region",
@@ -267,7 +243,6 @@
     "pk": 6,
     "model": "ava_core_org.organisationunittype",
     "fields": {
-      "help_text": "n",
       "description": "n",
       "modified": "2014-04-22T09:50:24.867Z",
       "name": "None",
@@ -278,7 +253,6 @@
     "pk": 1,
     "model": "ava_core_org.organisationsize",
     "fields": {
-      "help_text": "1 - 49",
       "description": "1 - 49",
       "modified": "2014-04-23T08:15:32.834Z",
       "name": "1 - 49",
@@ -289,7 +263,6 @@
     "pk": 2,
     "model": "ava_core_org.organisationsize",
     "fields": {
-      "help_text": "50 - 999",
       "description": "50 - 999",
       "modified": "2014-04-23T08:16:01.363Z",
       "name": "50 - 999",
@@ -300,7 +273,6 @@
     "pk": 3,
     "model": "ava_core_org.organisationsize",
     "fields": {
-      "help_text": "1,000 - 4,999",
       "description": "1,000 - 4,999",
       "modified": "2014-04-23T08:16:15.025Z",
       "name": "1,000 - 4,999",
@@ -311,7 +283,6 @@
     "pk": 4,
     "model": "ava_core_org.organisationsize",
     "fields": {
-      "help_text": "5,000 or more",
       "description": "5,000 or more",
       "modified": "2014-04-23T08:16:29.351Z",
       "name": "5,000 or more",
@@ -322,7 +293,6 @@
     "pk": 5,
     "model": "ava_core_org.organisationsize",
     "fields": {
-      "help_text": "Don't Know",
       "description": "Don't Know",
       "modified": "2014-04-23T08:17:08.034Z",
       "name": "Don't Know",

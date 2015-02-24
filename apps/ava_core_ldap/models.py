@@ -2,7 +2,7 @@ from django.db import models
 import ldap
 
 from apps.ava_core.models import TimeStampedModel
-from apps.ava_core_org.models import Organisation, OrganisationGroup, GroupIdentifier
+from apps.ava_core_org.models import Organisation, OrganisationGroup
 from apps.ava_core_identity.models import Identifier, Person
 
 #from apps.ava_core_identity.models import Identity

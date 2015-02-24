@@ -3,25 +3,11 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from apps.ava_core.models import TimeStampedModel,ReferenceModel
-from apps.ava_core_identity.models import Person, Identifier
-from apps.ava_core_project.models import Project
+from apps.ava_core_identity.models import Identifier
 
-
-class Industry (ReferenceModel):
-    pass
-
-class OrganisationUnitType (ReferenceModel):
-    pass
-
-class OrganisationSize (ReferenceModel):
-    pass
 
 class Organisation (TimeStampedModel):
     name = models.CharField(max_length=100)
-    industry = models.ForeignKey('Industry', null=False)
-    size= models.ForeignKey('OrganisationSize', null=False)
-    user = models.ForeignKey(User)
-    project = models.ForeignKey('ava_core_project.Project')
 
     def __unicode__(self):
         return self.name or u''
@@ -70,4 +56,3 @@ class GroupIdentifier(TimeStampedModel):
 
     class Meta:
         unique_together = ("identifier", "group")
-

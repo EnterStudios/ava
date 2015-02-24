@@ -51,7 +51,6 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=200)),
-                ('help_text', models.CharField(max_length=200)),
                 ('url', models.TextField(max_length=b'50')),
                 ('icon', models.CharField(max_length=50, null=True)),
             ],
@@ -68,7 +67,6 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=200)),
-                ('help_text', models.CharField(max_length=200)),
                 ('icon', models.CharField(max_length=50, null=True)),
             ],
             options={

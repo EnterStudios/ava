@@ -6,17 +6,7 @@ from apps.ava_core_org.models import *
 class OrganisationForm(ModelForm):
     class Meta:
         model = Organisation
-        fields = ('name','industry','size')
-        labels = {
-            'name': ('Name'),
-            'industry': ('Industry'),
-            'size': ('Size'),
-        }
-        help_texts = {
-                'name': (''),
-                'industry': (''),
-                'size': (''),
-        }
+
 
 
 #class OrganisationUnitForm(ModelForm):

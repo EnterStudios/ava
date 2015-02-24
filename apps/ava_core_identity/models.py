@@ -12,7 +12,7 @@ class Identity(ReferenceModel):
     TODO: DocString
     '''
     def get_absolute_url(self):
-        return reverse('identity-detail',kwargs={'pk': self.pk})
+        return reverse('identity-detail',kwargs={'pk': self.id})
 
     class Meta:
         verbose_name = ('identity')
@@ -31,7 +31,7 @@ class Person(TimeStampedModel):
         return self.firstname+" "+self.surname or u''
 
     def get_absolute_url(self):
-        return reverse('person-detail',kwargs={'pk': self.pk})
+        return reverse('person-detail',kwargs={'pk': self.id})
     
     class Meta:
         verbose_name = ('person')
@@ -72,7 +72,7 @@ class Identifier(TimeStampedModel):
         return self.identifier or u''
 
     def get_absolute_url(self):
-	    return reverse('identifier-detail',kwargs={'pk': self.pk})
+	    return reverse('identifier-detail',kwargs={'pk': self.id})
     
     def clean(self):
         if self.identifiertype == 'EMAIL':

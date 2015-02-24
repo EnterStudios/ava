@@ -20,7 +20,6 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=200)),
-                ('help_text', models.CharField(max_length=200)),
                 ('link', models.URLField()),
             ],
             options={
@@ -36,7 +35,6 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=200)),
-                ('help_text', models.CharField(max_length=200)),
                 ('tweet', models.TextField(max_length=140)),
             ],
             options={
@@ -52,7 +50,6 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=200)),
-                ('help_text', models.CharField(max_length=200)),
                 ('username', models.CharField(max_length=100)),
                 ('password_enc', models.TextField()),
             ],
@@ -95,7 +92,6 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=200)),
-                ('help_text', models.CharField(max_length=200)),
             ],
             options={
                 'abstract': False,

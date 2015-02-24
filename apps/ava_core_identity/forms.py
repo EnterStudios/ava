@@ -13,14 +13,10 @@ class IdentityForm(ModelForm):
 class PersonForm(ModelForm):
     class Meta:
         model = Person
-        #fields = ('firstname',  'surname')
+        fields = ('firstname',  'surname')
         #labels = {
         #    'firstname': ('Firstname'),
         #    'surname': ('Surname/Family Name'),
-        #}
-        #help_texts = {
-        #        'firstname': (''),
-        #        'surname': (''),
         #}
 
 IdentifierFormSet = inlineformset_factory(Identity,  Identifier, extra=0, min_num=1, fields=('identifier', 'identifiertype',))

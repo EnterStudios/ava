@@ -33,7 +33,6 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=200)),
-                ('help_text', models.CharField(max_length=200)),
             ],
             options={
                 'verbose_name': 'identity',
@@ -49,6 +48,7 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('firstname', models.CharField(max_length=75, validators=[django.core.validators.RegexValidator(re.compile('^[-a-zA-Z0-9_]+$'), "Enter a valid 'slug' consisting of letters, numbers, underscores or hyphens.", 'invalid')])),
                 ('surname', models.CharField(max_length=75, validators=[django.core.validators.RegexValidator(re.compile('^[-a-zA-Z0-9_]+$'), "Enter a valid 'slug' consisting of letters, numbers, underscores or hyphens.", 'invalid')])),
+                ('identity', models.ManyToManyField(to='ava_core_identity.Identity')),
             ],
             options={
                 'verbose_name': 'person',

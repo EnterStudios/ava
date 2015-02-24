@@ -14,14 +14,17 @@ class IdentityIndex(ListView):
     context_object_name = 'identity_list'
     model = Identity
 
+    def get_queryset(self):
+        return Identity.objects.all()
 
-class IdentityDetail(ListView):
+
+class IdentityDetail(DetailView):
     model = Identity
     context_object_name = 'identity'
     template_name = 'identity/identity_detail.html'
 
 
-class IdentityCreate(CreateView):
+class IdentityCreate(FormsetMixin, CreateView):
     template_name = 'identity/identity.html'
     model = Identity
     form_class = IdentityForm
@@ -36,14 +39,17 @@ class IdentityCreate(CreateView):
 #        return super(PersonCreate, self).form_valid(form, formset)
 
 
-class IdentityUpdate(UpdateView):
+class IdentityUpdate(FormsetMixin, UpdateView):
     template_name = 'identity/identity.html'
     context_object_name = 'identity'
     model = Identity
+    is_update_view = True
+    form_class = IdentityForm
+    formset_class = IdentifierFormSet
 
 
 class IdentityDelete(DeleteView):
-    model = Person
+    model = Identity
     template_name = 'confirm_delete.html'
     
     def get_success_url(self):
@@ -55,14 +61,13 @@ class PersonIndex(ListView):
     context_object_name = 'people_list'
     model = Person
 
-#    def get_queryset(self):
-#        return Person.objects.filter(user=self.request.user)
-
+    def get_queryset(self):
+        return Person.objects.all()
 
 class PersonDetail(DetailView):
     model = Person
     context_object_name = 'person'
-    template_name = 'identity/view.html'
+    template_name = 'identity/person_detail.html'
 
 
 class PersonCreate(FormsetMixin, CreateView):

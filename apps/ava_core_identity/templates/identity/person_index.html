@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block mainpage %}
+
+        <div class="page-header">
+     <h2 class="sub-header">Current People</h2>
+</div>
+
+
+    <div class="table-responsive">
+{% if person_list %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Surname</th>
+                        <th>
+
+                                <a href="{% url 'person-create' %}" class="glyphicon glyphicon-plus"></a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+    {% for person in person_list %}
+    <tr>
+        <td>{{ person.firstname }}</td>
+        <td>{{ person.surname }}</td>
+        <td>
+
+          <a href="{% url 'person-detail' person.id  %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
+          <a href="{% url 'person-update' person.id  %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
+          <a href="{% url 'person-delete' person.id  %}"><button type="button" class="btn btn-primary btn-sm">Delete</button></a>
+    </tr>
+    {% endfor %}
+     </tbody>
+    </table>
+{% else %}
+    <p>No people are available.</p>
+{% endif %}
+
+
+{% endblock %}

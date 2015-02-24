@@ -33,7 +33,6 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=200)),
-                ('help_text', models.CharField(max_length=200)),
             ],
             options={
                 'abstract': False,
@@ -78,7 +77,6 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=200)),
-                ('help_text', models.CharField(max_length=200)),
             ],
             options={
                 'abstract': False,
@@ -93,7 +91,6 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=200)),
-                ('help_text', models.CharField(max_length=200)),
             ],
             options={
                 'abstract': False,
