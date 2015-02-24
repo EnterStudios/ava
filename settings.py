@@ -8,15 +8,15 @@ import os, sys
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_PATH 		= os.path.dirname(os.path.abspath(__file__))
 CURRENT_DIR   		= os.path.dirname(__file__)
-#TEMPLATE_DIRS 		= (os.path.join(CURRENT_DIR, 'templates'),)
+TEMPLATE_DIRS 		= (os.path.join(CURRENT_DIR, 'templates'),)
 STATICFILES_DIRS 	= (os.path.join(CURRENT_DIR, 'static'),)
 
 DEBUG = True
 TEMPLATE_DEBUG = True
 
-TEMPLATE_DIRS = (
-            os.path.join(BASE_DIR,  'ava/templates'),
-            )
+#TEMPLATE_DIRS = (
+#            os.path.join(BASE_DIR,  'ava/templates'),
+#            )
 
 DATABASES = {
     'default': {
