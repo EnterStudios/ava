@@ -1,7 +1,7 @@
 from django.test import SimpleTestCase
-from django.test import Client
-from django.core.urlresolvers import reverse
+
 from ava_core_people.models import Person, Identifier
+
 
 class PeopleViewsTestCase(SimpleTestCase):
 

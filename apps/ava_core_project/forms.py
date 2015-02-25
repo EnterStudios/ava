@@ -1,4 +1,5 @@
-from django.forms import ModelForm, Form
+from django.forms import ModelForm
+
 from apps.ava_core_project.models import Project
 
 

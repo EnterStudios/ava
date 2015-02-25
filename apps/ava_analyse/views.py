@@ -3,12 +3,10 @@ from django.views.generic import CreateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 
-from django.shortcuts import redirect, get_object_or_404
-from django.contrib.auth.models import User
 from apps.ava_test.models import Test
 from apps.ava_test.forms import  TestForm
-
 
 
 class TestIndexView(generic.ListView):

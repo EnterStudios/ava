@@ -53,6 +53,6 @@ coverage.xml
 docs/_build/
 
 # local settings files
-local_settings*
+local_settings.py
 twitter_settings*
 .idea/

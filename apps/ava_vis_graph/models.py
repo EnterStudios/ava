@@ -1,5 +1,3 @@
-from django.db import models
-
 from apps.ava_core.models import TimeStampedModel
 
 #class LDAPEdges(TimeStampedModel)

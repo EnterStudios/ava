@@ -1,0 +1,13 @@
+s (9 sloc)  0.283 kb RawBlameHistory  
+{% extends 'base.html' %}
+{% block mainpage %}
+
+<h2>[accounts] .new</h2>
+
+<form action="/accounts/register/" method="POST"> {% csrf_token %}
+    <p>Please enter your details . . .</p>
+        {{ form.as_p }}
+        <input type="submit" value="Sign Up">
+    </form>
+
+ {% endblock %}

@@ -1,6 +1,3 @@
-import os
-
-
 TWITTER_ACCOUNTS = {
     'twitter_username' ={
         'KEY': '',

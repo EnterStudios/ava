@@ -1,16 +1,22 @@
 import os
 
 
-DATABASES = { 
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'changeme',     
-        'USER': 'changeme',
+        'NAME': 'avadata',
+        'USER': 'avasecure',
         'PASSWORD': 'changeme',
         'HOST': '127.0.0.1',
-        'PORT': '',
+        'PORT': '5432',
     }
 }
+
+# Redis socket location
+SESSION_REDIS_UNIX_DOMAIN_SOCKET_PATH = '/var/run/redis/redis.sock'
+# Or use TCP
+#SESSION_REDIS_HOST = 'localhost'
+#SESSION_REDIS_PORT = 6379
 
 HAYSTACK_CONNECTIONS = {
     #'default': {

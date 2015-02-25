@@ -1,7 +1,6 @@
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-
 from django.test import LiveServerTestCase
+
+from selenium import webdriver
 
 class AdminTest(LiveServerTestCase):
     urls='axiom.urls'

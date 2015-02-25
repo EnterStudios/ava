@@ -94,6 +94,7 @@ DEFAULT_APPS = (
 LOCAL_APPS = (
     'apps.ava_core',
     'apps.ava_core_org',
+    'apps.ava_core_auth',
     'apps.ava_core_project',
     'apps.ava_core_ldap',
     'apps.ava_core_people',
@@ -141,10 +142,7 @@ SHORTEN_MODELS = {
 }
 
 
-
-
 SESSION_ENGINE = 'redis_sessions.session'
-SESSION_REDIS_UNIX_DOMAIN_SOCKET_PATH = '/var/run/redis/redis.sock'
 
 
 try:

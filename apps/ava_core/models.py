@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 # ABSTRACT MODELS
 class TimeStampedModel (models.Model):

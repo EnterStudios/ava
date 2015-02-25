@@ -54,10 +54,11 @@
                         {% if test.emailtesttarget_set.count > 0 %}
                             <tr>
                                 <td>Test Targets:</td>
-                                <td><ul>
-                                    {% for target in test.emailtesttarget_set.all %}
-                                        <li>{{ target.target.identifier }}</li>
-                                    {% endfor %}
+                                <td>
+                                    <ul>
+                                        {% for target in test.emailtesttarget_set.all %}
+                                            <li>{{ target.target.identifier }}</li>
+                                        {% endfor %}
                                     </ul>
                                 </td>
                             </tr>
@@ -69,8 +70,8 @@
                     <a href="/test/email/send/" class="btn btn-primary">send</a>
 
 
-
-                </div> <!-- end of column -->
+                </div>
+                <!-- end of column -->
 
             </div>
             <!-- end of row -->

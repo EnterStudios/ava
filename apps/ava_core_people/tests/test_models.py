@@ -1,9 +1,7 @@
-import datetime
-
-from django.utils import timezone
 from django.test import TestCase
 
-from ava_core_people.models import Person, Identifier
+from ava_core_people.models import Person
+
 
 class PersonModelTests(TestCase):
 
