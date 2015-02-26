@@ -24,7 +24,21 @@ sudo yum update -y
 sudo yum install git fig docker  
 ```
 
-##### Install AVA
+---
+
+### Ubuntu Instructions
+
+The following are instructions to install Docker and Fig on a basic Ubuntu server build.
+
+Docker installation instructions can be found here: [https://docs.docker.com/installation/ubuntulinux/]
+
+You should install the Docker maintained version so as to get a more up to date version of Docker.
+
+Fig installation instructions can be found here: [http://www.fig.sh/install.html]
+
+---
+
+### Install AVA
 
 1. Pull down the latest version of the project `git clone git@github.com:ladynerd/ava.git`
 2. `cd ava`
@@ -38,23 +52,6 @@ sudo yum install git fig docker
 
 Some useful fig commands are are listed below including their uses.
 
-
----
-
-### Ubuntu Instructions
-
-The following are instructions to build on a basic Ubuntu server build
-
-Install the packages that we will need:
-``` 
-sudo apt-get build-essential git python-pip python-dev libpqxx-4.0 libpqxx-dev libldap2-dev libsasl2-dev libssl-dev redis-server postgresql postgresql-contrib postgresql-client -y
-```
-
-##### Install AVA
-
----
-
-### Useful Fig commands
 * To see what containers are running: `sudo fig ps`
 
 * To view the output of running containers: `sudo fig logs`
