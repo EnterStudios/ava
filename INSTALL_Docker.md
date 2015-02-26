@@ -26,7 +26,7 @@ sudo yum install git fig docker
 
 ---
 
-### Ubuntu Instructions
+### Ubuntu Setup
 
 The following are instructions to install Docker and Fig on a basic Ubuntu server build.
 
