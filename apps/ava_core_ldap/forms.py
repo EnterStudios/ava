@@ -1,9 +1,9 @@
 from django.forms import ModelForm
 
-from apps.ava_core_ldap.models import QueryParameters
+from apps.ava_core_ldap.models import LDAPConfiguration
 
 
-class QueryParametersForm(ModelForm):
+class LDAPConfigurationForm(ModelForm):
     class Meta:
-        model = QueryParameters
-        fields = ('user_dn','user_pw','dump_dn','server','organisation')
+        model = LDAPConfiguration
+        fields = ('user_dn','user_pw','dump_dn','server')

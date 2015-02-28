@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block mainpage %}
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">LDAP Configuration: {{ ldap_configuration.name }}</h3>
+        </div>
+
+       </div>
+        </br>
+
+            <div class="row">
+                    <table class="table table-user-information">
+                        <tbody>
+                        <tr>
+                            <td>Server:</td>
+                            <td>{{ ldap_configuration.server }}</td>
+                        </tr>
+                         <tr>
+                            <td>Dump DN:</td>
+                            <td>{{ ldap_configuration.dump_dn }}</td>
+                        </tr>
+                         <tr>
+                            <td>User:</td>
+                            <td>{{ ldap_configuration.user_dn }}</td>
+                        </tr>
+                         <tr>
+                            <td>Password:</td>
+                            <td>{{ ldap_configuration.user_pw}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                     <a href="{% url 'ldap-get-all' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Import All</button></a>
+                    <a href="{% url 'ldap-configuration-update' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
+                    <a href="{% url 'ldap-configuration-delete' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Delete</button></a>
+
+                </div> <!-- end of column -->
+
+
+
+{% endblock %}
+

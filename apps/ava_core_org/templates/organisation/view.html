@@ -69,53 +69,7 @@
 
                 </div> <!-- end of column -->
                 </div> <!-- end of row -->
-                </br>
-                <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center">
-                    <h2>LDAP</h2>
-                </div>
-                <div class=" col-md-9 col-lg-9 ">
 
-                    {% if organisation.queryparameters_set %}
-                        <div class="table-responsive">
-                        {% for parameters in organisation.queryparameters_set.all %}
-                            <table class="table table-striped">
-                                <tbody>
-                                <tr>
-                                    <td>User DN</td>
-                                    <td>{{ parameters.user_dn }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Server</td>
-                                    <td>{{ parameters.server }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Dump DN</td>
-                                    <td>{{ parameters.dump_dn }}</td>
-                                </tr>
-                                <tr>
-                                    <td># Users</td>
-                                    <td>
-                                        <a href="/ldap/{{ parameters.id }}/view/users/">{{ parameters.activedirectoryuser_set.count }}</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td># Groups</td>
-                                    <td>
-                                        <a href="/ldap/{{ parameters.id }}/view/groups/">{{ parameters.activedirectorygroup_set.count }}</a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <a href="/ldap/{{ parameters.id }}/getall/" class="btn btn-primary">Import users and
-                                groups</a>
-                            <a href="/graph/ldap/{{ parameters.id }}/" class="btn btn-primary">Generate graph</a>
-                        {% endfor %}
-                    {% else %}
-                        <p>This organisation does not have any ldap configurations associated with it.</p>
-                    {% endif %}
-                    </div> <!-- end of table responsive -->
-                </div>
 
 {% endblock %}
 

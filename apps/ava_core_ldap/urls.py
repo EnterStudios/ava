@@ -6,18 +6,27 @@ from apps.ava_core_ldap import views
 
 urlpatterns = patterns('',
     
-    #url(r'^$', login_required(views.ConfigurationIndexView.as_view()), name='index'),
-    #url(r'^(?P<pk>\d+)/$', login_required(views.ConfigurationIndexView.as_view()), name='ldap'),
-    url(r'^(?P<pk>\d+)/view/$', login_required(views.ConfigurationDetailView.as_view()), name='ldap_view'),
-    url(r'^(?P<pk>\d+)/view/users/$', login_required(views.ConfigurationUserView.as_view()), name='ldap_users_view'),
-    url(r'^(?P<pk>\d+)/view/groups/$', login_required(views.ConfigurationGroupView.as_view()), name='ldap_groups_view'),
-    url(r'^(?P<pk>\d+)/viewitems/$', login_required(views.ConfigurationItemView.as_view()), name='ldap_items_view'),
-    url(r'^new/$',login_required(views.ConfigurationCreateView.as_view()),name='ldap_new'),
-    url(r'^(?P<pk>\d+)/update/$', login_required(views.ConfigurationUpdateView.as_view()), name='ldap_update'),
-    url(r'^(?P<pk>\d+)/delete/$', login_required(views.ConfigurationDeleteView.as_view()), name='ldap_delete'),
-    url(r'^(?P<pk>\d+)/getusers/$', login_required(views.ConfigurationGetUsers.as_view()), name='ldap_get_users'),
-    url(r'^(?P<pk>\d+)/getgroups/$', login_required(views.ConfigurationGetGroups.as_view()), name='ldap_get_groups'),
-    url(r'^(?P<pk>\d+)/getall/$', login_required(views.ConfigurationGetAll.as_view()), name='ldap_get_all'),
-    url(r'^user/(?P<pk>\d+)/delete/$', login_required(views.ConfigurationDeleteUser.as_view()), name='ldap_delete_user'),
-    url(r'^group/(?P<pk>\d+)/delete/$', login_required(views.ConfigurationDeleteGroup.as_view()), name='ldap_delete_group'),
+    url(r'^$', login_required(views.LDAPConfigurationIndex.as_view()), name='ldap-configuration-index'),
+    url(r'^new/$',login_required(views.LDAPConfigurationCreate.as_view()),name='ldap-configuration-create'),
+    url(r'^(?P<pk>\d+)/view/$', login_required(views.LDAPConfigurationDetail.as_view()), name='ldap-configuration-detail'),
+    url(r'^(?P<pk>\d+)/update/$', login_required(views.LDAPConfigurationUpdate.as_view()), name='ldap-configuration-update'),
+    url(r'^(?P<pk>\d+)/delete/$', login_required(views.LDAPConfigurationDelete.as_view()), name='ldap-configuration-delete'),
+
+    url(r'^$', login_required(views.ActiveDirectoryUserIndex.as_view()), name='ad-user-index'),
+    url(r'^new/$',login_required(views.ActiveDirectoryUserCreate.as_view()),name='ad-user-create'),
+    url(r'^(?P<pk>\d+)/view/$', login_required(views.ActiveDirectoryUserDetail.as_view()), name='ad-user-detail'),
+    url(r'^(?P<pk>\d+)/update/$', login_required(views.ActiveDirectoryUserUpdate.as_view()), name='ad-user-update'),
+    url(r'^(?P<pk>\d+)/delete/$', login_required(views.ActiveDirectoryUserDelete.as_view()), name='ad-user-delete'),
+    
+    url(r'^$', login_required(views.ActiveDirectoryGroupIndex.as_view()), name='ad-group-index'),
+    url(r'^new/$',login_required(views.ActiveDirectoryGroupCreate.as_view()),name='ad-group-create'),
+    url(r'^(?P<pk>\d+)/view/$', login_required(views.ActiveDirectoryGroupDetail.as_view()), name='ad-group-detail'),
+    url(r'^(?P<pk>\d+)/update/$', login_required(views.ActiveDirectoryGroupUpdate.as_view()), name='ad-group-update'),
+    url(r'^(?P<pk>\d+)/delete/$', login_required(views.ActiveDirectoryGroupDelete.as_view()), name='ad-group-delete'),
+    
+  
+    url(r'^(?P<pk>\d+)/getusers/$', login_required(views.LDAPConfigurationGetUsers.as_view()), name='ldap-get-users'),
+    url(r'^(?P<pk>\d+)/getgroups/$', login_required(views.LDAPConfigurationGetGroups.as_view()), name='ldap-get-groups'),
+    url(r'^(?P<pk>\d+)/getall/$', login_required(views.LDAPConfigurationGetAll.as_view()), name='ldap-get-all'),
+   
 )

@@ -3,19 +3,18 @@ import ldap
 
 from apps.ava_core.models import TimeStampedModel
 from apps.ava_core_org.models import Organisation, OrganisationGroup
-from apps.ava_core_identity.models import Identifier, Person
+from apps.ava_core_identity.models import Identifier, Person, Identity
+
+from django.core.urlresolvers import reverse
 
 #from apps.ava_core_identity.models import Identity
 from django.utils.html import escape
-from django.contrib.auth.models import User
 from ldap import *
 from ldap.controls import *
 import ldif, sys, json
 from StringIO import StringIO
 from ldap.cidict import cidict
 
-
-#from django.core.exceptions import DoesNotExist
 
 class ActiveDirectoryUser(TimeStampedModel):
     dn = models.CharField(max_length = 300)
@@ -46,8 +45,7 @@ class ActiveDirectoryUser(TimeStampedModel):
     whenChanged = models.CharField(max_length = 300)
     whenCreated = models.CharField(max_length = 300)
     memberOf = models.ManyToManyField('ActiveDirectoryGroup') 
-    user = models.ForeignKey(User) 
-    queryParameters = models.ForeignKey('QueryParameters')
+    ldap_configuration = models.ForeignKey('LDAPConfiguration')
     #identity = models.ForeignKey('ava_core_identity.Identity',null=True,blank=True)
 
     def __unicode__(self):
@@ -55,6 +53,9 @@ class ActiveDirectoryUser(TimeStampedModel):
 
     class Meta:
         unique_together = ('objectGUID','objectSid')
+
+    def get_absolute_url(self):
+	    return reverse('ad-user-detail',kwargs={'pk': self.id})
 
 class ActiveDirectoryGroup(TimeStampedModel):
     cn = models.CharField(max_length = 300)
@@ -65,8 +66,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
     objectGUID = models.CharField(max_length = 300)
     objectSid = models.CharField(max_length = 300)
     member = models.ManyToManyField('ActiveDirectoryUser')
-    user = models.ForeignKey(User) 
-    queryParameters = models.ForeignKey('QueryParameters')
+    ldap_configuration = models.ForeignKey('LDAPConfiguration')
     #identity = models.ForeignKey('ava_core_identity.Identity',null=True,blank=True)
 
     def __unicode__(self):
@@ -75,7 +75,10 @@ class ActiveDirectoryGroup(TimeStampedModel):
     class Meta:
         unique_together = ('objectGUID','objectSid')
 
-class QueryParameters(TimeStampedModel):
+    def get_absolute_url(self):
+	    return reverse('ad-group-detail',kwargs={'pk': self.id})
+
+class LDAPConfiguration(TimeStampedModel):
     #user_dn = "cn=Administrator,cn=Users,dc=ava,dc=test,dc=domain"
     #user_pw = "Password1"
     #dump_dn = "dc=ava,dc=test,dc=domain"
@@ -84,14 +87,16 @@ class QueryParameters(TimeStampedModel):
     user_pw = models.CharField(max_length = 100, verbose_name='Password')
     dump_dn = models.CharField(max_length = 100, verbose_name='Domain')
     server = models.CharField(max_length = 100, verbose_name='Server')
-    organisation = models.ForeignKey('ava_core_org.Organisation')
-    user = models.ForeignKey(User, null=False)    
+    #group = models.ForeignKey('ava_core_org.Organisation')
 
     def __unicode__(self):
         return self.server or u''
     
     class Meta:
-        unique_together=('user','server','user_dn')
+        unique_together=('server','user_dn')
+
+    def get_absolute_url(self):
+	    return reverse('ldap-configuration-detail',kwargs={'pk': self.id})
 
 class ActiveDirectoryHelper():
     
@@ -148,25 +153,15 @@ class ActiveDirectoryHelper():
         #    return cookie
     
     def search(self, parameters, filter, attrs):
-       # connection = self.getConnection(parameters)
-        #connection = self.getConnection(parameters)
-        print "user_dn = "+parameters.user_dn+" user_pw="+parameters.user_pw+"\n"
-
         ldap.set_option(OPT_REFERRALS, 0)
         ldap.protocol_version = 3
     	ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_ALLOW)
 
         ldap_conn = initialize(parameters.server)
         ldap_conn.simple_bind_s(parameters.user_dn, parameters.user_pw)
-
-        print (ldap_conn.whoami_s())
-
-
         res= []
 
         lc = self.create_controls(self.PAGESIZE)
-
-        print lc
 
         while True:
 
@@ -217,15 +212,15 @@ class ActiveDirectoryHelper():
          #ldap_conn.unbind()
         return res
     
-    def getAll(self,parameters,user):
+    def getAll(self,parameters):
         #print "Getting groups"
-        self.getGroups(parameters,user)
+        self.getGroups(parameters)
         #print "Getting users"
-        self.getUsers(parameters,user)
+        self.getUsers(parameters)
         #print "Getting groups"
-        self.getGroups(parameters,user)
+        self.getGroups(parameters)
 
-    def getGroups(self,parameters,user,organisation):
+    def getGroups(self,parameters):
         filter = '(objectclass=group)'
         attrs = ['cn','distinguishedName','name','objectCategory','sAMAccountName','objectGUID','objectSid','member']
         results = self.search(parameters,filter,attrs)
@@ -250,7 +245,7 @@ class ActiveDirectoryHelper():
                             for cn in user_cn:
                                 if not cn.startswith('CN='):
                                     cn = "CN="+cn
-                                qs=ActiveDirectoryUser.objects.filter(user=user,queryParameters=parameters,distinguishedName=cn).first()
+                                qs=ActiveDirectoryUser.objects.filter(ldap_configuration=parameters,distinguishedName=cn).first()
                                 if qs:
                                     users.append(qs)
                     else:
@@ -259,8 +254,8 @@ class ActiveDirectoryHelper():
             new_attrs.pop('member',None)
             rows = ActiveDirectoryGroup.objects.filter(**new_attrs).count()
             if rows == 0:
-                ad_group = ActiveDirectoryGroup.objects.create(queryParameters=parameters,user=user,**new_attrs)
-                OrganisationGroup.objects.get_or_create(name=ad_group.cn, grouptype=OrganisationGroup.AD,organisation=organisation)
+                ad_group = ActiveDirectoryGroup.objects.create(ldap_configuration=parameters,**new_attrs)
+                #OrganisationGroup.objects.get_or_create(name=ad_group.cn, grouptype=OrganisationGroup.AD,organisation=organisation)
                 ad_group.member.add(*users)
                 ad_group.save()
 
@@ -268,7 +263,7 @@ class ActiveDirectoryHelper():
         s = ['\\%02X' % ord(x) for x in val] 
         return ''.join(s)
 
-    def getUsers(self,parameters,user,organisation):
+    def getUsers(self,parameters):
         filter = '(objectclass=user)'
         attrs = ['dn','accountExpires','adminCount','badPasswordTime','badPwdCount','cn','description','displayName','isCriticalSystemObject','lastLogoff','lastLogon','lastLogonTimestamp','logonCount','logonHours','name','objectGUID','objectSid','primaryGroupID','pwdLastSet','sAMAccountName','sAMAccountType','uSNChanged','uSNCreated','userAccountControl','whenChanged','whenCreated','memberOf','distinguishedName']
         results = self.search(parameters,filter,attrs)
@@ -293,7 +288,7 @@ class ActiveDirectoryHelper():
                             for cn in group_cn:
                                 if not value.startswith('CN='):
                                     cn = "CN="+cn
-                                qs = ActiveDirectoryGroup.objects.filter(user=user,queryParameters=parameters,cn=cn).first()
+                                qs = ActiveDirectoryGroup.objects.filter(ldap_configuration=parameters,cn=cn).first()
                                 if qs:
                                     groups.append(qs)
                     else:
@@ -302,16 +297,18 @@ class ActiveDirectoryHelper():
             new_attrs.pop('memberOf',None)
             rows = ActiveDirectoryUser.objects.filter(**new_attrs).count()
             if rows == 0:
-                ad_user = ActiveDirectoryUser.objects.create(queryParameters=parameters,user=user,**new_attrs)
+                ad_user = ActiveDirectoryUser.objects.create(ldap_configuration=parameters,**new_attrs)
                 firstname = ""
                 surname = ""
                 if " " in ad_user.displayName:
                     bits = str.split(ad_user.displayName," ")
                     firstname=bits[0]
                     surname=bits[1]
-                obj, created = Person.objects.get_or_create(firstname=firstname,surname=surname,user=user,organisation=organisation)
-                Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName, identifiertype=Identifier.UNAME,person=obj)
-                Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName+"@avasecure.com", identifiertype=Identifier.EMAIL, person=obj)
+
+                identity, created = Identity.objects.get_or_create(name=ad_user.displayName)
+                #Person.objects.get_or_create(firstname=firstname,surname=surname, identity=identity)
+                Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName, identifiertype=Identifier.UNAME,identity=identity)
+                Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName+"@avasecure.com", identifiertype=Identifier.EMAIL, identity=identity)
                 ad_user.memberOf.add(*groups)
                 ad_user.save()
     
@@ -383,7 +380,7 @@ class ExportLDAP():
     def nodes(self, parameters):
         nodes = []
         elements = []
-        ldap_users = ActiveDirectoryUser.objects.filter(queryParameters=parameters)
+        ldap_users = ActiveDirectoryUser.objects.filter(ldap_configuration=parameters)
         fields = ['id','accountExpires','adminCount','name','isCriticalSystemObject','lastLogon','logonCount','pwdLastSet']
         for user in ldap_users:
             elements.append(user)
@@ -392,7 +389,7 @@ class ExportLDAP():
             current['node_type'] = 'user'
             nodes.append(current)
         
-        ldap_groups = ActiveDirectoryGroup.objects.filter(queryParameters=parameters)
+        ldap_groups = ActiveDirectoryGroup.objects.filter(ldap_configuration=parameters)
         g = ['cn','member']
         for group in ldap_groups:
                 current = self.model_to_dict(group,g)
