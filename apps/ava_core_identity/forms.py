@@ -7,7 +7,12 @@ from apps.ava_core_identity.models import Identity, Person, Identifier
 class IdentityForm(ModelForm):
     class Meta:
         model = Identity
-        fields = ('name', 'description')
+        fields = ('name', 'description', 'member_of')
+        labels = {
+            'name':('Name'),
+            'description':('Description'),
+            'member_of' :('Member of'),
+        }
 
 
 class PersonForm(ModelForm):

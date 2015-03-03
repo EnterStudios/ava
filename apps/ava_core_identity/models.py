@@ -7,6 +7,7 @@ from apps.ava_core.models import ReferenceModel, TimeStampedModel
 
 
 class Identity(ReferenceModel):
+    member_of = models.ManyToManyField('ava_core_group.Group', null=True, blank=True)
     '''
     TODO: DocString
     '''

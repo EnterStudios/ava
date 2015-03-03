@@ -26,12 +26,50 @@
                                 <td><a href="{% url "group-details" group.parent.id %}">{{ group.parent.name }}</a></td>
                             </tr>
                         {% endif %}
+                        <tr>
+                            <td># Members:</td>
+                            <td>{{ group.identity_set.count }}</td>
+                        </tr>
                         </tbody>
                     </table>
                     <a href="{% url 'group-update' group.id %}" class="btn btn-primary">update</a>
                     <a href="{% url 'group-delete' group.id %}" class="btn btn-danger">delete</a>
 
                 </div> <!-- end of column -->
+
+     <div class="page-header">
+            <h2>Members: </h2>
+        </div>
+
+    <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>
+
+                               <a href="{% url 'identity-create' %}" class="glyphicon glyphicon-plus"></a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+    {% for identity in group.identity_set.all %}
+    <tr>
+        <td>{{ identity.name }}</td>
+        <td>{{ identity.description }}</td>
+        <td>
+
+          <a href="{% url 'identity-detail' identity.id  %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
+          <a href="{% url 'identity-update' identity.id  %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
+          <a href="{% url 'identity-delete' identity.id  %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+    </tr>
+    {% endfor %}
+     </tbody>
+    </table>
+
+    </div>
+
 
 {% endblock %}
 
