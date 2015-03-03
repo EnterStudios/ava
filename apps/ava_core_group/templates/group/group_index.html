@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block mainpage %}
+
+<div class="page-header">
+     <h2 class="sub-header">Groups</h2>
+</div>
+
+<div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>
+                            <a href="{% url 'group-create' %}" class="glyphicon glyphicon-plus"></a>
+                        </th>
+                    </tr>
+                </thead>
+{% if group_list %}
+	<tbody>
+    
+{% for group in group_list %}
+    <tr>
+	<td>{{ group.name }}</td>
+	<td>{{ group.group_type }}</td>
+        <td>
+		<a href="{% url 'group-detail' group.id %}" class="btn btn-primary">view</a>
+        	<a href="{% url 'group-update' group.id %}" class="btn btn-primary">update</a>
+        	<a href="{% url 'group-delete' group.id %}" class="btn btn-danger">delete</a>
+	</td>
+    </tr>
+    {% endfor %}
+</tbody>
+    </table>
+{% else %}
+    </table>
+    <p>No groups are available.</p>
+{% endif %}
+
+{% endblock %}

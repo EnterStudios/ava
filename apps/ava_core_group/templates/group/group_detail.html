@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block mainpage %}
+
+        <div class="page-header">
+            <h2>Group: {{ group.name }}</h2>
+        </div>
+
+
+<div class="table-responsive">
+            <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <td>Name:</td>
+                            <td>{{ group.name }}</td>
+                        </tr>
+                        {% if group.group_type %}
+                            <tr>
+                                <td>Group Type:</td>
+                                <td>{{ group.group_type }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if group.parent %}
+                            <tr>
+                                <td>Parent Group:</td>
+                                <td><a href="{% url "group-details" group.parent.id %}">{{ group.parent.name }}</a></td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                    <a href="{% url 'group-update' group.id %}" class="btn btn-primary">update</a>
+                    <a href="{% url 'group-delete' group.id %}" class="btn btn-danger">delete</a>
+
+                </div> <!-- end of column -->
+
+{% endblock %}
+
