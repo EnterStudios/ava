@@ -5,9 +5,10 @@ from django.views.generic.edit import UpdateView, DeleteView
 
 from apps.ava_core.views import FormsetMixin
 from apps.ava_core_identity.models import Identity, Person, Identifier
-from apps.ava_core_identity.forms import IdentityForm, IdentifierFormSet, PersonForm
+from apps.ava_core_identity.forms import IdentityForm, PersonForm, IdentifierForm, IdentifierFormSet
 
 
+### IDENTITY
 
 class IdentityIndex(ListView):
     template_name = 'identity/identity_index.html'
@@ -56,13 +57,16 @@ class IdentityDelete(DeleteView):
         return reverse('index')
 
 
+### PERSON
+
 class PersonIndex(ListView):
-    template_name = 'identity/index.html'
-    context_object_name = 'people_list'
+    template_name = 'identity/person_index.html'
+    context_object_name = 'person_list'
     model = Person
 
     def get_queryset(self):
         return Person.objects.all()
+
 
 class PersonDetail(DetailView):
     model = Person
@@ -70,27 +74,18 @@ class PersonDetail(DetailView):
     template_name = 'identity/person_detail.html'
 
 
-class PersonCreate(FormsetMixin, CreateView):
-    template_name = 'identity/person.html'
+class PersonCreate(CreateView):
     model = Person
-    form_class = PersonForm
-    formset_class = IdentifierFormSet
-
-#    def form_valid(self, form, formset):
-#        org_id = self.request.session['organisation']
-#        if org_id:
-#            organisation = get_object_or_404(Organisation, pk=org_id)
-#            form.instance.organisation = organisation
-#            form.instance.user = self.request.user
-#        return super(PersonCreate, self).form_valid(form, formset)
-
-
-class PersonUpdate(FormsetMixin, UpdateView):
+    context_object_name = 'person'
     template_name = 'identity/person.html'
-    model = Person
-    is_update_view = True
     form_class = PersonForm
-    formset_class = IdentifierFormSet
+
+
+class PersonUpdate(UpdateView):
+    model = Person
+    context_object_name = 'person'
+    template_name = 'identity/person.html'
+    form_class = PersonForm
 
 
 class PersonDelete(DeleteView):
@@ -99,13 +94,43 @@ class PersonDelete(DeleteView):
     
     def get_success_url(self):
         #TODO: Redirect to parent object
-        return reverse('index')
+        return reverse('person-index')
+
+
+class IdentifierCreate(CreateView):
+    model = Identifier
+    fields = ['identifiertype', 'identifier']
+    template_name = 'identity/identifier.html'
+    form_class = IdentifierForm
+    
+    identity = None
+    
+    def dispatch(self, request, *args, **kwargs):
+        #Check that the identity exists and store it for later.
+        identity_id = kwargs['identity']
+        self.identity = get_object_or_404(Identity, pk=identity_id)
+        return super(IdentifierCreate, self).dispatch(request, *args, **kwargs)
+    
+    def form_valid(self, form):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if self.identity and form:
+            form.instance.identity = self.identity
+            #TODO: Check whether the identifier is a duplicate or not.
+            return super(IdentifierCreate, self).form_valid(form)
+        return super(IdentifierCreate, self).form_invalid(form)
+    
+    def get_success_url(self):
+        return self.identity.get_absolute_url()
 
 
 class IdentifierUpdate(UpdateView):
     model = Identifier
-    fields = ['identifier', 'identifiertype']
+    fields = ['identifiertype', 'identifier']
     template_name = 'identity/identifier_update_form.html'
+
+    def get_success_url(self):
+        return self.get_object().identity.get_absolute_url()
 
 
 class IdentifierDelete(DeleteView):
@@ -113,8 +138,7 @@ class IdentifierDelete(DeleteView):
     template_name = 'confirm_delete.html'
     
     def get_success_url(self):
-        #TODO: Redirect to parent object
-        return reverse('index')
+        return self.get_object().identity.get_absolute_url()
 
 
 

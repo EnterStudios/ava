@@ -6,13 +6,12 @@ from django.core.urlresolvers import reverse
 from apps.ava_core.models import ReferenceModel, TimeStampedModel
 
 
-
 class Identity(ReferenceModel):
     '''
     TODO: DocString
     '''
     def get_absolute_url(self):
-        return reverse('identity-detail',kwargs={'pk': self.id})
+        return reverse('identity-detail', kwargs={'pk': self.id})
 
     class Meta:
         verbose_name = ('identity')
@@ -23,15 +22,15 @@ class Person(TimeStampedModel):
     '''
     TODO: DocString
     '''
-    firstname = models.CharField(max_length=75,validators=[validate_slug])
-    surname = models.CharField(max_length=75,validators=[validate_slug])
-    identity = models.ManyToManyField('Identity')
+    firstname = models.CharField(max_length=75, validators=[validate_slug])
+    surname = models.CharField(max_length=75, validators=[validate_slug])
+    identity = models.ManyToManyField('Identity', blank=True)
 
     def __unicode__(self):
-        return self.firstname+" "+self.surname or u''
+        return (self.firstname + " " + self.surname).strip() or u''
 
     def get_absolute_url(self):
-        return reverse('person-detail',kwargs={'pk': self.id})
+        return reverse('person-detail', kwargs={'pk': self.id})
     
     class Meta:
         verbose_name = ('person')
@@ -59,9 +58,10 @@ class Identifier(TimeStampedModel):
     )
 
     identifier = models.CharField(max_length=100)
-    identifiertype = models.CharField(max_length=7,
-                            choices=IDENTIFIER_TYPE_CHOICES, default=EMAIL,
-                                verbose_name='Identifier Type')
+    identifiertype = models.CharField(max_length=10,
+                                      choices=IDENTIFIER_TYPE_CHOICES,
+                                      default=EMAIL,
+                                      verbose_name='Identifier Type')
     identity = models.ForeignKey('Identity')
 
     class Meta:
@@ -72,7 +72,7 @@ class Identifier(TimeStampedModel):
         return self.identifier or u''
 
     def get_absolute_url(self):
-	    return reverse('identifier-detail',kwargs={'pk': self.id})
+        return reverse('identifier-detail', kwargs={'pk': self.id})
     
     def clean(self):
         if self.identifiertype == 'EMAIL':

@@ -1,25 +1,38 @@
 {% extends 'base.html' %}
-{% block title %}View Target Profile{% endblock %}
+{% load bootstrap %}
+{% load staticfiles %}
+
+{% block title %}View Identity{% endblock %}
 {% block mainpage %}
 
+<div class="page-header">
+  <h1>View Person and Identities</h1>
+</div>
+
+
+<h2>{{ person.firstname }} {{ person.surname }}</h2>
 <div class="scrollblock block-merging">
 
-<h2>[person] {{ person.firstname }} {{ person.surname }}</h3>
-{% if person.identifier_set %}
-    <table style="margin-left:auto;margin-right:auto;">
-    {% for identifier in person.identifier_set.all %}
+<h3>Identities</h3>
+{% if person.identity and person.identity.count %}
+    <table class="table">
     <tr>
-        <td>{{ identifier.identifier }}</td>
-        <td>{{ identifier.identifiertype }}</td>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+    {% for identity in person.identity.all %}
+    <tr>
+        <td>{{ identity.name }}</td>
+        <td>{{ identity.description }}</td>
     </tr>
     {% endfor %}
     </table>
 {% else %}
-    <p>This person does not have any identifiers associated with them.</p>
+    <p>This person does not have any identities associated with them.</p>
 {% endif %}
 
-<a href="/people/{{ person.id }}/update/">[update]</a>
-<a href="/people/{{ person.id }}/delete/">[delete]</a>
+<a href="{% url 'person-update' person.id %}">[update]</a>
+<a href="{% url 'person-delete' person.id %}">[delete]</a>
 
 </div>
 {% endblock %}

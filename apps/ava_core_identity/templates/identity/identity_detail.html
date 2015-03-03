@@ -19,8 +19,8 @@
                         <th>Identifier</th>
                         <th>Identifier Type</th>
                         <th>
-
-                                <!--TODO ADD HYPERLINK TO identifier-add identity.id and allow manual addition of identifiers-->
+                            <!--TODO ADD HYPERLINK TO identifier-add identity.id and allow manual addition of identifiers-->
+                            <a href="{% url 'identifier-create' identity.id %}" class="glyphicon glyphicon-plus"></a>
                         </th>
                     </tr>
                 </thead>
@@ -32,7 +32,7 @@
         <td>
 
           <a href="{% url 'identifier-update' identifier.id  %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
-          <a href="{% url 'identifier-delete' identifier.id  %}"><button type="button" class="btn btn-primary btn-sm">Delete</button></a>
+          <a href="{% url 'identifier-delete' identifier.id  %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
     </tr>
     {% endfor %}
      </tbody>
