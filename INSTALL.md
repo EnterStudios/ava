@@ -137,6 +137,6 @@ sudo rabbitmqctl set_permissions -p avatasks avasecure ".*" ".*" ".*"
 
 ### Run AVA
 
-1. Start the Celery worker. `python celery -A apps.ava_core worker -l info -B`
+1. Start the Celery worker. `celery -A apps.ava_core worker -l info -B`
 2. Start the AVA web server. `python manage.py runserver`
 3. Visit [http://localhost:8000/](http://localhost:8000/) in your browser.

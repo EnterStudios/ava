@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block mainpage %}
+
+<div class="page-header">
+  <h1>Project Details</h1>
+</div>
+
+
+<h2>{{ project.name }} </h2>
+<p> {{ project.description }} {{ project.group.count }}</p>
+
+    <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th># Members</th>
+                        <th>
+
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                 {% for group in project.group.all %}
+    <tr>
+        <td>{{ group.name }}</td>
+        <td>{{ group.group_type  }}</td>
+        <td>{{ group.identity_set.count }}</td>
+        <td>
+
+          <a href="{% url 'group-detail' group.id  %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
+          <a href="{% url 'project-group-delete' project.id group.id  %}"><button type="button" class="btn btn-danger btn-sm">Delete from project</button></a>
+    </tr>
+    {% endfor %}
+     </tbody>
+    </table>
+
+
+
+
+<a href="{% url 'project-update' project.id %}">[update]</a>
+<a href="{% url 'project-delete' project.id %}">[delete]</a>
+
+</div>
+{% endblock %}
+

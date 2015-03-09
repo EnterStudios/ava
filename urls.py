@@ -12,7 +12,7 @@ handler500 = 'dh5bp.views.server_error'
 urlpatterns = patterns('',
     url(r'^$', login_required(IdentityIndex.as_view()), name='index'),
     url(r'^ava/', include('apps.ava_core.urls')),
-    #url(r'^project/', include('apps.ava_core_project.urls')),
+    url(r'^project/', include('apps.ava_core_project.urls')),
     url(r'^accounts/', include('apps.ava_core_auth.urls')),
     url(r'^group/', include('apps.ava_core_group.urls')),
     url(r'^ldap/', include('apps.ava_core_ldap.urls')),

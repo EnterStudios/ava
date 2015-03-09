@@ -23,7 +23,7 @@
                         {% if group.parent %}
                             <tr>
                                 <td>Parent Group:</td>
-                                <td><a href="{% url "group-details" group.parent.id %}">{{ group.parent.name }}</a></td>
+                                <td><a href="{% url "group-detail" group.parent.id %}">{{ group.parent.name }}</a></td>
                             </tr>
                         {% endif %}
                         <tr>

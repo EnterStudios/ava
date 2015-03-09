@@ -14,6 +14,7 @@ class Group (TimeStampedModel):
     description = models.TextField(max_length=500)
     group_type = models.ForeignKey('GroupType', null=False)
     parent = models.ForeignKey('Group', null=True, blank=True)
+    #project = models.ManyToManyField('ava_core_project.Project', null=True, blank=True)
 
     def __unicode__(self):
         return self.name or u''

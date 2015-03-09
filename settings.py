@@ -100,8 +100,8 @@ LOCAL_APPS = (
     'apps.ava_core_ldap',
     'apps.ava_core_identity',
    # 'apps.ava_vis_graph',
-   # 'apps.ava_test',
-   # 'apps.ava_test_email',
+    'apps.ava_test',
+    'apps.ava_test_email',
    # 'apps.ava_test_twitter',
 )
 
