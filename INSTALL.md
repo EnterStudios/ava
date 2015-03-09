@@ -6,13 +6,13 @@ AVA is a Django application and requires Python 2.7, Redis and PostreSQL.
 
 We're not production ready yet so these instructions are for setting up your development environment.
 
-* [Setup Fedora 21](https://github.com/ladynerd/ava/blob/master/INSTALL.md#fedora-setup)
-* [Setup Ubuntu 14.04](https://github.com/ladynerd/ava/blob/master/INSTALL.md#ubuntu-setup)
-* [Install AVA](https://github.com/ladynerd/ava/blob/master/INSTALL.md#install-ava)
+* [Setup Fedora 21](#fedora-setup)
+* [Setup Ubuntu 14.04](#ubuntu-setup)
+* [Install and Run AVA](#install-and-run)
 
 ---
 
-### Fedora Setup
+### <a name="fedora-setup"></a>Fedora Setup
 
 The following assumes a basic Fedora 21 Server has been setup with no requisite packages.
 
@@ -23,7 +23,7 @@ sudo yum groupinstall "Development Tools"
 sudo yum install postgresql-server postgresql-contrib postgresql redis python-pip python-devel libpqxx libpqxx-devel openldap-devel erlang rabbitmq-server
 ```
 
-##### PostgreSQL
+#### PostgreSQL
 ```
 sudo postgresql-setup initdb  
 sudo sed -i -e"s/^#listen_addresses =.*$/listen_addresses = '*'/" /var/lib/pgsql/data/postgresql.conf  
@@ -47,7 +47,7 @@ sudo -u postgres createuser --pwprompt avasecure
 sudo -u postgres createdb --owner "avasecure" avadata  
 ```
 
-##### Redis
+#### Redis
 ```
 sudo systemctl enable redis.service  
 sudo systemctl start redis.service  
@@ -65,7 +65,7 @@ Restart the redis server for settings to take effect,
 sudo systemctl restart redis.service  
 ```
 
-##### RabbitMQ
+#### RabbitMQ
 Create up the RabbitMQ user and virtual host
 ```
 sudo rabbitmqctl add_user avasecure change_this_password
@@ -75,7 +75,7 @@ sudo rabbitmqctl set_permissions -p avatasks avasecure ".*" ".*" ".*"
 
 ---
 
-### Ubuntu Instructions
+### <a name="ubuntu-setup"></a>Ubuntu Instructions
 
 The following are instructions to build on a basic Ubuntu server build
 
@@ -84,7 +84,7 @@ Install the packages that we will need:
 sudo apt-get build-essential git python-pip python-dev libpqxx-4.0 libpqxx-dev libldap2-dev libsasl2-dev libssl-dev redis-server postgresql postgresql-contrib postgresql-client erlang rabbitmq-server -y
 ```
 
-##### Install PostgreSQL
+#### PostgreSQL
 ```
 sudo sed -i -e"s/^#listen_addresses =.*$/listen_addresses = '*'/" /etc/postgresql/9.3/main/postgresql.conf  
 echo "host    all    all    0.0.0.0/0    md5" | sudo tee -a /etc/postgresql/9.3/main/pg_hba.nf  
@@ -97,7 +97,7 @@ sudo -u postgres createuser --pwprompt avasecure
 sudo -u postgres createdb --owner "avasecure" avadata  
 ```
 
-##### Install Redis
+#### Redis
 
 Edit `/etc/redis/redis.conf` and uncomment/change the following lines:
 ```
@@ -114,7 +114,7 @@ sudo apt-get remove python-pip
 sudo easy_install pip
 ```
 
-##### RabbitMQ
+#### RabbitMQ
 Create up the RabbitMQ user and virtual host
 ```
 sudo rabbitmqctl add_user avasecure change_this_password
@@ -124,7 +124,7 @@ sudo rabbitmqctl set_permissions -p avatasks avasecure ".*" ".*" ".*"
 
 ---
 
-### Install AVA
+### <a name="install-and-run"></a>Install AVA
 
 1. Pull down the latest version of the project `git clone git@github.com:ladynerd/ava.git`
 2. `cd ava`
