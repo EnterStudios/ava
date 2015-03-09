@@ -21,6 +21,10 @@
                             <td>Name:</td>
                             <td>{{ test.name }}</td>
                         </tr>
+                        <tr>
+                            <td>Status:</td>
+                            <td>{{ test_status }}</td>
+                        </tr>
                         {% if test.fromaddr %}
                             <tr>
                                 <td>From Address:</td>
@@ -51,12 +55,12 @@
                                 <td>{{ test.testtype }}</td>
                             </tr>
                         {% endif %}
-                        {% if test.emailtesttarget_set.count > 0 %}
+                        {% if test.targets.count > 0 %}
                             <tr>
                                 <td>Test Targets:</td>
                                 <td>
                                     <ul>
-                                        {% for target in test.emailtesttarget_set.all %}
+                                        {% for target in test.targets.all %}
                                             <li>{{ target.target.identifier }}</li>
                                         {% endfor %}
                                     </ul>

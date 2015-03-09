@@ -1,19 +1,16 @@
 from django.views import generic
-from django.views.generic import CreateView, ListView, DetailView
-from django.views.generic.edit import UpdateView
-from django.views.generic.edit import DeleteView
+from django.views.generic.edit import UpdateView, DeleteView
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
-from django.core.mail import send_mail
 
-from apps.ava_core_org.models import Organisation
 from apps.ava_test_email.models import EmailTest, EmailTestTarget
 from apps.ava_test_email.forms import EmailTestForm
 from apps.ava_core_identity.models import Person, Identifier
+from apps.ava_test_email.tasks import run_email_test
 
 
-class EmailTestIndex(ListView):
+class EmailTestIndex(generic.ListView):
     template_name = 'email/index.html'
     context_object_name = 'list'
 
@@ -22,45 +19,56 @@ class EmailTestIndex(ListView):
         return EmailTest.objects.filter(user=self.request.user)
 
 
-class EmailTestDetail(DetailView):
+class EmailTestDetail(generic.DetailView):
     model = EmailTest
     context_object_name = 'test'
     template_name = 'email/view.html'
+    
+    test = None
 
     def get(self, request, *args, **kwargs):
         pk = self.kwargs.get('pk')
         if pk:
-            test = get_object_or_404(EmailTest, pk=pk)
-            request.session['test'] = test.id
-        return super(EmailTestDetailView, self).get(self, request, *args, **kwargs)
+            self.test = get_object_or_404(EmailTest, pk=pk)
+            request.session['test'] = self.test.id
+        return super(EmailTestDetail, self).get(self, request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context_data = super(EmailTestDetail, self).get_context_data(**kwargs)
+        status_names = dict(EmailTest.STATUS_CHOICES)
+        context_data['test_status'] = status_names[self.test.teststatus]
+        return context_data
 
 
 class EmailTestDelete(DeleteView):
     model = EmailTest
     template_name = 'confirm_delete.html'
-    success_url = '/test/email/'
+    
+    def get_success_url(self):
+        return reverse('email-test-index')
 
 
-class EmailTestCreate(CreateView):
+class EmailTestCreate(generic.CreateView):
     model = EmailTest
     template_name = 'email/emailtest.html'
     form_class = EmailTestForm
+    
+    success_url = None
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        self.add_targets()
-        return super(EmailTestCreate, self).form_valid(form)
+        result = super(EmailTestCreate, self).form_valid(form)
+        self.success_url = form.instance.get_absolute_url()
+        self.add_targets(form.instance)
+        return result
 
-    def add_targets(self):
-        test = self.object
-        organisation = test.org
-        people = organisation.person_set.all()
-        for p in people:
-            ids = p.identifier_set.all()
-            for i in ids:
-                if i.identifiertype == Identifier.EMAIL:
-                    obj, created = EmailTestTarget.objects.get_or_create(target=i, emailtest=test)
-                    test = EmailTestTarget
+    def add_targets(self, test):
+        #TODO: Get list of targets from project
+        people = Person.objects.all()
+        for person in people:
+            for identity in person.identity.all():
+                for identifier in identity.identifier_set.filter(identifiertype = Identifier.EMAIL):
+                    obj, created = EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
         return "OK"
 
 
@@ -71,29 +79,16 @@ class EmailTestUpdate(UpdateView):
 
 
 class EmailSendEmail(generic.View):
-    success_url = '/test/email/'
 
     def get(self, request, *args, **kwargs):
+        # Make sure that the test exists.
         pk = request.session['test']
-        org_pk = request.session['organisation']
         email = get_object_or_404(EmailTest, pk=pk)
-        org = get_object_or_404(Organisation, pk=org_pk)
-        targets = []
-        people = Person.objects.filter(organisation=org)
-        for p in people:
-            identifiers = p.identifier_set.all()
-            for i in identifiers:
-                if i.identifiertype == Identifier.EMAIL:
-                    targets.append("'" + i.identifier + "'")
-
-        # currently sends to all people in organisation - this will need addressing
-
-        targetString = ",".join(targets)
-        targetString = '[' + targetString + ']'
-
-        print "Targets:: " + targetString
-
-        # send_mail(email.subject, email.body, email.fromaddr, targetString, fail_silently=False)
-        send_mail(email.subject, email.body, 'laura@trustme.io', ['laura@safestack.io', 'hello@avasecure.com'],
-                  fail_silently=False)
-        return HttpResponseRedirect(reverse('emailtestindex'))
+        #TODO: Permissions - check if user is able to start the test.
+        # Mark the test as scheduled, so that the front-end says the right thing.
+        email.teststatus = EmailTest.SCHEDULED
+        email.save()
+        #Queue the emails.
+        run_email_test.delay(email.id)
+        # Return to the test detail page.
+        return HttpResponseRedirect(reverse('email-test-detail', kwargs={'pk':email.id}))

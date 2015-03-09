@@ -20,7 +20,7 @@ Install the packages that we will need:
 ```
 sudo yum update -y
 sudo yum groupinstall "Development Tools"
-sudo yum install postgresql-server postgresql-contrib postgresql redis python-pip python-devel libpqxx libpqxx-devel openldap-devel
+sudo yum install postgresql-server postgresql-contrib postgresql redis python-pip python-devel libpqxx libpqxx-devel openldap-devel erlang rabbitmq-server
 ```
 
 ##### PostgreSQL
@@ -65,6 +65,14 @@ Restart the redis server for settings to take effect,
 sudo systemctl restart redis.service  
 ```
 
+##### RabbitMQ
+Create up the RabbitMQ user and virtual host
+```
+sudo rabbitmqctl add_user avasecure change_this_password
+sudo rabbitmqctl add_vhost avatasks
+sudo rabbitmqctl set_permissions -p avatasks avasecure ".*" ".*" ".*"
+```
+
 ---
 
 ### Ubuntu Instructions
@@ -73,7 +81,7 @@ The following are instructions to build on a basic Ubuntu server build
 
 Install the packages that we will need:
 ``` 
-sudo apt-get build-essential git python-pip python-dev libpqxx-4.0 libpqxx-dev libldap2-dev libsasl2-dev libssl-dev redis-server postgresql postgresql-contrib postgresql-client -y
+sudo apt-get build-essential git python-pip python-dev libpqxx-4.0 libpqxx-dev libldap2-dev libsasl2-dev libssl-dev redis-server postgresql postgresql-contrib postgresql-client erlang rabbitmq-server -y
 ```
 
 ##### Install PostgreSQL
@@ -106,6 +114,14 @@ sudo apt-get remove python-pip
 sudo easy_install pip
 ```
 
+##### RabbitMQ
+Create up the RabbitMQ user and virtual host
+```
+sudo rabbitmqctl add_user avasecure change_this_password
+sudo rabbitmqctl add_vhost avatasks
+sudo rabbitmqctl set_permissions -p avatasks avasecure ".*" ".*" ".*"
+```
+
 ---
 
 ### Install AVA
@@ -118,4 +134,9 @@ sudo easy_install pip
 6. Create migrations for the database schema with `python manage.py makemigrations`
 7. Run migrations to create tables `python manage.py migrate`
 8. Create our first user `python manage.py createsuperuser`
-9. Run AVA! `python manage.py runserver` and visit http://localhost:8000 in your browser.
+
+### Run AVA
+
+1. Start the Celery worker. `python celery -A apps.ava_core worker -l info -B`
+2. Start the AVA web server. `python manage.py runserver`
+3. Visit [http://localhost:8000/](http://localhost:8000/) in your browser.

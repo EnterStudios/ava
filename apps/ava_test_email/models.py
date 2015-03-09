@@ -4,6 +4,7 @@ from django.db.models import Model
 
 from apps.ava_core.models import TimeStampedModel, ReferenceModel
 from apps.ava_test.models import Test
+from apps.ava_test_email.helpers import generate_hex_token
 
 
 class EmailTest(Test):
@@ -17,7 +18,7 @@ class EmailTest(Test):
         return self.name or u''
 
     def get_absolute_url(self):
-	    return reverse('email-test-detail',kwargs={'pk': self.pk})
+        return reverse('email-test-detail',kwargs={'pk': self.pk})
 
 
 class EmailTestType(ReferenceModel):
@@ -29,9 +30,9 @@ class EmailMessageType(ReferenceModel):
 
 
 class EmailTestTarget(TimeStampedModel):
-    emailtest = models.ForeignKey('EmailTest', null=False)
+    emailtest = models.ForeignKey('EmailTest', null=False, related_name='targets')
     target = models.ForeignKey('ava_core_identity.Identifier', null=False)
-    token = models.CharField(max_length=100, null=False, unique=True)
+    token = models.CharField(max_length=100, null=False, unique=True, default=generate_hex_token)
 
     class Meta:
         unique_together = ("emailtest", "target", "token")
@@ -40,7 +41,7 @@ class EmailTestTarget(TimeStampedModel):
         return self.target or u''
 
     def get_absolute_url(self):
-	    return reverse('email-test-target-detail',kwargs={'pk': self.pk})
+        return reverse('email-test-target-detail',kwargs={'pk': self.pk})
 
 
 class EmailTemplate(Model):
@@ -51,4 +52,4 @@ class EmailTemplate(Model):
         return self.subject or u''
 
     def get_absolute_url(self):
-	    return reverse('email-template-detail',kwargs={'pk': self.pk})
+        return reverse('email-template-detail',kwargs={'pk': self.pk})

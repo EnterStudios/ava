@@ -1,31 +1,38 @@
 {% extends 'base.html' %}
+{% block title %}Email Tests{% endblock %}
+
 {% block mainpage %}
-    <div class="page-header">
-        <h1>Tests</h1>
-    </div>
+<div class="page-header">
+     <h2 class="sub-header">Email Tests</h2>
+</div>
 
-    <!-- Modal -->
-    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-    {% if list %}
-        <table style="margin-left:auto;margin-right:auto">
-            {% for test in list %}
+<div class="table-responsive">
+    {% if list and list.count %}
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td class="left"><a href="/test/email/{{ test.id }}/view/">{{ test.name }}</a></td>
-                    <td><a href="/test/email/{{ test.id }}/update/">[update]</td>
-                    <td><a href="/test/email/{{ test.id }}/delete/">[delete]</td>
+                    <th>Name</th>
+                    <th>
+                        <a href="{% url 'email-test-new' %}" class="glyphicon glyphicon-plus"></a>
+                    </th>
                 </tr>
-            {% endfor %}
+            </thead>
+            <tbody>
+                {% for test in list %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'email-test-detail' test.id %}">{{ test.name }}</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'email-test-update' test.id %}" class="btn btn-primary">Update</a>
+                            <a href="{% url 'email-test-delete' test.id %}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
     {% else %}
-        <p>No email tests have been submitted</p>
+        <p>No email tests have been created. <a href="{% url 'email-test-new' %}" class="glyphicon glyphicon-plus"></a></p>
     {% endif %}
-
+</div>
 {% endblock %}

@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from apps.ava_core.models import TimeStampedModel,ReferenceModel
-from apps.ava_core_org.models import Organisation
 
 
 class Test(TimeStampedModel):
@@ -13,16 +12,13 @@ class Test(TimeStampedModel):
     SCHEDULED = 'SCHEDULED'
     RUNNING = 'RUNNING'
 
-
-
     STATUS_CHOICES = (
-        (NEW,  'New'),
+        (NEW,       'New'),
         (COMPLETE,  'Complete'),
-        (ERROR,  'An error occurred'),
+        (ERROR,     'An error occurred'),
         (SCHEDULED, 'Scheduled'),
-        (RUNNING , 'In progress'),
+        (RUNNING ,  'In progress'),
     )
-
 
     name=models.CharField(max_length=100)
     user = models.ForeignKey(User)
@@ -30,19 +26,22 @@ class Test(TimeStampedModel):
     testtype = models.ForeignKey('TestType', null=False)
     timingtype = models.ForeignKey('TimingType', null=False)
     teststatus = models.CharField(max_length=10,
-                            choices=STATUS_CHOICES, default=NEW,
-                                verbose_name='Test Status')
-    org = models.ForeignKey('ava_core_org.Organisation', null=False)
+                                  choices=STATUS_CHOICES,
+                                  default=NEW,
+                                  verbose_name='Test Status')
 
     def __unicode__(self):
         return self.name or u''
 
+
 class TestType (ReferenceModel):
-    url= models.TextField(max_length="50", null=False)
-    icon= models.CharField(max_length=50, null=True)
+    url= models.TextField(max_length=50, null=False)
+    icon= models.CharField(max_length=50, null=True, blank=True)
+
 
 class TimingType (ReferenceModel):
-    icon= models.CharField(max_length=50, null=True)
+    icon= models.CharField(max_length=50, null=True, blank=True)
+
 
 class TestResult (TimeStampedModel):
     token= models.CharField(max_length=8)

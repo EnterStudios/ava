@@ -8,7 +8,6 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ava_core_org', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -21,8 +20,7 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=300)),
-                ('teststatus', models.CharField(default=b'NEW', max_length=10, verbose_name=b'Test Status', choices=[(b'NEW', b'New'), (b'COMPLETE', b'Complete'), (b'ERROR', b'An error occurred'), (b'SCHEDULED', b'Scheduled'), (b'RUNNING', b'In progress')])),
-                ('org', models.ForeignKey(to='ava_core_org.Organisation')),
+                ('teststatus', models.CharField(default=b'NEW', max_length=10, verbose_name=b'Test Status', choices=[(b'NEW', b'New'), (b'COMPLETE', b'Complete'), (b'ERROR', b'An error occurred'), (b'SCHEDULED', b'Scheduled'), (b'RUNNING', b'In progress')]))
             ],
             options={
                 'abstract': False,
