@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block mainpage %}
+
+
+ <div class="page-header">
+  <h2>Active Directory Groups</h2>
+</div>
+
+    <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>CN</th>
+                        <th>GUID</th>
+                        <th># Members</th>
+                        <th>
+                            {%  if ldap_configuration %}
+                                <a href="{% url 'ldap-get-groups' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Import Groups</button></a>
+                            {% endif %}
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+    {% for activedirectorygroup in activedirectorygroup_list %}
+    <tr>
+        <td>{{ activedirectorygroup.cn }}</td>
+        <td>{{ activedirectorygroup.objectGUID }}</td>
+        <td>{{ activedirectorygroup.member.count }}</td>
+
+        <td>
+
+            <a href="{% url 'ad-group-detail' activedirectorygroup.id  %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
+            <a href="{% url 'ad-group-update' activedirectorygroup.id  %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
+            <a href="{% url 'ad-group-delete' activedirectorygroup.id  %}"><button type="button" class="btn btn-primary btn-sm">Delete</button></a>
+    </tr>
+    {% endfor %}
+     </tbody>
+    </table>
+
+
+{% endblock %}

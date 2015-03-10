@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block mainpage %}
+
+
+ <div class="page-header">
+  <h2>Active Directory Users</h2>
+</div>
+
+    <div class="table-responsive">
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Account Expiry Date</th>
+                        <th>Admin Count</th>
+                        <th>
+                             {%  if ldap_configuration %}
+                              <a href="{% url 'ldap-get-users' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Import Users</button></a>
+                            {%  endif %}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+    {% for activedirectoryuser in activedirectoryuser_list %}
+    <tr>
+        <td>{{ activedirectoryuser.name }}</td>
+        <td>{{ activedirectoryuser.accountExpires }}</td>
+        <td>{{ activedirectoryuser.adminCount }}</td>
+        <td>
+
+          <a href="{% url 'ad-user-detail' activedirectoryuser.id  %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
+          <a href="{% url 'ad-user-update' activedirectoryuser.id  %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
+          <a href="{% url 'ad-user-delete' activedirectoryuser.id  %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+    </tr>
+    {% endfor %}
+     </tbody>
+    </table>
+
+
+
+{% endblock %}

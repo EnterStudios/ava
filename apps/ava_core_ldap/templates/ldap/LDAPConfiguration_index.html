@@ -2,11 +2,10 @@
 {% block mainpage %}
 
     <div class="page-header">
-     <h2 class="sub-header">Current LDAP Configurations</h2>
+     <h2>Current LDAP Configurations</h2>
 </div>
 
     <div class="table-responsive">
-{% if ldap_configuration_list %}
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -27,14 +26,12 @@
 
           <a href="{% url 'ldap-configuration-detail' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
           <a href="{% url 'ldap-configuration-update' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
-          <a href="{% url 'ldap-configuration-delete' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Delete</button></a>
+          <a href="{% url 'ldap-configuration-delete' ldap_configuration.id  %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
     </tr>
     {% endfor %}
      </tbody>
     </table>
-{% else %}
-    <p>No LDAP configurations are available.</p>
-{% endif %}
+
 
 
 {% endblock %}

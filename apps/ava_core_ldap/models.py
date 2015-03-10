@@ -57,6 +57,9 @@ class ActiveDirectoryUser(TimeStampedModel):
     def get_absolute_url(self):
 	    return reverse('ad-user-detail',kwargs={'pk': self.id})
 
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in ActiveDirectoryUser._meta.fields]
+
 class ActiveDirectoryGroup(TimeStampedModel):
     cn = models.CharField(max_length = 300)
     distinguishedName = models.CharField(max_length = 300, unique=True)
@@ -77,6 +80,9 @@ class ActiveDirectoryGroup(TimeStampedModel):
 
     def get_absolute_url(self):
 	    return reverse('ad-group-detail',kwargs={'pk': self.id})
+
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in ActiveDirectoryGroup._meta.fields]
 
 class LDAPConfiguration(TimeStampedModel):
     #user_dn = "cn=Administrator,cn=Users,dc=ava,dc=test,dc=domain"
