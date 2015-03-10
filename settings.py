@@ -145,8 +145,17 @@ SHORTEN_MODELS = {
 SESSION_ENGINE = 'redis_sessions.session'
 
 
+# IMPORT LOCAL SETTINGS
+
 try:
     from local_settings import *
 except ImportError:
     pass
 
+
+# IMPORT EMAIL SETTINGS
+
+try:
+    from email_settings import *
+except ImportError:
+    pass

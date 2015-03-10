@@ -52,8 +52,11 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# Celery files
+celerybeat-schedule
+
 # local settings files
 local_settings.py
+email_settings.py
 twitter_settings*
 .idea/
-celerybeat-schedule

@@ -130,10 +130,11 @@ sudo rabbitmqctl set_permissions -p avatasks avasecure ".*" ".*" ".*"
 2. `cd ava`
 3. Install the required python packages with `pip install -r config/requirements.txt` if not using something like virtualenv you might need to use `sudo`
 4. Create file for your local settings from template `cp local_settings.py.example local_settings.py`
-5. Using your prefered editor, edit `local_settings.py` changing the database and redis server settings.
-6. Create migrations for the database schema with `python manage.py makemigrations`
-7. Run migrations to create tables `python manage.py migrate`
-8. Create our first user `python manage.py createsuperuser`
+5. Create file for your email settings from template `cp email_settings.py.example email_settings.py`
+6. Using your prefered editor, edit `local_settings.py` changing the database and redis server settings.
+7. Create migrations for the database schema with `python manage.py makemigrations`
+8. Run migrations to create tables `python manage.py migrate`
+9. Create our first user `python manage.py createsuperuser`
 
 ### Run AVA
 
