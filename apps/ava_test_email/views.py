@@ -11,7 +11,7 @@ from apps.ava_test_email.tasks import run_email_test
 
 
 class EmailTestIndex(generic.ListView):
-    template_name = 'email/index.html'
+    template_name = 'email/test_email_index.html'
     context_object_name = 'list'
 
     def get_queryset(self):
@@ -22,7 +22,7 @@ class EmailTestIndex(generic.ListView):
 class EmailTestDetail(generic.DetailView):
     model = EmailTest
     context_object_name = 'test'
-    template_name = 'email/view.html'
+    template_name = 'email/test_email_detail.html'
     
     test = None
 
@@ -50,7 +50,7 @@ class EmailTestDelete(DeleteView):
 
 class EmailTestCreate(generic.CreateView):
     model = EmailTest
-    template_name = 'email/emailtest.html'
+    template_name = 'email/test_email.html'
     form_class = EmailTestForm
     
     success_url = None
@@ -74,7 +74,7 @@ class EmailTestCreate(generic.CreateView):
 
 class EmailTestUpdate(UpdateView):
     model = EmailTest
-    template_name = 'email/emailtest.html'
+    template_name = 'email/test_email.html'
     form_class = EmailTestForm
 
 

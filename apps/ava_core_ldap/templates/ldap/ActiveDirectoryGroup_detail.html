@@ -41,7 +41,7 @@
                     <tr>
                          <th>Name</th>
                         <th>Account Expiry Date</th>
-                        <th>Admin Count</th>
+
                         <th>
 
 
@@ -49,11 +49,10 @@
                     </tr>
                 </thead>
                 <tbody>
-    {% for activedirectoryuser in activedirectorygroup.member_set.all %}
+    {% for activedirectoryuser in activedirectorygroup.activedirectoryuser_set.all %}
     <tr>
         <td>{{ activedirectoryuser.name }}</td>
         <td>{{ activedirectoryuser.accountExpires }}</td>
-        <td>{{ activedirectoryuser.adminCount }}</td>
         <td>
 
           <a href="{% url 'ad-user-detail' activedirectoryuser.id  %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>

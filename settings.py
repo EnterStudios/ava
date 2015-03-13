@@ -93,7 +93,6 @@ DEFAULT_APPS = (
 
 LOCAL_APPS = (
     'apps.ava_core',
-    #'apps.ava_core_org',
     'apps.ava_core_group',
     'apps.ava_core_auth',
     'apps.ava_core_project',
@@ -102,7 +101,7 @@ LOCAL_APPS = (
    # 'apps.ava_vis_graph',
     'apps.ava_test',
     'apps.ava_test_email',
-   # 'apps.ava_test_twitter',
+    'apps.ava_test_twitter',
 )
 
 THIRD_PARTY_APPS = (

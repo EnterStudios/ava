@@ -2,12 +2,11 @@ from django.db import models
 import ldap
 
 from apps.ava_core.models import TimeStampedModel
-from apps.ava_core_org.models import Organisation, OrganisationGroup
 from apps.ava_core_identity.models import Identifier, Person, Identity
+from apps.ava_core_group.models import Group
 
 from django.core.urlresolvers import reverse
 
-#from apps.ava_core_identity.models import Identity
 from django.utils.html import escape
 from ldap import *
 from ldap.controls import *
@@ -44,7 +43,7 @@ class ActiveDirectoryUser(TimeStampedModel):
     userAccountControl = models.CharField(max_length = 300)
     whenChanged = models.CharField(max_length = 300)
     whenCreated = models.CharField(max_length = 300)
-    memberOf = models.ManyToManyField('ActiveDirectoryGroup') 
+    groups = models.ManyToManyField('ActiveDirectoryGroup')
     ldap_configuration = models.ForeignKey('LDAPConfiguration')
     #identity = models.ForeignKey('ava_core_identity.Identity',null=True,blank=True)
 
@@ -68,7 +67,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
     sAMAccountName = models.CharField(max_length = 300)
     objectGUID = models.CharField(max_length = 300)
     objectSid = models.CharField(max_length = 300)
-    member = models.ManyToManyField('ActiveDirectoryUser')
+    #member = models.ManyToManyField('ActiveDirectoryUser')
     ldap_configuration = models.ForeignKey('LDAPConfiguration')
     #identity = models.ForeignKey('ava_core_identity.Identity',null=True,blank=True)
 
@@ -93,11 +92,10 @@ class LDAPConfiguration(TimeStampedModel):
     user_pw = models.CharField(max_length = 100, verbose_name='Password')
     dump_dn = models.CharField(max_length = 100, verbose_name='Domain')
     server = models.CharField(max_length = 100, verbose_name='Server')
-    #group = models.ForeignKey('ava_core_org.Organisation')
 
     def __unicode__(self):
         return self.server or u''
-    
+
     class Meta:
         unique_together=('server','user_dn')
 
@@ -105,7 +103,7 @@ class LDAPConfiguration(TimeStampedModel):
 	    return reverse('ldap-configuration-detail',kwargs={'pk': self.id})
 
 class ActiveDirectoryHelper():
-    
+
     PAGESIZE=1000
 
 
@@ -113,7 +111,7 @@ class ActiveDirectoryHelper():
         try:
             #connection = initialize(parameters.server)
             print "user_dn = "+parameters.user_dn+" user_pw="+parameters.user_pw+"\n"
-            
+
     	    ldap.set_option(OPT_REFERRALS, 0)
             ldap.protocol_version = 3
     	    ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_ALLOW)
@@ -121,7 +119,7 @@ class ActiveDirectoryHelper():
             ldap_conn = initialize(parameters.server)
             ldap_conn.simple_bind_s(parameters.user_dn, parameters.user_pw)
 
-            print (connection.whoami_s())
+            print (ldap_conn.whoami_s())
 
             return ldap_conn
 
@@ -134,34 +132,21 @@ class ActiveDirectoryHelper():
                 sys.stderr.write(e.message)
                 sys.exit(1)
 
-    def create_controls(self, pagesize):
-        #if LDAP_VERSION >= '2.4':
-            return SimplePagedResultsControl(True, size=pagesize, cookie='')
-        #else:
-        #    return SimplePagedResultsControl(ldap.LDAP_CONTROL_PAGE_OID,True, (pagesize, ''))
-
+    def create_controls(self, pagesize): #if LDAP_VERSION >= '2.4':
+        return SimplePagedResultsControl(True, size=pagesize, cookie='')
 
     def get_pctrls(self, serverctrls):
-        #if LDAP_VERSION >= 2.4:
-            return [c for c in serverctrls if c.controlType == SimplePagedResultsControl.controlType]
-        #else:
-        #    return [c for c in serverctrls if c.controlType == ldap.LDAP_CONTROL_PAGE_OID]
-
+        return [c for c in serverctrls if c.controlType == SimplePagedResultsControl.controlType]
 
     def set_cookie(self, lc_object, pctrls, pagesize):
-        #if LDAP_VERSION >= '2.4':
-            cookie = pctrls[0].cookie
-            lc_object.cookie = cookie
-            return cookie
-        #else:
-        #    est, cookie = pctrls[0].controlValue
-        #    lc_object.controlValue = (pagesize, cookie)
-        #    return cookie
-    
+        cookie = pctrls[0].cookie
+        lc_object.cookie = cookie
+        return cookie
+
     def search(self, parameters, filter, attrs):
         ldap.set_option(OPT_REFERRALS, 0)
         ldap.protocol_version = 3
-    	ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_ALLOW)
+        ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_ALLOW)
 
         ldap_conn = initialize(parameters.server)
         ldap_conn.simple_bind_s(parameters.user_dn, parameters.user_pw)
@@ -170,13 +155,8 @@ class ActiveDirectoryHelper():
         lc = self.create_controls(self.PAGESIZE)
 
         while True:
-
-            print "entered the while true"
             result = ldap_conn.search_ext(parameters.dump_dn, ldap.SCOPE_SUBTREE, filter, attrs, serverctrls=[lc])
-
-
             rtype, rdata, rmsgid, sctrls = ldap_conn.result3(result)
-            #result.extend([LdapObject(el) for el in rdata if not el[0] is None])
             if type(rdata) == tuple and len(rdata) == 2:
                 (code, arr) = rdata
             elif type(rdata) == list:
@@ -187,53 +167,20 @@ class ActiveDirectoryHelper():
             ret_res = []
             for record in res:
                 ret_res.append(record.to_ldif())
-
-
             pctrls = self.get_pctrls(sctrls)
             if not pctrls:
                 print >> sys.stderr, 'Warning: Server ignores RFC 2696 control.'
                 break
             if not self.set_cookie(lc, pctrls, self.PAGESIZE):
                 break
-        #         return self.result
-
-        # results = connection.search_s(parameters.dump_dn, SCOPE_SUBTREE, filter,attrs)
-        # res = []
-        #
-        # if type(results) == tuple and len(results) == 2:
-        #     (code, arr) = results
-        # elif type(results) == list:
-        #     arr = results
-        #
-        # if len(results) == 0:
-        #     return res
-        #
-        # for item in arr:
-        #     res.append(LDAPSearchResult(item))
-        #
-        # ret_res = []
-        # for record in res:
-        #     ret_res.append(record.to_ldif())
-
-         #ldap_conn.unbind()
         return res
-    
-    def getAll(self,parameters):
-        #print "Getting groups"
-        self.getGroups(parameters)
-        #print "Getting users"
-        self.getUsers(parameters)
-        #print "Getting groups"
-        self.getGroups(parameters)
 
     def getGroups(self,parameters):
         filter = '(objectclass=group)'
-        attrs = ['cn','distinguishedName','name','objectCategory','sAMAccountName','objectGUID','objectSid','member']
+        attrs = ['cn','distinguishedName','name','objectCategory','sAMAccountName','objectGUID','objectSid']
         results = self.search(parameters,filter,attrs)
         for  v in results:
             new_attrs = {}
-            users = []
-            fishes = []
             new_attrs.update(v.get_attributes())
             for key, value in new_attrs.iteritems():
                 if len(value) >  0:
@@ -246,27 +193,29 @@ class ActiveDirectoryHelper():
 
                     if valid_utf8:
                         new_attrs[key] = value
-                        if key == 'member':
-                            user_cn = value.split(' CN=')
-                            for cn in user_cn:
-                                if not cn.startswith('CN='):
-                                    cn = "CN="+cn
-                                qs=ActiveDirectoryUser.objects.filter(ldap_configuration=parameters,distinguishedName=cn).first()
-                                if qs:
-                                    users.append(qs)
+                        # if key == 'member':
+                        #     user_cn = value.split(' CN=')
+                        #     for cn in user_cn:
+                        #         if not cn.startswith('CN='):
+                        #             cn = "CN="+cn
+                        #         qs=ActiveDirectoryUser.objects.filter(ldap_configuration=parameters,distinguishedName=cn).first()
+                        #         if qs:
+                        #             users.append(qs)
                     else:
                         new_attrs[key] = self.cleanhex(value)
-            
-            new_attrs.pop('member',None)
+
+            #new_attrs.pop('member',None)
             rows = ActiveDirectoryGroup.objects.filter(**new_attrs).count()
             if rows == 0:
                 ad_group = ActiveDirectoryGroup.objects.create(ldap_configuration=parameters,**new_attrs)
-                #OrganisationGroup.objects.get_or_create(name=ad_group.cn, grouptype=OrganisationGroup.AD,organisation=organisation)
-                ad_group.member.add(*users)
+                '''
+                TODO group needs to be correlated with an actual group
+                '''
+                #ad_group.member.add(*users)
                 ad_group.save()
 
     def cleanhex(self,val):
-        s = ['\\%02X' % ord(x) for x in val] 
+        s = ['\\%02X' % ord(x) for x in val]
         return ''.join(s)
 
     def getUsers(self,parameters):
@@ -276,7 +225,6 @@ class ActiveDirectoryHelper():
         for  v in results:
             new_attrs = {}
             groups = []
-            org_groups = []
             new_attrs.update(v.get_attributes())
             for key, value in new_attrs.iteritems():
                 if len(value) >  0:
@@ -291,33 +239,45 @@ class ActiveDirectoryHelper():
                         new_attrs[key] = value
                         if key == 'memberOf':
                             group_cn = value.split(' CN=')
+
                             for cn in group_cn:
                                 if not value.startswith('CN='):
                                     cn = "CN="+cn
-                                qs = ActiveDirectoryGroup.objects.filter(ldap_configuration=parameters,cn=cn).first()
-                                if qs:
-                                    groups.append(qs)
+
+                                qs = ActiveDirectoryGroup.objects.filter(ldap_configuration=parameters,distinguishedName=cn)
+                                for q in qs:
+                                    groups.append(q)
                     else:
                         new_attrs[key] = self.cleanhex(value)
-            
+
             new_attrs.pop('memberOf',None)
             rows = ActiveDirectoryUser.objects.filter(**new_attrs).count()
             if rows == 0:
                 ad_user = ActiveDirectoryUser.objects.create(ldap_configuration=parameters,**new_attrs)
-                firstname = ""
-                surname = ""
-                if " " in ad_user.displayName:
-                    bits = str.split(ad_user.displayName," ")
-                    firstname=bits[0]
-                    surname=bits[1]
+                ad_user.save()
+                # firstname = ""
+                # surname = ""
+                # if " " in ad_user.displayName:
+                #     bits = str.split(ad_user.displayName," ")
+                #     firstname=bits[0]
+                #     surname=bits[1]
 
                 identity, created = Identity.objects.get_or_create(name=ad_user.displayName)
+                '''
+                TODO Do we need to create a person object for this identity??
+                '''
                 #Person.objects.get_or_create(firstname=firstname,surname=surname, identity=identity)
+
                 Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName, identifiertype=Identifier.UNAME,identity=identity)
-                Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName+"@avasecure.com", identifiertype=Identifier.EMAIL, identity=identity)
-                ad_user.memberOf.add(*groups)
-                ad_user.save()
-    
+                '''
+                TODO Import the actual email address from AD
+                '''
+                #Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName+"@avasecure.com", identifiertype=Identifier.EMAIL, identity=identity)
+                for group in groups:
+                    print groups
+                    ad_user.groups.add(group)
+
+
 
 class LDAPSearchResult:
     dn = ''
@@ -330,7 +290,7 @@ class LDAPSearchResult:
             self.dn = dn
         else:
             return
-    
+
         self.attrs = cidict(attrs)
 
 
@@ -382,7 +342,7 @@ class ExportLDAP():
     def generateGraph(self,parameters):
         node_results = self.nodes(parameters)
         return self.edges(node_results)
-    
+
     def nodes(self, parameters):
         nodes = []
         elements = []
@@ -394,7 +354,7 @@ class ExportLDAP():
             current['name']=escape(current['name'])
             current['node_type'] = 'user'
             nodes.append(current)
-        
+
         ldap_groups = ActiveDirectoryGroup.objects.filter(ldap_configuration=parameters)
         g = ['cn','member']
         for group in ldap_groups:
@@ -407,16 +367,16 @@ class ExportLDAP():
                 #    if(hide == False):
                 #        nodes.append(current)
                 #        elements.append(group)
-        
+
         results = {}
         results['elements'] = elements
         results['nodes'] = nodes
-        return results        
-        
+        return results
+
     def edges(self,results):
         elements = results['elements']
         nodes = results['nodes']
-        
+
         edges = []
         for index, value in enumerate(elements):
             if isinstance(value,ActiveDirectoryGroup):
@@ -428,7 +388,7 @@ class ExportLDAP():
                     current_edge['source'] = user_index
                     current_edge['target'] = index
                     edges.append(current_edge)
-            
+
         json_object = {}
         json_object['nodes'] = nodes;
         json_object['links'] = edges;

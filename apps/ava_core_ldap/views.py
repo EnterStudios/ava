@@ -6,8 +6,6 @@ from django.views.generic.edit import DeleteView
 
 from apps.ava_core_ldap.models import ActiveDirectoryUser, ActiveDirectoryGroup, LDAPConfiguration, ActiveDirectoryHelper
 from apps.ava_core_ldap.forms import  LDAPConfigurationForm
-from apps.ava_core_identity.models import Identifier
-from apps.ava_core_org.models import OrganisationGroup, GroupIdentifier
 
 
 class LDAPConfigurationIndex(ListView):
@@ -105,19 +103,28 @@ class ActiveDirectoryGroupDelete(DeleteView):
 
 class LDAPConfigurationGetUsers(ListView):
     model = ActiveDirectoryUser
+    context_object_name = 'activedirectoryuser_list'
     template_name = 'ldap/ActiveDirectoryUser_index.html'
 
     def get_context_data(self, **kwargs):
+        self.get_users()
         context = super(LDAPConfigurationGetUsers, self).get_context_data(**kwargs)
+        config_pk = self.kwargs.get('pk')
+        if config_pk:
+            instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
+            context['activedirectoryuser_list'] = ActiveDirectoryUser.objects.filter(ldap_configuration=instance)
+        return context
+
+    def get_users(self):
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
             adHelper = ActiveDirectoryHelper()
             adHelper.getUsers(instance)
-             
-        context['item_type'] = 'user'
-        context['ldap_item_list'] = ActiveDirectoryUser.objects.filter(ldap_configuration=instance)
-        return context
+
+        return True
+
+
 
 # class LDAPConfigurationGetAll(ListView):
 #     model = ActiveDirectoryUser
@@ -158,19 +165,48 @@ class LDAPConfigurationGetUsers(ListView):
 
 class LDAPConfigurationGetGroups(ListView):
     model = ActiveDirectoryGroup
+    context_object_name = 'activedirectorygroup_list'
     template_name = 'ldap/ActiveDirectoryGroup_index.html'
 
     def get_context_data(self, **kwargs):
+        self.get_groups()
         context = super(LDAPConfigurationGetGroups, self).get_context_data(**kwargs)
+        config_pk = self.kwargs.get('pk')
+        if config_pk:
+            instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
+            context['activedirectorygroup_list'] = ActiveDirectoryGroup.objects.filter(ldap_configuration=instance)
+        return context
+
+    def get_groups(self):
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
             adHelper = ActiveDirectoryHelper()
             adHelper.getGroups(instance)
-        
-        context['item_type'] = 'group'
-        context['ldap_item_list'] = ActiveDirectoryGroup.objects.filter(ldap_configuration=instance)
-        return context
+
+
+
+
+    #def populate_groups(self):
+        # context['item_type'] = 'user'
+        # ad_groups = ActiveDirectoryGroup.objects.filter(ldapConfiguration=instance)
+        #
+        # for adg in ad_groups:
+        #     try:
+        #         org_g = OrganisationGroup.objects.get(name=adg.cn)
+        #         groups = adg.member.all()
+        #         for g in groups:
+        #             try:
+        #                 user = Identifier.objects.get(identifier=g.sAMAccountName,identifiertype=Identifier.UNAME)
+        #                 GroupIdentifier.objects.get_or_create(identifier=user, group=org_g)
+        #                 user1 = Identifier.objects.get(identifier=g.sAMAccountName+"@avasecure.com",identifiertype=Identifier.EMAIL)
+        #                 GroupIdentifier.objects.get_or_create(identifier=user1, group=org_g)
+        #             except Identifier.DoesNotExist:
+        #                 print " No such id :: " + g.sAMAccountName
+        #
+        #
+        #     except OrganisationGroup.DoesNotExist:
+        #         print "No such group :: " + adg.cn
 
 
 

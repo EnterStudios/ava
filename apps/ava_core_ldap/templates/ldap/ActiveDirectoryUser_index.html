@@ -13,7 +13,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Account Expiry Date</th>
-                        <th>Admin Count</th>
+                        <th># Group Memberships</th>
                         <th>
                              {%  if ldap_configuration %}
                               <a href="{% url 'ldap-get-users' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Import Users</button></a>
@@ -26,7 +26,7 @@
     <tr>
         <td>{{ activedirectoryuser.name }}</td>
         <td>{{ activedirectoryuser.accountExpires }}</td>
-        <td>{{ activedirectoryuser.adminCount }}</td>
+        <td>{{ activedirectoryuser.groups.count }}</td>
         <td>
 
           <a href="{% url 'ad-user-detail' activedirectoryuser.id  %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>

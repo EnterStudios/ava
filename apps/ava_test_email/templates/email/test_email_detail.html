@@ -2,21 +2,16 @@
 {% load staticfiles %}
 {% block mainpage %}
 
+
     <div class="page-header">
+        <h1>Email Test Details : {{ test.name }}</h1>
+    </div>
 
-    <div class="panel panel-info">
-        <div class="panel-heading">
-            <h3 class="panel-title">Email Test: {{ test.name }}</h3>
-        </div>
 
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center">
-                    <h2>Overview</h2>
-                </div>
-                <div class=" col-md-9 col-lg-9 ">
-                    <table class="table table-user-information">
-                        <tbody>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                  <tbody>
                         <tr>
                             <td>Name:</td>
                             <td>{{ test.name }}</td>
@@ -69,19 +64,13 @@
                         {% endif %}
                         </tbody>
                     </table>
-                    <a href="/test/email/{{ test.id }}/update/" class="btn btn-primary">update</a>
-                    <a href="/test/email/{{ test.id }}/delete/" class="btn btn-primary">delete</a>
-                    <a href="/test/email/send/" class="btn btn-primary">send</a>
+                    <a href="{% url 'email-test-update' test.id %}" class="btn btn-primary">Update</a>
+                    <a href="{% url 'email-test-delete' test.id %}" class="btn btn-danger">Delete</a>
+                    <a href="{% url 'email-test-send' test.id %}" class="btn btn-primary">Send</a>
 
 
-                </div>
-                <!-- end of column -->
 
-            </div>
-            <!-- end of row -->
-        </div>
-        <!-- end of panel body -->
-    </div> <!-- end of panel -->
+    </div>
 
 {% endblock %}
 

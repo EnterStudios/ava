@@ -3,11 +3,11 @@
 
 {% block mainpage %}
 <div class="page-header">
-     <h2 class="sub-header">Email Tests</h2>
+     <h2>Email Tests</h2>
 </div>
 
 <div class="table-responsive">
-    {% if list and list.count %}
+
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -31,8 +31,6 @@
                 {% endfor %}
             </tbody>
         </table>
-    {% else %}
-        <p>No email tests have been created. <a href="{% url 'email-test-new' %}" class="glyphicon glyphicon-plus"></a></p>
-    {% endif %}
+
 </div>
 {% endblock %}
