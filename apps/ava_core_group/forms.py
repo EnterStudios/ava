@@ -1,12 +1,8 @@
 from django.forms import ModelForm
 
-from apps.ava_core_group.models import Group, GroupType
+from apps.ava_core_group.models import Group
 
 
 class GroupForm(ModelForm):
     class Meta:
         model = Group
-
-class GroupTypeForm(ModelForm):
-    class Meta:
-        model = GroupType

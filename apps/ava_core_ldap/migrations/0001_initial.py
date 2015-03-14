@@ -7,6 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('ava_core_group', '0001_initial'),
     ]
 
     operations = [
@@ -23,6 +24,7 @@ class Migration(migrations.Migration):
                 ('sAMAccountName', models.CharField(max_length=300)),
                 ('objectGUID', models.CharField(max_length=300)),
                 ('objectSid', models.CharField(max_length=300)),
+                ('group', models.ForeignKey(to='ava_core_group.Group')),
             ],
             options={
             },
@@ -61,6 +63,7 @@ class Migration(migrations.Migration):
                 ('userAccountControl', models.CharField(max_length=300)),
                 ('whenChanged', models.CharField(max_length=300)),
                 ('whenCreated', models.CharField(max_length=300)),
+                ('groups', models.ManyToManyField(to='ava_core_ldap.ActiveDirectoryGroup')),
             ],
             options={
             },
@@ -91,12 +94,6 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(to='ava_core_ldap.LDAPConfiguration'),
             preserve_default=True,
         ),
-        migrations.AddField(
-            model_name='activedirectoryuser',
-            name='memberOf',
-            field=models.ManyToManyField(to='ava_core_ldap.ActiveDirectoryGroup'),
-            preserve_default=True,
-        ),
         migrations.AlterUniqueTogether(
             name='activedirectoryuser',
             unique_together=set([('objectGUID', 'objectSid')]),
@@ -105,12 +102,6 @@ class Migration(migrations.Migration):
             model_name='activedirectorygroup',
             name='ldap_configuration',
             field=models.ForeignKey(to='ava_core_ldap.LDAPConfiguration'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='activedirectorygroup',
-            name='member',
-            field=models.ManyToManyField(to='ava_core_ldap.ActiveDirectoryUser'),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(

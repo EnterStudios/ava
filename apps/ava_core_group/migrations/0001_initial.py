@@ -18,36 +18,12 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.TextField(max_length=500)),
+                ('group_type', models.CharField(default=b'GENERIC', max_length=7, verbose_name=b'Group Type', choices=[(b'ACTIVE DIRECTORY', b'Active Directory'), (b'SOCIAL GROUP', b'Social Group'), (b'PROJECT', b'Project'), (b'WORKING GROUP', b'Working Group'), (b'TEAM', b'Team'), (b'GENERIC', b'Generic Group'), (b'ORGANISATION', b'Organisation'), (b'DISTRIBUTION LIST', b'Distribution List')])),
+                ('parent', models.ForeignKey(blank=True, to='ava_core_group.Group', null=True)),
             ],
             options={
             },
             bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='GroupType',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('modified', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=100)),
-                ('description', models.CharField(max_length=200)),
-            ],
-            options={
-                'abstract': False,
-            },
-            bases=(models.Model,),
-        ),
-        migrations.AddField(
-            model_name='group',
-            name='group_type',
-            field=models.ForeignKey(to='ava_core_group.GroupType'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='group',
-            name='parent',
-            field=models.ForeignKey(to='ava_core_group.Group', null=True),
-            preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
             name='group',

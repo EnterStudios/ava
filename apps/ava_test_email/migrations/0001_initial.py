@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import apps.ava_test_email.helpers
 
 
 class Migration(migrations.Migration):
@@ -56,8 +57,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
-                ('token', models.CharField(unique=True, max_length=100)),
-                ('emailtest', models.ForeignKey(to='ava_test_email.EmailTest')),
+                ('token', models.CharField(default=apps.ava_test_email.helpers.generate_hex_token, unique=True, max_length=100)),
+                ('emailtest', models.ForeignKey(related_name='targets', to='ava_test_email.EmailTest')),
                 ('target', models.ForeignKey(to='ava_core_identity.Identifier')),
             ],
             options={

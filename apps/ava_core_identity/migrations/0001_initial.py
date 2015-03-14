@@ -9,6 +9,7 @@ import re
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('ava_core_group', '0001_initial'),
     ]
 
     operations = [
@@ -19,7 +20,7 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('identifier', models.CharField(max_length=100)),
-                ('identifiertype', models.CharField(default=b'EMAIL', max_length=7, verbose_name=b'Identifier Type', choices=[(b'EMAIL', b'Email Address'), (b'SKYPE', b'Skype ID'), (b'IPADD', b'IP Address'), (b'UNAME', b'Username'), (b'TWITTER', b'Twitter ID')])),
+                ('identifiertype', models.CharField(default=b'EMAIL', max_length=10, verbose_name=b'Identifier Type', choices=[(b'EMAIL', b'Email Address'), (b'SKYPE', b'Skype ID'), (b'IPADD', b'IP Address'), (b'UNAME', b'Username'), (b'TWITTER', b'Twitter ID')])),
             ],
             options={
             },
@@ -33,6 +34,7 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=200)),
+                ('member_of', models.ManyToManyField(to='ava_core_group.Group', null=True, blank=True)),
             ],
             options={
                 'verbose_name': 'identity',
@@ -48,7 +50,7 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('firstname', models.CharField(max_length=75, validators=[django.core.validators.RegexValidator(re.compile('^[-a-zA-Z0-9_]+$'), "Enter a valid 'slug' consisting of letters, numbers, underscores or hyphens.", 'invalid')])),
                 ('surname', models.CharField(max_length=75, validators=[django.core.validators.RegexValidator(re.compile('^[-a-zA-Z0-9_]+$'), "Enter a valid 'slug' consisting of letters, numbers, underscores or hyphens.", 'invalid')])),
-                ('identity', models.ManyToManyField(to='ava_core_identity.Identity')),
+                ('identity', models.ManyToManyField(to='ava_core_identity.Identity', blank=True)),
             ],
             options={
                 'verbose_name': 'person',

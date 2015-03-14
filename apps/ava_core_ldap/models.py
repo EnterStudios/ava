@@ -67,9 +67,8 @@ class ActiveDirectoryGroup(TimeStampedModel):
     sAMAccountName = models.CharField(max_length = 300)
     objectGUID = models.CharField(max_length = 300)
     objectSid = models.CharField(max_length = 300)
-    #member = models.ManyToManyField('ActiveDirectoryUser')
     ldap_configuration = models.ForeignKey('LDAPConfiguration')
-    #identity = models.ForeignKey('ava_core_identity.Identity',null=True,blank=True)
+    group = models.ForeignKey('ava_core_group.Group', null=True, blank=True)
 
     def __unicode__(self):
         return self.cn or u''
@@ -207,12 +206,20 @@ class ActiveDirectoryHelper():
             #new_attrs.pop('member',None)
             rows = ActiveDirectoryGroup.objects.filter(**new_attrs).count()
             if rows == 0:
+
                 ad_group = ActiveDirectoryGroup.objects.create(ldap_configuration=parameters,**new_attrs)
+                ad_group.save()
+
+                gen_group = Group.objects.create(name = ad_group.cn, group_type=Group.AD, description="Imported group from LDAP")
+                gen_group.save()
+
+                ad_group.group = gen_group
+                ad_group.save()
                 '''
                 TODO group needs to be correlated with an actual group
                 '''
                 #ad_group.member.add(*users)
-                ad_group.save()
+
 
     def cleanhex(self,val):
         s = ['\\%02X' % ord(x) for x in val]
@@ -225,6 +232,7 @@ class ActiveDirectoryHelper():
         for  v in results:
             new_attrs = {}
             groups = []
+            gen_groups = []
             new_attrs.update(v.get_attributes())
             for key, value in new_attrs.iteritems():
                 if len(value) >  0:
@@ -247,6 +255,7 @@ class ActiveDirectoryHelper():
                                 qs = ActiveDirectoryGroup.objects.filter(ldap_configuration=parameters,distinguishedName=cn)
                                 for q in qs:
                                     groups.append(q)
+                                    gen_groups.append(q.group)
                     else:
                         new_attrs[key] = self.cleanhex(value)
 
@@ -276,6 +285,11 @@ class ActiveDirectoryHelper():
                 for group in groups:
                     print groups
                     ad_user.groups.add(group)
+
+                for gen_group in gen_groups:
+                    print gen_group.id
+                    if gen_group:
+                        identity.member_of.add(gen_group)
 
 
 

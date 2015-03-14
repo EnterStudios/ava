@@ -8,7 +8,10 @@ from apps.ava_core_auth.forms import UserRegisterForm, UserLoginForm
 
 # User Login View
 def user_login(request):
+    #print "wtf"
     if not request.user.is_authenticated():
+        #print request.method
+        #print "bumblebee"
         if request.method == 'POST':
             username = request.POST['username']
             password = request.POST['password']
@@ -22,7 +25,8 @@ def user_login(request):
                     return HttpResponse("Not active")
             else:
                 return HttpResponse("Wrong username/password")
-        else:   
+        else:
+            #print "monkey"
             form = UserLoginForm()
             context = {}
             context.update(csrf(request))

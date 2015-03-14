@@ -11,6 +11,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
+                        <th># Members</th>
                         <th>
                             <a href="{% url 'group-create' %}" class="glyphicon glyphicon-plus"></a>
                         </th>
@@ -21,8 +22,9 @@
     
 {% for group in group_list %}
     <tr>
-	<td>{{ group.name }}</td>
-	<td>{{ group.group_type }}</td>
+	    <td>{{ group.name }}</td>
+	    <td>{{ group.group_type }}</td>
+        <td>{{ group.identity_set.count }}</td>
         <td>
 		<a href="{% url 'group-detail' group.id %}" class="btn btn-primary">view</a>
         	<a href="{% url 'group-update' group.id %}" class="btn btn-primary">update</a>
