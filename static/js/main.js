@@ -1,19 +1,95 @@
-function cloneMore(selector, type) {
-        var newElement = $(selector).clone(true);
-        var total = $('#id_' + type + '-TOTAL_FORMS').val();
-        
-        newElement.find(':input').each(function() {
-            var name = $(this).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
-            var id = 'id_' + name;
-            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
-        });
-        
-        newElement.find('label').each(function() {
-            var newFor = $(this).attr('for').replace('-' + (total-1) + '-','-' + total + '-');
-            $(this).attr('for', newFor);
-        });
+(function(){
 
-        total++;
-        $('#id_' + type + '-TOTAL_FORMS').val(total);
-        $(selector).after(newElement);
-}
+   var visualizer;
+
+   var initialDataUrl = 'data/mydata.json';
+
+   /*
+    * Callbacks for the UI layer
+    *
+    */
+
+   var buttons = [];
+
+   // Little bit more complicated, toggle button for showing labels
+   buttons.push({
+      'label': 'Show labels',
+      'default': 'on',
+      'on': function(btn){
+         visualizer.showLabels();
+      },
+      'off': function(btn){
+         visualizer.hideLabels();
+      },
+   });
+
+   buttons.push({
+      'label': 'Never Logged In',
+      'action': function(btn){
+         /*
+         type: member
+         query: loggedin: 0
+         */
+         visualizer.filter();
+      }
+   });
+
+   buttons.push({
+      'label': 'Password never expires',
+      'action': function(btn){
+         /*
+         type: member
+         query: expires: false
+         */
+         visualizer.filter();
+      }
+   });
+
+   buttons.push({
+      'label': 'Highly connected members',
+      'action': function(btn){
+         /*
+         type: member
+         query: connections: gt 1
+         style.size: sqrt(connections)
+         */
+      }
+   });
+
+   /*
+    * Initialize the UI
+    *
+    */
+
+   function onFilterGroupClicked(groupName, allGroups){
+      // Here we want to do a 'where in' filter.  'where group in (list of active groups)'
+      var activeGroups = [];
+      for (groupName in allGroups) {
+         if ( allGroups[groupName] === 1 ) activeGroups.push(groupName);
+      }
+      // Where 'cn' is in our list of activeGroups
+      visualizer.filter({'cn': activeGroups});
+   }
+
+   var filterGroups = AVA.UI.FilterGroups({
+      'filterGroupContainer': $('div.filters'),
+      'onFilterGroupClicked': onFilterGroupClicked,
+      'labelNameCallback': function friendlyLabel(input){ return input.replace(/(Ravencroft)|\-/g, ' '); },
+   });
+
+   var adhocButtons = AVA.UI.AdhocButtons({
+      'buttonContainer': $('div.buttons'),
+   });
+   adhocButtons.add(buttons);
+
+   // Construct the visualizer and load some initial data
+   visualizer = AVA.Visualizer({
+      'element': 'graph',
+      'statsElementId': 'stats_meter',
+      'dataCallback': filterGroups.onDataUpdated // Wire the data callback to the filter group so it can be built
+   });
+
+   // Load our initial data
+   visualizer.load(initialDataUrl);
+
+})();

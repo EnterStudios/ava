@@ -4,19 +4,18 @@ from django.shortcuts import get_object_or_404
 from apps.ava_core_ldap.models import LDAPConfiguration, ExportLDAP
 
 
-class LDAPGraphView(generic.DeleteView):
-    template_name = 'graph/ldap.html'
+class LDAPGraph(generic.DeleteView):
+    template_name = 'graph/vis_ldap_graph_view.html'
     model = LDAPConfiguration
 
     def get_context_data(self, **kwargs):
-        context = super(LDAPGraphView, self).get_context_data(**kwargs)
+        context = super(LDAPGraph, self).get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
         if pk:
             parameters = get_object_or_404(LDAPConfiguration, pk=pk)
             exp = ExportLDAP()
             context['json'] = exp.generateGraph(parameters)
-            context['link'] = "/graph/ldap/"+pk+"/hide/"
-            context['link_message'] = "Hide Empty Groups"
+            
         return context
 
 #class LDAPGraphHideView(generic.DeleteView):

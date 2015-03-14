@@ -48,3 +48,25 @@ img.ava_logo{
     margin-right:auto;
 }
 
+
+.node {
+stroke: #fff;
+stroke-width: 1.5px;
+}
+
+.nodered {
+    fill: red;
+}
+
+.node text {
+pointer-events: none;
+font: 10px sans-serif;
+fill:#000;
+stroke: #000;
+stroke-width: 0.1px;
+}
+
+.link {
+stroke: #999;
+stroke-opacity: .6;
+}

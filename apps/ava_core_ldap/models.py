@@ -394,7 +394,7 @@ class ExportLDAP():
         edges = []
         for index, value in enumerate(elements):
             if isinstance(value,ActiveDirectoryGroup):
-                users = value.member.all()
+                users = value.activedirectoryuser_set.all()
                 for user in users:
                     current_edge = {}
                     user_index = elements.index(user)
@@ -416,7 +416,8 @@ class ExportLDAP():
     
         ``fields`` is an optional list of field names. If provided, only the named
         fields will be included in the returned dict.
-    
+
+
         ``exclude`` is an optional list of field names. If provided, the named
         fields will be excluded from the returned dict, even if they are listed in
         the ``fields`` argument.
