@@ -89,6 +89,18 @@
       with_items:
         - redis-server
 
+    - name: Enable Unix socket connections for Redis
+      # TODO: This assumes the default `redis.conf` file should we
+      #       use `lineinfile` module instead?
+      replace:
+        dest: /etc/redis/redis.conf
+        regexp: '^# (unixsocket)'
+        replace: '\1'
+      sudo: yes
+      tags:
+        - setup
+      notify: restart redis-server
+
 
 
   handlers:
