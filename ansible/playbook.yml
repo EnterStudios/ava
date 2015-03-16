@@ -14,3 +14,21 @@
       sudo: yes
       tags:
         - setup
+
+
+#
+# PostgreSQL install and setup
+#
+
+    - name: Install PostgreSQL
+      apt:
+        name: "{{item}}"
+        state: present
+      sudo: yes
+      tags:
+        - setup
+      with_items:
+        - postgresql
+        - postgresql-contrib
+        - postgresql-client
+        - python-psycopg2 # Required by Ansible `postgresql_user` etc
