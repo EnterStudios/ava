@@ -60,6 +60,15 @@
     - meta: flush_handlers
 
 
+    # TODO: Make these commands use TCP/IP rather than Unix sockets?
+    - name: Create PostgreSQL AVA user
+      postgresql_user:
+        name: avasecure
+        password: "{{dbpassword_avasecure}}"
+      sudo: yes
+      sudo_user: postgres
+
+
   handlers:
 
     - name: restart postgresql
