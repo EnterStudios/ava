@@ -1,0 +1,16 @@
+
+# TODO: Split playbook into parts
+
+- hosts: all
+
+  tasks:
+
+#
+# Common tasks required to setup a new VM for use.
+#
+
+    - name: Update apt cache
+      apt: update_cache=yes cache_valid_time=43200
+      sudo: yes
+      tags:
+        - setup
