@@ -116,6 +116,21 @@
       with_items:
         - rabbitmq-server
 
+    - name: Add RabbitMQ AVA virtual host
+      rabbitmq_vhost:
+        name: avatasks
+      sudo: yes
+
+    - name: Add RabbitMQ AVA user
+      rabbitmq_user:
+        user: avasecure
+        password: "{{password_avasecure}}"
+        vhost: avatasks
+        configure_priv: .*
+        read_priv: .*
+        write_priv: .*
+      sudo: yes
+
 
 
   handlers:
