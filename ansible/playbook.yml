@@ -170,6 +170,8 @@
         chdir: /home/vagrant/ava.github.com/ava
         requirements: config/requirements.txt
       sudo: yes
+      tags:
+        - setup
 
 
 
