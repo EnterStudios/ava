@@ -115,7 +115,7 @@ sudo easy_install pip
 ```
 
 #### RabbitMQ
-Create up the RabbitMQ user and virtual host
+Create the RabbitMQ user and virtual host
 ```
 sudo rabbitmqctl add_user avasecure change_this_password
 sudo rabbitmqctl add_vhost avatasks
