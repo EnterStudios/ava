@@ -32,3 +32,22 @@
         - postgresql-contrib
         - postgresql-client
         - python-psycopg2 # Required by Ansible `postgresql_user` etc
+
+
+    # TODO: Add other PG configuration changes from installation guide?
+
+    - name: Configure PostgreSQL client authentication
+      copy:
+        src: files/pg_hba.conf
+        dest: /etc/postgresql/9.3/main/pg_hba.conf
+      sudo: yes
+      notify: restart postgresql
+
+
+  handlers:
+
+    - name: restart postgresql
+      service:
+        name: postgresql
+        state: restarted
+      sudo: yes
