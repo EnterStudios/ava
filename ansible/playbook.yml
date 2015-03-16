@@ -141,6 +141,36 @@
       tags:
         - setup
 
+#
+# AVA Setup
+#
+# NOTE: This assumes that this playbook is being run from within the
+#       AVA git repository.
+#
+# TODO: Add a variation that retrieves the source via git too?
+
+    - name: Install AVA system dependencies
+      apt:
+        name: "{{item}}"
+        state: present
+      sudo: yes
+      tags:
+        - setup
+      with_items:
+        - python-pip
+        - libpqxx-dev
+        - python-dev
+        - libldap2-dev
+        - libsasl2-dev
+
+    - name: Install AVA Python dependencies
+      # TODO: Install the Ubuntu packaged versions instead?
+      #       (This would avoid the system dependencies above and compilation.)
+      pip:
+        chdir: /home/vagrant/ava.github.com/ava
+        requirements: config/requirements.txt
+      sudo: yes
+
 
 
   handlers:
