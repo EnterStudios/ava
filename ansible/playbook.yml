@@ -5,6 +5,7 @@
 
 
   # TODO: Handle password configuration better?
+  # TODO: Don't use same password everywhere?
   vars_prompt:
     - name: password_avasecure
       prompt: "Enter avasecure user password"
