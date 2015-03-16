@@ -68,6 +68,13 @@
       sudo: yes
       sudo_user: postgres
 
+    - name: Create PostgreSQL AVA database
+      postgresql_db:
+        name: avadata
+        owner: avasecure
+      sudo: yes
+      sudo_user: postgres
+
 
   handlers:
 
