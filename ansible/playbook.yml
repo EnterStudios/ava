@@ -53,6 +53,8 @@
         src: files/pg_hba.conf
         dest: /etc/postgresql/9.3/main/pg_hba.conf
       sudo: yes
+      tags:
+        - setup
       notify: restart postgresql
 
 
@@ -68,6 +70,8 @@
         password: "{{password_avasecure}}"
       sudo: yes
       sudo_user: postgres
+      tags:
+        - setup
 
     - name: Create PostgreSQL AVA database
       postgresql_db:
@@ -75,6 +79,8 @@
         owner: avasecure
       sudo: yes
       sudo_user: postgres
+      tags:
+        - setup
 
 
 #
@@ -120,6 +126,8 @@
       rabbitmq_vhost:
         name: avatasks
       sudo: yes
+      tags:
+        - setup
 
     - name: Add RabbitMQ AVA user
       rabbitmq_user:
@@ -130,6 +138,8 @@
         read_priv: .*
         write_priv: .*
       sudo: yes
+      tags:
+        - setup
 
 
 
