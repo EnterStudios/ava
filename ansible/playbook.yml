@@ -6,7 +6,7 @@
 
   # TODO: Handle password configuration better?
   vars_prompt:
-    - name: dbpassword_avasecure
+    - name: password_avasecure
       prompt: "Enter avasecure user password"
       private: yes
       default: "insecure-NMYe_kX;8{m8J"
@@ -64,7 +64,7 @@
     - name: Create PostgreSQL AVA user
       postgresql_user:
         name: avasecure
-        password: "{{dbpassword_avasecure}}"
+        password: "{{password_avasecure}}"
       sudo: yes
       sudo_user: postgres
 
