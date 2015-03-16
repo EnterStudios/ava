@@ -76,6 +76,21 @@
       sudo_user: postgres
 
 
+#
+# Redis install and setup
+#
+    - name: Install Redis
+      apt:
+        name: "{{item}}"
+        state: present
+      sudo: yes
+      tags:
+        - setup
+      with_items:
+        - redis-server
+
+
+
   handlers:
 
     - name: restart postgresql
