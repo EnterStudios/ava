@@ -3,6 +3,17 @@
 
 - hosts: all
 
+
+  # TODO: Handle password configuration better?
+  vars_prompt:
+    - name: dbpassword_avasecure
+      prompt: "Enter avasecure user password"
+      private: yes
+      default: "insecure-NMYe_kX;8{m8J"
+      tags:
+        - setup
+
+
   tasks:
 
 #
