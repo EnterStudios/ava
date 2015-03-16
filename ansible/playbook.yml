@@ -98,3 +98,9 @@
         name: postgresql
         state: restarted
       sudo: yes
+
+    - name: restart redis-server
+      service:
+        name: redis-server
+        state: restarted
+      sudo: yes
