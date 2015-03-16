@@ -39,6 +39,8 @@ Vagrant.configure(2) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+  # TODO: Make `vagrant` subdirectory a sibling of a `src` directory?
+  config.vm.synced_folder "../", "/home/vagrant/ava.github.com/ava"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
