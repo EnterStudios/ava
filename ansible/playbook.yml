@@ -103,6 +103,20 @@
       notify: restart redis-server
 
 
+#
+# RabbitMQ install and setup
+#
+    - name: Install RabbitMQ
+      apt:
+        name: "{{item}}"
+        state: present
+      sudo: yes
+      tags:
+        - setup
+      with_items:
+        - rabbitmq-server
+
+
 
   handlers:
 
