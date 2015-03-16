@@ -44,6 +44,11 @@
       notify: restart postgresql
 
 
+    # TODO: Remove this when AVA setup is a separate task as
+    #       in that case Ansible would automatically run handlers
+    - meta: flush_handlers
+
+
   handlers:
 
     - name: restart postgresql
