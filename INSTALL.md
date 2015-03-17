@@ -87,7 +87,7 @@ sudo apt-get build-essential git python-pip python-dev libpqxx-4.0 libpqxx-dev l
 #### PostgreSQL
 ```
 sudo sed -i -e"s/^#listen_addresses =.*$/listen_addresses = '*'/" /etc/postgresql/9.3/main/postgresql.conf  
-echo "host    all    all    0.0.0.0/0    md5" | sudo tee -a /etc/postgresql/9.3/main/pg_hba.nf  
+echo "host    all    all    0.0.0.0/0    md5" | sudo tee -a /etc/postgresql/9.3/main/pg_hba.conf  
 sudo service postgresql restart
 ```
 
