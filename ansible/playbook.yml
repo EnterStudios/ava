@@ -1,3 +1,10 @@
+#
+# Ansible playbook to install AVA for *development*
+#
+#
+# Note: The password handling approach used by this playbook means it
+#       is not currently suitable for production deployments.
+#
 
 # TODO: Split playbook into parts
 
