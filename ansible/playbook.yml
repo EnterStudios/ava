@@ -3,6 +3,8 @@
 
 - hosts: all
 
+  vars:
+    AVA_INSTALL_ROOT: /home/vagrant/ava.github.com/ava
 
   # TODO: Handle password configuration better?
   # TODO: Don't use same password everywhere?
@@ -167,7 +169,7 @@
       # TODO: Install the Ubuntu packaged versions instead?
       #       (This would avoid the system dependencies above and compilation.)
       pip:
-        chdir: /home/vagrant/ava.github.com/ava
+        chdir: "{{AVA_INSTALL_ROOT}}"
         requirements: config/requirements.txt
       sudo: yes
       tags:
