@@ -45,6 +45,7 @@ Installation
  9. Start AVA [TODO: Automate this?]:
 
 	celery -A apps.ava_core worker -l info -B &
+
 	python manage.py runserver 0.0.0.0:8000
 
     Note: The 0.0.0.0 ensures the VirtualBox port forwarding works.
