@@ -234,6 +234,11 @@
       tags:
         - setup
 
+# TODO: createsuperuser and other steps from install/run guide
+
+
+
+
   handlers:
 
     - name: restart postgresql
