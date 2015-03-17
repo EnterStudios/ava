@@ -185,6 +185,33 @@
       tags:
         - setup
 
+    # TODO: Handle settings files differently?
+    - name: Copy example AVA local settings file
+      copy:
+        force: no # Don't copy the original settings file if destination exists
+        src: ../local_settings.py.example
+        dest: "{{AVA_INSTALL_ROOT}}/local_settings.py"
+      tags:
+        - setup
+
+    - name: Copy example AVA email settings file
+      copy:
+        force: no # Don't copy the original settings file if destination exists
+        src: ../email_settings.py.example
+        dest: "{{AVA_INSTALL_ROOT}}/email_settings.py"
+      tags:
+        - setup
+
+    - name: Update default passwords in AVA local settings file
+      # TODO: Handle passwords better here too?
+      # TODO: Only do this when the file is initially copied?
+      # TODO: Should we use `lineinfile` module instead?
+      replace:
+        dest: "{{AVA_INSTALL_ROOT}}/local_settings.py"
+        regexp: "('|:)changeme('|@)" # Note: Crappy regex matches 2 occurrences
+        replace: '\1{{password_avasecure}}\2'
+      tags:
+        - setup
 
 
   handlers:
