@@ -10,7 +10,7 @@
     - name: password_avasecure
       prompt: "Enter avasecure user password"
       private: yes
-      default: "insecure-NMYe_kX;8{m8J"
+      default: "insecure-NMYe_kX_8_m8J"
       tags:
         - setup
 
