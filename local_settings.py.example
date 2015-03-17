@@ -47,7 +47,7 @@ EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
 
 
 # CELERY SETTINGS
-BROKER_URL = 'amqp://avasecure:changeme@localhost:5672/avatasks/'
+BROKER_URL = 'amqp://avasecure:changeme@localhost:5672/avatasks'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
