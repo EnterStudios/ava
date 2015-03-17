@@ -190,6 +190,7 @@
       tags:
         - setup
       with_items:
+        - python-setuptools # For easy_install to install pip. *sigh*
         - libpqxx-dev
         - python-dev
         - libldap2-dev
