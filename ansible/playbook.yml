@@ -213,6 +213,19 @@
       tags:
         - setup
 
+    - name: Create database migrations
+      django_manage:
+        app_path: "{{AVA_INSTALL_ROOT}}"
+        command: makemigrations
+      tags:
+        - setup
+
+    - name: Run database migrations
+      django_manage:
+        app_path: "{{AVA_INSTALL_ROOT}}"
+        command: migrate
+      tags:
+        - setup
 
   handlers:
 
