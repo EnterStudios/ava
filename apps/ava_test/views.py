@@ -4,9 +4,6 @@ from django.shortcuts import get_object_or_404
 from apps.ava_test.models import Test, TestType
 from apps.ava_test_email.models import EmailTest
 from apps.ava_test_twitter.models import TwitterTest
-from apps.ava_core_org.models import Organisation
-
-
 
 class TestIndexView(generic.ListView):
     template_name = 'test/index.html'

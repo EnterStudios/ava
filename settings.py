@@ -143,6 +143,8 @@ SHORTEN_MODELS = {
 
 SESSION_ENGINE = 'redis_sessions.session'
 
+LOGIN_REDIRECT_URL= "/people/"
+
 
 # IMPORT LOCAL SETTINGS
 

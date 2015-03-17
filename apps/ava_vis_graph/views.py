@@ -15,7 +15,7 @@ class LDAPGraph(generic.DeleteView):
             parameters = get_object_or_404(LDAPConfiguration, pk=pk)
             exp = ExportLDAP()
             context['json'] = exp.generateGraph(parameters)
-            
+
         return context
 
 #class LDAPGraphHideView(generic.DeleteView):
