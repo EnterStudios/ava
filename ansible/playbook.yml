@@ -126,6 +126,9 @@
         name: vagrant
         groups: redis
         append: yes
+      sudo: yes
+      tags:
+        - setup
 
     - name: Enable non-`redis` users in `redis` group to access Unix socket.
       # NOTE: See note in previous task.
