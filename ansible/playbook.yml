@@ -159,11 +159,21 @@
       tags:
         - setup
       with_items:
-        - python-pip
         - libpqxx-dev
         - python-dev
         - libldap2-dev
         - libsasl2-dev
+
+    - name: Install pip
+      # Note: This is a workaround because the AVA requirements file
+      #       specifies a version of `requests` that breaks the version
+      #       of `pip` installed as `python-pip`.
+      #       See <https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=744145>
+      easy_install:
+        name: pip
+      sudo: yes
+      tags:
+        - setup
 
     - name: Install AVA Python dependencies
       # TODO: Install the Ubuntu packaged versions instead?
