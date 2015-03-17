@@ -117,6 +117,27 @@
         - setup
       notify: restart redis-server
 
+    # NOTE: The following two tasks are quick workarounds and should
+    #       be revisited.
+    # TODO: Revisit this.
+    - name: Add `vagrant` user to `redis` group
+      # TODO: Change this when we automatically start the Celery service?
+      user:
+        name: vagrant
+        groups: redis
+        append: yes
+
+    - name: Enable non-`redis` users in `redis` group to access Unix socket.
+      # NOTE: See note in previous task.
+      replace:
+        dest: /etc/redis/redis.conf
+        regexp: '(unixsocketperm) 755'
+        replace: '\1 775'
+      sudo: yes
+      tags:
+        - setup
+      notify: restart redis-server
+
 
 #
 # RabbitMQ install and setup
