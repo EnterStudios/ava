@@ -1,0 +1,279 @@
+#
+# Ansible playbook to install AVA for *development*
+#
+#
+# Note: The password handling approach used by this playbook means it
+#       is not currently suitable for production deployments.
+#
+
+# TODO: Split playbook into parts
+
+- hosts: all
+
+  vars:
+    AVA_INSTALL_ROOT: /home/vagrant/ava.github.com/ava
+
+  # TODO: Handle password configuration better?
+  # TODO: Don't use same password everywhere?
+  vars_prompt:
+    - name: password_avasecure
+      prompt: "Enter avasecure user password"
+      private: yes
+      default: "insecure-NMYe_kX_8_m8J"
+      tags:
+        - setup
+
+
+  tasks:
+
+#
+# Common tasks required to setup a new VM for use.
+#
+
+    - name: Update apt cache
+      apt: update_cache=yes cache_valid_time=43200
+      sudo: yes
+      tags:
+        - setup
+
+
+#
+# PostgreSQL install and setup
+#
+
+    - name: Install PostgreSQL
+      apt:
+        name: "{{item}}"
+        state: present
+      sudo: yes
+      tags:
+        - setup
+      with_items:
+        - postgresql
+        - postgresql-contrib
+        - postgresql-client
+        - python-psycopg2 # Required by Ansible `postgresql_user` etc
+
+
+    # TODO: Add other PG configuration changes from installation guide?
+
+    - name: Configure PostgreSQL client authentication
+      copy:
+        src: files/pg_hba.conf
+        dest: /etc/postgresql/9.3/main/pg_hba.conf
+      sudo: yes
+      tags:
+        - setup
+      notify: restart postgresql
+
+
+    # TODO: Remove this when AVA setup is a separate task as
+    #       in that case Ansible would automatically run handlers
+    - meta: flush_handlers
+
+
+    # TODO: Make these commands use TCP/IP rather than Unix sockets?
+    - name: Create PostgreSQL AVA user
+      postgresql_user:
+        name: avasecure
+        password: "{{password_avasecure}}"
+      sudo: yes
+      sudo_user: postgres
+      tags:
+        - setup
+
+    - name: Create PostgreSQL AVA database
+      postgresql_db:
+        name: avadata
+        owner: avasecure
+      sudo: yes
+      sudo_user: postgres
+      tags:
+        - setup
+
+
+#
+# Redis install and setup
+#
+    - name: Install Redis
+      apt:
+        name: "{{item}}"
+        state: present
+      sudo: yes
+      tags:
+        - setup
+      with_items:
+        - redis-server
+
+    - name: Enable Unix socket connections for Redis
+      # TODO: This assumes the default `redis.conf` file should we
+      #       use `lineinfile` module instead?
+      replace:
+        dest: /etc/redis/redis.conf
+        regexp: '^# (unixsocket)'
+        replace: '\1'
+      sudo: yes
+      tags:
+        - setup
+      notify: restart redis-server
+
+    # NOTE: The following two tasks are quick workarounds and should
+    #       be revisited.
+    # TODO: Revisit this.
+    - name: Add `vagrant` user to `redis` group
+      # TODO: Change this when we automatically start the Celery service?
+      user:
+        name: vagrant
+        groups: redis
+        append: yes
+      sudo: yes
+      tags:
+        - setup
+
+    - name: Enable non-`redis` users in `redis` group to access Unix socket.
+      # NOTE: See note in previous task.
+      replace:
+        dest: /etc/redis/redis.conf
+        regexp: '(unixsocketperm) 755'
+        replace: '\1 775'
+      sudo: yes
+      tags:
+        - setup
+      notify: restart redis-server
+
+
+#
+# RabbitMQ install and setup
+#
+    - name: Install RabbitMQ
+      apt:
+        name: "{{item}}"
+        state: present
+      sudo: yes
+      tags:
+        - setup
+      with_items:
+        - rabbitmq-server
+
+    - name: Add RabbitMQ AVA virtual host
+      rabbitmq_vhost:
+        name: avatasks
+      sudo: yes
+      tags:
+        - setup
+
+    - name: Add RabbitMQ AVA user
+      rabbitmq_user:
+        user: avasecure
+        password: "{{password_avasecure}}"
+        vhost: avatasks
+        configure_priv: .*
+        read_priv: .*
+        write_priv: .*
+      sudo: yes
+      tags:
+        - setup
+
+#
+# AVA Setup
+#
+# NOTE: This assumes that this playbook is being run from within the
+#       AVA git repository.
+#
+# TODO: Add a variation that retrieves the source via git too?
+
+    - name: Install AVA system dependencies
+      apt:
+        name: "{{item}}"
+        state: present
+      sudo: yes
+      tags:
+        - setup
+      with_items:
+        - python-setuptools # For easy_install to install pip. *sigh*
+        - libpqxx-dev
+        - python-dev
+        - libldap2-dev
+        - libsasl2-dev
+
+    - name: Install pip
+      # Note: This is a workaround because the AVA requirements file
+      #       specifies a version of `requests` that breaks the version
+      #       of `pip` installed as `python-pip`.
+      #       See <https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=744145>
+      easy_install:
+        name: pip
+      sudo: yes
+      tags:
+        - setup
+
+    - name: Install AVA Python dependencies
+      # TODO: Install the Ubuntu packaged versions instead?
+      #       (This would avoid the system dependencies above and compilation.)
+      pip:
+        chdir: "{{AVA_INSTALL_ROOT}}"
+        requirements: config/requirements.txt
+      sudo: yes
+      tags:
+        - setup
+
+    # TODO: Handle settings files differently?
+    - name: Copy example AVA local settings file
+      copy:
+        force: no # Don't copy the original settings file if destination exists
+        src: ../local_settings.py.example
+        dest: "{{AVA_INSTALL_ROOT}}/local_settings.py"
+      tags:
+        - setup
+
+    - name: Copy example AVA email settings file
+      copy:
+        force: no # Don't copy the original settings file if destination exists
+        src: ../email_settings.py.example
+        dest: "{{AVA_INSTALL_ROOT}}/email_settings.py"
+      tags:
+        - setup
+
+    - name: Update default passwords in AVA local settings file
+      # TODO: Handle passwords better here too?
+      # TODO: Only do this when the file is initially copied?
+      # TODO: Should we use `lineinfile` module instead?
+      replace:
+        dest: "{{AVA_INSTALL_ROOT}}/local_settings.py"
+        regexp: "('|:)changeme('|@)" # Note: Crappy regex matches 2 occurrences
+        replace: '\1{{password_avasecure}}\2'
+      tags:
+        - setup
+
+    - name: Create database migrations
+      django_manage:
+        app_path: "{{AVA_INSTALL_ROOT}}"
+        command: makemigrations
+      tags:
+        - setup
+
+    - name: Run database migrations
+      django_manage:
+        app_path: "{{AVA_INSTALL_ROOT}}"
+        command: migrate
+      tags:
+        - setup
+
+# TODO: createsuperuser and other steps from install/run guide
+
+
+
+
+  handlers:
+
+    - name: restart postgresql
+      service:
+        name: postgresql
+        state: restarted
+      sudo: yes
+
+    - name: restart redis-server
+      service:
+        name: redis-server
+        state: restarted
+      sudo: yes
