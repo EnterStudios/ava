@@ -10,5 +10,5 @@ urlpatterns = patterns('',
     url(r'^(?P<pk>\d+)/$', login_required(views.EmailTestDetail.as_view()), name="email-test-detail"),
     url(r'^(?P<pk>\d+)/update/$', login_required(views.EmailTestUpdate.as_view()),name='email-test-update'),
     url(r'^(?P<pk>\d+)/delete/$', login_required(views.EmailTestDelete.as_view()),name='email-test-delete'),
-    url(r'^send/$', login_required(views.EmailSendEmail.as_view()), name='email-test-send'),
+    url(r'^send/(?P<pk>\d+)/$', login_required(views.EmailSendEmail.as_view()), name='email-test-send'),
 )

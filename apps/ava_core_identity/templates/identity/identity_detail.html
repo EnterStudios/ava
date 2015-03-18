@@ -3,49 +3,44 @@
 {% block mainpage %}
 
 <div class="page-header">
-  <h1>View Identity and Identifiers</h1>
+    <h1>View Identity and Identifiers</h1>
 </div>
 
 
 <h2>{{ identity.name }} </h2>
 <p> {{ identity.description }}</p>
 {% if identity.identifier_set %}
-
-
     <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Identifier</th>
-                        <th>Identifier Type</th>
-                        <th>
-                            <!--TODO ADD HYPERLINK TO identifier-add identity.id and allow manual addition of identifiers-->
-                            <a href="{% url 'identifier-create' identity.id %}" class="glyphicon glyphicon-plus"></a>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                 {% for identifier in identity.identifier_set.all %}
-    <tr>
-        <td>{{ identifier.identifier }}</td>
-        <td>{{ identifier.identifiertype  }}</td>
-        <td>
-
-          <a href="{% url 'identifier-update' identifier.id  %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
-          <a href="{% url 'identifier-delete' identifier.id  %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
-    </tr>
-    {% endfor %}
-     </tbody>
-    </table>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Identifier</th>
+                    <th>Identifier Type</th>
+                    <th>
+                        <a href="{% url 'identifier-create' identity.id %}" class="glyphicon glyphicon-plus"></a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for identifier in identity.identifier_set.all %}
+                <tr>
+                    <td>{{ identifier.identifier }}</td>
+                    <td>{{ identifier.identifiertype  }}</td>
+                    <td>
+                        <a href="{% url 'identifier-update' identifier.id  %}" class="btn btn-primary btn-sm">Update</a>
+                        <a href="{% url 'identifier-delete' identifier.id  %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% else %}
     <p>This identity has no identifiers associated with it.</p>
 {% endif %}
 
-
-
 <a href="{% url 'identity-update' identity.id %}">[update]</a>
 <a href="{% url 'identity-delete' identity.id %}">[delete]</a>
 
-</div>
 {% endblock %}
 

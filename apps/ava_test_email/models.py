@@ -38,7 +38,7 @@ class EmailTestTarget(TimeStampedModel):
         unique_together = ("emailtest", "target", "token")
 
     def __unicode__(self):
-        return self.target or u''
+        return unicode(self.target)
 
     def get_absolute_url(self):
         return reverse('email-test-target-detail',kwargs={'pk': self.pk})

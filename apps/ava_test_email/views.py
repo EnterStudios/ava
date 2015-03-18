@@ -82,13 +82,15 @@ class EmailSendEmail(generic.View):
 
     def get(self, request, *args, **kwargs):
         # Make sure that the test exists.
-        pk = request.session['test']
+        pk = kwargs['pk']
         email = get_object_or_404(EmailTest, pk=pk)
-        #TODO: Permissions - check if user is able to start the test.
-        # Mark the test as scheduled, so that the front-end says the right thing.
-        email.teststatus = EmailTest.SCHEDULED
-        email.save()
-        #Queue the emails.
-        run_email_test.delay(email.id)
+        #TODO: Permissions - check if user is allowed to start the test.
+        # Only run tests that haven't been run yet.
+        if email.teststatus in (EmailTest.NEW, EmailTest.SCHEDULED):
+            # Mark the test as scheduled, so that the front-end says the right thing.
+            email.teststatus = EmailTest.SCHEDULED
+            email.save()
+            #Queue the emails.
+            run_email_test.delay(email.id)
         # Return to the test detail page.
         return HttpResponseRedirect(reverse('email-test-detail', kwargs={'pk':email.id}))

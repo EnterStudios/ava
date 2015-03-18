@@ -1,5 +1,5 @@
 from django.db import models
-import ldap
+import ldap, datetime, re
 
 from apps.ava_core.models import TimeStampedModel
 from apps.ava_core_identity.models import Identifier, Person, Identity
@@ -43,7 +43,7 @@ class ActiveDirectoryUser(TimeStampedModel):
     userAccountControl = models.CharField(max_length = 300)
     whenChanged = models.CharField(max_length = 300)
     whenCreated = models.CharField(max_length = 300)
-    groups = models.ManyToManyField('ActiveDirectoryGroup')
+    groups = models.ManyToManyField('ActiveDirectoryGroup', related_name='users')
     ldap_configuration = models.ForeignKey('LDAPConfiguration')
     #identity = models.ForeignKey('ava_core_identity.Identity',null=True,blank=True)
 
@@ -54,7 +54,7 @@ class ActiveDirectoryUser(TimeStampedModel):
         unique_together = ('objectGUID','objectSid')
 
     def get_absolute_url(self):
-	    return reverse('ad-user-detail',kwargs={'pk': self.id})
+        return reverse('ad-user-detail',kwargs={'pk': self.id})
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in ActiveDirectoryUser._meta.fields]
@@ -77,7 +77,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
         unique_together = ('objectGUID','objectSid')
 
     def get_absolute_url(self):
-	    return reverse('ad-group-detail',kwargs={'pk': self.id})
+        return reverse('ad-group-detail',kwargs={'pk': self.id})
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in ActiveDirectoryGroup._meta.fields]
@@ -99,21 +99,29 @@ class LDAPConfiguration(TimeStampedModel):
         unique_together=('server','user_dn')
 
     def get_absolute_url(self):
-	    return reverse('ldap-configuration-detail',kwargs={'pk': self.id})
+        return reverse('ldap-configuration-detail',kwargs={'pk': self.id})
 
 class ActiveDirectoryHelper():
 
     PAGESIZE=1000
-
+    
+    # LDAP date/times in FILETIME format use this as their epoch
+    FILETIME_EPOCH = datetime.datetime(1601, 1, 1, 0, 0, 0)
+    # Upper bound on valid FILETIME values.
+    FILETIME_MAX = (datetime.datetime.max - FILETIME_EPOCH).total_seconds() * 1000000
+    # Regular expression to check for valid FILETIME values.
+    TIME_FILETIME = re.compile(r'^\d+$')
+    # Regular expression to check for valid date/time string values.
+    TIME_DATESTRING = re.compile(r'^(?P<yr>\d{4})(?P<mon>0[1-9]|1[012])(?P<day>0[1-9]|[12][0-9]|3[01])(?P<hr>[01][0-9]|2[0-3])(?P<min>[0-5][0-9])(?P<sec>[0-5][0-9])(?:\.\d{1,3})?Z$')
 
     def getConnection(self, parameters):
         try:
             #connection = initialize(parameters.server)
             print "user_dn = "+parameters.user_dn+" user_pw="+parameters.user_pw+"\n"
 
-    	    ldap.set_option(OPT_REFERRALS, 0)
+            ldap.set_option(OPT_REFERRALS, 0)
             ldap.protocol_version = 3
-    	    ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_ALLOW)
+            ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_ALLOW)
 
             ldap_conn = initialize(parameters.server)
             ldap_conn.simple_bind_s(parameters.user_dn, parameters.user_pw)
@@ -174,122 +182,171 @@ class ActiveDirectoryHelper():
                 break
         return res
 
-    def getGroups(self,parameters):
-        filter = '(objectclass=group)'
-        attrs = ['cn','distinguishedName','name','objectCategory','sAMAccountName','objectGUID','objectSid']
-        results = self.search(parameters,filter,attrs)
-        for  v in results:
-            new_attrs = {}
-            new_attrs.update(v.get_attributes())
-            for key, value in new_attrs.iteritems():
-                if len(value) >  0:
-                    value = ' '.join(value)
-                    valid_utf8 = True
-                    try:
-                        value.decode('utf-8')
-                    except UnicodeDecodeError:
-                        valid_utf8 = False
-
-                    if valid_utf8:
-                        new_attrs[key] = value
-                        # if key == 'member':
-                        #     user_cn = value.split(' CN=')
-                        #     for cn in user_cn:
-                        #         if not cn.startswith('CN='):
-                        #             cn = "CN="+cn
-                        #         qs=ActiveDirectoryUser.objects.filter(ldap_configuration=parameters,distinguishedName=cn).first()
-                        #         if qs:
-                        #             users.append(qs)
-                    else:
-                        new_attrs[key] = self.cleanhex(value)
-
-            #new_attrs.pop('member',None)
-            rows = ActiveDirectoryGroup.objects.filter(**new_attrs).count()
-            if rows == 0:
-
-                ad_group = ActiveDirectoryGroup.objects.create(ldap_configuration=parameters,**new_attrs)
-                ad_group.save()
-
-                gen_group = Group.objects.create(name = ad_group.cn, group_type=Group.AD, description="Imported group from LDAP")
-                gen_group.save()
-
-                ad_group.group = gen_group
-                ad_group.save()
-                '''
-                TODO group needs to be correlated with an actual group
-                '''
-                #ad_group.member.add(*users)
-
 
     def cleanhex(self,val):
         s = ['\\%02X' % ord(x) for x in val]
         return ''.join(s)
 
-    def getUsers(self,parameters):
-        filter = '(objectclass=user)'
-        attrs = ['dn','accountExpires','adminCount','badPasswordTime','badPwdCount','cn','description','displayName','isCriticalSystemObject','lastLogoff','lastLogon','lastLogonTimestamp','logonCount','logonHours','name','objectGUID','objectSid','primaryGroupID','pwdLastSet','sAMAccountName','sAMAccountType','uSNChanged','uSNCreated','userAccountControl','whenChanged','whenCreated','memberOf','distinguishedName']
+
+    def convertDateTime(self, dateValue):
+        # Check if the data is a Windows FILETIME value.
+        match = self.TIME_FILETIME.match(dateValue)
+        if match:
+            microseconds = long(dateValue) / 10
+            if microseconds > 0:
+                if microseconds > self.FILETIME_MAX:
+                    return datetime.datetime.max
+                delta = datetime.timedelta(microseconds=microseconds)
+                return self.FILETIME_EPOCH + delta
+            return None
+        
+        # Check if the data is a date string.
+        match = self.TIME_DATESTRING.match(dateValue)
+        if match:
+            time_year = int(match.group('yr'))
+            time_month = int(match.group('mon'))
+            time_day = int(match.group('day'))
+            time_hour = int(match.group('hr'))
+            time_minute = int(match.group('min'))
+            time_second = int(match.group('sec'))
+            return datetime.datetime(time_year, time_month, time_day, time_hour, time_minute, time_second)
+            
+        # No value.
+        return None
+
+
+    def getGroups(self,parameters):
+        filter = '(objectclass=group)'
+        attrs = ['distinguishedName','objectGUID','objectSid','cn','name','objectCategory','sAMAccountName']
         results = self.search(parameters,filter,attrs)
         for  v in results:
             new_attrs = {}
-            groups = []
-            gen_groups = []
             new_attrs.update(v.get_attributes())
             for key, value in new_attrs.iteritems():
                 if len(value) >  0:
                     value = ' '.join(value)
-                    valid_utf8 = True
+                    
                     try:
-                        value.decode('utf-8')
+                        new_attrs[key] = value.decode('utf-8')
                     except UnicodeDecodeError:
-                        valid_utf8 = False
+                        new_attrs[key] = self.cleanhex(value)
+            
+            # Don't filter on everything. Start with the properties that are
+            # least likely to ever change, then work towards the more mutable
+            # properties.
+            filter_attrs = {}
+            if 'objectGUID' in new_attrs:
+                filter_attrs['objectGUID'] = new_attrs['objectGUID']
+            elif 'objectSid' in new_attrs:
+                filter_attrs['objectSid'] = new_attrs['objectSid']
+            elif 'distinguishedName' in new_attrs:
+                filter_attrs['distinguishedName'] = new_attrs['distinguishedName']
+            else:
+                continue
+            
+            # If no matching group currently exists then create one, otherwise
+            # update the existing group.
+            ad_groups = ActiveDirectoryGroup.objects.filter(**new_attrs)
+            if ad_groups.count() == 0:
+                ad_group = ActiveDirectoryGroup.objects.create(ldap_configuration=parameters, **new_attrs)
 
-                    if valid_utf8:
-                        new_attrs[key] = value
-                        if key == 'memberOf':
-                            group_cn = value.split(' CN=')
+                gen_group = Group.objects.create(name=ad_group.cn, group_type=Group.AD, description="Imported group from LDAP")
+                gen_group.save()
 
-                            for cn in group_cn:
-                                if not value.startswith('CN='):
-                                    cn = "CN="+cn
+                ad_group.group = gen_group
+                ad_group.save()
+            else:
+                ad_groups.update(**new_attrs)
+                ad_group = ad_groups.first()
+                
+                gen_group = ad_group.group
+                if gen_group:
+                    gen_group.name = ad_group.cn
+                    gen_group.save()
 
-                                qs = ActiveDirectoryGroup.objects.filter(ldap_configuration=parameters,distinguishedName=cn)
-                                for q in qs:
-                                    groups.append(q)
+            '''
+            TODO group needs to be correlated with an actual group
+            '''
+            #ad_group.member.add(*users)
+
+
+    def getUsers(self,parameters):
+        filter = '(objectclass=user)'
+        attrs = ['distinguishedName','objectGUID','objectSid','cn','accountExpires','adminCount','badPasswordTime','badPwdCount','description','displayName','isCriticalSystemObject','lastLogoff','lastLogon','lastLogonTimestamp','logonCount','logonHours','name','primaryGroupID','pwdLastSet','sAMAccountName','sAMAccountType','uSNChanged','uSNCreated','userAccountControl','whenChanged','whenCreated','memberOf']
+        results = self.search(parameters,filter,attrs)
+        for v in results:
+            new_attrs = {}
+            groups = []
+            gen_groups = []
+            new_attrs.update(v.get_attributes())
+            for key, values in new_attrs.iteritems():
+                if len(values) >  0:
+                    if key == 'memberOf':
+                        for cn in values:
+                            qs = ActiveDirectoryGroup.objects.filter(ldap_configuration=parameters,distinguishedName=cn)
+                            for q in qs:
+                                groups.append(q)
+                                if q.group:
                                     gen_groups.append(q.group)
                     else:
-                        new_attrs[key] = self.cleanhex(value)
+                        value = ' '.join(values)
+                        
+                        try:
+                            new_attrs[key] = value.decode('utf-8')
+                            
+                            if key in ('accountExpires','badPasswordTime','lastLogoff','lastLogon','lastLogonTimestamp','pwdLastSet','uSNChanged','uSNCreated','whenChanged','whenCreated'):
+                                date = self.convertDateTime(new_attrs[key])
+                                if date:
+                                    new_attrs[key] = date.isoformat()
+                        except UnicodeDecodeError:
+                            new_attrs[key] = self.cleanhex(value)
 
             new_attrs.pop('memberOf',None)
-            rows = ActiveDirectoryUser.objects.filter(**new_attrs).count()
-            if rows == 0:
+            
+            # Don't filter on everything. Start with the properties that are
+            # least likely to ever change, then work towards the more mutable
+            # properties.
+            filter_attrs = {}
+            if 'objectGUID' in new_attrs:
+                filter_attrs['objectGUID'] = new_attrs['objectGUID']
+            elif 'objectSid' in new_attrs:
+                filter_attrs['objectSid'] = new_attrs['objectSid']
+            elif 'distinguishedName' in new_attrs:
+                filter_attrs['distinguishedName'] = new_attrs['distinguishedName']
+            else:
+                continue
+            
+            # If no matching user currently exists then create one, otherwise
+            # update the existing user.
+            ad_user = None
+            ad_users = ActiveDirectoryUser.objects.filter(**filter_attrs)
+            if ad_users.count() == 0:
                 ad_user = ActiveDirectoryUser.objects.create(ldap_configuration=parameters,**new_attrs)
                 ad_user.save()
-                # firstname = ""
-                # surname = ""
-                # if " " in ad_user.displayName:
-                #     bits = str.split(ad_user.displayName," ")
-                #     firstname=bits[0]
-                #     surname=bits[1]
+            else:
+                ad_users.update(**new_attrs)
+                ad_user = ad_users.first()
 
-                identity, created = Identity.objects.get_or_create(name=ad_user.displayName)
-                '''
-                TODO Do we need to create a person object for this identity??
-                '''
-                #Person.objects.get_or_create(firstname=firstname,surname=surname, identity=identity)
+            identity, created = Identity.objects.get_or_create(name=ad_user.displayName)
+            '''
+            TODO Do we need to create a person object for this identity??
+            '''
+            #Person.objects.get_or_create(firstname=firstname,surname=surname, identity=identity)
 
-                Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName, identifiertype=Identifier.UNAME,identity=identity)
-                '''
-                TODO Import the actual email address from AD
-                '''
-                #Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName+"@avasecure.com", identifiertype=Identifier.EMAIL, identity=identity)
-                for group in groups:
-                    print groups
+            Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName, identifiertype=Identifier.UNAME,identity=identity)
+            '''
+            TODO Import the actual email address from AD
+            '''
+            #Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName+"@avasecure.com", identifiertype=Identifier.EMAIL, identity=identity)
+            for group in groups:
+                #print groups
+                if ad_user.groups.filter(id=group.id).count() == 0:
                     ad_user.groups.add(group)
 
-                for gen_group in gen_groups:
-                    print gen_group.id
-                    if gen_group:
-                        identity.member_of.add(gen_group)
+            for gen_group in gen_groups:
+                #print gen_group.id
+                if identity.member_of.filter(id=gen_group.id).count() == 0:
+                    identity.member_of.add(gen_group)
 
 
 
@@ -374,27 +431,23 @@ class ExportLDAP():
         for group in ldap_groups:
                 current = self.model_to_dict(group,g)
                 current['node_type'] = 'group'
-                #if(hide == True and group.member.count() > 0):
-                nodes.append(current)
-                elements.append(group)
-                #else:
-                #    if(hide == False):
-                #        nodes.append(current)
-                #        elements.append(group)
+                if (group.users.count() > 0):
+                    nodes.append(current)
+                    elements.append(group)
 
         results = {}
         results['elements'] = elements
         results['nodes'] = nodes
         return results
 
-    def edges(self,results):
-        elements = results['elements']
-        nodes = results['nodes']
+    def edges(self, node_data):
+        elements = node_data['elements']
+        nodes = node_data['nodes']
 
         edges = []
         for index, value in enumerate(elements):
             if isinstance(value,ActiveDirectoryGroup):
-                users = value.activedirectoryuser_set.all()
+                users = value.users.all()
                 for user in users:
                     current_edge = {}
                     user_index = elements.index(user)
@@ -403,11 +456,10 @@ class ExportLDAP():
                     current_edge['target'] = index
                     edges.append(current_edge)
 
-        json_object = {}
-        json_object['nodes'] = nodes;
-        json_object['links'] = edges;
-        j_out = json.dumps(json_object)
-        return j_out
+        results = {}
+        results['nodes'] = nodes;
+        results['links'] = edges;
+        return results
 
     def model_to_dict(self,instance, fields=None, exclude=None):
         """

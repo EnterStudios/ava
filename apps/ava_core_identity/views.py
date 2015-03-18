@@ -111,6 +111,11 @@ class IdentifierCreate(CreateView):
         self.identity = get_object_or_404(Identity, pk=identity_id)
         return super(IdentifierCreate, self).dispatch(request, *args, **kwargs)
     
+    def get_context_data(self, **kwargs):
+        context = super(IdentifierCreate, self).get_context_data(**kwargs)
+        context['identity'] = self.identity
+        return context
+    
     def form_valid(self, form):
         form_class = self.get_form_class()
         form = self.get_form(form_class)

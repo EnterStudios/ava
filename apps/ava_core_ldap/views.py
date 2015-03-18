@@ -1,8 +1,6 @@
-from django.http import HttpResponseRedirect
-from django.views.generic import CreateView, ListView, DetailView
 from django.shortcuts import get_object_or_404
-from django.views.generic.edit import UpdateView
-from django.views.generic.edit import DeleteView
+from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic.edit import UpdateView, DeleteView
 
 from apps.ava_core_ldap.models import ActiveDirectoryUser, ActiveDirectoryGroup, LDAPConfiguration, ActiveDirectoryHelper
 from apps.ava_core_ldap.forms import  LDAPConfigurationForm
@@ -26,14 +24,14 @@ class LDAPConfigurationCreate(CreateView):
     form_class = LDAPConfigurationForm
 
 class LDAPConfigurationUpdate(UpdateView):
-        model = LDAPConfiguration
-        template_name = 'ldap/LDAPConfiguration.html'
-        form_class = LDAPConfigurationForm
+    model = LDAPConfiguration
+    template_name = 'ldap/LDAPConfiguration.html'
+    form_class = LDAPConfigurationForm
 
 class LDAPConfigurationDelete(DeleteView):
-        model = LDAPConfiguration
-        template_name = 'confirm_delete.html'
-        success_url = '/ldap/'
+    model = LDAPConfiguration
+    template_name = 'confirm_delete.html'
+    success_url = '/ldap/'
 
 class ActiveDirectoryUserIndex(ListView):
     model = ActiveDirectoryUser
@@ -59,14 +57,14 @@ class ActiveDirectoryUserCreate(CreateView):
     form_class = LDAPConfigurationForm
 
 class ActiveDirectoryUserUpdate(UpdateView):
-        model = ActiveDirectoryUser
-        template_name = 'ldap/ActiveDirectoryUser.html'
-        form_class = LDAPConfigurationForm
+    model = ActiveDirectoryUser
+    template_name = 'ldap/ActiveDirectoryUser.html'
+    form_class = LDAPConfigurationForm
 
 class ActiveDirectoryUserDelete(DeleteView):
-        model = ActiveDirectoryUser
-        template_name = 'confirm_delete.html'
-        success_url = '/ldap/'
+    model = ActiveDirectoryUser
+    template_name = 'confirm_delete.html'
+    success_url = '/ldap/'
 
 class ActiveDirectoryGroupIndex(ListView):
     model = ActiveDirectoryGroup
@@ -174,6 +172,7 @@ class LDAPConfigurationGetGroups(ListView):
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
+            #context['ldap_configuration'] = instance
             context['activedirectorygroup_list'] = ActiveDirectoryGroup.objects.filter(ldap_configuration=instance)
         return context
 

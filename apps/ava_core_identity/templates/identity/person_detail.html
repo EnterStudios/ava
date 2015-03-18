@@ -2,31 +2,38 @@
 {% load bootstrap %}
 {% load staticfiles %}
 
-{% block title %}View Identity{% endblock %}
+{% block title %}View Person and Identities{% endblock %}
 {% block mainpage %}
 
 <div class="page-header">
   <h1>View Person and Identities</h1>
 </div>
 
-
 <h2>{{ person.firstname }} {{ person.surname }}</h2>
-<div class="scrollblock block-merging">
 
-<h3>Identities</h3>
 {% if person.identity and person.identity.count %}
-    <table class="table">
-    <tr>
-        <th>Name</th>
-        <th>Description</th>
-    </tr>
-    {% for identity in person.identity.all %}
-    <tr>
-        <td>{{ identity.name }}</td>
-        <td>{{ identity.description }}</td>
-    </tr>
-    {% endfor %}
-    </table>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for identity in person.identity.all %}
+                    <tr>
+                        <td>{{ identity.name }}</td>
+                        <td>{{ identity.description }}</td>
+                        <td>
+                            <a href="{% url 'identity-detail' identity.id %}" class="btn btn-primary">View</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% else %}
     <p>This person does not have any identities associated with them.</p>
 {% endif %}
@@ -34,6 +41,5 @@
 <a href="{% url 'person-update' person.id %}">[update]</a>
 <a href="{% url 'person-delete' person.id %}">[delete]</a>
 
-</div>
 {% endblock %}
 

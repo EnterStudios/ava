@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     url(r'^person/(?P<pk>\d+)/delete/$', login_required(views.PersonDelete.as_view()), name='person-delete'),
     
     #Note: The value below is <identity> not <pk> because it refers to the parent identity, not an identifier.
-    url(r'^identity/(?P<identity>\d+)/add-identifier/$', login_required(views.IdentifierCreate.as_view()), name='identifier-create'),
+    url(r'^identity/(?P<identity>\d+)/new-identifier/$', login_required(views.IdentifierCreate.as_view()), name='identifier-create'),
     url(r'^identifier/(?P<pk>\d+)/update/$', login_required(views.IdentifierUpdate.as_view()), name='identifier-update'),
     url(r'^identifier/(?P<pk>\d+)/delete/$', login_required(views.IdentifierDelete.as_view()), name='identifier-delete'),
 )
