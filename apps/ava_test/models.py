@@ -44,8 +44,17 @@ class TimingType (ReferenceModel):
 
 
 class TestResult (TimeStampedModel):
-    token= models.CharField(max_length=8)
-    ua = models.TextField()
+    token = models.CharField(max_length=100)
+    ipaddress = models.CharField(max_length=50)
+    method = models.CharField(max_length=10)            # GET/POST/etc
+    host = models.CharField(max_length=260)             # host name:port
+    path = models.TextField(null=True, blank=True)      # /path/to/page/
+    contentlength = models.CharField(max_length=10, null=True, blank=True)
+    contenttype = models.CharField(max_length=100, null=True, blank=True)
+    ua = models.TextField(null=True, blank=True)        # User-Agent
+    referrer = models.TextField(null=True, blank=True)  # Referer
+    via = models.TextField(null=True, blank=True)       # Via
 
-
+    def __unicode__(self):
+        return unicode(self.created) + u' => ' + unicode(self.token) 
 

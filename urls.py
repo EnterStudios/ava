@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^test/', include('apps.ava_test.urls')),
     url(r'^test/email/', include('apps.ava_test_email.urls')),
     url(r'^test/twitter/', include('apps.ava_test_twitter.urls')),
+    url(r'^go/', include('apps.ava_test_tracking.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
 urlpatterns += dh5bp_urls

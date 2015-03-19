@@ -418,22 +418,22 @@ class ExportLDAP():
         nodes = []
         elements = []
         ldap_users = ActiveDirectoryUser.objects.filter(ldap_configuration=parameters)
-        fields = ['id','accountExpires','adminCount','name','isCriticalSystemObject','lastLogon','logonCount','pwdLastSet']
+        user_fields = ['id','accountExpires','adminCount','name','isCriticalSystemObject','lastLogon','logonCount','pwdLastSet']
         for user in ldap_users:
             elements.append(user)
-            current = self.model_to_dict(user,fields)
+            current = self.model_to_dict(user,user_fields)
             current['name']=escape(current['name'])
             current['node_type'] = 'user'
             nodes.append(current)
 
         ldap_groups = ActiveDirectoryGroup.objects.filter(ldap_configuration=parameters)
-        g = ['cn','member']
+        group_fields = ['id','cn']
         for group in ldap_groups:
-                current = self.model_to_dict(group,g)
-                current['node_type'] = 'group'
-                if (group.users.count() > 0):
-                    nodes.append(current)
-                    elements.append(group)
+            current = self.model_to_dict(group,group_fields)
+            current['node_type'] = 'group'
+            if (group.users.count() > 0):
+                nodes.append(current)
+                elements.append(group)
 
         results = {}
         results['elements'] = elements

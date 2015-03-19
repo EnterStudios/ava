@@ -59,24 +59,31 @@ $(function(){
     *
     */
 
-   function onFilterGroupClicked(groupName, allGroups){
+   function onFilterGroupClicked(group, allGroups){
       // Here we want to do a 'where in' filter.  'where group in (list of active groups)'
       var activeGroups = [];
-      for (groupName in allGroups) {
-         if ( allGroups[groupName] === 1 ) activeGroups.push(groupName);
+      for (var id in allGroups) {
+         var group = allGroups[id];
+         if (group && group.show) {
+            activeGroups.push(group.id);
+         }
       }
-      // Where 'cn' is in our list of activeGroups
-      visualizer.filter({'cn': activeGroups});
+      // Where 'id' is in our list of activeGroups
+      if (window.console) {
+         console.log('activeGroups', activeGroups);
+         console.log('allGroups', allGroups);
+      }
+      visualizer.filter({'id': activeGroups});
    }
 
    var filterGroups = window.AVA.UI.FilterGroups({
       'filterGroupContainer': $('div.filters'),
-      'onFilterGroupClicked': onFilterGroupClicked,
-      'labelNameCallback': function friendlyLabel(input){ return input.replace(/(Ravencroft)|\-/g, ' '); },
+      'onFilterGroupClicked': onFilterGroupClicked/*,
+      'labelNameCallback': function friendlyLabel(input){ return input.replace(/(Ravencroft)|\-/g, ' '); },*/
    });
 
    var adhocButtons = window.AVA.UI.AdhocButtons({
-      'buttonContainer': $('div.buttons'),
+      'buttonContainer': $('div.buttons')
    });
    adhocButtons.add(buttons);
 

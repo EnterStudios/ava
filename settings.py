@@ -102,6 +102,7 @@ LOCAL_APPS = (
     'apps.ava_test',
     'apps.ava_test_email',
     'apps.ava_test_twitter',
+    'apps.ava_test_tracking',
 )
 
 THIRD_PARTY_APPS = (
@@ -144,6 +145,10 @@ SHORTEN_MODELS = {
 SESSION_ENGINE = 'redis_sessions.session'
 
 LOGIN_REDIRECT_URL= "/people/"
+
+PUBLIC_SITE_URLS = [
+    'http://localhost:8000/',
+]
 
 
 # IMPORT LOCAL SETTINGS

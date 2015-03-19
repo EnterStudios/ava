@@ -88,6 +88,7 @@
          _.chain(inputData.nodes)
             .filter({'node_type': 'group'})
             .each(function(groupNode){
+               groupNode.nodeId = 'G_' + groupNode.id;
                groupNode.id = stringToDomName(groupNode.cn);
             });
 

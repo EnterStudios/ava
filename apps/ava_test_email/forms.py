@@ -7,8 +7,10 @@ class EmailTestForm(ModelForm):
     class Meta:
         model = EmailTest
         # fields = ('name',  'description', 'testtype', 'timingtype','targettype')
+        exclude = []
 
 
 class EmailTargetForm(ModelForm):
     class Meta:
         model = EmailTestTarget
+        exclude = []

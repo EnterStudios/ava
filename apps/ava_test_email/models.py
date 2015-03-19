@@ -4,14 +4,15 @@ from django.db.models import Model
 
 from apps.ava_core.models import TimeStampedModel, ReferenceModel
 from apps.ava_test.models import Test
-from apps.ava_test_email.helpers import generate_hex_token
+from apps.ava_test.helpers import generate_hex_token
 
 
 class EmailTest(Test):
     emailtesttype = models.ForeignKey('EmailTestType', null=False)
     fromaddr = models.EmailField(null=False)
-    subject = models.TextField(max_length=200, null=False)
-    body = models.TextField(max_length=2000, null=False)
+    subject = models.CharField(max_length=200, null=False)
+    body = models.TextField(null=False)
+    html_body = models.TextField(null=True, blank=True)
     messagetype = models.ForeignKey('EmailMessageType', null=False)
 
     def __unicode__(self):
@@ -45,8 +46,9 @@ class EmailTestTarget(TimeStampedModel):
 
 
 class EmailTemplate(Model):
-    subject = models.TextField()
-    message = models.TextField()
+    subject = models.CharField(max_length=200, null=False)
+    message = models.TextField(null=False)
+    message_html = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return self.subject or u''

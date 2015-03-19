@@ -35,7 +35,13 @@
                         {% if test.body %}
                             <tr>
                                 <td>Message Body:</td>
-                                <td>{{ test.body }}</td>
+                                <td><pre style="font-family:inherit">{{ test.body }}</pre></td>
+                            </tr>
+                        {% endif %}
+                        {% if test.html_body %}
+                            <tr>
+                                <td>Message HTML Body:</td>
+                                <td><pre style="font-family:inherit">{{ test.html_body }}</pre></td>
                             </tr>
                         {% endif %}
                         {% if test.messagetype %}

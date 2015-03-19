@@ -35,11 +35,17 @@ button.btn-default.active {
 }
 
 div.overlay_wrapper {
-   width: 100%;
-   top: 0px;
-   left: 0px;
    position: absolute;
    z-index: 100;
+   /*width: 100%;
+   top: 0px;
+   left: 0px;*/
+   top: 50px;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   width: auto;
+   height: auto;
 }
 
 div.overlay {
@@ -53,7 +59,7 @@ div.controls {
 }
 
 div.filters {
-   padding: 1px;
+   padding: 1px 60px 1px 1px;
 }
 
 .filter-label {

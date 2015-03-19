@@ -73,9 +73,9 @@
 
    var filterGroupConfigDefaults = {
       'filterGroupContainer': false,
-      'onFilterGroupClicked': function(groupName, allGroups){},
-      'labelNameCallback': function(groupName) { return groupName; },
-      'checkboxTmpl': _.template('<label class="checkbox-inline filter-label"><input type="checkbox" id="<%= id %>" data-groupname="<%= groupname %>" checked><%= label %></label>')
+      'onFilterGroupClicked': function(group, allGroups){},
+      'labelNameCallback': function(group) { return group.cn; },
+      'checkboxTmpl': _.template('<label class="checkbox-inline filter-label"><input type="checkbox" id="<%= node.id %>" data-groupid="<%= node.id %>" checked><%= label %></label>')
    };
 
    function FilterGoups(config){
@@ -86,13 +86,17 @@
 
       function onFilterGroupClicked(e){
          var element = $(this);
-         allGroups[element.data('groupname')] = element.is(':checked');
-         config.onFilterGroupClicked(element.data('groupname'), allGroups, e);
+         var id = element.data('groupid');
+         var group = allGroups[id];
+         if (group) {
+            group.show = element.is(':checked');
+            config.onFilterGroupClicked(group, allGroups, e);
+         }
       }
 
       function toCheckboxHtml(node){
          return {
-            'check': config.checkboxTmpl({id: node.id, label: config.labelNameCallback(node.cn), groupname: node.cn}),
+            'check': config.checkboxTmpl({node: node, label: config.labelNameCallback(node)}),
             'node': node
          };
       }
@@ -103,7 +107,7 @@
             .filter({'node_type': 'group'})
             .map(toCheckboxHtml)
             .each(function(pair){
-               allGroups[pair.node.cn] = 1;
+               allGroups[pair.node.id] = _.extend({}, pair.node, {'show': true});
                config.filterGroupContainer.append(pair.check);
             });
          $('input', config.filterGroupContainer).on('click', onFilterGroupClicked);

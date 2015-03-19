@@ -1,7 +1,9 @@
+import re
 from django.core.mail import get_connection, EmailMultiAlternatives
 from apps.ava_core.celery import task_manager
 from apps.ava_test.testrunner import TestRunner
 from apps.ava_test_email.models import EmailTest
+from apps.ava_test import helpers
 
 
 @task_manager.task(name='ava_test_email.tasks.run_email_test')
@@ -15,6 +17,9 @@ class EmailTestSender(TestRunner):
     '''
     A helper class for generating and sending messages for an email test.
     '''
+    
+    LINK_REPLACE = re.compile(r'{{\s*url\s*}}')
+    
     connection = None
     
     def execute_test(self):
@@ -48,31 +53,41 @@ class EmailTestSender(TestRunner):
         
         :param target: The email identifier that the message will be sent to.
         '''
+        url = helpers.generate_tracking_link('email-test-tracking', target.token)
+        
         message = EmailMultiAlternatives(subject=self.test.subject,
-                                         body=self.get_text_body(target),
+                                         body=self.get_text_body(target, url),
                                          from_email=self.test.fromaddr,
                                          to=[target.target.identifier],
                                          connection=self.connection)
         
-        html_body = self.get_html_body(target)
+        html_body = self.get_html_body(target, url)
         if html_body:
             message.attach_alternative(html_body, 'text/html')
         
         return message
     
-    def get_text_body(self, target):
+    def get_text_body(self, target, url):
         '''
         Gets the text body of an email message.
         
         :param target: The email test target that the message will be sent to.
         '''
-        return self.test.body
+        
+        body = self.test.body
+        body = self.LINK_REPLACE.sub(url, body)
+        return body
     
-    def get_html_body(self, target):
+    def get_html_body(self, target, url):
         '''
         Gets the HTML body of an email message.
         
         :param target: The email test target that the message will be sent to.
         '''
-        return None
+        
+        body = self.test.html_body
+        if body:
+            body = self.LINK_REPLACE.sub(url, body)
+        return body
+
 
