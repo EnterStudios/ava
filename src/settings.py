@@ -15,7 +15,7 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 TEMPLATE_DIRS = (
-            os.path.join(BASE_DIR,  'ava/templates'),
+            os.path.join(BASE_DIR,  'src/templates'),
             )
 
 DATABASES = {
@@ -144,7 +144,7 @@ SHORTEN_MODELS = {
 
 SESSION_ENGINE = 'redis_sessions.session'
 
-LOGIN_REDIRECT_URL= "/people/"
+LOGIN_REDIRECT_URL= "/"
 
 PUBLIC_SITE_URLS = [
     'http://localhost:8000/',

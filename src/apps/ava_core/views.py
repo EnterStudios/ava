@@ -1,4 +1,10 @@
 from django.shortcuts import redirect
+from django.views import generic
+from apps.ava_core_identity.models import Person, Identity
+from apps.ava_core_ldap.models import LDAPConfiguration
+from apps.ava_core_project.models import Project
+from apps.ava_test_email.models import EmailTest
+from apps.ava_test_twitter.models import TwitterTest
 
 
 class FormsetMixin(object):
@@ -66,3 +72,18 @@ class FormsetMixin(object):
 
     def form_invalid(self, form, formset):
         return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+
+
+class DashboardView(generic.TemplateView):
+    template_name = 'core/dashboard.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(DashboardView, self).get_context_data(**kwargs)
+        context['person_count'] = Person.objects.count()
+        context['identity_count'] = Identity.objects.count()
+        context['ldap_count'] = LDAPConfiguration.objects.count()
+        context['project_count'] = Project.objects.count()
+        context['email_test_count'] = EmailTest.objects.count()
+        context['twitter_test_count'] = TwitterTest.objects.count()
+        return context
