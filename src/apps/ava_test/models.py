@@ -10,8 +10,13 @@ class Test(TimeStampedModel):
     TWITTER = 'TWITTER'
 
     TEST_TYPE_CHOICES = (
-        (EMAIL,       'Email'),
+        (EMAIL,    'Email'),
         (TWITTER,  'Twitter'),
+    )
+
+    TEST_TYPE_ICONS = (
+        (EMAIL,    'envelope'),
+        (TWITTER,  'twitter'),
     )
 
     NEW = 'NEW'
@@ -44,22 +49,6 @@ class Test(TimeStampedModel):
 
     def __unicode__(self):
         return self.name or u''
-
-
-class TestType (ReferenceModel):
-
-    EMAIL = 'EMAIL'
-    TWITTER = 'TWITTER'
-
-    STATUS_CHOICES = (
-        (EMAIL,       'Email'),
-        (TWITTER,  'Twitter'),
-    )
-
-    name = models.CharField(max_length=7,
-                                  choices=STATUS_CHOICES,
-                                  default=EMAIL,
-                                  verbose_name='Test Type')
 
 
 class TestResult (TimeStampedModel):

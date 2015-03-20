@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('sAMAccountName', models.CharField(max_length=300)),
                 ('objectGUID', models.CharField(max_length=300)),
                 ('objectSid', models.CharField(max_length=300)),
-                ('group', models.ForeignKey(to='ava_core_group.Group')),
+                ('group', models.ForeignKey(blank=True, to='ava_core_group.Group', null=True)),
             ],
             options={
             },
@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
                 ('userAccountControl', models.CharField(max_length=300)),
                 ('whenChanged', models.CharField(max_length=300)),
                 ('whenCreated', models.CharField(max_length=300)),
-                ('groups', models.ManyToManyField(to='ava_core_ldap.ActiveDirectoryGroup')),
+                ('groups', models.ManyToManyField(related_name='users', to='ava_core_ldap.ActiveDirectoryGroup')),
             ],
             options={
             },

@@ -22,21 +22,61 @@
 {% block content %}
 {% block topnavbar %}
 
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
    <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">AVA - Protect Your People</a>
+            <a class="navbar-brand" href="/">AVA - Protect Your People</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                {% if user == None %} 
-                    	<li><a href="/accounts/login/">Login</a></li>
-                {% else %} 
-			<li><a href="/">Dashboard</a></li>
-                	<li><a href="/people/identity/new/">New Identity</a></li>
-                	<li><a href="/people/identity/">Manage Identities</a></li>
-			<li><a href="/accounts/logout/">Logout</a></li>
-                {% endif %}
+
+                {% if user == None %}
+                    	<li><a href="{% url 'login' %}">Login</a></li>
+                {% else %}
+
+                    <li><a href="/">Dashboard</a></li>
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                Know <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                                <li><a href="{% url 'person-index' %}">People</a></li>
+                	            <li><a href="{% url 'group-index' %}">Groups</a></li>
+                                <li><a href="{% url 'identity-index' %}">Identities</a></li>
+                          </ul>
+                    </li>
+                     <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                Test <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                                <li><a href="{% url 'test-dashboard' %}">Test Dashboard</a></li>
+                                <li><a href="{% url 'twitter-test-index' %}">Twitter Tests</a></li>
+                	            <li><a href="{% url 'email-test-index' %}">Email Tests</a></li>
+                        </ul>
+                    </li>
+                       <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                               Analyse <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                                <li><a href="{% url 'project-index' %}">Projects</a></li>
+                                <li><a href="#">Visualise</a></li>
+                          </ul>
+                    </li>
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                               Settings <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                                <li><a href="{% url 'ldap-configuration-index' %}">Manage LDAP Integration</a></li>
+                                <li><a href="{% url 'password_change' %}">Change Password</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% endif %}
+
             </ul>
         </div><!--/.nav-collapse -->
     </div> <!-- end of container-fluid -->

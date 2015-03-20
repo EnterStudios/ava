@@ -53,7 +53,7 @@ class EmailTestCreate(generic.CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         form.instance.teststatus = Test.NEW
-        form.instance.testtype =
+        form.instance.testtype = Test.EMAIL
         result = super(EmailTestCreate, self).form_valid(form)
         self.success_url = form.instance.get_absolute_url()
         self.add_targets(form.instance)

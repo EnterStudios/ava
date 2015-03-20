@@ -5,11 +5,13 @@ from apps.ava_test_email.models import EmailTest
 from apps.ava_test_twitter.models import TwitterTest
 
 class TestDashboardView(generic.ListView):
-    template_name = 'test/dashboard.html'
+    template_name = 'test/test_dashboard.html'
+    model = Test
+    context_object_name = 'list'
 
     def get_context_data(self, **kwargs):
         context = super(TestDashboardView, self).get_context_data(**kwargs)
-        context['test_modules'] = TestType.objects.all()
+
         context['tests_new'] = self.test_count_by_status(Test.NEW)
         context['tests_running'] = self.test_count_by_status(Test.RUNNING)
         context['tests_complete'] = self.test_count_by_status(Test.COMPLETE)
@@ -20,11 +22,14 @@ class TestDashboardView(generic.ListView):
         context['twitter_test_list'] = TwitterTest.objects.filter(user=self.request.user)
         return context
 
-    def test_count_by_status(self, status, organisation):
+    def test_count_by_status(self, status):
         count = TwitterTest.objects.filter(user=self.request.user, teststatus=status).count()
         count = count + EmailTest.objects.filter(user=self.request.user, teststatus=status).count()
         return count
 
+
+    def get_queryset(self):
+        return Test.objects.filter(user = self.request.user)
 
 
 
