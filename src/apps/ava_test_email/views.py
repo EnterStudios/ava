@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 
 from apps.ava_test_email.models import EmailTest, EmailTestTarget
+from apps.ava_test.models import Test
 from apps.ava_test_email.forms import EmailTestForm
 from apps.ava_core_identity.models import Person, Identifier
 from apps.ava_test_email.tasks import run_email_test
@@ -13,11 +14,7 @@ from apps.ava_test_email.tasks import run_email_test
 class EmailTestIndex(generic.ListView):
     template_name = 'email/test_email_index.html'
     context_object_name = 'list'
-
-    def get_queryset(self):
-        self.request.session['test'] = None
-        return EmailTest.objects.filter(user=self.request.user)
-
+    model = EmailTest
 
 class EmailTestDetail(generic.DetailView):
     model = EmailTest
@@ -52,11 +49,11 @@ class EmailTestCreate(generic.CreateView):
     model = EmailTest
     template_name = 'email/test_email.html'
     form_class = EmailTestForm
-    
-    success_url = None
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        form.instance.teststatus = Test.NEW
+        form.instance.testtype =
         result = super(EmailTestCreate, self).form_valid(form)
         self.success_url = form.instance.get_absolute_url()
         self.add_targets(form.instance)

@@ -8,27 +8,16 @@ from apps.ava_test.helpers import generate_hex_token
 
 
 class EmailTest(Test):
-    emailtesttype = models.ForeignKey('EmailTestType', null=False)
     fromaddr = models.EmailField(null=False)
     subject = models.CharField(max_length=200, null=False)
     body = models.TextField(null=False)
     html_body = models.TextField(null=True, blank=True)
-    messagetype = models.ForeignKey('EmailMessageType', null=False)
 
     def __unicode__(self):
         return self.name or u''
 
     def get_absolute_url(self):
         return reverse('email-test-detail',kwargs={'pk': self.pk})
-
-
-class EmailTestType(ReferenceModel):
-    pass
-
-
-class EmailMessageType(ReferenceModel):
-    pass
-
 
 class EmailTestTarget(TimeStampedModel):
     emailtest = models.ForeignKey('EmailTest', null=False, related_name='targets')

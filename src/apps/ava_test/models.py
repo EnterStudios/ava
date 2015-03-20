@@ -6,13 +6,21 @@ from apps.ava_core.models import TimeStampedModel,ReferenceModel
 
 class Test(TimeStampedModel):
 
+    EMAIL = 'EMAIL'
+    TWITTER = 'TWITTER'
+
+    TEST_TYPE_CHOICES = (
+        (EMAIL,       'Email'),
+        (TWITTER,  'Twitter'),
+    )
+
     NEW = 'NEW'
     COMPLETE = 'COMPLETE'
     ERROR = 'ERROR'
     SCHEDULED = 'SCHEDULED'
     RUNNING = 'RUNNING'
 
-    STATUS_CHOICES = (
+    TEST_STATUS_CHOICES = (
         (NEW,       'New'),
         (COMPLETE,  'Complete'),
         (ERROR,     'An error occurred'),
@@ -23,10 +31,14 @@ class Test(TimeStampedModel):
     name=models.CharField(max_length=100)
     user = models.ForeignKey(User)
     description=models.CharField(max_length=300)
-    testtype = models.ForeignKey('TestType', null=False)
-    timingtype = models.ForeignKey('TimingType', null=False)
+
+    testtype = models.CharField(max_length=7,
+                                  choices=TEST_TYPE_CHOICES,
+                                  default=EMAIL,
+                                  verbose_name='Test Type')
+
     teststatus = models.CharField(max_length=10,
-                                  choices=STATUS_CHOICES,
+                                  choices=TEST_STATUS_CHOICES,
                                   default=NEW,
                                   verbose_name='Test Status')
 
@@ -35,12 +47,19 @@ class Test(TimeStampedModel):
 
 
 class TestType (ReferenceModel):
-    url= models.TextField(max_length=50, null=False)
-    icon= models.CharField(max_length=50, null=True, blank=True)
 
+    EMAIL = 'EMAIL'
+    TWITTER = 'TWITTER'
 
-class TimingType (ReferenceModel):
-    icon= models.CharField(max_length=50, null=True, blank=True)
+    STATUS_CHOICES = (
+        (EMAIL,       'Email'),
+        (TWITTER,  'Twitter'),
+    )
+
+    name = models.CharField(max_length=7,
+                                  choices=STATUS_CHOICES,
+                                  default=EMAIL,
+                                  verbose_name='Test Type')
 
 
 class TestResult (TimeStampedModel):

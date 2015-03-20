@@ -12,8 +12,9 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Status</th>
                     <th>
-                        <a href="{% url 'email-test-new' %}" class="glyphicon glyphicon-plus"></a>
+                        <a href="{% url 'email-test-create' %}" class="glyphicon glyphicon-plus"></a>
                     </th>
                 </tr>
             </thead>
@@ -23,6 +24,7 @@
                         <td>
                             <a href="{% url 'email-test-detail' test.id %}">{{ test.name }}</a>
                         </td>
+                        <td> {{ test.teststatus }}</td>
                         <td>
                             <a href="{% url 'email-test-update' test.id %}" class="btn btn-primary">Update</a>
                             <a href="{% url 'email-test-delete' test.id %}" class="btn btn-danger">Delete</a>
