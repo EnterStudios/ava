@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from apps.ava_test_email.models import EmailTest, EmailTestTarget
 from apps.ava_test.models import Test
 from apps.ava_test_email.forms import EmailTestForm
-from apps.ava_core_identity.models import Person, Identifier
+from apps.ava_core_identity.models import Identity, Identifier
 from apps.ava_test_email.tasks import run_email_test
 
 
@@ -61,11 +61,8 @@ class EmailTestCreate(generic.CreateView):
 
     def add_targets(self, test):
         #TODO: Get list of targets from project
-        people = Person.objects.all()
-        for person in people:
-            for identity in person.identity.all():
-                for identifier in identity.identifier_set.filter(identifiertype = Identifier.EMAIL):
-                    obj, created = EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
+        for identifier in Identifier.objects.filter(identifiertype = Identifier.EMAIL):
+            obj, created = EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
         return "OK"
 
 

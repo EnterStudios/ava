@@ -52,7 +52,9 @@ class Test(TimeStampedModel):
 
 
 class TestResult (TimeStampedModel):
-    token = models.CharField(max_length=100)
+    class Meta:
+        abstract = True
+    
     ipaddress = models.CharField(max_length=50)
     method = models.CharField(max_length=10)            # GET/POST/etc
     host = models.CharField(max_length=260)             # host name:port
@@ -64,5 +66,5 @@ class TestResult (TimeStampedModel):
     via = models.TextField(null=True, blank=True)       # Via
 
     def __unicode__(self):
-        return unicode(self.created) + u' => ' + unicode(self.token) 
+        return unicode(self.created)
 

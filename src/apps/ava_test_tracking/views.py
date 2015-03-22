@@ -30,24 +30,26 @@ class RecordTestResultView(generic.TemplateView):
     def get_template_names(self):
         return 'tracking/success.html'
     
-    def create_test_result(self, token):
-        token_info = {'token': token}
+    def get_result_info(self, target):
+        result_info = {'target':target}
         
         for field_name, meta_name in self.TRACKING_FIELDS.iteritems():
             if meta_name in self.request.META:
-                token_info[field_name] = self.request.META[meta_name]
+                result_info[field_name] = self.request.META[meta_name]
 
-        return TestResult.objects.create(**token_info)
+        return result_info
     
     def record_token(self, token):
         pass
 
 class RecordEmailTestResultView(RecordTestResultView):
     def record_token(self, token):
-        get_object_or_404(EmailTestTarget, token=token)
-        self.create_test_result(token)
+        target = get_object_or_404(EmailTestTarget, token=token)
+        result_info = self.get_result_info(target)
+        target.results.create(**result_info)
 
 class RecordTwitterTestResultView(RecordTestResultView):
     def record_token(self, token):
-        get_object_or_404(TwitterTestTarget, token=token)
-        self.create_test_result(token)
+        target = get_object_or_404(TwitterTestTarget, token=token)
+        result_info = self.get_result_info(target)
+        target.results.create(**result_info)

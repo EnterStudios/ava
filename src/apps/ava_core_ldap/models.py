@@ -272,12 +272,13 @@ class ActiveDirectoryHelper():
 
     def getUsers(self,parameters):
         filter = '(objectclass=user)'
-        attrs = ['distinguishedName','objectGUID','objectSid','cn','accountExpires','adminCount','badPasswordTime','badPwdCount','description','displayName','isCriticalSystemObject','lastLogoff','lastLogon','lastLogonTimestamp','logonCount','logonHours','name','primaryGroupID','pwdLastSet','sAMAccountName','sAMAccountType','uSNChanged','uSNCreated','userAccountControl','whenChanged','whenCreated','memberOf']
+        attrs = ['distinguishedName','objectGUID','objectSid','cn','accountExpires','adminCount','badPasswordTime','badPwdCount','description','displayName','isCriticalSystemObject','lastLogoff','lastLogon','lastLogonTimestamp','logonCount','logonHours','name','primaryGroupID','pwdLastSet','sAMAccountName','sAMAccountType','uSNChanged','uSNCreated','userAccountControl','whenChanged','whenCreated','memberOf','proxyAddresses']
         results = self.search(parameters,filter,attrs)
         for v in results:
             new_attrs = {}
             groups = []
             gen_groups = []
+            email_addresses = []
             new_attrs.update(v.get_attributes())
             for key, values in new_attrs.iteritems():
                 if len(values) >  0:
@@ -288,6 +289,10 @@ class ActiveDirectoryHelper():
                                 groups.append(q)
                                 if q.group:
                                     gen_groups.append(q.group)
+                    elif key == 'proxyAddresses':
+                        for address in values:
+                            if address[:5].lower() == 'smtp:':
+                                email_addresses.append(address[5:])
                     else:
                         value = ' '.join(values)
                         
@@ -302,6 +307,7 @@ class ActiveDirectoryHelper():
                             new_attrs[key] = self.cleanhex(value)
 
             new_attrs.pop('memberOf',None)
+            new_attrs.pop('proxyAddresses',None)
             
             # Don't filter on everything. Start with the properties that are
             # least likely to ever change, then work towards the more mutable
@@ -334,10 +340,11 @@ class ActiveDirectoryHelper():
             #Person.objects.get_or_create(firstname=firstname,surname=surname, identity=identity)
 
             Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName, identifiertype=Identifier.UNAME,identity=identity)
-            '''
-            TODO Import the actual email address from AD
-            '''
-            #Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName+"@avasecure.com", identifiertype=Identifier.EMAIL, identity=identity)
+            
+            # Import the email addresses.
+            for email_address in email_addresses:
+                Identifier.objects.get_or_create(identifier=email_address, identifiertype=Identifier.EMAIL, identity=identity)
+            
             for group in groups:
                 #print groups
                 if ad_user.groups.filter(id=group.id).count() == 0:

@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import Model
 
 from apps.ava_core.models import TimeStampedModel, ReferenceModel
-from apps.ava_test.models import Test
+from apps.ava_test.models import Test, TestResult
 from apps.ava_test.helpers import generate_hex_token
 
 
@@ -19,6 +19,7 @@ class EmailTest(Test):
     def get_absolute_url(self):
         return reverse('email-test-detail',kwargs={'pk': self.pk})
 
+
 class EmailTestTarget(TimeStampedModel):
     emailtest = models.ForeignKey('EmailTest', null=False, related_name='targets')
     target = models.ForeignKey('ava_core_identity.Identifier', null=False)
@@ -32,6 +33,10 @@ class EmailTestTarget(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse('email-test-target-detail',kwargs={'pk': self.pk})
+
+
+class EmailTestResult(TestResult):
+    target = models.ForeignKey('EmailTestTarget', null=False, related_name='results')
 
 
 class EmailTemplate(Model):

@@ -60,11 +60,28 @@
                             <tr>
                                 <td>Test Targets:</td>
                                 <td>
-                                    <ul>
-                                        {% for target in test.targets.all %}
-                                            <li>{{ target.target.identifier }}</li>
-                                        {% endfor %}
-                                    </ul>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email Address</th>
+                                                <th>Link Clicked</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for target in test.targets.all %}
+                                                <tr>
+                                                    <td>{{ target.target.identity.name }}</td>
+                                                    <td>{{ target.target.identifier }}</td>
+                                                    <td>
+                                                        {% for result in target.results.all %}
+                                                            <span class="label label-default" title="{{ result.ua }}">{{ result.created }}</span>
+                                                        {% endfor %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </td>
                             </tr>
                         {% endif %}
