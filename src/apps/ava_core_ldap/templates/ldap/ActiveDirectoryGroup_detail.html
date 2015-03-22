@@ -49,7 +49,7 @@
                     </tr>
                 </thead>
                 <tbody>
-    {% for activedirectoryuser in activedirectorygroup.activedirectoryuser_set.all %}
+    {% for activedirectoryuser in activedirectorygroup.users.all %}
     <tr>
         <td>{{ activedirectoryuser.name }}</td>
         <td>{{ activedirectoryuser.accountExpires }}</td>
