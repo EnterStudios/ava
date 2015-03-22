@@ -13,7 +13,7 @@ Vagrant.configure(2) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "trusty64"
-  config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/20150312.3/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+  config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/20150313.2/trusty-server-cloudimg-amd64-vagrant-disk1.box"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -41,7 +41,7 @@ Vagrant.configure(2) do |config|
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
   # TODO: Make `vagrant` subdirectory a sibling of a `src` directory?
-  config.vm.synced_folder "../", "/home/vagrant/ava.github.com/ava"
+  config.vm.synced_folder "../src/", "/home/vagrant/ava.github.com/ava"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
