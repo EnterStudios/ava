@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 
 from apps.ava_core_ldap.models import LDAPConfiguration, ExportLDAP
+from django.views.generic import ListView
 
 
 class LDAPGraph(generic.TemplateView):
@@ -27,18 +28,12 @@ def graph_data(request, pk):
     return JsonResponse(json_data)
 
 
-#class LDAPGraphHideView(generic.DeleteView):
-#    template_name = 'graph/ldap.html'
-#    model = LDAPConfiguration
 
-#    def get_context_data(self, **kwargs):
-#        context = super(LDAPGraphHideView, self).get_context_data(**kwargs)
-#        pk = self.kwargs.get('pk')
-#        if pk:
-#            parameters = get_object_or_404(LDAPConfiguration, pk=pk)
-#            exp = ExportLDAP()
-#            context['json'] = exp.generateGraph(parameters)
-#            context['link'] = "/graph/ldap/"+pk+"/"
-#            context['link_message'] = "Show Empty Groups"
-#        return context
+class LDAPGraphIndex(ListView):
+    template_name = 'graph/vis_ldap_graph_index.html'
+    model = LDAPConfiguration
+    context_object_name = 'ldap_configuration_list'
+
+    def get_queryset(self):
+        return LDAPConfiguration.objects.all()
 
