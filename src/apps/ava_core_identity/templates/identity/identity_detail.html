@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load identity_filters %}
 {% block title %}View Identity{% endblock %}
 {% block mainpage %}
 
@@ -25,7 +26,7 @@
             {% for identifier in identity.identifier_set.all %}
                 <tr>
                     <td>{{ identifier.identifier }}</td>
-                    <td>{{ identifier.identifiertype  }}</td>
+                    <td>{{ identifier.identifiertype|identifier_type }}</td>
                     <td>
                         <a href="{% url 'identifier-update' identifier.id  %}" class="btn btn-primary btn-sm">Update</a>
                         <a href="{% url 'identifier-delete' identifier.id  %}" class="btn btn-danger btn-sm">Delete</a>

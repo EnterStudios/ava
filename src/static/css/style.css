@@ -1,27 +1,27 @@
 
 div.well{
-  height: 250px;
+    height: 250px;
 } 
 
 .Absolute-Center {
-  margin: auto;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
 }
 
 .Absolute-Center.is-Responsive {
-  width: 50%; 
-  height: 50%;
-  min-width: 200px;
-  max-width: 400px;
-  padding: 40px;
+    width: 50%;
+    height: 50%;
+    min-width: 200px;
+    max-width: 400px;
+    padding: 40px;
 }
 
 #logo-container{
-  margin: auto;
-  margin-bottom: 10px;
-  text-align:center;
-  padding-bottom:25px;  
+    margin: auto;
+    margin-bottom: 10px;
+    text-align:center;
+    padding-bottom:25px;
 }
 
 
@@ -50,8 +50,8 @@ img.ava_logo{
 
 
 .node {
-stroke: #fff;
-stroke-width: 1.5px;
+    stroke: #fff;
+    stroke-width: 1.5px;
 }
 
 .nodered {
@@ -59,14 +59,23 @@ stroke-width: 1.5px;
 }
 
 .node text {
-pointer-events: none;
-font: 10px sans-serif;
-fill:#000;
-stroke: #000;
-stroke-width: 0.1px;
+    pointer-events: none;
+    font: 10px sans-serif;
+    fill:#000;
+    stroke: #000;
+    stroke-width: 0.1px;
 }
 
 .link {
-stroke: #999;
-stroke-opacity: .6;
+    stroke: #999;
+    stroke-opacity: .6;
+}
+
+
+/* Custom styles */
+
+pre.message-content {
+    font-family: inherit;
+    overflow: auto;
+    max-height: 15em;
 }

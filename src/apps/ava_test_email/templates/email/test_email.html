@@ -10,13 +10,12 @@
   <h1>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Email Test</h1>
 </div>
 
-        <form action="." method="post">
-            {% csrf_token %}
-	    {{ form|bootstrap }}
-        
-	  <div class="form-actions">
-		<button type="submit" class="btn btn-primary">Save</button>
-	   </div>
+<form action="." method="post">
+    {% csrf_token %}
+    {{ form|bootstrap }}
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
 </form>
 
 {% endblock %}

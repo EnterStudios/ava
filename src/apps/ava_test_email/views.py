@@ -3,11 +3,13 @@ from django.views.generic.edit import UpdateView, DeleteView
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import PermissionDenied
 
-from apps.ava_test_email.models import EmailTest, EmailTestTarget
-from apps.ava_test.models import Test
-from apps.ava_test_email.forms import EmailTestForm
 from apps.ava_core_identity.models import Identity, Identifier
+from apps.ava_core_project.models import Project, ProjectAccess
+from apps.ava_test.models import Test
+from apps.ava_test_email.models import EmailTest, EmailTestTarget
+from apps.ava_test_email.forms import EmailTestForm
 from apps.ava_test_email.tasks import run_email_test
 
 
@@ -49,8 +51,23 @@ class EmailTestCreate(generic.CreateView):
     model = EmailTest
     template_name = 'email/test_email.html'
     form_class = EmailTestForm
+    
+    project = None
+    
+    def dispatch(self, request, *args, **kwargs):
+        project_id = self.kwargs['proj']
+        self.project = get_object_or_404(Project, pk=project_id)
+        if not self.project.user_has_access(request.user, ProjectAccess.RUN_TEST):
+            raise PermissionDenied
+        return super(EmailTestCreate, self).dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        context_data = super(EmailTestCreate, self).get_context_data(**kwargs)
+        context_data['project'] = self.project
+        return context_data
 
     def form_valid(self, form):
+        form.instance.project = self.project
         form.instance.user = self.request.user
         form.instance.teststatus = Test.NEW
         form.instance.testtype = Test.EMAIL
@@ -60,10 +77,18 @@ class EmailTestCreate(generic.CreateView):
         return result
 
     def add_targets(self, test):
-        #TODO: Get list of targets from project
-        for identifier in Identifier.objects.filter(identifiertype = Identifier.EMAIL):
+        # For the project's target groups, find and add all email addresses.
+        for group in self.project.groups.all():
+            for identity in group.identity_set.all():
+                for identifier in identity.identifier_set.filter(identifiertype=Identifier.EMAIL):
+                    obj, created = EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
+        # For the project's target identities, find and add all email addresses.
+        for identity in self.project.identities.all():
+            for identifier in identity.identifier_set.filter(identifiertype=Identifier.EMAIL):
+                obj, created = EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
+        # For the project's target identifiers, add all that are email addresses.
+        for identifier in self.project.identifiers.filter(identifiertype = Identifier.EMAIL):
             obj, created = EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
-        return "OK"
 
 
 class EmailTestUpdate(UpdateView):

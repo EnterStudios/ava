@@ -2,9 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from apps.ava_core.models import TimeStampedModel,ReferenceModel
+from apps.ava_core_project.models import Project
 
 
-class Test(TimeStampedModel):
+class Test(ReferenceModel):
 
     EMAIL = 'EMAIL'
     TWITTER = 'TWITTER'
@@ -33,19 +34,27 @@ class Test(TimeStampedModel):
         (RUNNING ,  'In progress'),
     )
 
-    name=models.CharField(max_length=100)
-    user = models.ForeignKey(User)
-    description=models.CharField(max_length=300)
+    # The project that the test is tied to.
+    project = models.ForeignKey(Project, related_name='tests', null=True)
+    # (OBSOLETE) The user who owns the test.
+    user = models.ForeignKey(User, null=True)
 
+    # The type of test being performed.
     testtype = models.CharField(max_length=7,
-                                  choices=TEST_TYPE_CHOICES,
-                                  default=EMAIL,
-                                  verbose_name='Test Type')
-
+                                choices=TEST_TYPE_CHOICES,
+                                default=EMAIL,
+                                verbose_name='Test Type')
+    # The current status of the test.
     teststatus = models.CharField(max_length=10,
                                   choices=TEST_STATUS_CHOICES,
                                   default=NEW,
                                   verbose_name='Test Status')
+
+    # Optional URL that users are redirected to after clicking on the link.
+    redirect_url = models.CharField(max_length=2000, null=True, blank=True)
+    # Optional page template to display after clicking on the link. Not used
+    # if a redirect URL is specified.
+    page_template = models.CharField(max_length=100, null=True, blank=True)
 
     def __unicode__(self):
         return self.name or u''

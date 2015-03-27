@@ -3,29 +3,40 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.views.generic import CreateView, ListView, DetailView, View
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
-from requests import request
+from django.db.models import Q
 
+from apps.ava_core_auth.models import UserRights
 from apps.ava_core_group.models import Group
 from apps.ava_core_project.models import Project
-from apps.ava_core_project.forms import  ProjectForm
+from apps.ava_core_project.forms import ProjectForm
+
 
 class ProjectIndex(ListView):
     template_name = 'project/project_index.html'
     context_object_name = 'project_list'
+    model = Project
 
     def get_queryset(self):
-        self.request.session['project']=None 
-        return Project.objects.filter(user=self.request.user)
+        user = self.request.user
+        # If the user is an admin, they get to see all projects.
+        if UserRights.get(user).is_admin:
+            return Project.objects.all()
+        # Everyone else sees project they own or that their team(s) can access.
+        else:
+            return Project.objects.filter(Q(teams__team__users__exact=user)|Q(owner__exact=user))
+
 
 class ProjectDetail(DetailView):
     model = Project
     context_object_name = 'project'
     template_name = 'project/project_detail.html'
 
+
 class ProjectDelete(DeleteView):
     model = Project
     template_name = 'confirm_delete.html'
     success_url = '/project/'
+
 
 class ProjectCreate(CreateView):
     model = Project

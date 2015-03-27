@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load test_filters %}
+{% load group_filters %}
+{% load identity_filters %}
 {% block mainpage %}
 
 <div class="page-header">
@@ -8,42 +11,177 @@
 
 
 <h2>{{ project.name }} </h2>
-<p> {{ project.description }} {{ project.group.count }}</p>
+<p>{{ project.description }}</p>
+<p><b>Justification:</b> {{ project.justification }}</p>
 
-    <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th># Members</th>
-                        <th>
+<hr>
 
+<p>
+    <a href="{% url 'project-update' project.id %}" class="btn btn-primary">Update</a>
+    <a href="{% url 'project-delete' project.id %}" class="btn btn-danger">Delete</a>
+</p>
 
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                 {% for group in project.group.all %}
-    <tr>
-        <td>{{ group.name }}</td>
-        <td>{{ group.group_type  }}</td>
-        <td>{{ group.identity_set.count }}</td>
-        <td>
+<hr>
 
-          <a href="{% url 'group-detail' group.id  %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
-          <a href="{% url 'project-group-delete' project.id group.id  %}"><button type="button" class="btn btn-danger btn-sm">Delete from project</button></a>
-    </tr>
-    {% endfor %}
-     </tbody>
+<h3>Tests</h3>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>All Tests</h4>
+    </div>
+    <table class="table table-striped">
+        <colgroup>
+            <col width="35%">
+            <col width="20%">
+            <col width="20%">
+            <col width="25%">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>
+                    <div class="btn-group">
+                        <a class="btn btn-primary" href="#"><i class="fa fa-plus fa-fw"></i> Add Test</a>
+                        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">
+                            <span class="fa fa-caret-down"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'email-test-create' project.id %}"><i class="fa fa-envelope fa-fw"></i> Email</a></li>
+                            <li><a href="{% url 'twitter-test-create' %}"><i class="fa fa-twitter fa-fw"></i> Twitter</a></li>
+                        </ul>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+             {% for test in project.tests.all %}
+                <tr>
+                    <td>{{ test.testtype|test_type }}</td>
+                    <td>{{ test.name }}</td>
+                    <td>{{ test.teststatus|test_status }}</td>
+                    <td>
+                        <a href="{% url 'group-detail' group.id %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="{% url 'project-group-delete' project.id group.id %}" class="btn btn-danger btn-sm">Remove from project</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
-
-
-
-
-<a href="{% url 'project-update' project.id %}">[update]</a>
-<a href="{% url 'project-delete' project.id %}">[delete]</a>
-
 </div>
+
+<hr>
+
+<h3>Test Targets</h3>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Groups</h4>
+    </div>
+    <table class="table table-striped">
+        <colgroup>
+            <col width="30%">
+            <col width="25%">
+            <col width="20%">
+            <col width="25%">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th># Members</th>
+                <th>
+                    <a href="#" class="glyphicon glyphicon-plus"></a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+             {% for group in project.groups.all %}
+                <tr>
+                    <td>{{ group.name }}</td>
+                    <td>{{ group.group_type|group_type }}</td>
+                    <td>{{ group.identity_set.count }}</td>
+                    <td>
+                        <a href="{% url 'group-detail' group.id %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="{% url 'project-group-delete' project.id group.id %}" class="btn btn-danger btn-sm">Remove from project</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+    
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Identities</h4>
+    </div>
+    <table class="table table-striped">
+        <colgroup>
+            <col width="55%">
+            <col width="20%">
+            <col width="25%">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th># Identifiers</th>
+                <th>
+                    <a href="#" class="glyphicon glyphicon-plus"></a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+             {% for identity in project.identities.all %}
+                <tr>
+                    <td>{{ identity.name }}</td>
+                    <td>{{ identity.identifiers.count }}</td>
+                    <td>
+                        {% comment %}
+                        <a href="{% url 'group-detail' group.id %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="{% url 'project-group-delete' project.id group.id %}" class="btn btn-danger btn-sm">Remove from project</a>
+                        {% endcomment %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Identifiers</h4>
+    </div>
+    <table class="table table-striped">
+        <colgroup>
+            <col width="20%">
+            <col width="25%">
+            <col width="30%">
+            <col width="25%">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Identifier</th>
+                <th>Belongs To</th>
+                <th>
+                    <a href="#" class="glyphicon glyphicon-plus"></a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+             {% for identifier in project.identities.all %}
+                <tr>
+                    <td>{{ identifier.identifiertype|identifier_type }}</td>
+                    <td>{{ identifier.identifier }}</td>
+                    <td>{{ identifier.identity.name }}</td>
+                    <td>
+                        <a href="{% url 'group-detail' group.id %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="{% url 'project-group-delete' project.id group.id %}" class="btn btn-danger btn-sm">Remove from project</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 {% endblock %}
 

@@ -5,25 +5,24 @@ from apps.ava_core.models import TimeStampedModel, ReferenceModel
 
 class Group (TimeStampedModel):
 
-    AD = 'ACTIVE DIRECTORY'
-    SOCIAL = 'SOCIAL GROUP'
+    AD =      'ACTIVE DIRECTORY'
+    SOCIAL =  'SOCIAL GROUP'
     PROJECT = 'PROJECT'
     WORKING = 'WORKING GROUP'
-    TEAM = 'TEAM'
+    TEAM =    'TEAM'
     GENERIC = 'GENERIC'
-    ORG = 'ORGANISATION'
-    DIST = 'DISTRIBUTION LIST'
+    ORG =     'ORGANISATION'
+    DIST =    'DISTRIBUTION LIST'
 
     GROUP_TYPE_CHOICES = (
-        (AD,  'Active Directory'),
+        (AD,      'Active Directory'),
         (SOCIAL,  'Social Group'),
-        (PROJECT,  'Project'),
+        (PROJECT, 'Project'),
         (WORKING, 'Working Group'),
-        (TEAM, 'Team'),
+        (TEAM,    'Team'),
         (GENERIC, 'Generic Group'),
-        (ORG, 'Organisation'),
-        (DIST, 'Distribution List'),
-
+        (ORG,     'Organisation'),
+        (DIST,    'Distribution List'),
     )
 
     name = models.CharField(max_length=100)
