@@ -13,6 +13,10 @@
 <h2>{{ project.name }} </h2>
 <p>{{ project.description }}</p>
 <p><b>Justification:</b> {{ project.justification }}</p>
+<p>Runs from {{ project.startdate }} to {{ project.enddate }}</p>
+{% if project.authorisedby %}
+    <p>Authorised by: {{ project.authorisedby }}</p>
+{% endif %}
 
 <hr>
 
@@ -30,15 +34,15 @@
     </div>
     <table class="table table-striped">
         <colgroup>
-            <col width="35%">
             <col width="20%">
+            <col width="35%">
             <col width="20%">
             <col width="25%">
         </colgroup>
         <thead>
             <tr>
-                <th>Name</th>
                 <th>Type</th>
+                <th>Name</th>
                 <th>Status</th>
                 <th>
                     <div class="btn-group">
@@ -61,8 +65,9 @@
                     <td>{{ test.name }}</td>
                     <td>{{ test.teststatus|test_status }}</td>
                     <td>
-                        <a href="{% url 'group-detail' group.id %}" class="btn btn-primary btn-sm">View</a>
-                        <a href="{% url 'project-group-delete' project.id group.id %}" class="btn btn-danger btn-sm">Remove from project</a>
+                        {% if test.testtype == 'EMAIL' %}
+                            <a href="{% url 'email-test-detail' test.id %}" class="btn btn-primary btn-sm">View</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
@@ -135,8 +140,8 @@
                     <td>{{ identity.name }}</td>
                     <td>{{ identity.identifiers.count }}</td>
                     <td>
+                        <a href="{% url 'identity-detail' identity.id %}" class="btn btn-primary btn-sm">View</a>
                         {% comment %}
-                        <a href="{% url 'group-detail' group.id %}" class="btn btn-primary btn-sm">View</a>
                         <a href="{% url 'project-group-delete' project.id group.id %}" class="btn btn-danger btn-sm">Remove from project</a>
                         {% endcomment %}
                     </td>
@@ -174,8 +179,10 @@
                     <td>{{ identifier.identifier }}</td>
                     <td>{{ identifier.identity.name }}</td>
                     <td>
-                        <a href="{% url 'group-detail' group.id %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="{% url 'identifier-detail' identifier.id %}" class="btn btn-primary btn-sm">View</a>
+                        {% comment %}
                         <a href="{% url 'project-group-delete' project.id group.id %}" class="btn btn-danger btn-sm">Remove from project</a>
+                        {% endcomment %}
                     </td>
                 </tr>
             {% endfor %}

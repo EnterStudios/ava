@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from apps.ava_core.models import ReferenceModel
 
 
@@ -25,4 +26,7 @@ class UserRights(models.Model):
 
 class Team(ReferenceModel):
     users = models.ManyToManyField(User, related_name='teams')
+    
+    def get_absolute_url(self):
+        return reverse('team-detail', kwargs={'pk':self.id})
 
