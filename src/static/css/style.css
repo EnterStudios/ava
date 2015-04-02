@@ -79,3 +79,8 @@ pre.message-content {
     overflow: auto;
     max-height: 15em;
 }
+
+.alert {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}

@@ -6,13 +6,7 @@ from apps.ava_core.models import TimeStampedModel
 from apps.ava_core_auth.models import UserRights
 
 
-'''
-TODO this needs to also allow for idenities, identifiers and people
-'''
 class Project(TimeStampedModel):
-    class Meta:
-        unique_together = ("name", "owner")
-
     # General properties
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
@@ -47,6 +41,10 @@ class Project(TimeStampedModel):
         # Fail to no access.
         return False
 
+    class Meta:
+        unique_together = ("name", "owner")
+        ordering = ['name', 'owner']
+
 
 class ProjectAccess(object):
     '''
@@ -58,8 +56,6 @@ class ProjectAccess(object):
 
 
 class ProjectTeam(TimeStampedModel):
-    class Meta:
-        unique_together = ('project', 'team')
     
     ACCESS_LEVEL_CHOICES = (
         (ProjectAccess.MODIFY,   'Modify project and run tests'),
@@ -82,3 +78,5 @@ class ProjectTeam(TimeStampedModel):
     def __unicode__(self):
         return unicode(self.project) + u' // ' + unicode(self.team)
     
+    class Meta:
+        unique_together = ('project', 'team')

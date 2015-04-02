@@ -1,18 +1,15 @@
+import ldap, ldif, datetime, re
+from ldap import *
+from ldap.controls import *
+from ldap.cidict import cidict
 from django.db import models
-import ldap, datetime, re
+from django.core.urlresolvers import reverse
+from django.utils.html import escape
+from StringIO import StringIO
 
 from apps.ava_core.models import TimeStampedModel
 from apps.ava_core_identity.models import Identifier, Person, Identity
 from apps.ava_core_group.models import Group
-
-from django.core.urlresolvers import reverse
-
-from django.utils.html import escape
-from ldap import *
-from ldap.controls import *
-import ldif, sys, json
-from StringIO import StringIO
-from ldap.cidict import cidict
 
 
 class ActiveDirectoryUser(TimeStampedModel):
@@ -50,14 +47,16 @@ class ActiveDirectoryUser(TimeStampedModel):
     def __unicode__(self):
         return self.name or u''
 
-    class Meta:
-        unique_together = ('objectGUID','objectSid')
-
     def get_absolute_url(self):
         return reverse('ad-user-detail',kwargs={'pk': self.id})
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in ActiveDirectoryUser._meta.fields]
+
+    class Meta:
+        unique_together = ('objectGUID','objectSid')
+        ordering = ['cn','distinguishedName']
+
 
 class ActiveDirectoryGroup(TimeStampedModel):
     cn = models.CharField(max_length = 300)
@@ -73,14 +72,16 @@ class ActiveDirectoryGroup(TimeStampedModel):
     def __unicode__(self):
         return self.cn or u''
 
-    class Meta:
-        unique_together = ('objectGUID','objectSid')
-
     def get_absolute_url(self):
         return reverse('ad-group-detail',kwargs={'pk': self.id})
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in ActiveDirectoryGroup._meta.fields]
+
+    class Meta:
+        unique_together = ('objectGUID','objectSid')
+        ordering = ['cn', 'distinguishedName']
+
 
 class LDAPConfiguration(TimeStampedModel):
     #user_dn = "cn=Administrator,cn=Users,dc=ava,dc=test,dc=domain"
@@ -100,6 +101,7 @@ class LDAPConfiguration(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse('ldap-configuration-detail',kwargs={'pk': self.id})
+
 
 class ActiveDirectoryHelper():
 
@@ -182,13 +184,11 @@ class ActiveDirectoryHelper():
                 break
         return res
 
-
     def cleanhex(self,val):
         s = ['\\%02X' % ord(x) for x in val]
         return ''.join(s)
 
-
-    def convertDateTime(self, dateValue):
+    def convert_date_time(self, dateValue):
         # Check if the data is a Windows FILETIME value.
         match = self.TIME_FILETIME.match(dateValue)
         if match:
@@ -213,7 +213,6 @@ class ActiveDirectoryHelper():
             
         # No value.
         return None
-
 
     def getGroups(self,parameters):
         filter = '(objectclass=group)'
@@ -246,7 +245,7 @@ class ActiveDirectoryHelper():
             
             # If no matching group currently exists then create one, otherwise
             # update the existing group.
-            ad_groups = ActiveDirectoryGroup.objects.filter(**new_attrs)
+            ad_groups = ActiveDirectoryGroup.objects.filter(**filter_attrs)
             if ad_groups.count() == 0:
                 ad_group = ActiveDirectoryGroup.objects.create(ldap_configuration=parameters, **new_attrs)
 
@@ -300,7 +299,7 @@ class ActiveDirectoryHelper():
                             new_attrs[key] = value.decode('utf-8')
                             
                             if key in ('accountExpires','badPasswordTime','lastLogoff','lastLogon','lastLogonTimestamp','pwdLastSet','uSNChanged','uSNCreated','whenChanged','whenCreated'):
-                                date = self.convertDateTime(new_attrs[key])
+                                date = self.convert_date_time(new_attrs[key])
                                 if date:
                                     new_attrs[key] = date.isoformat()
                         except UnicodeDecodeError:
@@ -352,8 +351,8 @@ class ActiveDirectoryHelper():
 
             for gen_group in gen_groups:
                 #print gen_group.id
-                if identity.member_of.filter(id=gen_group.id).count() == 0:
-                    identity.member_of.add(gen_group)
+                if identity.groups.filter(id=gen_group.id).count() == 0:
+                    identity.groups.add(gen_group)
 
 
 

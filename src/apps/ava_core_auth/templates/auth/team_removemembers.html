@@ -7,7 +7,7 @@
 
 <form method="post" action="{% url 'team-remove-members' team.id %}">
     {% csrf_token %}
-    <input type="hidden" name="confirm" value="{{ confirm }}">
+    {{ confirm }}
     
     <p>Are you sure you want to remove the following members from {{ team.name }}?</p>
 

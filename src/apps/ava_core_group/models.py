@@ -38,3 +38,4 @@ class Group (TimeStampedModel):
 
     class Meta:
         unique_together = ("name", "group_type")
+        ordering = ['name', 'group_type']

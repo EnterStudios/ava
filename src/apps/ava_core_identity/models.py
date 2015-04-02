@@ -3,6 +3,7 @@ from django.core.validators import validate_email, validate_slug, validate_ipv46
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from apps.ava_core.models import ReferenceModel, TimeStampedModel
+from apps.ava_core_group.models import Group
 from apps.ava_core_identity.validators import validate_skype, validate_twitter
 
 
@@ -12,7 +13,10 @@ class Identity(ReferenceModel):
     of people, or an automated service.
     '''
     
-    member_of = models.ManyToManyField('ava_core_group.Group', null=True, blank=True)
+    groups = models.ManyToManyField(Group,
+                                    null=True,
+                                    blank=True,
+                                    related_name='identities')
 
     def get_absolute_url(self):
         return reverse('identity-detail', kwargs={'pk': self.id})
@@ -68,12 +72,7 @@ class Identifier(TimeStampedModel):
                                       choices=IDENTIFIER_TYPE_CHOICES,
                                       default=EMAIL,
                                       verbose_name='Identifier Type')
-    identity = models.ForeignKey('Identity')
-
-    class Meta:
-        unique_together = ("identifier", "identifiertype", "identity")
-        ordering = ['identifiertype', 'identifier']
-
+    identity = models.ForeignKey('Identity', related_name='identifiers')
 
     def __unicode__(self):
         return self.identifier or u''
@@ -111,6 +110,7 @@ class Identifier(TimeStampedModel):
                 validate_twitter(self.identifier)
             except ValidationError:
                 raise ValidationError('Identifier is not a valid Twitter user name')
-        
 
-
+    class Meta:
+        unique_together = ("identifier", "identifiertype", "identity")
+        ordering = ['identifier', 'identifiertype']

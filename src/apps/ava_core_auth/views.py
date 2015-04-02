@@ -3,6 +3,7 @@ from django.db.models import Count, Q
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
+from apps.ava_core.views import AddManyToManyView, RemoveManyToManyView
 from apps.ava_core_auth.models import Team
 from apps.ava_core_auth.forms import UserCreateForm, UserUpdateForm, TeamForm
 
@@ -103,95 +104,39 @@ class TeamDelete(generic.DeleteView):
         return reverse('team-index')
 
 
-class TeamAddMembers(generic.DetailView):
-    model = Team
+class TeamAddMembers(AddManyToManyView):
     template_name = 'auth/team_addmembers.html'
-    context_object_name = 'team'
-    
-    CONTEXT_ATTRIBUTES = ['user_list', 'search_term']
-    
-    def get_context_data(self, **kwargs):
-        context_data = super(TeamAddMembers, self).get_context_data(**kwargs)
-        if hasattr(self, 'user_list'):   context_data['user_list'] = self.user_list
-        if hasattr(self, 'search_term'): context_data['search_term'] = self.search_term
-        return context_data
-    
-    def get_user_list(self, search_term=None):
-        # If no search term is provided, just list the first 20 users.
-        if not search_term:
-            return User.objects.all()[:20]
-        # If there is a search term, look for it in the username, first name,
-        # last name and emaila ddress.
-        search_filter = Q(
-                            username__contains=search_term
-                        )|Q(
-                            first_name__contains=search_term
-                        )|Q(
-                            last_name__contains=search_term
-                        )|Q(
-                            email__contains=search_term
-                        )
-        return User.objects.filter(search_filter)
-    
-    def add_users(self, user_id_list):
-        users = User.objects.filter(id__in=user_id_list)
-        self.object.users.add(*users.all())
-    
-    def get(self, request, *args, **kwargs):
-        if 'search' in request.GET:
-            self.search_term = request.GET.get('search')
-            self.user_list = self.get_user_list(self.search_term)
-        else:
-            self.user_list = self.get_user_list()
-        # Display the view.
-        return super(TeamAddMembers, self).get(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if 'user' in request.POST:
-            self.add_users(request.POST.getlist('user'))
-        return redirect(reverse('team-detail', kwargs={'pk':self.object.id}))
-
-
-class TeamRemoveMembers(generic.DetailView):
     model = Team
-    template_name = 'auth/team_removemembers.html'
+    target_model = User
     context_object_name = 'team'
+    targets_context_object_name = 'user_list'
+    target_id_field = 'user'
     
-    CONFIRMATION_VALUE = 'yes'
+    def search_targets(self, target_queryset, search_term):
+        search_filter = Q(username__icontains=search_term
+                        )|Q(first_name__icontains=search_term
+                        )|Q(last_name__icontains=search_term
+                        )|Q(email__icontains=search_term
+                        )
+        return target_queryset.filter(search_filter)
     
-    def get_user_list(self, request):
-        user_ids = []
-        # If the user list is in the POST request, pull the IDs out.
-        if request.POST and 'user' in request.POST:
-            user_ids = request.POST.getlist('user')
-        # If not, use the ID passed in via the URL.
-        elif 'user' in request.resolver_match.kwargs:
-            user_ids.append(request.resolver_match.kwargs.get('user'))
-        # Return all current members matching the IDs.
-        return self.object.users.filter(id__in=user_ids)
+    def get_many_to_many(self):
+        return self.object.users
     
-    def display_users(self, request):
-        context = {
-                   'confirm': self.CONFIRMATION_VALUE,
-                   'user_list': self.get_user_list(request),
-                   }
-        return self.render_to_response(self.get_context_data(**context))
-    
-    def remove_users(self, request):
-        user_list = self.get_user_list(request)
-        self.object.users.remove(*user_list.all())
-    
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return self.display_users(request)
+    def order_target_queryset(self, target_queryset):
+        return target_queryset.order_by('username')
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        # If the user has confirmed removal, do the removal.
-        if 'confirm' in request.POST and request.POST.get('confirm') == self.CONFIRMATION_VALUE:
-            self.remove_users(request)
-            return redirect(reverse('team-detail', kwargs={'pk':self.object.id}))
-        # If not, render the page as if this was a GET request.
-        return self.display_users(request)
+
+class TeamRemoveMembers(RemoveManyToManyView):
+    template_name = 'auth/team_removemembers.html'
+    model = Team
+    context_object_name = 'team'
+    targets_context_object_name = 'user_list'
+    target_post_field = 'user'
+    target_kwargs_field = 'user'
     
+    def get_many_to_many(self):
+        return self.object.users
+    
+    def order_target_list(self, target_list):
+        return target_list.order_by('username')
