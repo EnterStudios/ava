@@ -20,7 +20,7 @@ urlpatterns = patterns('',
     url(r'^(?P<pk>\d+)/teams/remove/(?:(?P<team>\d+)/)?$', project_access_required(ProjectAccess.MODIFY, views.ProjectTeamsRemove.as_view()), name='project-teams-remove'),
     
     url(r'^(?P<pk>\d+)/groups/add/$', project_access_required(ProjectAccess.MODIFY, views.ProjectGroupsAdd.as_view()), name='project-groups-add'),
-    url(r'^(?P<pk>\d+)/group/(?P<gk>\d+)/remove/$', project_access_required(ProjectAccess.MODIFY, views.ProjectGroupDelete.as_view()), name='project-groups-remove'),
+    url(r'^(?P<pk>\d+)/groups/remove/(?:(?P<group>\d+)/)?$', project_access_required(ProjectAccess.MODIFY, views.ProjectGroupDelete.as_view()), name='project-groups-remove'),
     
     url(r'^(?P<pk>\d+)/identities/add/$', project_access_required(ProjectAccess.MODIFY, views.ProjectIdentitiesAdd.as_view()), name='project-identities-add'),
     url(r'^(?P<pk>\d+)/identities/remove/(?:(?P<ident>\d+)/)?$', project_access_required(ProjectAccess.MODIFY, views.ProjectIdentitiesRemove.as_view()), name='project-identities-remove'),

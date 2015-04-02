@@ -149,23 +149,17 @@ class ProjectGroupsAdd(AddManyToManyView):
         return target_queryset.order_by('name')
 
 
-
-
-class ProjectGroupDelete(DetailView):
+class ProjectGroupDelete(RemoveManyToManyView):
+    template_name = 'project/project_group_remove.html'
     model = Project
+    target_model = Group
     context_object_name = 'project'
-    template_name = 'project/project_detail.html'
-
-    def get_object(self):
-        project_id = self.kwargs.get('pk')
-        group_id = self.kwargs.get('gk')
-        if project_id:
-            if group_id:
-                proj = get_object_or_404(Project, pk=project_id)
-                group = get_object_or_404(Group, pk=group_id)
-                proj.group.remove(group)
-
-        return super(ProjectGroupDelete, self).get_object()
+    targets_context_object_name = 'group_list'
+    target_post_field = 'group'
+    target_kwargs_field = 'group'
+    
+    def get_many_to_many(self):
+        return self.object.groups
 
 
 class ProjectIdentitiesAdd(AddManyToManyView):
