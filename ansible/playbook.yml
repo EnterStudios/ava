@@ -8,7 +8,7 @@
 
 # TODO: Split playbook into parts
 
-- hosts: all
+- hosts: localhost
 
   vars:
     AVA_INSTALL_ROOT: /home/vagrant/ava.github.com/ava
