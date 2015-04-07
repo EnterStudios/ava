@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# Check if ansible is installed on the vagrant box first
 if [ $(dpkg-query -W -f='${Status}' ansible 2>/dev/null | grep -c "ok installed") -eq 0 ];
 then
 	export DEBIAN_FRONTEND=noninteractive
