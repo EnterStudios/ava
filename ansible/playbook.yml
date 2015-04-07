@@ -8,6 +8,7 @@
 
 # TODO: Split playbook into parts
 
+# Use localhost rather than all when provisioning locally, else it uses default example hosts list
 - hosts: localhost
 
   vars:
@@ -221,7 +222,7 @@
     - name: Copy example AVA local settings file
       copy:
         force: no # Don't copy the original settings file if destination exists
-        src: ../local_settings.py.example
+        src: "{{AVA_INSTALL_ROOT}}/local_settings.py.example"
         dest: "{{AVA_INSTALL_ROOT}}/local_settings.py"
       tags:
         - setup
@@ -229,7 +230,7 @@
     - name: Copy example AVA email settings file
       copy:
         force: no # Don't copy the original settings file if destination exists
-        src: ../email_settings.py.example
+        src: "{{AVA_INSTALL_ROOT}}/email_settings.py.example"
         dest: "{{AVA_INSTALL_ROOT}}/email_settings.py"
       tags:
         - setup
