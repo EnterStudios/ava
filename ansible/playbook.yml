@@ -218,22 +218,32 @@
       tags:
         - setup
 
-    # TODO: Handle settings files differently?
     - name: Copy example AVA local settings file
-      copy:
-        force: no # Don't copy the original settings file if destination exists
-        src: /home/vagrant/ava.github.com/ava/local_settings.py.example
-        dest: "{{AVA_INSTALL_ROOT}}/local_settings.py"
+      command: "cp -n {{AVA_INSTALL_ROOT}}/local_settings.py.example {{AVA_INSTALL_ROOT}}/local_settings.py"
       tags:
-        - setup
+       - setup
 
     - name: Copy example AVA email settings file
-      copy:
-        force: no # Don't copy the original settings file if destination exists
-        src: /home/vagrant/ava.github.com/ava/email_settings.py.example
-        dest: "{{AVA_INSTALL_ROOT}}/email_settings.py"
+      command: "cp -n {{AVA_INSTALL_ROOT}}/email_settings.py.example {{AVA_INSTALL_ROOT}}/email_settings.py"
       tags:
-        - setup
+       - setup
+
+#    # TODO: Handle settings files differently?
+#    - name: Copy example AVA local settings file
+#      copy:
+#        force: no # Don't copy the original settings file if destination exists
+#        src: "{{AVA_INSTALL_ROOT}}/local_settings.py.example"
+#        dest: "{{AVA_INSTALL_ROOT}}/local_settings.py"
+#      tags:
+#        - setup
+#
+#    - name: Copy example AVA email settings file
+#      copy:
+#        force: no # Don't copy the original settings file if destination exists
+#        src: "{{AVA_INSTALL_ROOT}}/email_settings.py.example"
+#        dest: "{{AVA_INSTALL_ROOT}}/email_settings.py"
+#      tags:
+#        - setup
 
     - name: Update default passwords in AVA local settings file
       # TODO: Handle passwords better here too?
