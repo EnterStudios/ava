@@ -19,7 +19,7 @@
   vars_prompt:
     - name: password_avasecure
       prompt: "Enter avasecure user password"
-      #private: yes
+      private: yes
       default: "insecure-NMYe_kX_8_m8J"
       tags:
         - setup
@@ -227,6 +227,7 @@
 #      command: "cp -n {{AVA_INSTALL_ROOT}}/email_settings.py.example {{AVA_INSTALL_ROOT}}/email_settings.py"
 #      tags:
 #       - setup
+
     - stat: "path={{AVA_INSTALL_ROOT}}/local_settings.py"
       register: local_settings
 
@@ -234,29 +235,29 @@
       register: email_settings
 
     # TODO: Handle settings files differently?
-    - name: Template example AVA local settings file
+    - name: Template example AVA local settings file to temp
       when: local_settings.stat.exists == False
       template:
-        src: "local_settings.py.example"
-        dest: "{{AVA_INSTALL_ROOT}}/local_settings.py.temp"
+        src: "templates/local_settings.py.example"
+        dest: "/tmp/local_settings.py.temp"
       tags:
         - setup
 
     - name: Move templated AVA local settings files
       when: local_settings.stat.exists == False
-      command: "mv {{AVA_INSTALL_ROOT}}/local_settings.py.temp {{AVA_INSTALL_ROOT}}/local_settings.py"
+      command: "mv /tmp/local_settings.py.temp {{AVA_INSTALL_ROOT}}/local_settings.py"
       tags:
         - setup
 
-    - name: Template example email settings
+    - name: Copy example email settings
       when: email_settings.stat.exists == False
-      template:  "src=email_settings.py.example dest={{AVA_INSTALL_ROOT}}/email_settings.py.temp"
+      copy:  "src=files/email_settings.py.example dest=/tmp/email_settings.py.temp"
       tags:
         - setup
 
     - name: Move templated AVA email settings files
       when: email_settings.stat.exists == False
-      command: "mv {{AVA_INSTALL_ROOT}}/email_settings.py.temp {{AVA_INSTALL_ROOT}}/email_settings.py"
+      command: "mv /tmp/email_settings.py.temp {{AVA_INSTALL_ROOT}}/email_settings.py"
       tags:
         - setup
 
