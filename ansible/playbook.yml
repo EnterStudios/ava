@@ -248,7 +248,7 @@
       tags:
         - setup
 
-    - name: Move templated AVA email settings files
+    - name: Move temp AVA email settings files
       when: email_settings.stat.exists == False
       command: "mv /tmp/email_settings.py.temp {{AVA_INSTALL_ROOT}}/email_settings.py"
       tags:
