@@ -218,20 +218,13 @@
       tags:
         - setup
 
-#    - name: Copy example AVA local settings file
-#      command: "cp -n {{AVA_INSTALL_ROOT}}/local_settings.py.example {{AVA_INSTALL_ROOT}}/local_settings.py"
-#      tags:
-#       - setup
-#
-#    - name: Copy example AVA email settings file
-#      command: "cp -n {{AVA_INSTALL_ROOT}}/email_settings.py.example {{AVA_INSTALL_ROOT}}/email_settings.py"
-#      tags:
-#       - setup
-
-    - stat: "path={{AVA_INSTALL_ROOT}}/local_settings.py"
+    # Register two file paths to check existence later
+    - name: Check for existence of local_settings.py
+      stat: "path={{AVA_INSTALL_ROOT}}/local_settings.py"
       register: local_settings
 
-    - stat: "path={{AVA_INSTALL_ROOT}}/email_settings.py"
+    - name: Check for existence of email_settings.py
+      stat: "path={{AVA_INSTALL_ROOT}}/email_settings.py"
       register: email_settings
 
     # TODO: Handle settings files differently?
@@ -260,17 +253,6 @@
       command: "mv /tmp/email_settings.py.temp {{AVA_INSTALL_ROOT}}/email_settings.py"
       tags:
         - setup
-
-#    - name: Update default passwords in AVA local settings file
-#      # TODO: Handle passwords better here too?
-#      # TODO: Only do this when the file is initially copied?
-#      # TODO: Should we use `lineinfile` module instead?
-#      replace:
-#        dest: "{{AVA_INSTALL_ROOT}}/local_settings.py"
-#        regexp: "('|:)changeme('|@)" # Note: Crappy regex matches 2 occurrences
-#        replace: '\1{{password_avasecure}}\2'
-#      tags:
-#        - setup
 
     - name: Create database migrations
       django_manage:
