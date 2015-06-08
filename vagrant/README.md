@@ -13,7 +13,9 @@ Installation
 
  1. Install Vagrant from <https://www.vagrantup.com/downloads.html>.
 
- 2. Install Ansible from source or a package via <http://docs.ansible.com/intro_installation.html#installing-the-control-machine>.
+ 2. Install the Vagrant plugin vagrant-ansible-local
+
+        vagrant plugin install vagrant-ansible-local 
 
  3. (Optional) Install Virtual Box from source or a package via <https://www.virtualbox.org/wiki/Downloads>
 

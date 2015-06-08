@@ -8,7 +8,8 @@
 
 # TODO: Split playbook into parts
 
-- hosts: all
+# Use localhost rather than all when provisioning locally, else it uses default example hosts list
+- hosts: localhost
 
   vars:
     AVA_INSTALL_ROOT: /home/vagrant/ava.github.com/ava
@@ -217,31 +218,39 @@
       tags:
         - setup
 
+    # Register two file paths to check existence later
+    - name: Check for existence of local_settings.py
+      stat: "path={{AVA_INSTALL_ROOT}}/local_settings.py"
+      register: local_settings
+
+    - name: Check for existence of email_settings.py
+      stat: "path={{AVA_INSTALL_ROOT}}/email_settings.py"
+      register: email_settings
+
     # TODO: Handle settings files differently?
-    - name: Copy example AVA local settings file
-      copy:
-        force: no # Don't copy the original settings file if destination exists
-        src: ../local_settings.py.example
-        dest: "{{AVA_INSTALL_ROOT}}/local_settings.py"
+    - name: Template example AVA local settings file to temp
+      when: local_settings.stat.exists == False
+      template:
+        src: "templates/local_settings.py.example"
+        dest: "/tmp/local_settings.py.temp"
       tags:
         - setup
 
-    - name: Copy example AVA email settings file
-      copy:
-        force: no # Don't copy the original settings file if destination exists
-        src: ../email_settings.py.example
-        dest: "{{AVA_INSTALL_ROOT}}/email_settings.py"
+    - name: Move templated AVA local settings files
+      when: local_settings.stat.exists == False
+      command: "mv /tmp/local_settings.py.temp {{AVA_INSTALL_ROOT}}/local_settings.py"
       tags:
         - setup
 
-    - name: Update default passwords in AVA local settings file
-      # TODO: Handle passwords better here too?
-      # TODO: Only do this when the file is initially copied?
-      # TODO: Should we use `lineinfile` module instead?
-      replace:
-        dest: "{{AVA_INSTALL_ROOT}}/local_settings.py"
-        regexp: "('|:)changeme('|@)" # Note: Crappy regex matches 2 occurrences
-        replace: '\1{{password_avasecure}}\2'
+    - name: Copy example email settings
+      when: email_settings.stat.exists == False
+      copy:  "src=files/email_settings.py.example dest=/tmp/email_settings.py.temp"
+      tags:
+        - setup
+
+    - name: Move temp AVA email settings files
+      when: email_settings.stat.exists == False
+      command: "mv /tmp/email_settings.py.temp {{AVA_INSTALL_ROOT}}/email_settings.py"
       tags:
         - setup
 

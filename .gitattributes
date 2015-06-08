@@ -1,6 +1,9 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
+# Stop windows from screwing itself
+*.sh text eol=lf
+
 # Custom for Visual Studio
 *.cs     diff=csharp
 
