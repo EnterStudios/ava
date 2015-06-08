@@ -8,9 +8,10 @@ For those not familiar with Docker, it is an open-source project that automates 
 
 ### Install Docker and Compose
 
-Docker installation instructions can be found here: [https://docs.docker.com/installation]
+* Docker installation instructions can be found here: [https://docs.docker.com/installation]
+* Docker now has an orchestration layer called compose. 
+* Installation instructions for compose can be found: [http://docs.docker.com/compose/install/]
 
-Docker now has an orchestration layer called compose. Installation instructions for compose can be found: [http://docs.docker.com/compose/install/]
 ---
 
 ### Install AVA
