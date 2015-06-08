@@ -1,0 +1,17 @@
+db:
+  image: postgres:9.3
+  environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=changeme
+redis:
+  image: redis:2.8
+web:
+  build: .
+  command: python manage.py runserver 0.0.0.0:8000
+  volumes:
+    - .:/code
+  ports:
+    - "8000:8000"
+  links:
+    - db
+    - redis
