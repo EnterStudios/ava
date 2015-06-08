@@ -4,65 +4,26 @@
 
 For those not familiar with Docker, it is an open-source project that automates the deployment of applications inside software containers - [Wikipedia](http://en.wikipedia.org/wiki/Docker_%28software%29)
 
-If you have read the previous install instructions you will realise there are several dependancies and an amount of configuration required to run AVA. By using Docker most of this is taken care of and what you are left with is the steps below. However first we must ensure Docker is available. This means installing both Docker and another utility called Fig onto the machine you wish to run AVA on. I should point out Docker is not a virtualisation system such as VMware/Virtualbox, you can happily run Docker containers inside a VM.
-
-At this time it appears that Docker is far easier to install on Fedora than Ubuntu as you will see. Also note the utility Fig is in the process of being incorporated into the base Docker eco-system and in future will be known as docker-compose, but for now the current version will be fine for our purposes.
-
-
-* [Setup Fedora 21](https://github.com/ladynerd/ava/blob/master/INSTALL_Docker.md#fedora-setup)
-* [Setup Ubuntu 14.04](https://github.com/ladynerd/ava/blob/master/INSTALL_Docker.md#ubuntu-setup)
-
 ---
+### Install Docker and Compose
 
-### Fedora Setup
+Docker installation instructions can be found here: [https://docs.docker.com/installation]
 
-The following assumes a basic Fedora 21 Server has been setup with no requisite packages.
-
-Install the packages that we will need to install AVA with Docker:
-```sh
-sudo yum update -y  
-sudo yum install git fig docker  
-```
-
----
-
-### Ubuntu Setup
-
-The following are instructions to install Docker and Fig on a basic Ubuntu server build.
-
-Docker installation instructions can be found here: [https://docs.docker.com/installation/ubuntulinux/]
-
-You should install the Docker maintained version so as to get a more up to date version of Docker.
-
-Fig installation instructions can be found here: [http://www.fig.sh/install.html]
-
+Docker now has an orchestration layer called compose. Installation instructions for compose can be found: [http://docs.docker.com/compose/install/]
 ---
 
 ### Install AVA
 
-1. Pull down the latest version of the project `git clone git@github.com:ladynerd/ava.git`
+1. Pull down the latest version of the project `git clone git@github.com:SafeStack/ava.git`
 2. `cd ava`
-3. Get Fig to build the AVA image including the dependancies and requirements `sudo fig build`
+3. Get Compose to build the AVA image including the dependancies and requirements `docker-compose build`
 4. Create file for your local settings from template `cp local_settings.py.example local_settings.py`
 5. Using your prefered editor, edit `local_settings.py` changing the database and redis server settings. See below for further details.
-6. Create migrations for the database schema with `sudo fig run --rm web python manage.py makemigrations`
-7. Run migrations to create tables `sudo fig run --rm web python manage.py migrate`
-8. Create our first user `sudo fig run --rm web python manage.py createsuperuser`
-9. Run AVA! `sudo fig up -d` and visit http://localhost:8000 in your browser.
-
-Some useful fig commands are are listed below including their uses.
-
-* To see what containers are running: `sudo fig ps`
-
-* To view the output of running containers: `sudo fig logs`
-
-* To stop all running container: `sudo fig stop`
-
-* To start containers in the foreground: `sudo fig up`
-
-* To remove stopped containers from your system: `sudo fig rm`
-
-
+6. Create migrations for the database schema with `docker-compose run --rm web python manage.py makemigrations`
+7. Run migrations to create tables `docker-compose run --rm web python manage.py migrate`
+8. Create our first user `docker-compose run --rm web python manage.py createsuperuser`
+9. Run AVA! `docker-compose up -d`
+10. To view AVA in a browser, identify the IP of your docker instance `docker ip` and visit `http://<ip address>:8000` in your web browser.
 
 ### Local_Settings.py changes
 
