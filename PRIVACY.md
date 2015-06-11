@@ -22,7 +22,9 @@ AVA collects information from the following places.
 	* Twitter
 
 ## Does AVA collect private information from social networks?
-We do not collect any private information from social networks. We only look at data published or shared publicly. Please check your account privacy settings with your social network providers to control the information you publish on the internet.
+We do not collect any private information from social networks. We only look at data published or shared publicly. 
+
+Please check your account privacy settings with your social network providers to control the information you publish on the internet.
 	
 ## Why does AVA need this information?
 We collect your personal information in order to:
