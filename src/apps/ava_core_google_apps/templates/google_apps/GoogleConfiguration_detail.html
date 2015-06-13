@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block mainpage %}
+
+
+
+ <div class="page-header">
+  <h2>Google Apps Configuration Details</h2>
+</div>
+
+
+            <div class="row">
+                    <table class="table table-user-information">
+                        <tbody>
+                        <tr>
+                            <td>Server:</td>
+                            <td>{{ google_configuration.server }}</td>
+                        </tr>
+                         <tr>
+                            <td>Dump DN:</td>
+                            <td>{{ google_configuration.dump_dn }}</td>
+                        </tr>
+                         <tr>
+                            <td>User:</td>
+                            <td>{{ google_configuration.user_dn }}</td>
+                        </tr>
+                         <tr>
+                            <td>Password:</td>
+                            <td>{{ google_configuration.user_pw}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a href="{% url 'google-get-users' google_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Import Users</button></a>
+                    <a href="{% url 'google-get-groups' google_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Import Groups</button></a>
+                    <a href="{% url 'google-configuration-update' google_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
+                    <a href="{% url 'google-configuration-delete' google_configuration.id  %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+
+                </div> <!-- end of column -->
+
+
+
+{% endblock %}
+

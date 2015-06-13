@@ -2,7 +2,6 @@ amqp==1.4.6
 anyjson==0.3.3
 billiard==3.3.0.19
 celery==3.1.17
-coverage==3.7.1
 Django==1.7.6
 django-bootstrap-form==3.1
 django-bootstrap3==4.4.1
@@ -25,4 +24,4 @@ requests-oauthlib==0.4.2
 sqlparse==0.1.11
 twython==3.2.0
 twython-django==1.5.2
-Whoosh==2.6.0
+pyelasticsearch

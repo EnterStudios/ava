@@ -5,6 +5,8 @@ db:
     - POSTGRES_PASSWORD=changeme
 redis:
   image: redis:2.8
+elasticsearch:
+  image: elasticsearch
 web:
   build: .
   command: python src/manage.py runserver 0.0.0.0:8000
@@ -15,3 +17,4 @@ web:
   links:
     - db
     - redis
+    - elasticsearch
