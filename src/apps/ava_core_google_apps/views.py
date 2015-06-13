@@ -133,7 +133,6 @@ class GoogleConfigurationGetGroups(ListView):
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(GoogleConfiguration, pk=config_pk)
-            #context['Google_configuration'] = instance
             context['activedirectorygroup_list'] = GoogleDirectoryGroup.objects.filter(Google_configuration=instance)
         return context
 
