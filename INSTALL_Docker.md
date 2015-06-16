@@ -21,9 +21,9 @@ For those not familiar with Docker, it is an open-source project that automates 
 3. Get Compose to build the AVA image including the dependancies and requirements `docker-compose build`
 4. Create file for your local settings from template `cp local_settings.py.example local_settings.py`
 5. Using your prefered editor, edit `local_settings.py` changing the database and redis server settings. See below for further details.
-6. Create migrations for the database schema with `docker-compose run --rm web python manage.py makemigrations`
-7. Run migrations to create tables `docker-compose run --rm web python manage.py migrate`
-8. Create our first user `docker-compose run --rm web python manage.py createsuperuser`
+6. Create migrations for the database schema with `docker-compose run --rm web python src/manage.py makemigrations`
+7. Run migrations to create tables `docker-compose run --rm web python src/manage.py migrate`
+8. Create our first user `docker-compose run --rm web python src/manage.py createsuperuser`
 9. Run AVA! `docker-compose up -d`
 10. To view AVA in a browser, identify the IP of your docker instance `docker ip` and visit `http://<ip address>:8000` in your web browser.
 
