@@ -13,7 +13,7 @@ class Project(TimeStampedModel):
     owner = models.ForeignKey(User)
     justification = models.TextField()
     startdate = models.DateField(auto_now_add=True, verbose_name='Start Date')
-    enddate = models.DateField(verbose_name='End Date')
+    enddate = models.DateField(verbose_name='End Date',null=True, blank=True,)
     authorisedby = models.CharField(max_length=100, null=True, blank=True, verbose_name='Authorised By')
     # Test targets
     groups = models.ManyToManyField('ava_core_group.Group', null=True, blank=True)
