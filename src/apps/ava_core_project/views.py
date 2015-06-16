@@ -57,7 +57,7 @@ class ProjectCreate(CreateView):
     form_class = ProjectForm
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.owner = self.request.user
         return super(ProjectCreate, self).form_valid(form)
 
 
