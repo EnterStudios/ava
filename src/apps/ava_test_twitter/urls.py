@@ -2,15 +2,18 @@ from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
 from apps.ava_test_twitter import views
+from apps.ava_test.decorators import create_test_access_check
+from apps.ava_test_twitter.decorators import twitter_test_access_check
+from apps.ava_core_project.models import ProjectAccess
 
 
 urlpatterns = patterns('',
     
     url(r'^$', login_required(views.TwitterTestIndex.as_view()), name='twitter-test-index'),
-    url(r'^(?P<pk>\d+)/view/$', login_required(views.TwitterTestDetail.as_view()), name='twitter-test-view'),
-    url(r'^new/$',login_required(views.TwitterTestCreate.as_view()),name='twitter-test-create'),
-    url(r'^(?P<pk>\d+)/update/$', login_required(views.TwitterTestUpdate.as_view()), name='twitter-test-update'),
-    url(r'^(?P<pk>\d+)/delete/$', login_required(views.TwitterTestDelete.as_view()), name='twitter-test-delete'),
-    url(r'^send/$', login_required(views.TwitterTestSendTweet.as_view()), name='twitter-test-send'),
+    url(r'^new/(?P<proj>\d+)/$', create_test_access_check('proj', ProjectAccess.RUN_TEST, views.TwitterTestCreate.as_view()), name='twitter-test-create'),
+    url(r'^(?P<pk>\d+)/$', twitter_test_access_check(ProjectAccess.VIEW, views.TwitterTestDetail.as_view()), name="twitter-test-detail"),
+    url(r'^(?P<pk>\d+)/update/$', twitter_test_access_check(ProjectAccess.RUN_TEST, views.TwitterTestUpdate.as_view()),name='twitter-test-update'),
+    url(r'^(?P<pk>\d+)/delete/$', twitter_test_access_check(ProjectAccess.RUN_TEST, views.TwitterTestDelete.as_view()),name='twitter-test-delete'),
+    #url(r'^send/(?P<pk>\d+)/$', twitter_test_access_check(ProjectAccess.RUN_TEST, views.EmailSendEmail.as_view()), name='twitter-test-send'),
 
     )

@@ -7,10 +7,10 @@ from apps.ava_core_identity.models import Identifier, Person
 
 
 class TwitterTest(Test):
-    twittertesttype = models.ForeignKey('TwitterTestType', null=False)
-    tweet = models.ForeignKey('TweetTemplate', null=False)
+    #twittertesttype = models.ForeignKey('TwitterTestType', null=False)
+    tweet = models.ForeignKey('TweetTemplate', null=False, verbose_name='Tweet')
     link = models.ForeignKey('TweetLink', null=False)
-    twitteraccount = models.ForeignKey('TwitterAccount', null=False)
+    twitteraccount = models.ForeignKey('TwitterAccount', null=False,verbose_name='Send From Twitter Account')
 
     def __unicode__(self):
         return self.name or u''
@@ -34,8 +34,8 @@ class TwitterTestResult(TestResult):
     target = models.ForeignKey('TwitterTestTarget', null=False, related_name='results')
 
 
-class TwitterTestType (ReferenceModel):
-    pass
+#class TwitterTestType (ReferenceModel):
+#    pass
 
 
 class TweetTemplate(ReferenceModel):

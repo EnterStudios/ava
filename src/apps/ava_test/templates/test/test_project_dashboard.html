@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block mainpage %}
+
+    <div class="page-header">
+        <h2>Project Dashboard : {{ project.name }}</h2>
+    </div>
+
+<div class="container" style="text-align:center; min-width:900px; max-width:1500px">
+    <div class="row" style="height:4.0em"></div>
+      <div class="row">
+
+                <div class="col-md-3 col-lg-3" align="center">
+                    <i class="fa fa-star fa-5x"></i>
+                    <h2>New Tests</h2>
+                    <p>{{ tests_new }}</p>
+                </div>
+
+                <div class="col-md-3 col-lg-3" align="center">
+                    <i class="fa fa-check-square fa-5x"></i>
+                    <h2>Completed</h2>
+                    <p>{{ tests_complete }}</p>
+                </div>
+                <div class="col-md-3 col-lg-3" align="center">
+                    <i class="fa fa-history fa-5x"></i>
+                    <h2>Scheduled</h2>
+                    <p>{{ tests_scheduled }}</p>
+                </div>
+                <div class="col-md-3 col-lg-3" align="center">
+                    <i class="fa fa-exclamation-circle fa-5x"></i>
+                    <h2>Errors</h2>
+                    <p>{{ tests_error }}</p>
+                </div>
+            </div>
+
+
+</div>
+  <div class="page-header">
+            <h2>Current Tests: </h2>
+        </div>
+
+<div class="table-responsive">
+
+        <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>
+                        <div class="btn-group">
+                            <a class="btn btn-primary" href="#"><i class="fa fa-plus fa-fw"></i>Add Test</a>
+                                  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown"  aria-expanded="false" href="#">
+                                        <span class="fa fa-caret-down"></span></a>
+                                          <ul class="dropdown-menu">
+                                              <li><a href="{% url 'email-test-create' project.id %}"><i class="fa fa-envelope fa-fw"></i> Email</a></li>
+                                              <li><a href="{% url 'twitter-test-create' project.id %}"><i class="fa fa-twitter fa-fw"></i> Twitter</a></li>
+                                          </ul>
+                        </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+    {% for item in email_test_list %}
+    <tr>
+        <td><i class="fa fa-envelope"></i></td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.description }}</td>
+        <td>{{ item.teststatus }}</td>
+        <td>
+
+
+          <a href="{% url 'email-test-detail' item.id %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
+          <a href="{% url 'email-test-update' item.id %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
+          <a href="{% url 'email-test-delete' item.id %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+    </tr>
+    {% endfor %}
+
+       {% for item in twitter_test_list %}
+    <tr>
+        <td><i class="fa fa-twitter"></i></td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.description }}</td>
+        <td>{{ item.teststatus }}</td>
+        <td>
+
+          <a href="{% url 'twitter-test-detail' item.id %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
+          <a href="{% url 'twitter-test-update' item.id %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
+          <a href="{% url 'twitter-test-delete' item.id %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+    </tr>
+    {% endfor %}
+
+     </tbody>
+    </table>
+
+
+        </div>
+
+
+{% endblock %}
+
