@@ -8,10 +8,10 @@ from apps.ava_test.helpers import generate_hex_token
 
 
 class EmailTest(Test):
-    fromaddr = models.EmailField(null=False)
-    subject = models.CharField(max_length=200, null=False)
-    body = models.TextField(null=False)
-    html_body = models.TextField(null=True, blank=True)
+    fromaddr = models.EmailField(null=False, verbose_name='Send From Email Address')
+    subject = models.CharField(max_length=200, null=False, verbose_name='Subject')
+    body = models.TextField(null=False,verbose_name='Message Body')
+    html_body = models.TextField(null=True, blank=True, verbose_name='HTML Message Body')
 
     def __unicode__(self):
         return self.name or u''
