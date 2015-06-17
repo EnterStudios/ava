@@ -16,8 +16,8 @@ class TimeStampedModel (models.Model):
 class ReferenceModel (TimeStampedModel):
     """An abstract base class model for reference tables 
     """
-    name = models.CharField(max_length=100)
-    description = models.TextField(max_length=500)
+    name = models.CharField(max_length=100, verbose_name='Name')
+    description = models.TextField(max_length=500, verbose_name='Description')
 
     def __unicode__(self):
         return self.name or u''

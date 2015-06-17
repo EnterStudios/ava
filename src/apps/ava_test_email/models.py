@@ -11,7 +11,8 @@ class EmailTest(Test):
     fromaddr = models.EmailField(null=False, verbose_name='Send From Email Address')
     subject = models.CharField(max_length=200, null=False, verbose_name='Subject')
     body = models.TextField(null=False,verbose_name='Message Body')
-    html_body = models.TextField(null=True, blank=True, verbose_name='HTML Message Body')
+    is_html = models.BooleanField(null=False, default=False,verbose_name='Send as HTML Email?')
+
 
     def __unicode__(self):
         return self.name or u''
