@@ -60,3 +60,6 @@ local_settings.py
 email_settings.py
 twitter_settings*
 .idea/
+
+*~
+
