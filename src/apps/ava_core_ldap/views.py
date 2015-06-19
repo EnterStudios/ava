@@ -122,45 +122,6 @@ class LDAPConfigurationGetUsers(ListView):
 
         return True
 
-
-
-# class LDAPConfigurationGetAll(ListView):
-#     model = ActiveDirectoryUser
-#     template_name = 'ldap/items.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(LDAPConfigurationGetAll, self).get_context_data(**kwargs)
-#         config_pk = self.kwargs.get('pk')
-#         if config_pk:
-#             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
-#             adHelper = ActiveDirectoryHelper()
-#             adHelper.getUsers(instance)
-#             adHelper.getGroups(instance)
-#             adHelper.getUsers(instance)
-#
-#         context['item_type'] = 'user'
-#         ad_groups = ActiveDirectoryGroup.objects.filter(ldapConfiguration=instance)
-#
-#         for adg in ad_groups:
-#             try:
-#                 org_g = OrganisationGroup.objects.get(name=adg.cn)
-#                 groups = adg.member.all()
-#                 for g in groups:
-#                     try:
-#                         user = Identifier.objects.get(identifier=g.sAMAccountName,identifiertype=Identifier.UNAME)
-#                         GroupIdentifier.objects.get_or_create(identifier=user, group=org_g)
-#                         user1 = Identifier.objects.get(identifier=g.sAMAccountName+"@avasecure.com",identifiertype=Identifier.EMAIL)
-#                         GroupIdentifier.objects.get_or_create(identifier=user1, group=org_g)
-#                     except Identifier.DoesNotExist:
-#                         print " No such id :: " + g.sAMAccountName
-#
-#
-#             except OrganisationGroup.DoesNotExist:
-#                 print "No such group :: " + adg.cn
-#
-#         context['ldap_item_list'] = ActiveDirectoryUser.objects.filter(ldapConfiguration=instance)
-#         return context
-
 class LDAPConfigurationGetGroups(ListView):
     model = ActiveDirectoryGroup
     context_object_name = 'activedirectorygroup_list'
@@ -182,30 +143,3 @@ class LDAPConfigurationGetGroups(ListView):
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
             adHelper = ActiveDirectoryHelper()
             adHelper.getGroups(instance)
-
-
-
-
-    #def populate_groups(self):
-        # context['item_type'] = 'user'
-        # ad_groups = ActiveDirectoryGroup.objects.filter(ldapConfiguration=instance)
-        #
-        # for adg in ad_groups:
-        #     try:
-        #         org_g = OrganisationGroup.objects.get(name=adg.cn)
-        #         groups = adg.member.all()
-        #         for g in groups:
-        #             try:
-        #                 user = Identifier.objects.get(identifier=g.sAMAccountName,identifiertype=Identifier.UNAME)
-        #                 GroupIdentifier.objects.get_or_create(identifier=user, group=org_g)
-        #                 user1 = Identifier.objects.get(identifier=g.sAMAccountName+"@avasecure.com",identifiertype=Identifier.EMAIL)
-        #                 GroupIdentifier.objects.get_or_create(identifier=user1, group=org_g)
-        #             except Identifier.DoesNotExist:
-        #                 print " No such id :: " + g.sAMAccountName
-        #
-        #
-        #     except OrganisationGroup.DoesNotExist:
-        #         print "No such group :: " + adg.cn
-
-
-
