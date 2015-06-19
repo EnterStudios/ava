@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 
-from apps.ava_core_ldap.models import ActiveDirectoryUser, ActiveDirectoryGroup, LDAPConfiguration, ActiveDirectoryHelper
+from apps.ava_core_ldap.models import ActiveDirectoryUser, ActiveDirectoryGroup, LDAPConfiguration
 from apps.ava_core_ldap.forms import  LDAPConfigurationForm
 
 
@@ -117,8 +117,8 @@ class LDAPConfigurationGetUsers(ListView):
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
-            adHelper = ActiveDirectoryHelper()
-            adHelper.getUsers(instance)
+            ad_user = ActiveDirectoryUser()
+            ad_user.getUsers(instance)
 
         return True
 
@@ -141,5 +141,5 @@ class LDAPConfigurationGetGroups(ListView):
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
-            adHelper = ActiveDirectoryHelper()
-            adHelper.getGroups(instance)
+            ad_group = ActiveDirectoryGroup()
+            ad_group.getGroups(instance)

@@ -109,7 +109,7 @@ LOCAL_APPS = (
 THIRD_PARTY_APPS = (
     'dh5bp',
     'haystack',
-    'ldap',
+    'ldap3',
     'bootstrap3',
     'bootstrapform',
     'd3',
