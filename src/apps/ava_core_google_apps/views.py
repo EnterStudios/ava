@@ -118,7 +118,7 @@ class GoogleConfigurationGetUsers(ListView):
         if config_pk:
             instance = get_object_or_404(GoogleConfiguration, pk=config_pk)
             adHelper = GoogleDirectoryHelper()
-            adHelper.getUsers(instance)
+            adHelper.get_users(instance)
 
         return True
 
@@ -141,7 +141,7 @@ class GoogleConfigurationGetGroups(ListView):
         if config_pk:
             instance = get_object_or_404(GoogleConfiguration, pk=config_pk)
             adHelper = GoogleDirectoryHelper()
-            adHelper.getGroups(instance)
+            adHelper.get_groups(instance)
 
 
 

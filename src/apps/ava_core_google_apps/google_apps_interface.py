@@ -1,38 +1,41 @@
 __author__ = 'ladynerd'
-
-
 import httplib2
-
 from apiclient import errors
 from apiclient.discovery import build
 from oauth2client.client import OAuth2WebServerFlow
 
 
+class google_apps_helper:
+    # Check https://developers.google.com/admin-sdk/directory/v1/guides/authorizing for all available scopes
+    OAUTH_SCOPE = 'https://www.googleapis.com/auth/admin.directory.user.readonly https://www.googleapis.com/auth/admin.directory.group.readonly https://www.googleapis.com/auth/admin.directory.group.member.readonly https://www.googleapis.com/auth/admin.directory.orgunit.readonly https://www.googleapis.com/auth/admin.directory.user.alias.readonly'
 
+    # Redirect URI for installed apps
+    REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
 
-# Check https://developers.google.com/admin-sdk/directory/v1/guides/authorizing for all available scopes
-OAUTH_SCOPE = 'https://www.googleapis.com/auth/admin.directory.user.readonly https://www.googleapis.com/auth/admin.directory.group.readonly https://www.googleapis.com/auth/admin.directory.group.member.readonly https://www.googleapis.com/auth/admin.directory.orgunit.readonly https://www.googleapis.com/auth/admin.directory.user.alias.readonly'
+    CLIENT_ID = ""
 
-# Redirect URI for installed apps
-REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
+    CLIENT_SECRET = ""
 
-# Run through the OAuth flow and retrieve credentials
-flow = OAuth2WebServerFlow(CLIENT_ID, CLIENT_SECRET, OAUTH_SCOPE, REDIRECT_URI)
-authorize_url = flow.step1_get_authorize_url()
-print 'Go to the following link in your browser: ' + authorize_url
-code = raw_input('Enter verification code: ').strip()
-credentials = flow.step2_exchange(code)
+    def get_connection(self):
+        # Run through the OAuth flow and retrieve credentials
+        flow = OAuth2WebServerFlow(self.CLIENT_ID, self.CLIENT_SECRET, self.OAUTH_SCOPE, self.REDIRECT_URI)
+        authorize_url = flow.step1_get_authorize_url()
+        print 'Go to the following link in your browser: ' + authorize_url
+        code = raw_input('Enter verification code: ').strip()
+        credentials = flow.step2_exchange(code)
 
-# Create an httplib2.Http object and authorize it with our credentials
-http = httplib2.Http()
-http = credentials.authorize(http)
+        # Create an httplib2.Http object and authorize it with our credentials
+        http = httplib2.Http()
+        http = credentials.authorize(http)
 
-directory_service = build('admin', 'directory_v1', http=http)
+        directory_service = build('admin', 'directory_v1', http=http)
+        return directory_service
 
-class google_apps_helper():
+    def __init__(self):
+        pass
 
-
-    def get_users(self) {
+    def get_users(self):
+        directory_service = self.get_connection()
         page_token = None
 
         params = {'customer': 'my_customer'}
@@ -54,10 +57,8 @@ class google_apps_helper():
 
         return all_users
 
-    }
-
-
-    def get_groups(self) {
+    def get_groups(self):
+        directory_service = self.get_connection()
         page_token = None
         params = {'customer': 'my_customer'}
         all_groups = []
@@ -77,12 +78,9 @@ class google_apps_helper():
                 break
 
         return all_groups
-    }
 
-
-
-
-    def get_user_groups(self): {
+    def get_user_groups(self, all_users):
+        directory_service = self.get_connection()
         page_token = None
         params = {}
         user_groups = {}
@@ -113,10 +111,9 @@ class google_apps_helper():
                 break
 
         return user_groups
-    }
 
-
-    def get_group_members(self) {
+    def get_group_members(self, all_groups):
+        directory_service = self.get_connection()
         page_token = None
         params = {}
         group_members = {}
@@ -147,7 +144,6 @@ class google_apps_helper():
                 break
 
         return group_members
-    }
 
     def to_string(self, dictionary):
         for key, value in dictionary:
