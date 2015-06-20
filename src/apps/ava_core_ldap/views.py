@@ -118,7 +118,7 @@ class LDAPConfigurationGetUsers(ListView):
         if config_pk:
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
             ad_user = ActiveDirectoryUser()
-            ad_user.getUsers(instance)
+            ad_user.get_users(instance)
 
         return True
 
@@ -142,4 +142,4 @@ class LDAPConfigurationGetGroups(ListView):
         if config_pk:
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
             ad_group = ActiveDirectoryGroup()
-            ad_group.getGroups(instance)
+            ad_group.get_groups(instance)

@@ -24,7 +24,7 @@ def graph_data(request, pk):
     '''
     parameters = get_object_or_404(LDAPConfiguration, pk=pk)
     exp = ExportLDAP()
-    json_data = exp.generateGraph(parameters)
+    json_data = exp.generate_graph(parameters)
     return JsonResponse(json_data)
 
 
