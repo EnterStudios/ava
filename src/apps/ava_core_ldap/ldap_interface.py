@@ -5,7 +5,6 @@ import sys
 
 
 class ActiveDirectoryHelper():
-
     PAGESIZE = 1000
 
     def get_connection(self, parameters):

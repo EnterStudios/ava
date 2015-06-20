@@ -130,7 +130,7 @@ class ActiveDirectoryUser(TimeStampedModel):
                                     gen_groups.append(q.group)
                     elif key == 'proxyAddresses':
                         for address in value:
-                                email_addresses.append(address[5:])
+                            email_addresses.append(address[5:])
                     else:
                         value_string = ""
                         try:
@@ -144,7 +144,7 @@ class ActiveDirectoryUser(TimeStampedModel):
                                     else:
                                         value_string = e['encoded']
 
-                            if key in ('accountExpires', 'badPasswordTime', 'lastLogoff', 'lastLogon', 
+                            if key in ('accountExpires', 'badPasswordTime', 'lastLogoff', 'lastLogon',
                                        'lastLogonTimestamp', 'pwdLastSet', 'uSNChanged', 'uSNCreated',
                                        'whenChanged', 'whenCreated'):
                                 date = self.convert_date_time(value_string)
@@ -261,7 +261,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
                         attributes[key] = value_string
 
                     except UnicodeDecodeError:
-                            attributes[key] = self.cleanhex(value_string)
+                        attributes[key] = self.cleanhex(value_string)
 
             """
             Don't filter on everything. Start with the properties that are
@@ -333,7 +333,6 @@ class LDAPConfiguration(TimeStampedModel):
 
 
 class ExportLDAP:
-
     def __init__(self):
         pass
 
@@ -379,7 +378,7 @@ class ExportLDAP:
                 for user in users:
                     current_edge = {}
                     user_index = elements.index(user)
-                    current_edge['value'] = 'edge'+str(user_index)+"_"+str(index)
+                    current_edge['value'] = 'edge' + str(user_index) + "_" + str(index)
                     current_edge['source'] = user_index
                     current_edge['target'] = index
                     edges.append(current_edge)
@@ -404,6 +403,7 @@ class ExportLDAP:
         """
         # avoid a circular import
         from django.db.models.fields.related import ManyToManyField
+
         opts = instance._meta
         data = {}
         for f in opts.concrete_fields + opts.virtual_fields + opts.many_to_many:
