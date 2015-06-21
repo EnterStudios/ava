@@ -4,7 +4,7 @@ from ldap3 import Server, Connection, LDAPExceptionError, SUBTREE
 import sys
 
 
-class ActiveDirectoryHelper():
+class ActiveDirectoryHelper:
     PAGESIZE = 1000
 
     def get_connection(self, parameters):
