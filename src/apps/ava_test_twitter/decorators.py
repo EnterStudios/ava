@@ -17,5 +17,3 @@ def twitter_test_access_check(access_level, view_func=None, login_url=None, rais
                                 view_func=view_func,
                                 login_url=login_url,
                                 raise_exception=raise_exception)
-
-
