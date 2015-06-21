@@ -40,4 +40,6 @@ class ActiveDirectoryHelper:
 
         results_json = connection.response_to_json(search_result=results)
 
+        connection.close()
+
         return results_json
