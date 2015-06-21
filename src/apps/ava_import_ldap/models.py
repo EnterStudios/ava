@@ -5,7 +5,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from apps.ava_core.models import TimeStampedModel
-from apps.ava_core_ldap.ldap_interface import ActiveDirectoryHelper
+from apps.ava_import_ldap.ldap_interface import ActiveDirectoryHelper
 from apps.ava_core_identity.models import Identifier, Person, Identity
 from apps.ava_core_group.models import Group
 

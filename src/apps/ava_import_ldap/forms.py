@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from apps.ava_core_ldap.models import LDAPConfiguration
+from apps.ava_import_ldap.models import LDAPConfiguration
 
 
 class LDAPConfigurationForm(ModelForm):

@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 
-from apps.ava_core_ldap.models import ActiveDirectoryUser, ActiveDirectoryGroup, LDAPConfiguration
-from apps.ava_core_ldap.forms import LDAPConfigurationForm
+from apps.ava_import_ldap.models import ActiveDirectoryUser, ActiveDirectoryGroup, LDAPConfiguration
+from apps.ava_import_ldap.forms import LDAPConfigurationForm
 
 
 class LDAPConfigurationIndex(ListView):

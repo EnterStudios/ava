@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
                 ('userAccountControl', models.CharField(max_length=300)),
                 ('whenChanged', models.CharField(max_length=300)),
                 ('whenCreated', models.CharField(max_length=300)),
-                ('groups', models.ManyToManyField(related_name='users', to='ava_core_ldap.ActiveDirectoryGroup')),
+                ('groups', models.ManyToManyField(related_name='users', to='ava_import_ldap.ActiveDirectoryGroup')),
             ],
             options={
             },
@@ -91,7 +91,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='activedirectoryuser',
             name='ldap_configuration',
-            field=models.ForeignKey(to='ava_core_ldap.LDAPConfiguration'),
+            field=models.ForeignKey(to='ava_import_ldap.LDAPConfiguration'),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -101,7 +101,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='activedirectorygroup',
             name='ldap_configuration',
-            field=models.ForeignKey(to='ava_core_ldap.LDAPConfiguration'),
+            field=models.ForeignKey(to='ava_import_ldap.LDAPConfiguration'),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(

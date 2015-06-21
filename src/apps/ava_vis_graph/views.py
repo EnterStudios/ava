@@ -2,7 +2,7 @@ from django.views import generic
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 
-from apps.ava_core_ldap.models import LDAPConfiguration, ExportLDAP
+from apps.ava_import_ldap.models import LDAPConfiguration, ExportLDAP
 from django.views.generic import ListView
 
 

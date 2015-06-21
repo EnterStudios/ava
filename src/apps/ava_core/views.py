@@ -3,7 +3,7 @@ from django.views import generic
 from django.utils import safestring, html
 from django.db.models import Model
 from apps.ava_core_identity.models import Person, Identity
-from apps.ava_core_ldap.models import LDAPConfiguration
+from apps.ava_import_ldap.models import LDAPConfiguration
 from apps.ava_core_project.models import Project
 from apps.ava_test_email.models import EmailTest
 from apps.ava_test_twitter.models import TwitterTest

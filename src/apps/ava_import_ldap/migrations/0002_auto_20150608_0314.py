@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ava_core_ldap', '0001_initial'),
+        ('ava_import_ldap', '0001_initial'),
     ]
 
     operations = [
