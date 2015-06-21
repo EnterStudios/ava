@@ -10,7 +10,7 @@ from apps.ava_test_twitter.models import TwitterTest
 
 
 class FormsetMixin(object):
-    '''
+    """
     This is a generic mixin to provide clean functionality for creating and updating related models via FormSet
     This mixin can be inherited and used as an alternative to generic.CreateView and generic.UpdateView
 
@@ -21,7 +21,7 @@ class FormsetMixin(object):
         model = Person
         form_class = PersonForm
         formset_class = IdentifierFormSet
-    '''
+    """
 
     object = None
 
@@ -76,7 +76,7 @@ class FormsetMixin(object):
 
 
 class AddManyToManyView(generic.DetailView):
-    '''
+    """
     A sublass of DetailView that specialises in adding items to a many to
     many relationship between models.
     
@@ -95,7 +95,7 @@ class AddManyToManyView(generic.DetailView):
         
         def get_many_to_many(self):
             return self.object.identities
-    '''
+    """
     # Values that may be overridden in subclasses
     target_model = None
     targets_context_object_name = 'target_list'
@@ -106,47 +106,47 @@ class AddManyToManyView(generic.DetailView):
     default_limited_message = 'The first {0} items are displayed. Search to return more items.'
     
     def get_target_queryset(self):
-        '''
+        """
         Gets the query set that will be used to search for targets to add.
-        '''
+        """
         if not issubclass(self.target_model, Model):
             raise AssertionError("target_model must be a model type")
         return self.target_model.objects
     
     def order_target_queryset(self, target_queryset):
-        '''
+        """
         Orders the items in the target query set for display.
         :param target_queryset: The query set of items to order.
         :returns The ordered query set.
-        '''
+        """
         return target_queryset
     
     def search_targets(self, target_queryset, search_term):
-        '''
+        """
         Searches the query set for items matching the supplied search term.
         :param target_queryset: A query set containing possible targets to add.
         :param search_term: A value to search for within the query set.
-        '''
+        """
         raise NotImplementedError('Must implement get_target_queryset_filter(self, search_term)')
     
     def get_many_to_many(self):
-        '''
+        """
         Gets the field that represents the many-to-many relationship.
-        '''
+        """
         raise NotImplementedError('Must implement get_many_to_many(self)')
     
     def get_success_url(self):
-        '''
+        """
         Gets the URL that will be displayed when the target members are removed.
-        '''
+        """
         return self.object.get_absolute_url()
     
     def get_target_list(self, search_term=None):
-        '''
+        """
         Gets a list of target items to choose from.
         :param search_term: A search term to filter items. If this is not set,
                     a default set of items will be returned.
-        '''
+        """
         queryset = self.order_target_queryset(self.get_target_queryset())
         if search_term:
             return self.search_targets(queryset, search_term)
@@ -158,19 +158,19 @@ class AddManyToManyView(generic.DetailView):
             return None
     
     def order_target_list(self, target_list):
-        '''
+        """
         Orders the items in the target list for display.
         :param target_list: The list of items to order. Unless
                     the get_target_list method has been modified, this value
                     will be a query set.
-        '''
+        """
         return target_list
     
     def add_targets(self, target_ids):
-        '''
+        """
         Adds targets to the many-to-many relationship.
         :param target_ids: The identifiers of the target items to add.
-        '''
+        """
         targets = self.get_target_queryset().filter(id__in=target_ids)
         self.get_many_to_many().add(*targets.all())
     
@@ -210,7 +210,7 @@ class AddManyToManyView(generic.DetailView):
 
 
 class RemoveManyToManyView(generic.DetailView):
-    '''
+    """
     A sublass of DetailView that specialises in removing items from a many to
     many relationship between models.
     
@@ -226,7 +226,7 @@ class RemoveManyToManyView(generic.DetailView):
         
         def get_many_to_many(self):
             return self.object.identities
-    '''
+    """
     # Values that may be overridden in subclasses
     targets_context_object_name = 'remove_list'
     target_post_field = 'remove'
@@ -238,23 +238,23 @@ class RemoveManyToManyView(generic.DetailView):
     CONFIRM_INPUT = '<input type="hidden" name="{0}" value="{1}" />'
     
     def get_many_to_many(self):
-        '''
+        """
         Gets the field that represents the many-to-many relationship.
-        '''
+        """
         raise NotImplementedError('Must implement get_many_to_many(self)')
     
     def get_success_url(self):
-        '''
+        """
         Gets the URL that will be displayed when the target members are removed.
-        '''
+        """
         return self.object.get_absolute_url()
     
     def get_target_ids(self, request):
-        '''
+        """
         Gets the list of identifier for the targets to remove from the
         many-to-many relationship.
         :param request: The incoming HTTP request.
-        '''
+        """
         target_ids = []
         # If the user list is in the POST request, pull the IDs out.
         if request.POST and self.target_post_field in request.POST:
@@ -265,31 +265,31 @@ class RemoveManyToManyView(generic.DetailView):
         return target_ids
     
     def get_target_list(self, request):
-        '''
+        """
         Gets the list of targets to remove from the many-to-many relationship.
         :param request: The incoming HTTP request.
-        '''
+        """
         # Return all current members matching the target IDs.
         target_ids = self.get_target_ids(request)
         return self.get_many_to_many().filter(id__in=target_ids)
     
     def order_target_list(self, target_list):
-        '''
+        """
         Orders the items in the target list for display.
         :param target_list: The list of items to order. Unless
                     the get_target_list method has been modified, this value
                     will be a query set.
         :returns The ordered list.
-        '''
+        """
         return target_list
     
     def confirm_targets_to_remove(self, request):
-        '''
+        """
         Confirms the list of targets to remove from the many-to-many relationship.
         If there are no valid targets or a single valid target, it will be
         removed immediately.
         :param request: The incoming HTTP request.
-        '''
+        """
         # Do a quick check on the number of users. If there's only one, just
         # remove them immediately.
         target_list = self.get_target_list(request)
@@ -304,10 +304,10 @@ class RemoveManyToManyView(generic.DetailView):
         return self.render_to_response(self.get_context_data(**context))
     
     def remove_targets(self, request):
-        '''
+        """
         Removes targets from the many-to-many relationship.
         :param request: The incoming HTTP request.
-        '''
+        """
         # Find the list or targets and remove them.
         target_list = self.get_target_list(request)
         self.get_many_to_many().remove(*target_list.all())
