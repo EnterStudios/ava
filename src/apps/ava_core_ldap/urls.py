@@ -25,8 +25,8 @@ urlpatterns = patterns('',
     url(r'^adgroup/(?P<pk>\d+)/delete/$', login_required(views.ActiveDirectoryGroupDelete.as_view()), name='ad-group-delete'),
     
   
-    url(r'^(?P<pk>\d+)/getusers/$', login_required(views.LDAPConfigurationGetUsers.as_view()), name='ldap-get-users'),
-    url(r'^(?P<pk>\d+)/getgroups/$', login_required(views.LDAPConfigurationGetGroups.as_view()), name='ldap-get-groups'),
-    #url(r'^(?P<pk>\d+)/getall/$', login_required(views.LDAPConfigurationGetAll.as_view()), name='ldap-get-all'),
+    #url(r'^(?P<pk>\d+)/getusers/$', login_required(views.LDAPConfigurationGetUsers.as_view()), name='ldap-get-users'),
+    #url(r'^(?P<pk>\d+)/getgroups/$', login_required(views.LDAPConfigurationGetGroups.as_view()), name='ldap-get-groups'),
+    url(r'^(?P<pk>\d+)/import/$', login_required(views.LDAPConfigurationImport.as_view()), name='ldap-import-all'),
    
 )

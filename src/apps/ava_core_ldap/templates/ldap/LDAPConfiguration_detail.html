@@ -30,8 +30,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <a href="{% url 'ldap-get-users' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Import Users</button></a>
-                    <a href="{% url 'ldap-get-groups' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Import Groups</button></a>
+                    <a href="{% url 'ldap-import-all' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Import</button></a>
                     <a href="{% url 'ldap-configuration-update' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
                     <a href="{% url 'ldap-configuration-delete' ldap_configuration.id  %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
 
