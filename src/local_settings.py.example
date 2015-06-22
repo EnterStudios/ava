@@ -1,3 +1,7 @@
+
+## TODO: Remove this file. It's not used in a docker-only AVA system
+##       (which is the direction we're headed)
+
 import os
 
 # DATABASE SETTINGS
