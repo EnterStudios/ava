@@ -6,6 +6,7 @@ from apps.ava_test_email.models import EmailTest
 from apps.ava_test_twitter.models import TwitterTest
 from apps.ava_core_project.models import Project
 
+
 class TestDashboardView(generic.ListView):
     template_name = 'test/test_dashboard.html'
     model = Test
@@ -14,14 +15,13 @@ class TestDashboardView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(TestDashboardView, self).get_context_data(**kwargs)
 
-        context['project_list'] = Project.objects.filter(owner = self.request.user)
+        context['project_list'] = Project.objects.filter(owner=self.request.user)
 
         context['tests_new'] = self.test_count_by_status(Test.NEW)
         context['tests_running'] = self.test_count_by_status(Test.RUNNING)
         context['tests_complete'] = self.test_count_by_status(Test.COMPLETE)
         context['tests_error'] = self.test_count_by_status(Test.ERROR)
         context['tests_scheduled'] = self.test_count_by_status(Test.SCHEDULED)
-
 
         return context
 
@@ -30,9 +30,9 @@ class TestDashboardView(generic.ListView):
         count = count + EmailTest.objects.filter(user=self.request.user, teststatus=status).count()
         return count
 
-
     def get_queryset(self):
-        return Test.objects.filter(user = self.request.user)
+        return Test.objects.filter(user=self.request.user)
+
 
 class TestProjectDashboardView(generic.ListView):
     template_name = 'test/test_project_dashboard.html'
@@ -44,8 +44,8 @@ class TestProjectDashboardView(generic.ListView):
 
         pk = self.kwargs.get('pk')
         if pk:
-            self.project = get_object_or_404(Project, pk=pk)
-            context['project'] = self.project
+            project = get_object_or_404(Project, pk=pk)
+            context['project'] = project
 
         context['tests_new'] = self.test_count_by_status(Test.NEW)
         context['tests_running'] = self.test_count_by_status(Test.RUNNING)
@@ -62,9 +62,5 @@ class TestProjectDashboardView(generic.ListView):
         count = count + EmailTest.objects.filter(user=self.request.user, teststatus=status).count()
         return count
 
-
     def get_queryset(self):
-        return Test.objects.filter(user = self.request.user)
-
-
-
+        return Test.objects.filter(user=self.request.user)

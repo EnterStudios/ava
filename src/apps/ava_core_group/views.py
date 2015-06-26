@@ -6,6 +6,7 @@ from django.db.models import Count
 from apps.ava_core_group.models import Group
 from apps.ava_core_group.forms import GroupForm
 
+
 class GroupIndex(ListView):
     template_name = 'group/group_index.html'
     context_object_name = 'group_list'
@@ -40,4 +41,3 @@ class GroupDelete(DeleteView):
 
     def get_success_url(self):
         return reverse('index')
-

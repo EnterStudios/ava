@@ -31,7 +31,8 @@ class IdentityCreate(FormsetMixin, CreateView):
     form_class = IdentityForm
     formset_class = IdentifierFormSet
 
-#    def form_valid(self, form, formset):
+
+# def form_valid(self, form, formset):
 #        org_id = self.request.session['organisation']
 #        if org_id:
 #            organisation = get_object_or_404(Organisation, pk=org_id)
@@ -52,7 +53,7 @@ class IdentityUpdate(FormsetMixin, UpdateView):
 class IdentityDelete(DeleteView):
     model = Identity
     template_name = 'confirm_delete.html'
-    
+
     def get_success_url(self):
         return reverse('index')
 
@@ -91,9 +92,9 @@ class PersonUpdate(UpdateView):
 class PersonDelete(DeleteView):
     model = Person
     template_name = 'confirm_delete.html'
-    
+
     def get_success_url(self):
-        #TODO: Redirect to parent object
+        # TODO: Redirect to parent object
         return reverse('person-index')
 
 
@@ -102,29 +103,29 @@ class IdentifierCreate(CreateView):
     fields = ['identifiertype', 'identifier']
     template_name = 'identity/identifier.html'
     form_class = IdentifierForm
-    
+
     identity = None
-    
+
     def dispatch(self, request, *args, **kwargs):
-        #Check that the identity exists and store it for later.
+        # Check that the identity exists and store it for later.
         identity_id = kwargs['identity']
         self.identity = get_object_or_404(Identity, pk=identity_id)
         return super(IdentifierCreate, self).dispatch(request, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         context = super(IdentifierCreate, self).get_context_data(**kwargs)
         context['identity'] = self.identity
         return context
-    
+
     def form_valid(self, form):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         if self.identity and form:
             form.instance.identity = self.identity
-            #TODO: Check whether the identifier is a duplicate or not.
+            # TODO: Check whether the identifier is a duplicate or not.
             return super(IdentifierCreate, self).form_valid(form)
         return super(IdentifierCreate, self).form_invalid(form)
-    
+
     def get_success_url(self):
         return self.identity.get_absolute_url()
 
@@ -141,9 +142,6 @@ class IdentifierUpdate(UpdateView):
 class IdentifierDelete(DeleteView):
     model = Identifier
     template_name = 'confirm_delete.html'
-    
+
     def get_success_url(self):
         return self.get_object().identity.get_absolute_url()
-
-
-

@@ -8,10 +8,10 @@ from apps.ava_core_identity.validators import validate_skype, validate_twitter
 
 
 class Identity(ReferenceModel):
-    '''
+    """
     An identity is an online persona that can map to a single person, a group
     of people, or an automated service.
-    '''
+    """
     
     groups = models.ManyToManyField(Group,
                                     null=True,
@@ -28,9 +28,9 @@ class Identity(ReferenceModel):
 
 
 class Person(TimeStampedModel):
-    '''
+    """
     TODO: DocString
-    '''
+    """
     
     firstname = models.CharField(max_length=75, validators=[validate_slug])
     surname = models.CharField(max_length=75, validators=[validate_slug])
@@ -49,9 +49,9 @@ class Person(TimeStampedModel):
 
 
 class Identifier(TimeStampedModel):
-    '''
+    """
     TODO: DocString
-    '''
+    """
 
     EMAIL = 'EMAIL'
     SKYPE = 'SKYPE'
@@ -81,31 +81,31 @@ class Identifier(TimeStampedModel):
         return reverse('identifier-detail', kwargs={'pk': self.id})
     
     def clean(self):
-        if self.identifiertype == 'EMAIL':
+        if self.identifiertype is 'EMAIL':
             try:
                 validate_email(self.identifier)
             except ValidationError:
                 raise ValidationError('Identifier is not a valid email address')
         
-        if self.identifiertype == 'IPADD':
+        if self.identifiertype is 'IPADD':
             try:
                 validate_ipv46_address(self.identifier)
             except ValidationError:
                 raise ValidationError('Identifier is not a valid IPv4/IPv6 address')
 
-        if self.identifiertype == 'UNAME':
+        if self.identifiertype is 'UNAME':
             try:
                 validate_slug(self.identifier)
             except ValidationError:
                 raise ValidationError('Identifier is not a valid username')
 
-        if self.identifiertype =='SKYPE':
+        if self.identifiertype is 'SKYPE':
             try:
                 validate_skype(self.identifier)
             except ValidationError:
                 raise ValidationError('Identifier is not a valid Skype user name')
 
-        if self.identifiertype == 'TWITTER':
+        if self.identifiertype is 'TWITTER':
             try:
                 validate_twitter(self.identifier)
             except ValidationError:

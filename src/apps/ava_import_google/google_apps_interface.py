@@ -5,9 +5,10 @@ from apiclient.discovery import build
 from oauth2client.client import OAuth2WebServerFlow
 
 
-class google_apps_helper:
+class GoogleAppsHelper:
     # Check https://developers.google.com/admin-sdk/directory/v1/guides/authorizing for all available scopes
-    OAUTH_SCOPE = 'https://www.googleapis.com/auth/admin.directory.user.readonly https://www.googleapis.com/auth/admin.directory.group.readonly https://www.googleapis.com/auth/admin.directory.group.member.readonly https://www.googleapis.com/auth/admin.directory.orgunit.readonly https://www.googleapis.com/auth/admin.directory.user.alias.readonly'
+    OAUTH_SCOPE = 'https://www.googleapis.com/auth/admin.directory.user.readonly '
+                  'https://www.googleapis.com/auth/admin.directory.group.readonly https://www.googleapis.com/auth/admin.directory.group.member.readonly https://www.googleapis.com/auth/admin.directory.orgunit.readonly https://www.googleapis.com/auth/admin.directory.user.alias.readonly'
 
     # Redirect URI for installed apps
     REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'

@@ -4,10 +4,10 @@ from django.contrib.auth.decorators import login_required
 from apps.ava_import_ldap import views
 
 
-urlpatterns = patterns('',
-    
+urlpatterns = patterns(
+    '',
     url(r'^$', login_required(views.LDAPConfigurationIndex.as_view()), name='ldap-configuration-index'),
-    url(r'^new/$',login_required(views.LDAPConfigurationCreate.as_view()),
+    url(r'^new/$', login_required(views.LDAPConfigurationCreate.as_view()),
         name='ldap-configuration-create'),
     url(r'^(?P<pk>\d+)/view/$', login_required(views.LDAPConfigurationDetail.as_view()),
         name='ldap-configuration-detail'),

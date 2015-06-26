@@ -104,7 +104,7 @@ class AddManyToManyView(generic.DetailView):
     target_default_items = 20
     default_limited_message_class = 'alert alert-info'
     default_limited_message = 'The first {0} items are displayed. Search to return more items.'
-    
+
     def get_target_queryset(self):
         """
         Gets the query set that will be used to search for targets to add.
@@ -112,7 +112,7 @@ class AddManyToManyView(generic.DetailView):
         if not issubclass(self.target_model, Model):
             raise AssertionError("target_model must be a model type")
         return self.target_model.objects
-    
+
     def order_target_queryset(self, target_queryset):
         """
         Orders the items in the target query set for display.
@@ -120,7 +120,7 @@ class AddManyToManyView(generic.DetailView):
         :returns The ordered query set.
         """
         return target_queryset
-    
+
     def search_targets(self, target_queryset, search_term):
         """
         Searches the query set for items matching the supplied search term.
@@ -128,19 +128,19 @@ class AddManyToManyView(generic.DetailView):
         :param search_term: A value to search for within the query set.
         """
         raise NotImplementedError('Must implement get_target_queryset_filter(self, search_term)')
-    
+
     def get_many_to_many(self):
         """
         Gets the field that represents the many-to-many relationship.
         """
         raise NotImplementedError('Must implement get_many_to_many(self)')
-    
+
     def get_success_url(self):
         """
         Gets the URL that will be displayed when the target members are removed.
         """
         return self.object.get_absolute_url()
-    
+
     def get_target_list(self, search_term=None):
         """
         Gets a list of target items to choose from.
@@ -156,7 +156,7 @@ class AddManyToManyView(generic.DetailView):
             return queryset.all()[:self.target_default_items]
         else:
             return None
-    
+
     def order_target_list(self, target_list):
         """
         Orders the items in the target list for display.
@@ -165,7 +165,7 @@ class AddManyToManyView(generic.DetailView):
                     will be a query set.
         """
         return target_list
-    
+
     def add_targets(self, target_ids):
         """
         Adds targets to the many-to-many relationship.
@@ -173,7 +173,7 @@ class AddManyToManyView(generic.DetailView):
         """
         targets = self.get_target_queryset().filter(id__in=target_ids)
         self.get_many_to_many().add(*targets.all())
-    
+
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         # Get the current search term.
@@ -182,9 +182,9 @@ class AddManyToManyView(generic.DetailView):
             search_term = request.GET.get(self.target_search_field)
         # Build the default context.
         context = {
-                   'search_term': search_term,
-                   self.targets_context_object_name: self.get_target_list(search_term)
-                   }
+            'search_term': search_term,
+            self.targets_context_object_name: self.get_target_list(search_term)
+        }
         # If the default result list is being truncated, add a relevant message.
         if getattr(self, 'default_results_limited', False):
             message = self.default_limited_message.format(self.target_default_items)
@@ -195,7 +195,7 @@ class AddManyToManyView(generic.DetailView):
             context['default_results_message'] = safestring.mark_safe(message_display)
         # Render the page.
         return self.render_to_response(self.get_context_data(**context))
-    
+
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         # Get the URL to redirect to when we're done. By convention, this is
@@ -231,24 +231,24 @@ class RemoveManyToManyView(generic.DetailView):
     targets_context_object_name = 'remove_list'
     target_post_field = 'remove'
     target_kwargs_field = 'remove'
-    
+
     # Constants
     CONFIRM_FIELD = 'confirm'
     CONFIRM_VALUE = 'yes'
     CONFIRM_INPUT = '<input type="hidden" name="{0}" value="{1}" />'
-    
+
     def get_many_to_many(self):
         """
         Gets the field that represents the many-to-many relationship.
         """
         raise NotImplementedError('Must implement get_many_to_many(self)')
-    
+
     def get_success_url(self):
         """
         Gets the URL that will be displayed when the target members are removed.
         """
         return self.object.get_absolute_url()
-    
+
     def get_target_ids(self, request):
         """
         Gets the list of identifier for the targets to remove from the
@@ -263,7 +263,7 @@ class RemoveManyToManyView(generic.DetailView):
         elif self.target_kwargs_field in request.resolver_match.kwargs:
             target_ids.append(request.resolver_match.kwargs.get(self.target_kwargs_field))
         return target_ids
-    
+
     def get_target_list(self, request):
         """
         Gets the list of targets to remove from the many-to-many relationship.
@@ -272,7 +272,7 @@ class RemoveManyToManyView(generic.DetailView):
         # Return all current members matching the target IDs.
         target_ids = self.get_target_ids(request)
         return self.get_many_to_many().filter(id__in=target_ids)
-    
+
     def order_target_list(self, target_list):
         """
         Orders the items in the target list for display.
@@ -282,7 +282,7 @@ class RemoveManyToManyView(generic.DetailView):
         :returns The ordered list.
         """
         return target_list
-    
+
     def confirm_targets_to_remove(self, request):
         """
         Confirms the list of targets to remove from the many-to-many relationship.
@@ -298,11 +298,11 @@ class RemoveManyToManyView(generic.DetailView):
         # If there's more than one user, display a list.
         confirm_input = safestring.mark_safe(self.CONFIRM_INPUT.format(self.CONFIRM_FIELD, self.CONFIRM_VALUE))
         context = {
-                   'confirm': confirm_input,
-                   self.targets_context_object_name: self.order_target_list(target_list),
-                   }
+            'confirm': confirm_input,
+            self.targets_context_object_name: self.order_target_list(target_list),
+        }
         return self.render_to_response(self.get_context_data(**context))
-    
+
     def remove_targets(self, request):
         """
         Removes targets from the many-to-many relationship.
@@ -336,7 +336,7 @@ class RemoveManyToManyView(generic.DetailView):
 
 class DashboardView(generic.TemplateView):
     template_name = 'core/dashboard.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
         context['person_count'] = Person.objects.count()
