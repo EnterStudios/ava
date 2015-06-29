@@ -1,0 +1,17 @@
+language: python
+python:
+  "2.7"
+install:
+  ## This convoluted pip command builds all our dependencies so that Travis can cache them, greatly speeding up test runs.
+  - "pip wheel --use-wheel -w ${HOME}/.cache/wheelhouse -f file://${HOME}/.cache/wheelhouse -r src/config/requirements.txt"
+  ## Install the pre-built dependencies.
+  - "pip install --use-wheel --find-links=file://${HOME}/.cache/wheelhouse -r src/config/requirements.txt"
+script:
+  "python src/manage.py test -v3"
+env:
+ - DJANGO_SETTINGS_MODULE=travis_settings PYTHONPATH=src
+addons:
+  postgresql: 9.3
+cache:
+  - directories:
+    - ${HOME}/.cache/wheelhouse

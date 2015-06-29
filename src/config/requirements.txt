@@ -2,7 +2,8 @@ amqp==1.4.6
 anyjson==0.3.3
 billiard==3.3.0.19
 celery==3.1.17
-Django==1.7.6
+coverage==3.7.1
+Django==1.8.2
 django-bootstrap-form==3.1
 django-bootstrap3==4.4.1
 django-d3==3.3.11
