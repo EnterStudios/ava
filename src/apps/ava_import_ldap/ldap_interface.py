@@ -18,9 +18,9 @@ class ActiveDirectoryHelper:
                                    auto_bind=True)
             return ldap_conn
 
-        except LDAPExceptionError, e:
-            print e.message
-            print e.args
+        except LDAPExceptionError as e:
+            print(e.message)
+            print(e.args)
             sys.exit(1)
 
     def search(self, parameters, filterby, attrs):

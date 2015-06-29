@@ -21,6 +21,6 @@ def generate_hex_token(token_chars=32):
 
 
 def generate_tracking_link(url_name, token):
-    root_url = random.choice(settings.PUBLIC_SITE_URLS) or u''
+    root_url = random.choice(settings.PUBLIC_SITE_URLS) or ''
     root_url = root_url.rstrip('/')
     return root_url + reverse(url_name, kwargs={'token': token})

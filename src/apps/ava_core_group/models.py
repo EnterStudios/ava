@@ -31,7 +31,7 @@ class Group(TimeStampedModel):
     parent = models.ForeignKey('Group', null=True, blank=True)
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or ''
 
     def get_absolute_url(self):
         return reverse('group-detail', kwargs={'pk': self.pk})

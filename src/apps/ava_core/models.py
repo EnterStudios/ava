@@ -21,7 +21,7 @@ class ReferenceModel(TimeStampedModel):
     description = models.TextField(max_length=500, verbose_name='Description')
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or ''
 
     class Meta:
         abstract = True

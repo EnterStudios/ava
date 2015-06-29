@@ -36,11 +36,9 @@ urlpatterns = patterns(
         name='ad-group-delete'),
 
     url(r'^(?P<pk>\d+)/import/$', login_required(views.LDAPConfigurationImport.as_view()), name='ldap-import-all'),
-    """
-    url(r'^(?P<pk>\d+)/getusers/$', login_required(views.LDAPConfigurationGetUsers.as_view()), name='ldap-get-users'),
-    url(r'^(?P<pk>\d+)/getgroups/$', login_required(views.LDAPConfigurationGetGroups.as_view()),
-    name='ldap-get-groups'),
-    """
-
-   
+#    """
+#    url(r'^(?P<pk>\d+)/getusers/$', login_required(views.LDAPConfigurationGetUsers.as_view()), name='ldap-get-users'),
+#    url(r'^(?P<pk>\d+)/getgroups/$', login_required(views.LDAPConfigurationGetGroups.as_view()),
+#    name='ldap-get-groups'),
+#    """  
 )

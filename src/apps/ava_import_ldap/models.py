@@ -42,7 +42,7 @@ class ActiveDirectoryUser(TimeStampedModel):
     ldap_configuration = models.ForeignKey('LDAPConfiguration')
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or ''
 
     def get_absolute_url(self):
         return reverse('ad-user-detail', kwargs={'pk': self.id})
@@ -69,7 +69,7 @@ class ActiveDirectoryUser(TimeStampedModel):
         # Check if the data is a Windows FILETIME value.
         match = time_filetime.match(date_value)
         if match:
-            microseconds = long(date_value) / 10
+            microseconds = int(date_value) / 10
             if microseconds > 0:
                 if microseconds > filetime_max:
                     return datetime.datetime.max
@@ -118,7 +118,7 @@ class ActiveDirectoryUser(TimeStampedModel):
             gen_groups = []
             email_addresses = []
 
-            for key, value in attributes.iteritems():
+            for key, value in attributes.items():
                 if len(value) > 0:
                     if key == 'memberOf':
                         for cn in value:
@@ -139,7 +139,7 @@ class ActiveDirectoryUser(TimeStampedModel):
                                 value_string = value_string.decode('utf-8')
                             else:
                                 for e in value:
-                                    if isinstance(e, unicode):
+                                    if isinstance(e, str):
                                         value_string = ''.join(e)
                                     else:
                                         value_string = e['encoded']
@@ -197,12 +197,12 @@ class ActiveDirectoryUser(TimeStampedModel):
                                                  identity=identity)
 
             for group in groups:
-                print groups
+                print(groups)
                 if ad_user.groups.filter(id=group.id).count() == 0:
                     ad_user.groups.add(group)
 
             for gen_group in gen_groups:
-                print gen_group.id
+                print(gen_group.id)
                 if identity.groups.filter(id=gen_group.id).count() == 0:
                     identity.groups.add(gen_group)
 
@@ -219,7 +219,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
     group = models.ForeignKey('ava_core_group.Group', null=True, blank=True)
 
     def __unicode__(self):
-        return self.cn or u''
+        return self.cn or ''
 
     def get_absolute_url(self):
         return reverse('ad-group-detail', kwargs={'pk': self.id})
@@ -242,7 +242,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
         for group in entries:
             attributes = group['attributes']
 
-            for key, value in attributes.iteritems():
+            for key, value in attributes.items():
 
                 if len(value) > 0:
                     value_string = ""
@@ -252,7 +252,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
                             value_string = value_string.decode('utf-8')
                         else:
                             for e in value:
-                                if isinstance(e, unicode):
+                                if isinstance(e, str):
                                     value_string = ''.join(e)
                                     value_string = value_string.decode('utf-8')
                                 else:
@@ -278,15 +278,15 @@ class ActiveDirectoryGroup(TimeStampedModel):
             else:
                 continue
 
-            print attributes['objectGUID']
-            print attributes['objectSid']
-            print attributes['distinguishedName']
+            print(attributes['objectGUID'])
+            print(attributes['objectSid'])
+            print(attributes['distinguishedName'])
 
             # If no matching group currently exists then create one, otherwise
             # update the existing group.
             ad_groups = ActiveDirectoryGroup.objects.filter(**filter_attrs)
             if ad_groups.count() == 0:
-                print "new group"
+                print("new group")
                 ad_group = ActiveDirectoryGroup.objects.create(ldap_configuration=parameters, **attributes)
 
                 gen_group = Group.objects.create(name=ad_group.cn, group_type=Group.AD,
@@ -296,7 +296,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
                 ad_group.group = gen_group
                 ad_group.save()
             else:
-                print "existing group"
+                print("existing group")
                 ad_groups.update(**attributes)
                 ad_group = ad_groups.first()
 
@@ -323,7 +323,7 @@ class LDAPConfiguration(TimeStampedModel):
     server = models.CharField(max_length=100, verbose_name='Server')
 
     def __unicode__(self):
-        return self.server or u''
+        return self.server or ''
 
     class Meta:
         unique_together = ('server', 'user_dn')

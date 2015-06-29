@@ -9,7 +9,8 @@ admin.autodiscover()
 handler404 = 'dh5bp.views.page_not_found'
 handler500 = 'dh5bp.views.server_error'
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     url(r'^$', login_required(DashboardView.as_view()), name='index'),
     url(r'^ava/', include('apps.ava_core.urls')),
     url(r'^project/', include('apps.ava_core_project.urls')),

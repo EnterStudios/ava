@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from apps.ava_core_auth.models import Team, UserRights
 from django.forms import fields, widgets
-from __builtin__ import False
+#from builtins import False
 
 
 class UserForm(ModelForm):
@@ -48,7 +48,7 @@ class UserCreateForm(UserForm):
     def clean(self):
         cleaned_data = super(UserCreateForm, self).clean()
         if cleaned_data.get('password') != cleaned_data.get('password2'):
-            self.add_error('password2', u'The passwords entered do not match')
+            self.add_error('password2', 'The passwords entered do not match')
 
     def save_user(self, *args, **kwargs):
         user = super(UserCreateForm, self).save_user(*args, **kwargs)

@@ -3,7 +3,7 @@ import ldap, ldif, datetime, re
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.html import escape
-from StringIO import StringIO
+from io import StringIO
 
 from apps.ava_core.models import TimeStampedModel
 from apps.ava_core_identity.models import Identifier, Person, Identity
@@ -77,7 +77,7 @@ class GoogleDirectoryUser(TimeStampedModel):
     google_configuration = models.ForeignKey('GoogleConfiguration')
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or ''
 
     def get_absolute_url(self):
         return reverse('google-user-detail',kwargs={'pk': self.id})
@@ -117,7 +117,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
     group = models.ForeignKey('ava_core_group.Group', null=True, blank=True)
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or ''
 
     def get_absolute_url(self):
         return reverse('google-group-detail',kwargs={'pk': self.id})
@@ -133,7 +133,7 @@ class GoogleConfiguration(TimeStampedModel):
     domain = models.CharField(max_length = 100, verbose_name='Primary Domain', unique=True)
 
     def __unicode__(self):
-        return self.domain or u''
+        return self.domain or ''
 
     def get_absolute_url(self):
         return reverse('google-configuration-detail',kwargs={'pk': self.id})
@@ -146,9 +146,9 @@ class GoogleDirectoryHelper():
 
             return google_conn
 
-        except GoogleError, e:
+        except GoogleError as e:
             if type(e.message) == dict:
-                for (k, v) in e.message.iteritems():
+                for (k, v) in e.message.items():
                     sys.stderr.write("%s: %sn" % (k, v))
                     sys.stderr.write("\n")
             else:

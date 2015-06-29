@@ -1,6 +1,6 @@
 language: python
 python:
-  "2.7"
+  "3.4"
 install:
   ## This convoluted pip command builds all our dependencies so that Travis can cache them, greatly speeding up test runs.
   - "pip wheel --use-wheel -w ${HOME}/.cache/wheelhouse -f file://${HOME}/.cache/wheelhouse -r src/config/requirements.txt"
