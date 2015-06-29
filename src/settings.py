@@ -154,20 +154,11 @@ if USE_REDIS_CACHE:
     SESSION_REDIS_PREFIX = 'session'
 
 
-
 LOGIN_REDIRECT_URL= "/"
 
 PUBLIC_SITE_URLS = [
     'http://localhost:8000/',
 ]
-
-
-# IMPORT LOCAL SETTINGS
-
-try:
-    from local_settings import *
-except ImportError:
-    pass
 
 
 # IMPORT EMAIL SETTINGS
