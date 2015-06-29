@@ -9,9 +9,9 @@ class IdentityForm(ModelForm):
         model = Identity
         fields = ('name', 'description', 'groups')
         labels = {
-            'name':('Name'),
-            'description':('Description'),
-            'groups' :('Member of'),
+            'name': 'Name',
+            'description': 'Description',
+            'groups': 'Member of',
         }
 
 
@@ -20,9 +20,9 @@ class PersonForm(ModelForm):
         model = Person
         fields = ('firstname', 'surname', 'identity')
         labels = {
-            'firstname': ('First Name'),
-            'surname': ('Surname/Family Name'),
-            'identity': ('Identities'),
+            'firstname': 'First Name',
+            'surname': 'Surname/Family Name',
+            'identity': 'Identities',
         }
 
 

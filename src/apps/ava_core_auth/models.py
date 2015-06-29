@@ -8,13 +8,13 @@ class UserRights(models.Model):
     class Meta:
         verbose_name = 'User Rights'
         verbose_name_plural = verbose_name
-    
+
     user = models.OneToOneField(User, related_name='rights')
     is_admin = models.BooleanField(default=False)
-    
+
     def __unicode__(self):
         return unicode(self.user)
-    
+
     @classmethod
     def get(cls, user):
         rights, created = UserRights.objects.get_or_create(user=user)
@@ -26,7 +26,6 @@ class UserRights(models.Model):
 
 class Team(ReferenceModel):
     users = models.ManyToManyField(User, related_name='teams')
-    
-    def get_absolute_url(self):
-        return reverse('team-detail', kwargs={'pk':self.id})
 
+    def get_absolute_url(self):
+        return reverse('team-detail', kwargs={'pk': self.id})

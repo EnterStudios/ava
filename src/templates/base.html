@@ -38,28 +38,16 @@
                             Know <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{% url 'person-index' %}">People</a></li>
+                            <li><a href="{% url 'vis-ldap-graph-index' %}">Know Dashboard</a></li>
                             <li><a href="{% url 'group-index' %}">Groups</a></li>
-                            <li><a href="{% url 'identity-index' %}">Identities</a></li>
+                            <li><a href="{% url 'identity-index' %}">People</a></li>
                         </ul>
                     </li>
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                            Test <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="{% url 'test-dashboard' %}">Test Dashboard</a></li>
-                            <li><a href="{% url 'email-test-index' %}">Email Tests</a></li>
-                        </ul>
+                    <li role="presentation">
+                        <a href="{% url 'test-dashboard' %}">Test</a>
                     </li>
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                            Analyse <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="{% url 'project-index' %}">Projects</a></li>
-                            <li><a href="{% url 'vis-ldap-graph-index' %}">Visualise</a></li>
-                        </ul>
+                    <li role="presentation"></li>
+                            <li><a href="{% url 'project-index' %}">Analyse</a></li>
                     </li>
                     <li role="presentation" class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">

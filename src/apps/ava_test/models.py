@@ -1,23 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from apps.ava_core.models import TimeStampedModel,ReferenceModel
+from apps.ava_core.models import TimeStampedModel, ReferenceModel
 from apps.ava_core_project.models import Project
 
 
 class Test(ReferenceModel):
-
     EMAIL = 'EMAIL'
     TWITTER = 'TWITTER'
 
     TEST_TYPE_CHOICES = (
-        (EMAIL,    'Email'),
-        (TWITTER,  'Twitter'),
+        (EMAIL, 'Email'),
+        (TWITTER, 'Twitter'),
     )
 
     TEST_TYPE_ICONS = (
-        (EMAIL,    'envelope'),
-        (TWITTER,  'twitter'),
+        (EMAIL, 'envelope'),
+        (TWITTER, 'twitter'),
     )
 
     NEW = 'NEW'
@@ -27,11 +26,11 @@ class Test(ReferenceModel):
     RUNNING = 'RUNNING'
 
     TEST_STATUS_CHOICES = (
-        (NEW,       'New'),
-        (COMPLETE,  'Complete'),
-        (ERROR,     'An error occurred'),
+        (NEW, 'New'),
+        (COMPLETE, 'Complete'),
+        (ERROR, 'An error occurred'),
         (SCHEDULED, 'Scheduled'),
-        (RUNNING ,  'In progress'),
+        (RUNNING, 'In progress'),
     )
 
     # The project that the test is tied to.
@@ -60,20 +59,19 @@ class Test(ReferenceModel):
         return self.name or u''
 
 
-class TestResult (TimeStampedModel):
+class TestResult(TimeStampedModel):
     class Meta:
         abstract = True
-    
+
     ipaddress = models.CharField(max_length=50)
-    method = models.CharField(max_length=10)            # GET/POST/etc
-    host = models.CharField(max_length=260)             # host name:port
-    path = models.TextField(null=True, blank=True)      # /path/to/page/
+    method = models.CharField(max_length=10)  # GET/POST/etc
+    host = models.CharField(max_length=260)  # host name:port
+    path = models.TextField(null=True, blank=True)  # /path/to/page/
     contentlength = models.CharField(max_length=10, null=True, blank=True)
     contenttype = models.CharField(max_length=100, null=True, blank=True)
-    ua = models.TextField(null=True, blank=True)        # User-Agent
+    ua = models.TextField(null=True, blank=True)  # User-Agent
     referrer = models.TextField(null=True, blank=True)  # Referer
-    via = models.TextField(null=True, blank=True)       # Via
+    via = models.TextField(null=True, blank=True)  # Via
 
     def __unicode__(self):
         return unicode(self.created)
-

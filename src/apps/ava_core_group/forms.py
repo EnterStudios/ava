@@ -7,4 +7,3 @@ class GroupForm(ModelForm):
     class Meta:
         model = Group
         exclude = []
-    

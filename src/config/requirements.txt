@@ -16,7 +16,7 @@ mock==1.0.1
 neo4jdb==0.0.8
 oauthlib==0.7.2
 psycopg2==2.5.2
-python-ldap==2.4.19
+ldap3
 python-ptrace==0.7
 pytz==2014.10
 redis==2.9.1
@@ -25,4 +25,4 @@ requests-oauthlib==0.4.2
 sqlparse==0.1.11
 twython==3.2.0
 twython-django==1.5.2
-Whoosh==2.6.0
+pyelasticsearch

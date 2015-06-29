@@ -5,21 +5,22 @@ from apps.ava_test_email.models import EmailTestTarget
 from apps.ava_test_twitter.models import TwitterTestTarget
 from django.http.response import Http404
 
+
 class RecordTestResultView(generic.TemplateView):
     class Meta:
         abstract = True
-    
+
     TRACKING_FIELDS = {
-                       'ipaddress':     'REMOTE_ADDR',
-                       'method':        'REQUEST_METHOD',
-                       'host':          'HTTP_HOST',
-                       'path':          'PATH_INFO',
-                       'contentlength': 'CONTENT_LENGTH',
-                       'contenttype':   'CONTENT_TYPE',
-                       'ua':            'HTTP_USER_AGENT',
-                       'referrer':      'HTTP_REFERER',
-                       'via':           'HTTP_VIA',
-                      }
+        'ipaddress': 'REMOTE_ADDR',
+        'method': 'REQUEST_METHOD',
+        'host': 'HTTP_HOST',
+        'path': 'PATH_INFO',
+        'contentlength': 'CONTENT_LENGTH',
+        'contenttype': 'CONTENT_TYPE',
+        'ua': 'HTTP_USER_AGENT',
+        'referrer': 'HTTP_REFERER',
+        'via': 'HTTP_VIA',
+    }
 
     # Remember the page template to display when the link is clicked.
     page_template = None
@@ -47,45 +48,45 @@ class RecordTestResultView(generic.TemplateView):
                 self.page_template = test.page_template
         # Continue to render the page.
         return super(RecordTestResultView, self).get(request, *args, **kwargs)
-    
+
     def get_template_names(self):
         if self.page_template:
             return self.page_template
         return 'tracking/success.html'
-    
+
     def get_target(self, token):
-        '''
+        """
         Gets the target of a test, based on the supplied tracking token.
         :param token: The tracking token of the test target.
-        '''
+        """
         raise NotImplementedError
-    
+
     def build_tracking_info(self, target):
-        '''
+        """
         Gets the tracking information that will be saved against a test target.
         :param target: An object representing the target of a test.
-        '''
-        tracking_info = {'target':target}
+        """
+        tracking_info = {'target': target}
         # Fill in as many fields as possible from the request meta information.
         for field_name, meta_name in self.TRACKING_FIELDS.iteritems():
             if meta_name in self.request.META:
                 tracking_info[field_name] = self.request.META[meta_name]
         # Return the tracking info dict.
         return tracking_info
-    
+
     def save_tracking_info(self, token, target):
-        '''
+        """
         Saves tracking information for the specified target.
         :param token: The tracking token of the test target.
         :param target: An object representing the target of a test.
-        '''
+        """
         raise NotImplementedError
-    
+
     def get_test(self, target):
-        '''
+        """
         Gets the test that a test target is assigned to.
         :param target: An object representing the target of a test.
-        '''
+        """
         raise NotImplementedError
 
     def get_redirect_url(self, test, kwargs):
@@ -113,15 +114,14 @@ class RecordTestResultView(generic.TemplateView):
             return redirect_url
 
 
-
 class RecordEmailTestResultView(RecordTestResultView):
-    '''
+    """
     Records information about a URL that was clicked in a test email.
-    '''
-    
+    """
+
     def get_target(self, token):
         return get_object_or_404(EmailTestTarget, token=token)
-    
+
     def save_tracking_info(self, token, target):
         result_info = self.build_tracking_info(target)
         target.results.create(**result_info)
@@ -131,13 +131,13 @@ class RecordEmailTestResultView(RecordTestResultView):
 
 
 class RecordTwitterTestResultView(RecordTestResultView):
-    '''
+    """
     Records information about a URL that was clicked in a test tweet.
-    '''
-    
+    """
+
     def get_target(self, token):
         return get_object_or_404(TwitterTestTarget, token=token)
-    
+
     def save_tracking_info(self, token, target):
         result_info = self.build_tracking_info(target)
         target.results.create(**result_info)

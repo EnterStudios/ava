@@ -8,16 +8,16 @@ from apps.ava_test.helpers import generate_hex_token
 
 
 class EmailTest(Test):
-    fromaddr = models.EmailField(null=False)
-    subject = models.CharField(max_length=200, null=False)
-    body = models.TextField(null=False)
-    html_body = models.TextField(null=True, blank=True)
+    fromaddr = models.EmailField(null=False, verbose_name='Send From Email Address')
+    subject = models.CharField(max_length=200, null=False, verbose_name='Subject')
+    body = models.TextField(null=False, verbose_name='Message Body')
+    is_html = models.BooleanField(null=False, default=False, verbose_name='Send as HTML Email?')
 
     def __unicode__(self):
         return self.name or u''
 
     def get_absolute_url(self):
-        return reverse('email-test-detail',kwargs={'pk': self.pk})
+        return reverse('email-test-detail', kwargs={'pk': self.pk})
 
 
 class EmailTestTarget(TimeStampedModel):
@@ -32,7 +32,7 @@ class EmailTestTarget(TimeStampedModel):
         return unicode(self.target)
 
     def get_absolute_url(self):
-        return reverse('email-test-target-detail',kwargs={'pk': self.pk})
+        return reverse('email-test-target-detail', kwargs={'pk': self.pk})
 
 
 class EmailTestResult(TestResult):
@@ -48,4 +48,4 @@ class EmailTemplate(Model):
         return self.subject or u''
 
     def get_absolute_url(self):
-        return reverse('email-template-detail',kwargs={'pk': self.pk})
+        return reverse('email-template-detail', kwargs={'pk': self.pk})

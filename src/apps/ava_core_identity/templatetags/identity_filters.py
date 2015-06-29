@@ -9,16 +9,16 @@ register = template.Library()
 
 
 class Constants(object):
-    '''
+    """
     Constants that are used by the filter functions in this file.
-    '''
+    """
     IDENTIFIER_TYPES = dict(Identifier.IDENTIFIER_TYPE_CHOICES)
 
 
 @register.filter
 def identifier_type(value):
-    '''
+    """
     Converts the code name of a group type to a friendly name.
     :param group_type_code:
-    '''
+    """
     return Constants.IDENTIFIER_TYPES[value]

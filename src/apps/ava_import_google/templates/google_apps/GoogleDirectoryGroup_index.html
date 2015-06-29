@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block mainpage %}
+
+
+<div class="page-header">
+    <h2>Google Apps Groups</h2>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>CN</th>
+                <th>GUID</th>
+                <th># Members</th>
+                <th>
+                    {% if google_configuration %}
+                        <a href="{% url 'google-get-groups' google_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Import Groups</button></a>
+                    {% endif %}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for googledirectorygroup in googledirectorygroup_list %}
+            <tr>
+                <td>{{ googledirectorygroup.cn }}</td>
+                <td>{{ googledirectorygroup.objectGUID }}</td>
+                <td>{{ googledirectorygroup.users.count }}</td>
+        
+                <td>
+                    <a href="{% url 'google-group-detail' googledirectorygroup.id  %}" class="btn btn-primary btn-sm">View</a>
+                    <a href="{% url 'google-group-update' googledirectorygroup.id  %}" class="btn btn-primary btn-sm">Update</a>
+                    <a href="{% url 'google-group-delete' googledirectorygroup.id  %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

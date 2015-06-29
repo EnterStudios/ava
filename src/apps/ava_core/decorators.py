@@ -7,7 +7,7 @@ from django.shortcuts import resolve_url
 
 
 def access_check(test_func, view_func=None, login_url=None, redirect_field_name=REDIRECT_FIELD_NAME):
-    '''
+    """
     Decorator for views that should pass a test before allowing access.
     
     :param test_func: A callable that returns True if access is allowed, or
@@ -19,7 +19,7 @@ def access_check(test_func, view_func=None, login_url=None, redirect_field_name=
                 login page is used.
     :param redirect_field_name: The name of the URL field that should contain
                 the page to display after login.
-    '''
+    """
     
     def decorator(decorated_view_func):
         @wraps(decorated_view_func, assigned=available_attrs(decorated_view_func))

@@ -18,11 +18,12 @@ class EmailTestIndex(generic.ListView):
     context_object_name = 'list'
     model = EmailTest
 
+
 class EmailTestDetail(generic.DetailView):
     model = EmailTest
     context_object_name = 'test'
     template_name = 'email/test_email_detail.html'
-    
+
     test = None
 
     def get(self, request, *args, **kwargs):
@@ -42,7 +43,7 @@ class EmailTestDetail(generic.DetailView):
 class EmailTestDelete(DeleteView):
     model = EmailTest
     template_name = 'confirm_delete.html'
-    
+
     def get_success_url(self):
         return reverse('email-test-index')
 
@@ -51,16 +52,16 @@ class EmailTestCreate(generic.CreateView):
     model = EmailTest
     template_name = 'email/test_email.html'
     form_class = EmailTestForm
-    
+
     project = None
-    
+
     def dispatch(self, request, *args, **kwargs):
         project_id = self.kwargs['proj']
         self.project = get_object_or_404(Project, pk=project_id)
         if not self.project.user_has_access(request.user, ProjectAccess.RUN_TEST):
             raise PermissionDenied
         return super(EmailTestCreate, self).dispatch(request, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         context_data = super(EmailTestCreate, self).get_context_data(**kwargs)
         context_data['project'] = self.project
@@ -81,14 +82,14 @@ class EmailTestCreate(generic.CreateView):
         for group in self.project.groups.all():
             for identity in group.identity_set.all():
                 for identifier in identity.identifier_set.filter(identifiertype=Identifier.EMAIL):
-                    obj, created = EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
+                    EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
         # For the project's target identities, find and add all email addresses.
         for identity in self.project.identities.all():
             for identifier in identity.identifier_set.filter(identifiertype=Identifier.EMAIL):
-                obj, created = EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
+                EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
         # For the project's target identifiers, add all that are email addresses.
-        for identifier in self.project.identifiers.filter(identifiertype = Identifier.EMAIL):
-            obj, created = EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
+        for identifier in self.project.identifiers.filter(identifiertype=Identifier.EMAIL):
+            EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
 
 
 class EmailTestUpdate(UpdateView):
@@ -98,18 +99,17 @@ class EmailTestUpdate(UpdateView):
 
 
 class EmailSendEmail(generic.View):
-
-    def get(self, request, *args, **kwargs):
+    def get(self, **kwargs):
         # Make sure that the test exists.
         pk = kwargs['pk']
         email = get_object_or_404(EmailTest, pk=pk)
-        #TODO: Permissions - check if user is allowed to start the test.
+        # TODO: Permissions - check if user is allowed to start the test.
         # Only run tests that haven't been run yet.
         if email.teststatus in (EmailTest.NEW, EmailTest.SCHEDULED):
             # Mark the test as scheduled, so that the front-end says the right thing.
             email.teststatus = EmailTest.SCHEDULED
             email.save()
-            #Queue the emails.
+            # Queue the emails.
             run_email_test.delay(email.id)
         # Return to the test detail page.
-        return HttpResponseRedirect(reverse('email-test-detail', kwargs={'pk':email.id}))
+        return HttpResponseRedirect(reverse('email-test-detail', kwargs={'pk': email.id}))

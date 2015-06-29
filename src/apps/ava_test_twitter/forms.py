@@ -6,4 +6,8 @@ from apps.ava_test_twitter.models import *
 class TwitterTestForm(ModelForm):
     class Meta:
         model = TwitterTest
-        exclude = []
+        exclude = ['project', 'user', 'teststatus', 'testtype', 'redirect_url', 'page_template', 'link']
+        labels = {
+            'name': 'Test Name',
+            'description': 'Test Description',
+        }
