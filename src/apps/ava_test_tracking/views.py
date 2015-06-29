@@ -68,7 +68,7 @@ class RecordTestResultView(generic.TemplateView):
         """
         tracking_info = {'target': target}
         # Fill in as many fields as possible from the request meta information.
-        for field_name, meta_name in self.TRACKING_FIELDS.iteritems():
+        for field_name, meta_name in self.TRACKING_FIELDS.items():
             if meta_name in self.request.META:
                 tracking_info[field_name] = self.request.META[meta_name]
         # Return the tracking info dict.
@@ -91,7 +91,7 @@ class RecordTestResultView(generic.TemplateView):
 
     def get_redirect_url(self, test, kwargs):
         # If the redirect URL is blank or null, there is no URL.
-        redirect_url = (test.redirect_url or u'').strip()
+        redirect_url = (test.redirect_url or '').strip()
         if not redirect_url:
             return None
         # If the redirect URL looks like a JSON object, check for multiple

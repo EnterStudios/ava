@@ -21,7 +21,7 @@ class Project(TimeStampedModel):
     identifiers = models.ManyToManyField('ava_core_identity.Identifier', null=True, blank=True)
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or ''
 
     def get_absolute_url(self):
         return reverse('project-detail', kwargs={'pk': self.pk})
@@ -75,7 +75,7 @@ class ProjectTeam(TimeStampedModel):
         return self.team.users.filter(pk=user.id).count() > 0
 
     def __unicode__(self):
-        return unicode(self.project) + u' // ' + unicode(self.team)
+        return str(self.project) + ' // ' + str(self.team)
 
     class Meta:
         unique_together = ('project', 'team')

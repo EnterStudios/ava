@@ -37,7 +37,7 @@ class Person(TimeStampedModel):
     identity = models.ManyToManyField('Identity', blank=True)
 
     def __unicode__(self):
-        return (self.firstname + " " + self.surname).strip() or u''
+        return (self.firstname + " " + self.surname).strip() or ''
 
     def get_absolute_url(self):
         return reverse('person-detail', kwargs={'pk': self.id})
@@ -75,7 +75,7 @@ class Identifier(TimeStampedModel):
     identity = models.ForeignKey('Identity', related_name='identifiers')
 
     def __unicode__(self):
-        return self.identifier or u''
+        return self.identifier or ''
 
     def get_absolute_url(self):
         return reverse('identifier-detail', kwargs={'pk': self.id})

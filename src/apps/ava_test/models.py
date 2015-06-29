@@ -56,7 +56,7 @@ class Test(ReferenceModel):
     page_template = models.CharField(max_length=100, null=True, blank=True)
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or ''
 
 
 class TestResult(TimeStampedModel):
@@ -74,4 +74,4 @@ class TestResult(TimeStampedModel):
     via = models.TextField(null=True, blank=True)  # Via
 
     def __unicode__(self):
-        return unicode(self.created)
+        return str(self.created)

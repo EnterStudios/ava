@@ -13,7 +13,7 @@ class TwitterTest(Test):
     twitteraccount = models.ForeignKey('TwitterAccount', null=False, verbose_name='Send From Twitter Account')
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or ''
 
     def get_absolute_url(self):
         return reverse('twitter-test-detail', kwargs={'pk': self.pk})
@@ -27,7 +27,7 @@ class TwitterTestTarget(TimeStampedModel):
         unique_together = ("twittertest", "target")
 
     def __unicode__(self):
-        return self.target or u''
+        return self.target or ''
 
 
 class TwitterTestResult(TestResult):

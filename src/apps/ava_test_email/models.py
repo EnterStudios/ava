@@ -14,7 +14,7 @@ class EmailTest(Test):
     is_html = models.BooleanField(null=False, default=False, verbose_name='Send as HTML Email?')
 
     def __unicode__(self):
-        return self.name or u''
+        return self.name or ''
 
     def get_absolute_url(self):
         return reverse('email-test-detail', kwargs={'pk': self.pk})
@@ -29,7 +29,7 @@ class EmailTestTarget(TimeStampedModel):
         unique_together = ("emailtest", "target", "token")
 
     def __unicode__(self):
-        return unicode(self.target)
+        return str(self.target)
 
     def get_absolute_url(self):
         return reverse('email-test-target-detail', kwargs={'pk': self.pk})
@@ -45,7 +45,7 @@ class EmailTemplate(Model):
     message_html = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
-        return self.subject or u''
+        return self.subject or ''
 
     def get_absolute_url(self):
         return reverse('email-template-detail', kwargs={'pk': self.pk})

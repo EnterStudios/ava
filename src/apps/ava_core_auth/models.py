@@ -13,7 +13,7 @@ class UserRights(models.Model):
     is_admin = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return unicode(self.user)
+        return str(self.user)
 
     @classmethod
     def get(cls, user):

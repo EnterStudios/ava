@@ -43,7 +43,7 @@ class TestRunner(object):
             self.set_test_status(Test.RUNNING)
             self.execute_test()
         except Exception as e:
-            print 'Exception: ' + unicode(e)
+            print('Exception: ' + str(e))
             self.set_test_status(Test.ERROR)
             return False
         else:

@@ -44,7 +44,7 @@ class EmailTestSender(TestRunner):
         Gets the list of email targets for the current test.
         """
         targets = self.test.targets.all()
-        print 'Email Targets: [' + ','.join([target.target.identifier for target in targets]) + ']'
+        print('Email Targets: [' + ','.join([target.target.identifier for target in targets]) + ']')
         return targets
 
     def build_email(self, target):
