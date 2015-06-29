@@ -170,10 +170,15 @@ except ImportError:
 
 
 ## HAYSTACK CONFIGURATION
+DOCKER_ELASTICSEARCH_URL = 'http://{}:{}'.format(
+    os.environ['ELASTICSEARCH_PORT_9200_TCP_ADDR'],
+    os.environ['ELASTICSEARCH_PORT_9200_TCP_PORT']
+)
+
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
+        'URL': DOCKER_ELASTICSEARCH_URL,
         'INDEX_NAME': 'haystack',
     },
 }
