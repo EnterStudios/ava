@@ -1,15 +1,16 @@
 db:
   image: postgres:9.3
   environment:
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=changeme
+    ## This password is obviously committed to version control. It would be
+    ## ill-advised to use it on any accessible deployment (seriously).
+    - POSTGRES_PASSWORD=T7mKAQOhMmo6hv0zOmm7
 redis:
   image: redis:2.8
 elasticsearch:
   image: elasticsearch
 web:
   build: .
-  command: python src/manage.py runserver 0.0.0.0:8000
+  command: bin/run-devserver.sh
   volumes:
     - .:/code
   ports:

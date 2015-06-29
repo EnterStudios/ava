@@ -20,12 +20,12 @@ TEMPLATE_DEBUG = True
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DB_ENV_DB', 'postgres'),
+        'USER': os.environ.get('DB_ENV_POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_ENV_POSTGRES_PASSWORD', ''),
+        'HOST': os.environ.get('DB_PORT_5432_TCP_ADDR', ''),
+        'PORT': os.environ.get('DB_PORT_5432_TCP_PORT', ''),
     }
 }
 
@@ -142,8 +142,18 @@ SHORTEN_MODELS = {
     'T': 'ava_test_twitter.TwitterTest',
 }
 
+## REDIS CONFIGURATION
 
-SESSION_ENGINE = 'redis_sessions.session'
+
+USE_REDIS_CACHE = False  # Turned off for the moment -- not needed.
+if USE_REDIS_CACHE:
+    SESSION_ENGINE = 'redis_sessions.session'
+    SESSION_REDIS_HOST = os.environ.get('REDIS_PORT_6379_TCP_ADDR', None)
+    SESSION_REDIS_PORT = os.environ.get('REDIS_PORT_6379_TCP_PORT', None)
+    SESSION_REDIS_DB = 1
+    SESSION_REDIS_PREFIX = 'session'
+
+
 
 LOGIN_REDIRECT_URL= "/"
 
@@ -166,3 +176,29 @@ try:
     from email_settings import *
 except ImportError:
     pass
+
+
+## HAYSTACK CONFIGURATION
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
+
+
+## (below commented out from local_settings.py)
+
+## MANDRILL SETTINGS
+
+#MANDRILL_API_KEY = "changeme"
+#EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
+
+
+## CELERY CONFIGURATION
+
+#BROKER_URL = 'amqp://avasecure:changeme@localhost:5672/avatasks'
+#CELERY_ACCEPT_CONTENT = ['json']
+#CELERY_TASK_SERIALIZER = 'json'
+#CELERY_RESULT_SERIALIZER = 'json'
+
