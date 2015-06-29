@@ -2,33 +2,6 @@
 ## TODO: Remove this file. It's not used in a docker-only AVA system
 ##       (which is the direction we're headed)
 
-import os
-
-# DATABASE SETTINGS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'avadata',
-        'USER': 'avasecure',
-        'PASSWORD': 'changeme',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
-
-
-# REDIS SETTINGS
-
-# Redis socket location
-SESSION_REDIS_UNIX_DOMAIN_SOCKET_PATH = '/var/run/redis/redis.sock'
-# Or use TCP
-#SESSION_REDIS_HOST = 'localhost'
-#SESSION_REDIS_PORT = 6379
-
-
-# HAYSTACK SETTINGS
-
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
@@ -36,7 +9,6 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'haystack',
     },
 }
-
 
 # MANDRILL SETTINGS
 

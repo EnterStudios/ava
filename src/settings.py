@@ -185,3 +185,20 @@ HAYSTACK_CONNECTIONS = {
         'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
     },
 }
+
+
+## (below commented out from local_settings.py)
+
+## MANDRILL SETTINGS
+
+#MANDRILL_API_KEY = "changeme"
+#EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
+
+
+## CELERY CONFIGURATION
+
+#BROKER_URL = 'amqp://avasecure:changeme@localhost:5672/avatasks'
+#CELERY_ACCEPT_CONTENT = ['json']
+#CELERY_TASK_SERIALIZER = 'json'
+#CELERY_RESULT_SERIALIZER = 'json'
+
