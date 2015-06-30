@@ -1,4 +1,4 @@
-celery
+celery[redis]
 Django
 django-haystack
 djrill

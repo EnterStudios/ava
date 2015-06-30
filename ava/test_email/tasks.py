@@ -1,12 +1,13 @@
 import re
 from django.core.mail import get_connection, EmailMultiAlternatives
-from ava.core.celery import task_manager
+from ava.celery_app import app
+
 from ava.test.testrunner import TestRunner
 from ava.test_email.models import EmailTest
 from ava.test import helpers
 
 
-@task_manager.task(name='test_email.tasks.run_email_test')
+@app.task(name='test_email.tasks.run_email_test')
 def run_email_test(email_test_id):
     test = EmailTest.objects.filter(pk=email_test_id).first()
     if test:

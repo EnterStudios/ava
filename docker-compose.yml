@@ -10,6 +10,7 @@
 ## and the Django integrated development server, none of these things
 ## are appropriate for a production environment.
 
+## Support Servers/Services
 db:
   image: postgres:9.3
   environment:
@@ -20,6 +21,8 @@ redis:
   image: redis:2.8
 elasticsearch:
   image: elasticsearch
+
+## AVA Application Server
 web:
   build: .
   command: bin/run-devserver.sh
@@ -31,3 +34,18 @@ web:
     - db
     - redis
     - elasticsearch
+  environment:
+    - DJANGO_SETTINGS_MODULE=ava.settings.base
+
+## AVA Asynchronous Task Worker
+worker:
+  build: .
+  command: bin/run-celery-worker.sh
+  volumes:
+    - .:/code
+  links:
+    - db
+    - redis
+    - elasticsearch
+  environment:
+    - DJANGO_SETTINGS_MODULE=ava.settings.base

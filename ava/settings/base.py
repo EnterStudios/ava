@@ -1,4 +1,5 @@
-import os, sys
+import os
+import enum
 
 ## BASE_DIR is the path to the top level of the AVA project.
 ## That is: the root of the git repo, NOT the path to the
@@ -132,14 +133,22 @@ LOGGING = {
 
 
 ## REDIS CONFIGURATION
-USE_REDIS_CACHE = False  # Turned off for the moment -- not needed.
-if USE_REDIS_CACHE:
+
+class REDIS_DATABASES(enum.IntEnum):
+    """Define slots for our redis databases."""
+    DJANGO_CACHING_FRAMEWORK = 0
+    DJANGO_SESSION_FRAMEWORK = 1
+    CELERY_BROKER = 2
+    CELERY_RESULT_BACKEND = 3
+    
+USE_REDIS_SESSIONS = True  # Turned off for the moment -- not needed.
+if USE_REDIS_SESSIONS:
     SESSION_ENGINE = 'redis_sessions.session'
     SESSION_REDIS_HOST = os.environ.get('REDIS_PORT_6379_TCP_ADDR', None)
     SESSION_REDIS_PORT = os.environ.get('REDIS_PORT_6379_TCP_PORT', None)
-    SESSION_REDIS_DB = 1
+    SESSION_REDIS_DB = REDIS_DATABASES.DJANGO_SESSION_FRAMEWORK
     SESSION_REDIS_PREFIX = 'session'
-
+   
 LOGIN_REDIRECT_URL= "/"
 
 PUBLIC_SITE_URLS = [
@@ -176,9 +185,21 @@ HAYSTACK_CONNECTIONS = {
 
 
 ## CELERY CONFIGURATION
-
-#BROKER_URL = 'amqp://avasecure:changeme@localhost:5672/avatasks'
-#CELERY_ACCEPT_CONTENT = ['json']
-#CELERY_TASK_SERIALIZER = 'json'
-#CELERY_RESULT_SERIALIZER = 'json'
-
+BROKER_URL = 'redis://{}:{}/{}'.format(
+    os.environ.get('REDIS_PORT_6379_TCP_ADDR', None),
+    os.environ.get('REDIS_PORT_6379_TCP_PORT', None),
+    REDIS_DATABASES.CELERY_BROKER
+)
+BROKER_TRANSPORT_OPTIONS = {
+    'visibility_timeout': 60 * 60,
+    'fanout_prefix': True,
+    'fanout_patterns': True,
+}
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND ='redis://{}:{}/{}'.format(
+    os.environ.get('REDIS_PORT_6379_TCP_ADDR', None),
+    os.environ.get('REDIS_PORT_6379_TCP_PORT', None),
+    REDIS_DATABASES.CELERY_RESULT_BACKEND
+)
