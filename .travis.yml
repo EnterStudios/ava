@@ -3,9 +3,9 @@ python:
   "3.4"
 install:
   ## This convoluted pip command builds all our dependencies so that Travis can cache them, greatly speeding up test runs.
-  - "pip wheel --use-wheel -w ${HOME}/.cache/wheelhouse -f file://${HOME}/.cache/wheelhouse -r src/config/requirements.txt"
+  - "pip wheel --use-wheel -w ${HOME}/.cache/wheelhouse -f file://${HOME}/.cache/wheelhouse -r requirements/common.txt"
   ## Install the pre-built dependencies.
-  - "pip install --use-wheel --find-links=file://${HOME}/.cache/wheelhouse -r src/config/requirements.txt"
+  - "pip install --use-wheel --find-links=file://${HOME}/.cache/wheelhouse -r requirements/common.txt"
 script:
   "python src/manage.py test -v3"
 env:

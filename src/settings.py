@@ -171,8 +171,8 @@ except ImportError:
 
 ## HAYSTACK CONFIGURATION
 DOCKER_ELASTICSEARCH_URL = 'http://{}:{}'.format(
-    os.environ['ELASTICSEARCH_PORT_9200_TCP_ADDR'],
-    os.environ['ELASTICSEARCH_PORT_9200_TCP_PORT']
+    os.environ.get('ELASTICSEARCH_PORT_9200_TCP_ADDR'),
+    os.environ.get('ELASTICSEARCH_PORT_9200_TCP_PORT')
 )
 
 HAYSTACK_CONNECTIONS = {
