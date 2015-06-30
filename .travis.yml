@@ -7,9 +7,9 @@ install:
   ## Install the pre-built dependencies.
   - "pip install --use-wheel --find-links=file://${HOME}/.cache/wheelhouse -r requirements/common.txt"
 script:
-  "python src/manage.py test -v3"
+  "python manage.py test -v3"
 env:
- - DJANGO_SETTINGS_MODULE=travis_settings PYTHONPATH=src
+ - DJANGO_SETTINGS_MODULE=ava.travis_settings
 addons:
   postgresql: 9.3
 cache:
