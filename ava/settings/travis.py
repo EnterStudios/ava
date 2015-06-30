@@ -2,7 +2,7 @@
 This settings file is used during Travis CI runs.
 """
 
-from settings import *
+from .base import *
 
 DATABASES = {
     'default': {

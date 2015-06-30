@@ -9,7 +9,7 @@ install:
 script:
   "python manage.py test -v3"
 env:
- - DJANGO_SETTINGS_MODULE=ava.travis_settings
+ - DJANGO_SETTINGS_MODULE=ava.settings.travis
 addons:
   postgresql: 9.3
 cache:

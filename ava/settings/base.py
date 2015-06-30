@@ -1,22 +1,38 @@
 import os, sys
 
-
-# ===========================
-# = Directory Declaractions =
-# ===========================
-
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-PROJECT_PATH 		= os.path.dirname(os.path.abspath(__file__))
-CURRENT_DIR   		= os.path.dirname(__file__)
-TEMPLATE_DIRS 		= (os.path.join(CURRENT_DIR, 'templates'),)
-STATICFILES_DIRS 	= (os.path.join(CURRENT_DIR, 'static'),)
+## BASE_DIR is the path to the top level of the AVA project.
+## That is: the root of the git repo, NOT the path to the
+## AVA python package.
+##
+## The current layout is such that BASE_DIR is two directory
+## levels up from the location of this settings file.
+BASE_DIR = os.path.abspath(
+    os.path.join(
+        os.path.dirname(__file__),
+        '../..'
+    )
+)
 
 DEBUG = True
 TEMPLATE_DEBUG = True
 
-#TEMPLATE_DIRS = (
-#            os.path.join(BASE_DIR,  'ava/templates'),
-#            )
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 DATABASES = {
     'default': {
@@ -29,46 +45,16 @@ DATABASES = {
     }
 }
 
-# Local time zone for this installation. Choices can be found here:
-# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-# although not all choices may be available on all operating systems.
-# On Unix systems, a value of None will cause Django to use the same
-# timezone as the operating system.
-# If running in a Windows environment this must be set to the same as your
-# system time zone.
-TIME_ZONE = 'America/Chicago'
-
-# Language code for this installation. All choices can be found here:
-# http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
-
-SITE_ID = 1
-
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
+# Internationalization
+# https://docs.djangoproject.com/en/1.8/topics/i18n/
+LANGUAGE_CODE = 'en-nz'
+TIME_ZONE = 'UTC'
 USE_I18N = True
-
-# If you set this to False, Django will not format dates, numbers and
-# calendars according to the current locale
 USE_L10N = True
+USE_TZ = True
 
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = 'media/'
-MEDIA_URL = 'media/'
-#STATIC_ROOT = 'static/'
-
-# URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
-
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
-
+## TODO: Make configurable outside settings.
 SECRET_KEY = 'de)a(rpoh-cd&q#e0eq_!0fh_va&8j!9*q5$t0jb0stf#-@pt+'
-
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -79,7 +65,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'ava.urls'
-
 
 DEFAULT_APPS = (
     'django.contrib.admin',
@@ -119,6 +104,14 @@ THIRD_PARTY_APPS = (
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+## STATIC FILE CONFIGURATION
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.8/howto/static-files/
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -147,21 +140,17 @@ if USE_REDIS_CACHE:
     SESSION_REDIS_DB = 1
     SESSION_REDIS_PREFIX = 'session'
 
-
 LOGIN_REDIRECT_URL= "/"
 
 PUBLIC_SITE_URLS = [
     'http://localhost:8000/',
 ]
 
-
 # IMPORT EMAIL SETTINGS
-
 try:
-    from email_settings import *
+    from .email import *
 except ImportError:
     pass
-
 
 ## HAYSTACK CONFIGURATION
 DOCKER_ELASTICSEARCH_URL = 'http://{}:{}'.format(
