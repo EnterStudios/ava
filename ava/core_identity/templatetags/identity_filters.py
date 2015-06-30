@@ -1,5 +1,5 @@
 from django import template
-from apps.ava_core_identity.models import Identifier
+from ava.core_identity.models import Identifier
 
 # This line is needed in order to register the filters in the file.
 # Each filter function should be decorated with one of:

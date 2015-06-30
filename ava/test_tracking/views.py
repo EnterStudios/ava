@@ -1,8 +1,8 @@
 import json
 from django.views import generic
 from django.shortcuts import get_object_or_404, redirect
-from apps.ava_test_email.models import EmailTestTarget
-from apps.ava_test_twitter.models import TwitterTestTarget
+from ava.test_email.models import EmailTestTarget
+from ava.test_twitter.models import TwitterTestTarget
 from django.http.response import Http404
 
 

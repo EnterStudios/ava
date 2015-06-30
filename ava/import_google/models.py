@@ -5,9 +5,9 @@ from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from io import StringIO
 
-from apps.ava_core.models import TimeStampedModel
-from apps.ava_core_identity.models import Identifier, Person, Identity
-from apps.ava_core_group.models import Group
+from ava.core.models import TimeStampedModel
+from ava.core_identity.models import Identifier, Person, Identity
+from ava.core_group.models import Group
 
  # { # JSON template for User object in Directory API.
  #      "addresses": "",
@@ -114,7 +114,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
     email = models.EmailField()
     etag = models.CharField(max_length=300)
     google_configuration = models.ForeignKey('GoogleConfiguration')
-    group = models.ForeignKey('ava_core_group.Group', null=True, blank=True)
+    group = models.ForeignKey('core_group.Group', null=True, blank=True)
 
     def __unicode__(self):
         return self.name or ''

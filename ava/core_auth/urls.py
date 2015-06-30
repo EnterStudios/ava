@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url, include
-from apps.ava_core_auth import views
-from apps.ava_core_auth.decorators import system_admin_required
+from ava.core_auth import views
+from ava.core_auth.decorators import system_admin_required
 
 urlpatterns = patterns(
     '',

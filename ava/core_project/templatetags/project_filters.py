@@ -1,5 +1,5 @@
 from django import template
-from apps.ava_core_project.models import ProjectTeam
+from ava.core_project.models import ProjectTeam
 
 # This line is needed in order to register the filters in the file.
 # Each filter function should be decorated with one of:

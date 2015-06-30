@@ -4,12 +4,12 @@ from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.db.models import Q, Count
 
-from apps.ava_core.views import AddManyToManyView, RemoveManyToManyView
-from apps.ava_core_auth.models import Team, UserRights
-from apps.ava_core_group.models import Group
-from apps.ava_core_identity.models import Identity, Identifier
-from apps.ava_core_project.models import Project, ProjectTeam, ProjectAccess
-from apps.ava_core_project.forms import ProjectForm, ProjectTeamForm
+from ava.core.views import AddManyToManyView, RemoveManyToManyView
+from ava.core_auth.models import Team, UserRights
+from ava.core_group.models import Group
+from ava.core_identity.models import Identity, Identifier
+from ava.core_project.models import Project, ProjectTeam, ProjectAccess
+from ava.core_project.forms import ProjectForm, ProjectTeamForm
 
 
 class ProjectIndex(ListView):

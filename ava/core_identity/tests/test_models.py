@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from ava_core_identity.models import Person
+from ..models import Person
 
 
 class PersonModelTests(TestCase):

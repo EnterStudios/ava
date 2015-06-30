@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
-from apps.ava_core_project.decorators import project_access_check
-from apps.ava_test_email.models import EmailTest
+from ava.core_project.decorators import project_access_check
+from ava.test_email.models import EmailTest
 
 
 def email_test_access_check(access_level, view_func=None, login_url=None, raise_exception=True):

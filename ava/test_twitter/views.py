@@ -4,10 +4,10 @@ from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
 from twython import Twython
-from apps.ava_core_identity.models import Identifier, Identity
+from ava.core_identity.models import Identifier, Identity
 
-from apps.ava_test_twitter.models import TwitterTest
-from apps.ava_test_twitter.forms import TwitterTestForm
+from ava.test_twitter.models import TwitterTest
+from ava.test_twitter.forms import TwitterTestForm
 
 
 class TwitterTestIndex(ListView):

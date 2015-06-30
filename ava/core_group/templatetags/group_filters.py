@@ -1,5 +1,5 @@
 from django import template
-from apps.ava_core_group.models import Group
+from ava.core_group.models import Group
 
 # This line is needed in order to register the filters in the file.
 # Each filter function should be decorated with one of:

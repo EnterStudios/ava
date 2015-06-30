@@ -3,8 +3,8 @@ from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.db.models import Count
 
-from apps.ava_core_group.models import Group
-from apps.ava_core_group.forms import GroupForm
+from ava.core_group.models import Group
+from ava.core_group.forms import GroupForm
 
 
 class GroupIndex(ListView):

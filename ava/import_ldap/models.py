@@ -4,10 +4,10 @@ import re
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.html import escape
-from apps.ava_core.models import TimeStampedModel
-from apps.ava_import_ldap.ldap_interface import ActiveDirectoryHelper
-from apps.ava_core_identity.models import Identifier, Person, Identity
-from apps.ava_core_group.models import Group
+from ava.core.models import TimeStampedModel
+from ava.import_ldap.ldap_interface import ActiveDirectoryHelper
+from ava.core_identity.models import Identifier, Person, Identity
+from ava.core_group.models import Group
 
 
 class ActiveDirectoryUser(TimeStampedModel):
@@ -216,7 +216,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
     objectGUID = models.CharField(max_length=300)
     objectSid = models.CharField(max_length=300)
     ldap_configuration = models.ForeignKey('LDAPConfiguration')
-    group = models.ForeignKey('ava_core_group.Group', null=True, blank=True)
+    group = models.ForeignKey('core_group.Group', null=True, blank=True)
 
     def __unicode__(self):
         return self.cn or ''

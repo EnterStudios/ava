@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from apps.ava_test_email.models import *
+from ava.test_email.models import *
 
 
 class EmailTestForm(ModelForm):

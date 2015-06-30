@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 
 from django.db import models, migrations
 
@@ -7,33 +7,33 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ava_core_group', '0001_initial'),
+        ('core_group', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='ActiveDirectoryGroup',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('cn', models.CharField(max_length=300)),
-                ('distinguishedName', models.CharField(unique=True, max_length=300)),
+                ('distinguishedName', models.CharField(max_length=300, unique=True)),
                 ('name', models.CharField(max_length=100)),
                 ('objectCategory', models.CharField(max_length=300)),
                 ('sAMAccountName', models.CharField(max_length=300)),
                 ('objectGUID', models.CharField(max_length=300)),
                 ('objectSid', models.CharField(max_length=300)),
-                ('group', models.ForeignKey(blank=True, to='ava_core_group.Group', null=True)),
+                ('group', models.ForeignKey(null=True, blank=True, to='core_group.Group')),
             ],
             options={
+                'ordering': ['cn', 'distinguishedName'],
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='ActiveDirectoryUser',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('dn', models.CharField(max_length=300)),
@@ -63,26 +63,23 @@ class Migration(migrations.Migration):
                 ('userAccountControl', models.CharField(max_length=300)),
                 ('whenChanged', models.CharField(max_length=300)),
                 ('whenCreated', models.CharField(max_length=300)),
-                ('groups', models.ManyToManyField(related_name='users', to='ava_import_ldap.ActiveDirectoryGroup')),
+                ('groups', models.ManyToManyField(to='import_ldap.ActiveDirectoryGroup', related_name='users')),
             ],
             options={
+                'ordering': ['cn', 'distinguishedName'],
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='LDAPConfiguration',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
-                ('user_dn', models.CharField(max_length=100, verbose_name=b'User')),
-                ('user_pw', models.CharField(max_length=100, verbose_name=b'Password')),
-                ('dump_dn', models.CharField(max_length=100, verbose_name=b'Domain')),
-                ('server', models.CharField(max_length=100, verbose_name=b'Server')),
+                ('user_dn', models.CharField(verbose_name='User', max_length=100)),
+                ('user_pw', models.CharField(verbose_name='Password', max_length=100)),
+                ('dump_dn', models.CharField(verbose_name='Domain', max_length=100)),
+                ('server', models.CharField(verbose_name='Server', max_length=100)),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.AlterUniqueTogether(
             name='ldapconfiguration',
@@ -91,18 +88,16 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='activedirectoryuser',
             name='ldap_configuration',
-            field=models.ForeignKey(to='ava_import_ldap.LDAPConfiguration'),
-            preserve_default=True,
-        ),
-        migrations.AlterUniqueTogether(
-            name='activedirectoryuser',
-            unique_together=set([('objectGUID', 'objectSid')]),
+            field=models.ForeignKey(to='import_ldap.LDAPConfiguration'),
         ),
         migrations.AddField(
             model_name='activedirectorygroup',
             name='ldap_configuration',
-            field=models.ForeignKey(to='ava_import_ldap.LDAPConfiguration'),
-            preserve_default=True,
+            field=models.ForeignKey(to='import_ldap.LDAPConfiguration'),
+        ),
+        migrations.AlterUniqueTogether(
+            name='activedirectoryuser',
+            unique_together=set([('objectGUID', 'objectSid')]),
         ),
         migrations.AlterUniqueTogether(
             name='activedirectorygroup',

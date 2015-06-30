@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 
-from apps.ava_core.models import TimeStampedModel, ReferenceModel
+from ava.core.models import TimeStampedModel, ReferenceModel
 
 
 class Group(TimeStampedModel):

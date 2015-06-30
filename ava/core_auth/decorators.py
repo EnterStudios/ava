@@ -1,6 +1,6 @@
 from django.core.exceptions import PermissionDenied
-from apps.ava_core.decorators import access_check
-from apps.ava_core_auth.models import UserRights
+from ava.core.decorators import access_check
+from ava.core_auth.models import UserRights
 
 
 def system_admin_required(view_func=None, login_url=None, raise_exception=True):

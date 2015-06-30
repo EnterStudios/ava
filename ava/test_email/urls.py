@@ -1,10 +1,10 @@
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
-from apps.ava_test.decorators import create_test_access_check
-from apps.ava_test_email.decorators import email_test_access_check
-from apps.ava_test_email import views
-from apps.ava_core_project.models import ProjectAccess
+from ava.test.decorators import create_test_access_check
+from ava.test_email.decorators import email_test_access_check
+from ava.test_email import views
+from ava.core_project.models import ProjectAccess
 
 urlpatterns = patterns(
     '',

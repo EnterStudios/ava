@@ -1,8 +1,8 @@
 from django.core.exceptions import PermissionDenied
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404
-from apps.ava_core.decorators import access_check
-from apps.ava_core_project.models import Project
+from ava.core.decorators import access_check
+from ava.core_project.models import Project
 
 
 def project_access_check(get_project, access_level, view_func=None, login_url=None, raise_exception=True):

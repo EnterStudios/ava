@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from apps.ava_core.models import TimeStampedModel, ReferenceModel
-from apps.ava_core_project.models import Project
+from ava.core.models import TimeStampedModel, ReferenceModel
+from ava.core_project.models import Project
 
 
 class Test(ReferenceModel):

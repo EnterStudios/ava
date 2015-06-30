@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.models import User
-from apps.ava_core_auth.models import Team, UserRights
+from ava.core_auth.models import Team, UserRights
 from django.forms import fields, widgets
 #from builtins import False
 

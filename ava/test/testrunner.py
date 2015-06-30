@@ -1,4 +1,4 @@
-from apps.ava_test.models import Test
+from ava.test.models import Test
 
 
 class TestRunner(object):

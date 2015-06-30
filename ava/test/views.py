@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404
 from django.views import generic
 
-from apps.ava_test.models import Test
-from apps.ava_test_email.models import EmailTest
-from apps.ava_test_twitter.models import TwitterTest
-from apps.ava_core_project.models import Project
+from ava.test.models import Test
+from ava.test_email.models import EmailTest
+from ava.test_twitter.models import TwitterTest
+from ava.core_project.models import Project
 
 
 class TestDashboardView(generic.ListView):

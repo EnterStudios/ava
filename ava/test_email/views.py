@@ -5,12 +5,12 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 
-from apps.ava_core_identity.models import Identity, Identifier
-from apps.ava_core_project.models import Project, ProjectAccess
-from apps.ava_test.models import Test
-from apps.ava_test_email.models import EmailTest, EmailTestTarget
-from apps.ava_test_email.forms import EmailTestForm
-from apps.ava_test_email.tasks import run_email_test
+from ava.core_identity.models import Identity, Identifier
+from ava.core_project.models import Project, ProjectAccess
+from ava.test.models import Test
+from ava.test_email.models import EmailTest, EmailTestTarget
+from ava.test_email.forms import EmailTestForm
+from ava.test_email.tasks import run_email_test
 
 
 class EmailTestIndex(generic.ListView):

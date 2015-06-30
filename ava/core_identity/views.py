@@ -3,9 +3,9 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 
-from apps.ava_core.views import FormsetMixin
-from apps.ava_core_identity.models import Identity, Person, Identifier
-from apps.ava_core_identity.forms import IdentityForm, PersonForm, IdentifierForm, IdentifierFormSet
+from ava.core.views import FormsetMixin
+from ava.core_identity.models import Identity, Person, Identifier
+from ava.core_identity.forms import IdentityForm, PersonForm, IdentifierForm, IdentifierFormSet
 
 
 ### IDENTITY

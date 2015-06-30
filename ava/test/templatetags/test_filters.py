@@ -1,5 +1,5 @@
 from django import template
-from apps.ava_test.models import Test
+from ava.test.models import Test
 
 # This line is needed in order to register the filters in the file.
 # Each filter function should be decorated with one of:

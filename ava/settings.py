@@ -78,7 +78,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'ava.urls'
 
 
 DEFAULT_APPS = (
@@ -92,18 +92,18 @@ DEFAULT_APPS = (
 
 
 LOCAL_APPS = (
-    'apps.ava_core',
-    'apps.ava_core_group',
-    'apps.ava_core_auth',
-    'apps.ava_core_project',
-    'apps.ava_import_ldap',
-   # 'apps.ava_import_google',
-    'apps.ava_core_identity',
-    'apps.ava_vis_graph',
-    'apps.ava_test',
-    'apps.ava_test_email',
-    'apps.ava_test_twitter',
-    'apps.ava_test_tracking',
+    'ava.core',
+    'ava.core_group',
+    'ava.core_auth',
+    'ava.core_project',
+    'ava.import_ldap',
+   # 'ava.import_google',
+    'ava.core_identity',
+    'ava.vis_graph',
+    'ava.test',
+    'ava.test_email',
+    'ava.test_twitter',
+    'ava.test_tracking',
 )
 
 THIRD_PARTY_APPS = (
@@ -137,14 +137,8 @@ LOGGING = {
     }
 }
 
-SHORTEN_MODELS = {
-    'E': 'ava_test_email.EmailTest',
-    'T': 'ava_test_twitter.TwitterTest',
-}
 
 ## REDIS CONFIGURATION
-
-
 USE_REDIS_CACHE = False  # Turned off for the moment -- not needed.
 if USE_REDIS_CACHE:
     SESSION_ENGINE = 'redis_sessions.session'

@@ -1,9 +1,9 @@
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
-from apps.ava_core_project import views
-from apps.ava_core_project.decorators import project_access_required
-from apps.ava_core_project.models import ProjectAccess
+from ava.core_project import views
+from ava.core_project.decorators import project_access_required
+from ava.core_project.models import ProjectAccess
 
 urlpatterns = patterns(
     '',

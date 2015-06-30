@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
-from apps.ava_core.models import TimeStampedModel
-from apps.ava_core_auth.models import UserRights
+from ava.core.models import TimeStampedModel
+from ava.core_auth.models import UserRights
 
 
 class Project(TimeStampedModel):
@@ -16,9 +16,9 @@ class Project(TimeStampedModel):
     enddate = models.DateField(verbose_name='End Date', null=True, blank=True, )
     authorisedby = models.CharField(max_length=100, null=True, blank=True, verbose_name='Authorised By')
     # Test targets
-    groups = models.ManyToManyField('ava_core_group.Group', null=True, blank=True)
-    identities = models.ManyToManyField('ava_core_identity.Identity', null=True, blank=True)
-    identifiers = models.ManyToManyField('ava_core_identity.Identifier', null=True, blank=True)
+    groups = models.ManyToManyField('core_group.Group', null=True, blank=True)
+    identities = models.ManyToManyField('core_identity.Identity', null=True, blank=True)
+    identifiers = models.ManyToManyField('core_identity.Identifier', null=True, blank=True)
 
     def __unicode__(self):
         return self.name or ''
@@ -63,7 +63,7 @@ class ProjectTeam(TimeStampedModel):
     )
 
     project = models.ForeignKey(Project, related_name='teams')
-    team = models.ForeignKey('ava_core_auth.Team', related_name='projects')
+    team = models.ForeignKey('core_auth.Team', related_name='projects')
     accesslevel = models.IntegerField(choices=ACCESS_LEVEL_CHOICES,
                                       default=ProjectAccess.VIEW,
                                       verbose_name='Access Level')

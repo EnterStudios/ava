@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from apps.ava_test_tracking import views
+from ava.test_tracking import views
 
 urlpatterns = patterns('',
                        url(r'^e/(?P<token>[^/]+)/(?P<extra>.*)?$', views.RecordEmailTestResultView.as_view(),

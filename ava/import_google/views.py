@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 
-from apps.ava_core_google_apps.models import *
-from apps.ava_core_google_apps.forms import GoogleConfigurationForm
+from ava.core_google_apps.models import *
+from ava.core_google_apps.forms import GoogleConfigurationForm
 
 
 class GoogleConfigurationIndex(ListView):

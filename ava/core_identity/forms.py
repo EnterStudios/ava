@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django.forms.models import inlineformset_factory
 
-from apps.ava_core_identity.models import Identity, Person, Identifier
+from ava.core_identity.models import Identity, Person, Identifier
 
 
 class IdentityForm(ModelForm):

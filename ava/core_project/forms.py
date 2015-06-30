@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from apps.ava_core_project.models import Project, ProjectTeam
+from ava.core_project.models import Project, ProjectTeam
 
 
 class ProjectForm(ModelForm):

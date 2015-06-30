@@ -2,9 +2,9 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Model
 
-from apps.ava_core.models import TimeStampedModel, ReferenceModel
-from apps.ava_test.models import Test, TestResult
-from apps.ava_test.helpers import generate_hex_token
+from ava.core.models import TimeStampedModel, ReferenceModel
+from ava.test.models import Test, TestResult
+from ava.test.helpers import generate_hex_token
 
 
 class EmailTest(Test):
@@ -22,7 +22,7 @@ class EmailTest(Test):
 
 class EmailTestTarget(TimeStampedModel):
     emailtest = models.ForeignKey('EmailTest', null=False, related_name='targets')
-    target = models.ForeignKey('ava_core_identity.Identifier', null=False)
+    target = models.ForeignKey('core_identity.Identifier', null=False)
     token = models.CharField(max_length=100, null=False, unique=True, default=generate_hex_token)
 
     class Meta:

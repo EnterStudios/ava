@@ -1,8 +1,8 @@
 from django.conf.urls import include, patterns, url
 from django.contrib.auth.decorators import login_required
-from apps.ava_core_auth.decorators import system_admin_required
+from ava.core_auth.decorators import system_admin_required
 
-from apps.ava_core_identity import views
+from ava.core_identity import views
 
 urlpatterns = patterns(
     '',
