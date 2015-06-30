@@ -1,0 +1,16 @@
+celery
+Django
+django-haystack
+djrill
+oauthlib
+psycopg2
+ldap3
+pytz
+redis
+twython
+twython-django
+pyelasticsearch
+django-html5-boilerplate
+django-bootstrap3
+django-bootstrap-form
+django-d3

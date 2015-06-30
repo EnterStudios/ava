@@ -154,20 +154,11 @@ if USE_REDIS_CACHE:
     SESSION_REDIS_PREFIX = 'session'
 
 
-
 LOGIN_REDIRECT_URL= "/"
 
 PUBLIC_SITE_URLS = [
     'http://localhost:8000/',
 ]
-
-
-# IMPORT LOCAL SETTINGS
-
-try:
-    from local_settings import *
-except ImportError:
-    pass
 
 
 # IMPORT EMAIL SETTINGS
@@ -179,10 +170,15 @@ except ImportError:
 
 
 ## HAYSTACK CONFIGURATION
+DOCKER_ELASTICSEARCH_URL = 'http://{}:{}'.format(
+    os.environ.get('ELASTICSEARCH_PORT_9200_TCP_ADDR'),
+    os.environ.get('ELASTICSEARCH_PORT_9200_TCP_PORT')
+)
+
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
+        'URL': DOCKER_ELASTICSEARCH_URL,
         'INDEX_NAME': 'haystack',
     },
 }

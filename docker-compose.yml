@@ -1,3 +1,15 @@
+
+##
+## IMPORTANT NOTE
+##
+## This compose file is configured for bootstrapping AVA developers
+## quickly. It is not appropriate for production or staging deployments
+## of AVA.
+##
+## This configuration uses hard-coded passwords, Django in DEBUG mode,
+## and the Django integrated development server, none of these things
+## are appropriate for a production environment.
+
 db:
   image: postgres:9.3
   environment:
