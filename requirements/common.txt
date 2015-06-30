@@ -14,3 +14,7 @@ django-html5-boilerplate
 django-bootstrap3
 django-bootstrap-form
 django-d3
+
+django-redis-sessions
+django-redis-cache
+hiredis
