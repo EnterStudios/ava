@@ -12,7 +12,7 @@
 
 DIRECTORY=$(dirname $0)/..
 PYTHON=python
-MANAGE=${DIRECTORY}/src/manage.py
+MANAGE=${DIRECTORY}/manage.py
 
 ## This one-off try-again is there because the postgres docker image
 ## takes a few extra seconds to initialize the database cluster on
