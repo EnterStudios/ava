@@ -26,7 +26,7 @@
                         <td>
                             <a href="{% url 'email-test-detail' test.id %}">{{ test.name }}</a>
                         </td>
-                        <td> {{ test.teststatus }}</td>
+                        <td> {{ test.test_status }}</td>
                         <td>
                             <a href="{% url 'email-test-update' test.id %}" class="btn btn-primary">Update</a>
                             <a href="{% url 'email-test-delete' test.id %}" class="btn btn-danger">Delete</a>

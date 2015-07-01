@@ -100,7 +100,7 @@ class PersonDelete(DeleteView):
 
 class IdentifierCreate(CreateView):
     model = Identifier
-    fields = ['identifiertype', 'identifier']
+    fields = ['identifier_type', 'identifier']
     template_name = 'identity/identifier.html'
     form_class = IdentifierForm
 
@@ -132,7 +132,7 @@ class IdentifierCreate(CreateView):
 
 class IdentifierUpdate(UpdateView):
     model = Identifier
-    fields = ['identifiertype', 'identifier']
+    fields = ['identifier_type', 'identifier']
     template_name = 'identity/identifier_update_form.html'
 
     def get_success_url(self):

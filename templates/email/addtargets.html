@@ -30,20 +30,20 @@
             <tbody>
             {% for item in list %}
                 <tr>
-                    <td><i class="fa {{ item.testtype.icon }} }}"></i></td>
+                    <td><i class="fa {{ item.test_type.icon }} }}"></i></td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.description }}</td>
                     <td>{{ item.timingtype }}</td>
-                    <td>{{ item.teststatus }}</td>
+                    <td>{{ item.test_status }}</td>
                     <td>
 
-                        <a href="/test/{{ item.testtype|lower }}/{{ item.id }}/view/">
+                        <a href="/test/{{ item.test_type|lower }}/{{ item.id }}/view/">
                             <button type="button" class="btn btn-primary btn-sm">View</button>
                         </a>
-                        <a href="/test/{{ item.testtype|lower }}/{{ item.id }}/update/">
+                        <a href="/test/{{ item.test_type|lower }}/{{ item.id }}/update/">
                             <button type="button" class="btn btn-primary btn-sm">Update</button>
                         </a>
-                        <a href="/test/{{ item.testtype|lower }}/{{ item.id }}/delete/">
+                        <a href="/test/{{ item.test_type|lower }}/{{ item.id }}/delete/">
                             <button type="button" class="btn btn-primary btn-sm">Delete</button>
                         </a>
                 </tr>

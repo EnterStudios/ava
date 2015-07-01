@@ -10,9 +10,9 @@ class PeopleViewsTestCase(SimpleTestCase):
     identifier_id=''
 
     def setUp(self):
-        testperson = Person(firstname='betty', surname='rebel')
+        testperson = Person(first_name='betty', surname='rebel')
         testperson.save()
-        testidentifier = Identifier(identifier='test@example.com',identifiertype='EMAIL',person=testperson)
+        testidentifier = Identifier(identifier='test@example.com',identifier_type='EMAIL',person=testperson)
         testidentifier.save()
         people = Person.objects.all()
         self.person_id=testperson.id

@@ -7,7 +7,7 @@
     <table style="margin-left:auto;margin-right:auto">
     {% for person in people_list %}
     <tr>
-        <td class="left"><a href="/people/{{ person.id }}/view/">{{ person.firstname }} {{ person.surname }}</a></td>
+        <td class="left"><a href="/people/{{ person.id }}/view/">{{ person.first_name }} {{ person.surname }}</a></td>
         <td><a href="/people/{{ person.id }}/update/">[update]</td>
         <td><a href="/people/{{ person.id }}/delete/">[delete]</td>
     </tr>

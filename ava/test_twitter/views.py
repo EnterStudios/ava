@@ -60,7 +60,7 @@ class TwitterTestSendTweet(generic.View):
     #     for identity in identities:
     #         identifiers = identity.identifier_set.all()
     #         for i in identifiers:
-    #             if i.identifiertype == Identifier.TWITTER:
+    #             if i.identifier_type == Identifier.TWITTER:
     #                 targets.append("'" + i.identifier + "'")
     #
     #     ''' TODO Example: Fields key :: twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET) '''

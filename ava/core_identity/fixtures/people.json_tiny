@@ -75,7 +75,7 @@
     "fields": {
       "identity": 7,
       "identifier": "Fluffy",
-      "identifiertype": "SKYPE",
+      "identifier_type": "SKYPE",
       "modified": "2014-04-17T09:18:43.422Z",
       "created": "2014-04-17T09:18:43.422Z"
     }
@@ -86,7 +86,7 @@
     "fields": {
       "identity": 7,
       "identifier": "greyandfluffy@dog.com",
-      "identifiertype": "EMAIL",
+      "identifier_type": "EMAIL",
       "modified": "2014-04-17T09:18:43.441Z",
       "created": "2014-04-17T09:18:43.440Z"
     }
@@ -97,7 +97,7 @@
     "fields": {
       "identity": 7,
       "identifier": "fluffydog@gmail.com",
-      "identifiertype": "EMAIL",
+      "identifier_type": "EMAIL",
       "modified": "2014-04-17T09:18:43.464Z",
       "created": "2014-04-17T09:18:43.464Z"
     }
@@ -108,7 +108,7 @@
     "fields": {
       "identity": 8,
       "identifier": "TopDog@gmail.com",
-      "identifiertype": "EMAIL",
+      "identifier_type": "EMAIL",
       "modified": "2014-04-17T09:19:31.488Z",
       "created": "2014-04-17T09:19:31.488Z"
     }
@@ -119,7 +119,7 @@
     "fields": {
       "identity": 8,
       "identifier": "yorkie1",
-      "identifiertype": "SKYPE",
+      "identifier_type": "SKYPE",
       "modified": "2014-04-17T09:19:31.527Z",
       "created": "2014-04-17T09:19:31.527Z"
     }
@@ -130,7 +130,7 @@
     "fields": {
       "identity": 8,
       "identifier": "blackmenace@dog.com",
-      "identifiertype": "EMAIL",
+      "identifier_type": "EMAIL",
       "modified": "2014-04-17T09:19:31.583Z",
       "created": "2014-04-17T09:19:31.583Z"
     }
@@ -141,7 +141,7 @@
     "fields": {
       "identity": 9,
       "identifier": "lowrider@dog.com",
-      "identifiertype": "EMAIL",
+      "identifier_type": "EMAIL",
       "modified": "2014-04-17T09:20:08.174Z",
       "created": "2014-04-17T09:20:08.174Z"
     }
@@ -152,7 +152,7 @@
     "fields": {
       "identity": 9,
       "identifier": "dashund14",
-      "identifiertype": "SKYPE",
+      "identifier_type": "SKYPE",
       "modified": "2014-04-17T09:20:08.232Z",
       "created": "2014-04-17T09:20:08.232Z"
     }
@@ -163,7 +163,7 @@
     "fields": {
       "identity": 9,
       "identifier": "sausagedog3@gmail.com",
-      "identifiertype": "EMAIL",
+      "identifier_type": "EMAIL",
       "modified": "2014-04-17T09:20:08.247Z",
       "created": "2014-04-17T09:20:08.247Z"
     }
@@ -174,7 +174,7 @@
     "fields": {
       "identity": 10,
       "identifier": "greybullet@dog.com",
-      "identifiertype": "EMAIL",
+      "identifier_type": "EMAIL",
       "modified": "2014-04-17T09:20:55.588Z",
       "created": "2014-04-17T09:20:55.588Z"
     }
@@ -185,7 +185,7 @@
     "fields": {
       "identity": 10,
       "identifier": "greyhound17",
-      "identifiertype": "SKYPE",
+      "identifier_type": "SKYPE",
       "modified": "2014-04-17T09:20:55.610Z",
       "created": "2014-04-17T09:20:55.610Z"
     }
@@ -196,7 +196,7 @@
     "fields": {
       "identity": 10,
       "identifier": "skinnydevil@gmail.com",
-      "identifiertype": "EMAIL",
+      "identifier_type": "EMAIL",
       "modified": "2014-04-17T09:20:55.634Z",
       "created": "2014-04-17T09:20:55.634Z"
     }
@@ -207,7 +207,7 @@
     "fields": {
       "identity": 11,
       "identifier": "thebigguy@dog.com",
-      "identifiertype": "EMAIL",
+      "identifier_type": "EMAIL",
       "modified": "2014-04-17T09:21:39.602Z",
       "created": "2014-04-17T09:21:39.602Z"
     }
@@ -218,7 +218,7 @@
     "fields": {
       "identity": 11,
       "identifier": "greatdane45",
-      "identifiertype": "SKYPE",
+      "identifier_type": "SKYPE",
       "modified": "2014-04-17T09:21:39.646Z",
       "created": "2014-04-17T09:21:39.646Z"
     }
@@ -229,7 +229,7 @@
     "fields": {
       "identity": 11,
       "identifier": "dane-gerous@gmail.com",
-      "identifiertype": "EMAIL",
+      "identifier_type": "EMAIL",
       "modified": "2014-04-17T09:21:39.698Z",
       "created": "2014-04-17T09:21:39.698Z"
     }
@@ -240,7 +240,7 @@
     "fields": {
       "identity": 13,
       "identifier": "Dalmation",
-      "identifiertype": "SKYPE",
+      "identifier_type": "SKYPE",
       "modified": "2014-04-17T09:57:28.846Z",
       "created": "2014-04-17T09:57:28.846Z"
     }
@@ -251,7 +251,7 @@
     "fields": {
       "identity": 13,
       "identifier": "spottydog1@gmail.com",
-      "identifiertype": "EMAIL",
+      "identifier_type": "EMAIL",
       "modified": "2014-04-17T09:57:28.871Z",
       "created": "2014-04-17T09:57:28.871Z"
     }
@@ -262,7 +262,7 @@
     "identity": {
       "identity": 13,
       "identifier": "blackandwhite@dog.com",
-      "identifiertype": "EMAIL",
+      "identifier_type": "EMAIL",
       "modified": "2014-04-19T07:32:42.669Z",
       "created": "2014-04-19T07:32:42.669Z"
     }
@@ -273,7 +273,7 @@
     "fields": {
       "identity": 14,
       "identifier": "hotmamma",
-      "identifiertype": "UNAME",
+      "identifier_type": "UNAME",
       "modified": "2014-04-20T09:04:59.640Z",
       "created": "2014-04-20T08:58:15.918Z"
     }
@@ -284,7 +284,7 @@
     "fields": {
       "identity": 14,
       "identifier": "betty.paige@gmail.com",
-      "identifiertype": "EMAIL",
+      "identifier_type": "EMAIL",
       "modified": "2014-04-20T08:58:15.940Z",
       "created": "2014-04-20T08:58:15.940Z"
     }
@@ -295,7 +295,7 @@
     "fields": {
       "identity": 14,
       "identifier": "betty-paige",
-      "identifiertype": "UNAME",
+      "identifier_type": "UNAME",
       "modified": "2014-04-20T08:58:15.964Z",
       "created": "2014-04-20T08:58:15.964Z"
     }
@@ -306,7 +306,7 @@
     "fields": {
       "identity": 14,
       "identifier": "10.1.0.1",
-      "identifiertype": "IPADD",
+      "identifier_type": "IPADD",
       "modified": "2014-04-20T09:00:04.123Z",
       "created": "2014-04-20T09:00:04.123Z"
     }

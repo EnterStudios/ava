@@ -18,9 +18,9 @@ class IdentityForm(ModelForm):
 class PersonForm(ModelForm):
     class Meta:
         model = Person
-        fields = ('firstname', 'surname', 'identity')
+        fields = ('first_name', 'surname', 'identity')
         labels = {
-            'firstname': 'First Name',
+            'first_name': 'First Name',
             'surname': 'Surname/Family Name',
             'identity': 'Identities',
         }
@@ -29,12 +29,12 @@ class PersonForm(ModelForm):
 class IdentifierForm(ModelForm):
     class Meta:
         model = Identifier
-        fields = ('identifiertype', 'identifier')
+        fields = ('identifier_type', 'identifier')
 
 
 IdentifierFormSet = inlineformset_factory(parent_model=Identity,
                                           model=Identifier,
                                           extra=0,
                                           min_num=1,
-                                          fields=('identifier', 'identifiertype',)
+                                          fields=('identifier', 'identifier_type',)
                                           )

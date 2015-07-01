@@ -1,2 +1,2 @@
 {{ object.identifier }}
-{{ object.identifiertype }}
+{{ object.identifier_type }}

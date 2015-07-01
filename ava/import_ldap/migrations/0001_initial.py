@@ -14,17 +14,17 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ActiveDirectoryGroup',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('cn', models.CharField(max_length=300)),
-                ('distinguishedName', models.CharField(max_length=300, unique=True)),
+                ('distinguishedName', models.CharField(unique=True, max_length=300)),
                 ('name', models.CharField(max_length=100)),
                 ('objectCategory', models.CharField(max_length=300)),
                 ('sAMAccountName', models.CharField(max_length=300)),
                 ('objectGUID', models.CharField(max_length=300)),
                 ('objectSid', models.CharField(max_length=300)),
-                ('group', models.ForeignKey(null=True, blank=True, to='core_group.Group')),
+                ('group', models.ForeignKey(null=True, to='core_group.Group', blank=True)),
             ],
             options={
                 'ordering': ['cn', 'distinguishedName'],
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ActiveDirectoryUser',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('dn', models.CharField(max_length=300)),
@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
                 ('userAccountControl', models.CharField(max_length=300)),
                 ('whenChanged', models.CharField(max_length=300)),
                 ('whenCreated', models.CharField(max_length=300)),
-                ('groups', models.ManyToManyField(to='import_ldap.ActiveDirectoryGroup', related_name='users')),
+                ('groups', models.ManyToManyField(related_name='users', to='import_ldap.ActiveDirectoryGroup')),
             ],
             options={
                 'ordering': ['cn', 'distinguishedName'],
@@ -72,13 +72,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='LDAPConfiguration',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
-                ('user_dn', models.CharField(verbose_name='User', max_length=100)),
-                ('user_pw', models.CharField(verbose_name='Password', max_length=100)),
-                ('dump_dn', models.CharField(verbose_name='Domain', max_length=100)),
-                ('server', models.CharField(verbose_name='Server', max_length=100)),
+                ('user_dn', models.CharField(max_length=100, verbose_name='User')),
+                ('user_pw', models.CharField(max_length=100, verbose_name='Password')),
+                ('dump_dn', models.CharField(max_length=100, verbose_name='Domain')),
+                ('server', models.CharField(max_length=100, verbose_name='Server')),
             ],
         ),
         migrations.AlterUniqueTogether(

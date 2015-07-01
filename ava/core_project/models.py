@@ -12,9 +12,9 @@ class Project(TimeStampedModel):
     description = models.CharField(max_length=300)
     owner = models.ForeignKey(User)
     justification = models.TextField()
-    startdate = models.DateField(auto_now_add=True, verbose_name='Start Date')
+    start_date = models.DateField(auto_now_add=True, verbose_name='Start Date')
     enddate = models.DateField(verbose_name='End Date', null=True, blank=True, )
-    authorisedby = models.CharField(max_length=100, null=True, blank=True, verbose_name='Authorised By')
+    authorised_by = models.CharField(max_length=100, null=True, blank=True, verbose_name='Authorised By')
     # Test targets
     groups = models.ManyToManyField('core_group.Group', null=True, blank=True)
     identities = models.ManyToManyField('core_identity.Identity', null=True, blank=True)
@@ -26,7 +26,7 @@ class Project(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('project-detail', kwargs={'pk': self.pk})
 
-    def user_has_access(self, user, accesslevel):
+    def user_has_access(self, user, access_level):
         # If the user is the project owner, they automatically get access.
         if user == self.owner:
             return True
@@ -36,7 +36,7 @@ class Project(TimeStampedModel):
         # Otherwise, check the teams to see if the user is in a team that's
         # been given access.
         for team in self.teams.all():
-            if team.has_access(accesslevel) and team.contains_user(user):
+            if team.has_access(access_level) and team.contains_user(user):
                 return True
         # Fail to no access.
         return False
@@ -64,12 +64,12 @@ class ProjectTeam(TimeStampedModel):
 
     project = models.ForeignKey(Project, related_name='teams')
     team = models.ForeignKey('core_auth.Team', related_name='projects')
-    accesslevel = models.IntegerField(choices=ACCESS_LEVEL_CHOICES,
+    access_level = models.IntegerField(choices=ACCESS_LEVEL_CHOICES,
                                       default=ProjectAccess.VIEW,
                                       verbose_name='Access Level')
 
-    def has_access(self, accesslevel):
-        return self.accesslevel >= accesslevel
+    def has_access(self, access_level):
+        return self.access_level >= access_level
 
     def contains_user(self, user):
         return self.team.users.filter(pk=user.id).count() > 0

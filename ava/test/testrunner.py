@@ -29,14 +29,14 @@ class TestRunner(object):
         
         :param status: The status to assign to the current test.
         """
-        self.test.teststatus = status
+        self.test.test_status = status
         self.test.save()
 
     def run(self):
         """
         Executes the current test, setting the test status as appropriate.
         """
-        if not self.test or not self.test.teststatus in (Test.NEW, Test.SCHEDULED):
+        if not self.test or not self.test.test_status in (Test.NEW, Test.SCHEDULED):
             return False
 
         try:

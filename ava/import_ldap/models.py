@@ -188,12 +188,12 @@ class ActiveDirectoryUser(TimeStampedModel):
             TODO Do we need to create a person object for this identity??
             '''
 
-            Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName, identifiertype=Identifier.UNAME,
+            Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName, identifier_type=Identifier.UNAME,
                                              identity=identity)
 
             # Import the email addresses.
             for email_address in email_addresses:
-                Identifier.objects.get_or_create(identifier=email_address, identifiertype=Identifier.EMAIL,
+                Identifier.objects.get_or_create(identifier=email_address, identifier_type=Identifier.EMAIL,
                                                  identity=identity)
 
             for group in groups:

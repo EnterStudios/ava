@@ -26,8 +26,8 @@ class TestDashboardView(generic.ListView):
         return context
 
     def test_count_by_status(self, status):
-        count = TwitterTest.objects.filter(user=self.request.user, teststatus=status).count()
-        count = count + EmailTest.objects.filter(user=self.request.user, teststatus=status).count()
+        count = TwitterTest.objects.filter(user=self.request.user, test_status=status).count()
+        count = count + EmailTest.objects.filter(user=self.request.user, test_status=status).count()
         return count
 
     def get_queryset(self):
@@ -58,8 +58,8 @@ class TestProjectDashboardView(generic.ListView):
         return context
 
     def test_count_by_status(self, status):
-        count = TwitterTest.objects.filter(user=self.request.user, teststatus=status).count()
-        count = count + EmailTest.objects.filter(user=self.request.user, teststatus=status).count()
+        count = TwitterTest.objects.filter(user=self.request.user, test_status=status).count()
+        count = count + EmailTest.objects.filter(user=self.request.user, test_status=status).count()
         return count
 
     def get_queryset(self):

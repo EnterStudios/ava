@@ -11,12 +11,12 @@ class RecordTestResultView(generic.TemplateView):
         abstract = True
 
     TRACKING_FIELDS = {
-        'ipaddress': 'REMOTE_ADDR',
+        'ip_address': 'REMOTE_ADDR',
         'method': 'REQUEST_METHOD',
         'host': 'HTTP_HOST',
         'path': 'PATH_INFO',
-        'contentlength': 'CONTENT_LENGTH',
-        'contenttype': 'CONTENT_TYPE',
+        'content_length': 'CONTENT_LENGTH',
+        'content_type': 'CONTENT_TYPE',
         'ua': 'HTTP_USER_AGENT',
         'referrer': 'HTTP_REFERER',
         'via': 'HTTP_VIA',
