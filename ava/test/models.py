@@ -39,12 +39,12 @@ class Test(ReferenceModel):
     user = models.ForeignKey(User, null=True)
 
     # The type of test being performed.
-    testtype = models.CharField(max_length=7,
+    test_type = models.CharField(max_length=7,
                                 choices=TEST_TYPE_CHOICES,
                                 default=EMAIL,
                                 verbose_name='Test Type')
     # The current status of the test.
-    teststatus = models.CharField(max_length=10,
+    test_status = models.CharField(max_length=10,
                                   choices=TEST_STATUS_CHOICES,
                                   default=NEW,
                                   verbose_name='Test Status')
@@ -63,12 +63,12 @@ class TestResult(TimeStampedModel):
     class Meta:
         abstract = True
 
-    ipaddress = models.CharField(max_length=50)
+    ip_address = models.CharField(max_length=50)
     method = models.CharField(max_length=10)  # GET/POST/etc
     host = models.CharField(max_length=260)  # host name:port
     path = models.TextField(null=True, blank=True)  # /path/to/page/
-    contentlength = models.CharField(max_length=10, null=True, blank=True)
-    contenttype = models.CharField(max_length=100, null=True, blank=True)
+    content_length = models.CharField(max_length=10, null=True, blank=True)
+    content_type = models.CharField(max_length=100, null=True, blank=True)
     ua = models.TextField(null=True, blank=True)  # User-Agent
     referrer = models.TextField(null=True, blank=True)  # Referer
     via = models.TextField(null=True, blank=True)  # Via

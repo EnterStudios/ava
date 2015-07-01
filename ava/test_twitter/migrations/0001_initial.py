@@ -15,11 +15,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='TweetLink',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(verbose_name='Name', max_length=100)),
-                ('description', models.TextField(verbose_name='Description', max_length=500)),
+                ('name', models.CharField(max_length=100, verbose_name='Name')),
+                ('description', models.TextField(max_length=500, verbose_name='Description')),
                 ('link', models.URLField()),
             ],
             options={
@@ -29,11 +29,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='TweetTemplate',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(verbose_name='Name', max_length=100)),
-                ('description', models.TextField(verbose_name='Description', max_length=500)),
+                ('name', models.CharField(max_length=100, verbose_name='Name')),
+                ('description', models.TextField(max_length=500, verbose_name='Description')),
                 ('tweet', models.TextField(max_length=140)),
             ],
             options={
@@ -43,11 +43,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='TwitterAccount',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(verbose_name='Name', max_length=100)),
-                ('description', models.TextField(verbose_name='Description', max_length=500)),
+                ('name', models.CharField(max_length=100, verbose_name='Name')),
+                ('description', models.TextField(max_length=500, verbose_name='Description')),
                 ('username', models.CharField(max_length=100)),
                 ('password_enc', models.TextField()),
             ],
@@ -58,10 +58,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='TwitterTest',
             fields=[
-                ('test_ptr', models.OneToOneField(serialize=False, to='test.Test', primary_key=True, parent_link=True, auto_created=True)),
+                ('test_ptr', models.OneToOneField(auto_created=True, serialize=False, to='test.Test', primary_key=True, parent_link=True)),
                 ('link', models.ForeignKey(to='test_twitter.TweetLink')),
                 ('tweet', models.ForeignKey(verbose_name='Tweet', to='test_twitter.TweetTemplate')),
-                ('twitteraccount', models.ForeignKey(verbose_name='Send From Twitter Account', to='test_twitter.TwitterAccount')),
+                ('twitter_account', models.ForeignKey(verbose_name='Send From Twitter Account', to='test_twitter.TwitterAccount')),
             ],
             options={
                 'abstract': False,
@@ -71,18 +71,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='TwitterTestResult',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
-                ('ipaddress', models.CharField(max_length=50)),
+                ('ip_address', models.CharField(max_length=50)),
                 ('method', models.CharField(max_length=10)),
                 ('host', models.CharField(max_length=260)),
-                ('path', models.TextField(null=True, blank=True)),
-                ('contentlength', models.CharField(max_length=10, blank=True, null=True)),
-                ('contenttype', models.CharField(max_length=100, blank=True, null=True)),
-                ('ua', models.TextField(null=True, blank=True)),
-                ('referrer', models.TextField(null=True, blank=True)),
-                ('via', models.TextField(null=True, blank=True)),
+                ('path', models.TextField(blank=True, null=True)),
+                ('content_length', models.CharField(blank=True, max_length=10, null=True)),
+                ('content_type', models.CharField(blank=True, max_length=100, null=True)),
+                ('ua', models.TextField(blank=True, null=True)),
+                ('referrer', models.TextField(blank=True, null=True)),
+                ('via', models.TextField(blank=True, null=True)),
             ],
             options={
                 'abstract': False,
@@ -91,20 +91,20 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='TwitterTestTarget',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('target', models.ForeignKey(to='core_identity.Identifier')),
-                ('twittertest', models.ForeignKey(to='test_twitter.TwitterTest')),
+                ('twitter_test', models.ForeignKey(to='test_twitter.TwitterTest')),
             ],
         ),
         migrations.AddField(
             model_name='twittertestresult',
             name='target',
-            field=models.ForeignKey(to='test_twitter.TwitterTestTarget', related_name='results'),
+            field=models.ForeignKey(related_name='results', to='test_twitter.TwitterTestTarget'),
         ),
         migrations.AlterUniqueTogether(
             name='twittertesttarget',
-            unique_together=set([('twittertest', 'target')]),
+            unique_together=set([('twitter_test', 'target')]),
         ),
     ]

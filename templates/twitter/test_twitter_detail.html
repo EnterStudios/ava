@@ -15,10 +15,10 @@
                             <td>Name:</td>
                             <td>{{ test.name }}</td>
                         </tr>
-                        {% if test.testtype %}
+                        {% if test.test_type %}
                             <tr>
                                 <td>Test Type:</td>
-                                <td>{{ test.testtype }}</td>
+                                <td>{{ test.test_type }}</td>
                             </tr>
                         {% endif %}
                         {% if test.tweet.tweet %}
@@ -33,10 +33,10 @@
                                 <td>{{ test.link }}</td>
                             </tr>
                         {% endif %}
-                        {% if test.twitteraccount %}
+                        {% if test.twitter_account %}
                             <tr>
                                 <td>Sender Twitter Account:</td>
-                                <td>{{ test.twitteraccount.username }}</td>
+                                <td>{{ test.twitter_account.username }}</td>
                             </tr>
                         {% endif %}
                         </tbody>

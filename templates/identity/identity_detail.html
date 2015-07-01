@@ -26,7 +26,7 @@
         {% for identifier in identity.identifiers.all %}
             <tr>
                 <td>{{ identifier.identifier }}</td>
-                <td>{{ identifier.identifiertype|identifier_type }}</td>
+                <td>{{ identifier.identifier_type|identifier_type }}</td>
                 <td>
                     <a href="{% url 'identifier-update' identifier.id  %}" class="btn btn-primary btn-sm">Update</a>
                     <a href="{% url 'identifier-delete' identifier.id  %}" class="btn btn-danger btn-sm">Delete</a>

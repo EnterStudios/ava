@@ -16,18 +16,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EmailTemplate',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('subject', models.CharField(max_length=200)),
                 ('message', models.TextField()),
-                ('message_html', models.TextField(null=True, blank=True)),
+                ('message_html', models.TextField(blank=True, null=True)),
             ],
         ),
         migrations.CreateModel(
             name='EmailTest',
             fields=[
-                ('test_ptr', models.OneToOneField(serialize=False, to='test.Test', primary_key=True, parent_link=True, auto_created=True)),
-                ('fromaddr', models.EmailField(verbose_name='Send From Email Address', max_length=254)),
-                ('subject', models.CharField(verbose_name='Subject', max_length=200)),
+                ('test_ptr', models.OneToOneField(auto_created=True, serialize=False, to='test.Test', primary_key=True, parent_link=True)),
+                ('fromaddr', models.EmailField(max_length=254, verbose_name='Send From Email Address')),
+                ('subject', models.CharField(max_length=200, verbose_name='Subject')),
                 ('body', models.TextField(verbose_name='Message Body')),
                 ('is_html', models.BooleanField(verbose_name='Send as HTML Email?', default=False)),
             ],
@@ -39,18 +39,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EmailTestResult',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
-                ('ipaddress', models.CharField(max_length=50)),
+                ('ip_address', models.CharField(max_length=50)),
                 ('method', models.CharField(max_length=10)),
                 ('host', models.CharField(max_length=260)),
-                ('path', models.TextField(null=True, blank=True)),
-                ('contentlength', models.CharField(max_length=10, blank=True, null=True)),
-                ('contenttype', models.CharField(max_length=100, blank=True, null=True)),
-                ('ua', models.TextField(null=True, blank=True)),
-                ('referrer', models.TextField(null=True, blank=True)),
-                ('via', models.TextField(null=True, blank=True)),
+                ('path', models.TextField(blank=True, null=True)),
+                ('content_length', models.CharField(blank=True, max_length=10, null=True)),
+                ('content_type', models.CharField(blank=True, max_length=100, null=True)),
+                ('ua', models.TextField(blank=True, null=True)),
+                ('referrer', models.TextField(blank=True, null=True)),
+                ('via', models.TextField(blank=True, null=True)),
             ],
             options={
                 'abstract': False,
@@ -59,18 +59,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EmailTestTarget',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
-                ('token', models.CharField(max_length=100, default=ava.test.helpers.generate_hex_token, unique=True)),
-                ('emailtest', models.ForeignKey(to='test_email.EmailTest', related_name='targets')),
+                ('token', models.CharField(unique=True, max_length=100, default=ava.test.helpers.generate_hex_token)),
+                ('emailtest', models.ForeignKey(related_name='targets', to='test_email.EmailTest')),
                 ('target', models.ForeignKey(to='core_identity.Identifier')),
             ],
         ),
         migrations.AddField(
             model_name='emailtestresult',
             name='target',
-            field=models.ForeignKey(to='test_email.EmailTestTarget', related_name='results'),
+            field=models.ForeignKey(related_name='results', to='test_email.EmailTestTarget'),
         ),
         migrations.AlterUniqueTogether(
             name='emailtesttarget',

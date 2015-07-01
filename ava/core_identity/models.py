@@ -32,12 +32,12 @@ class Person(TimeStampedModel):
     TODO: DocString
     """
     
-    firstname = models.CharField(max_length=75, validators=[validate_slug])
+    first_name = models.CharField(max_length=75, validators=[validate_slug])
     surname = models.CharField(max_length=75, validators=[validate_slug])
     identity = models.ManyToManyField('Identity', blank=True)
 
     def __unicode__(self):
-        return (self.firstname + " " + self.surname).strip() or ''
+        return (self.first_name + " " + self.surname).strip() or ''
 
     def get_absolute_url(self):
         return reverse('person-detail', kwargs={'pk': self.id})
@@ -45,7 +45,7 @@ class Person(TimeStampedModel):
     class Meta:
         verbose_name = 'person'
         verbose_name_plural = 'people'
-        ordering = ['surname', 'firstname']
+        ordering = ['surname', 'first_name']
 
 
 class Identifier(TimeStampedModel):
@@ -68,7 +68,7 @@ class Identifier(TimeStampedModel):
     )
     
     identifier = models.CharField(max_length=100)
-    identifiertype = models.CharField(max_length=10,
+    identifier_type = models.CharField(max_length=10,
                                       choices=IDENTIFIER_TYPE_CHOICES,
                                       default=EMAIL,
                                       verbose_name='Identifier Type')
@@ -81,36 +81,36 @@ class Identifier(TimeStampedModel):
         return reverse('identifier-detail', kwargs={'pk': self.id})
     
     def clean(self):
-        if self.identifiertype is 'EMAIL':
+        if self.identifier_type is 'EMAIL':
             try:
                 validate_email(self.identifier)
             except ValidationError:
                 raise ValidationError('Identifier is not a valid email address')
         
-        if self.identifiertype is 'IPADD':
+        if self.identifier_type is 'IPADD':
             try:
                 validate_ipv46_address(self.identifier)
             except ValidationError:
                 raise ValidationError('Identifier is not a valid IPv4/IPv6 address')
 
-        if self.identifiertype is 'UNAME':
+        if self.identifier_type is 'UNAME':
             try:
                 validate_slug(self.identifier)
             except ValidationError:
                 raise ValidationError('Identifier is not a valid username')
 
-        if self.identifiertype is 'SKYPE':
+        if self.identifier_type is 'SKYPE':
             try:
                 validate_skype(self.identifier)
             except ValidationError:
                 raise ValidationError('Identifier is not a valid Skype user name')
 
-        if self.identifiertype is 'TWITTER':
+        if self.identifier_type is 'TWITTER':
             try:
                 validate_twitter(self.identifier)
             except ValidationError:
                 raise ValidationError('Identifier is not a valid Twitter user name')
 
     class Meta:
-        unique_together = ("identifier", "identifiertype", "identity")
-        ordering = ['identifier', 'identifiertype']
+        unique_together = ("identifier", "identifier_type", "identity")
+        ordering = ['identifier', 'identifier_type']

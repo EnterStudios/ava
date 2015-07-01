@@ -12,4 +12,4 @@ class ProjectForm(ModelForm):
 class ProjectTeamForm(ModelForm):
     class Meta:
         model = ProjectTeam
-        fields = ('accesslevel',)
+        fields = ('access_level',)

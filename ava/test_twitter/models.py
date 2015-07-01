@@ -7,10 +7,10 @@ from ava.core_identity.models import Identifier, Person
 
 
 class TwitterTest(Test):
-    # twittertesttype = models.ForeignKey('TwitterTestType', null=False)
+    # twitter_test_type = models.ForeignKey('TwitterTestType', null=False)
     tweet = models.ForeignKey('TweetTemplate', null=False, verbose_name='Tweet')
     link = models.ForeignKey('TweetLink', null=False)
-    twitteraccount = models.ForeignKey('TwitterAccount', null=False, verbose_name='Send From Twitter Account')
+    twitter_account = models.ForeignKey('TwitterAccount', null=False, verbose_name='Send From Twitter Account')
 
     def __unicode__(self):
         return self.name or ''
@@ -20,11 +20,11 @@ class TwitterTest(Test):
 
 
 class TwitterTestTarget(TimeStampedModel):
-    twittertest = models.ForeignKey('TwitterTest', null=False)
+    twitter_test = models.ForeignKey('TwitterTest', null=False)
     target = models.ForeignKey('core_identity.Identifier', null=False)
 
     class Meta:
-        unique_together = ("twittertest", "target")
+        unique_together = ("twitter_test", "target")
 
     def __unicode__(self):
         return self.target or ''

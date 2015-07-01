@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Team',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100, verbose_name='Name')),
@@ -29,13 +29,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UserRights',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('is_admin', models.BooleanField(default=False)),
-                ('user', models.OneToOneField(related_name='rights', to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, related_name='rights')),
             ],
             options={
-                'verbose_name': 'User Rights',
                 'verbose_name_plural': 'User Rights',
+                'verbose_name': 'User Rights',
             },
         ),
     ]

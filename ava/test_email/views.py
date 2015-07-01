@@ -36,7 +36,7 @@ class EmailTestDetail(generic.DetailView):
     def get_context_data(self, **kwargs):
         context_data = super(EmailTestDetail, self).get_context_data(**kwargs)
         status_names = dict(Test.TEST_STATUS_CHOICES)
-        context_data['test_status'] = status_names[self.test.teststatus]
+        context_data['test_status'] = status_names[self.test.test_status]
         return context_data
 
 
@@ -70,8 +70,8 @@ class EmailTestCreate(generic.CreateView):
     def form_valid(self, form):
         form.instance.project = self.project
         form.instance.user = self.request.user
-        form.instance.teststatus = Test.NEW
-        form.instance.testtype = Test.EMAIL
+        form.instance.test_status = Test.NEW
+        form.instance.test_type = Test.EMAIL
         result = super(EmailTestCreate, self).form_valid(form)
         self.success_url = form.instance.get_absolute_url()
         self.add_targets(form.instance)
@@ -81,14 +81,14 @@ class EmailTestCreate(generic.CreateView):
         # For the project's target groups, find and add all email addresses.
         for group in self.project.groups.all():
             for identity in group.identity_set.all():
-                for identifier in identity.identifier_set.filter(identifiertype=Identifier.EMAIL):
+                for identifier in identity.identifier_set.filter(identifier_type=Identifier.EMAIL):
                     EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
         # For the project's target identities, find and add all email addresses.
         for identity in self.project.identities.all():
-            for identifier in identity.identifier_set.filter(identifiertype=Identifier.EMAIL):
+            for identifier in identity.identifier_set.filter(identifier_type=Identifier.EMAIL):
                 EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
         # For the project's target identifiers, add all that are email addresses.
-        for identifier in self.project.identifiers.filter(identifiertype=Identifier.EMAIL):
+        for identifier in self.project.identifiers.filter(identifier_type=Identifier.EMAIL):
             EmailTestTarget.objects.get_or_create(target=identifier, emailtest=test)
 
 
@@ -105,9 +105,9 @@ class EmailSendEmail(generic.View):
         email = get_object_or_404(EmailTest, pk=pk)
         # TODO: Permissions - check if user is allowed to start the test.
         # Only run tests that haven't been run yet.
-        if email.teststatus in (EmailTest.NEW, EmailTest.SCHEDULED):
+        if email.test_status in (EmailTest.NEW, EmailTest.SCHEDULED):
             # Mark the test as scheduled, so that the front-end says the right thing.
-            email.teststatus = EmailTest.SCHEDULED
+            email.test_status = EmailTest.SCHEDULED
             email.save()
             # Queue the emails.
             run_email_test.delay(email.id)
