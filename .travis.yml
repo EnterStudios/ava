@@ -3,11 +3,11 @@ python:
   "3.4"
 install:
   ## This convoluted pip command builds all our dependencies so that Travis can cache them, greatly speeding up test runs.
-  - "pip wheel --use-wheel -w ${HOME}/.cache/wheelhouse -f file://${HOME}/.cache/wheelhouse -r requirements/common.txt"
+  - "pip wheel --use-wheel -w ${HOME}/.cache/wheelhouse -f file://${HOME}/.cache/wheelhouse -r requirements/common.txt python-coveralls"
   ## Install the pre-built dependencies.
-  - "pip install --use-wheel --find-links=file://${HOME}/.cache/wheelhouse -r requirements/common.txt"
+  - "pip install --use-wheel --find-links=file://${HOME}/.cache/wheelhouse -r requirements/common.txt python-coveralls"
 script:
-  "python manage.py test -v3"
+  "coverage run '--omit=*/google_apps_interface.py,*/directory-quickstart.py,*/example_twitter_settings.py' --source=ava manage.py test -v3"
 env:
  - DJANGO_SETTINGS_MODULE=ava.settings.travis
 addons:
@@ -17,4 +17,6 @@ cache:
     - ${HOME}/.cache/wheelhouse
 services:
   - redis-server
+after_success:
+  - coveralls
 
