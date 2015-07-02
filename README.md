@@ -2,7 +2,7 @@
 
 ### We build secure people
 
-[![Build Status](https://travis-ci.org/SafeStack/ava.svg?branch=master)](https://travis-ci.org/SafeStack/ava)
+[![Build Status](https://travis-ci.org/SafeStack/ava.svg?branch=master)](https://travis-ci.org/SafeStack/ava)   [![Coverage Status](https://coveralls.io/repos/SafeStack/ava/badge.svg?branch=master)](https://coveralls.io/r/SafeStack/ava?branch=master)
 
 Information security is often misunderstood. Most people believe that if you throw enough gadgets at an organisation you will mitigate any potential vulnerability. Technology is only a fraction of the picture.
 Information security is at its heart a human problem. Wherever there exists choice, there is risk. 
