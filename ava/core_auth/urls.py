@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import patterns, url
 from ava.core_auth import views
 from ava.core_auth.decorators import system_admin_required
 

@@ -184,4 +184,3 @@ class LDAPConfigurationImport(ListView):
             ad_user = ActiveDirectoryUser()
             ad_user.get_users(instance)
         return True
-

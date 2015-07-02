@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 
-from ava.core_identity.models import Identity, Identifier
+from ava.core_identity.models import Identifier
 from ava.core_project.models import Project, ProjectAccess
 from ava.test.models import Test
 from ava.test_email.models import EmailTest, EmailTestTarget
@@ -99,6 +99,7 @@ class EmailTestUpdate(UpdateView):
 
 
 class EmailSendEmail(generic.View):
+
     def get(self, **kwargs):
         # Make sure that the test exists.
         pk = kwargs['pk']

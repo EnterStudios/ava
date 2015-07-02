@@ -2,9 +2,10 @@ from ava.test.models import Test
 
 
 class TestRunner(object):
+
     """
     An abstract base class that helps to run AVA tests.
-    
+
     The run() method on this class ensures that tests are only executed if they
     have not done so already, and will ensure that the test state is updated
     as appropriate.
@@ -18,7 +19,7 @@ class TestRunner(object):
     def __init__(self, test):
         """
         Creates a new TestRunner instance.
-        
+
         :param test: The AVA test that is being run.
         """
         self.test = test
@@ -26,7 +27,7 @@ class TestRunner(object):
     def set_test_status(self, status):
         """
         Updates the status of the current test.
-        
+
         :param status: The status to assign to the current test.
         """
         self.test.test_status = status
@@ -36,7 +37,7 @@ class TestRunner(object):
         """
         Executes the current test, setting the test status as appropriate.
         """
-        if not self.test or not self.test.test_status in (Test.NEW, Test.SCHEDULED):
+        if not self.test or self.test.test_status not in (Test.NEW, Test.SCHEDULED):
             return False
 
         try:
@@ -53,7 +54,7 @@ class TestRunner(object):
     def execute_test(self):
         """
         Performs the actual test.
-        
+
         This method should be overridded in subclasses in order to provide the
         relevant test functionality.
         """

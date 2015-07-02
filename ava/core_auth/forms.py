@@ -38,6 +38,7 @@ class UserForm(ModelForm):
 
 
 class UserCreateForm(UserForm):
+
     class Meta:
         model = User
         fields = ['username', 'password', 'password2', 'first_name', 'last_name', 'email', 'is_admin', 'is_active']
@@ -59,12 +60,14 @@ class UserCreateForm(UserForm):
 
 
 class UserUpdateForm(UserForm):
+
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'is_admin', 'is_active']
 
 
 class TeamForm(ModelForm):
+
     class Meta:
         model = Team
         fields = ['name', 'description']

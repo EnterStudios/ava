@@ -9,6 +9,7 @@ register = template.Library()
 
 
 class Constants(object):
+
     '''
     Constants that are used by the filter functions in this file.
     '''

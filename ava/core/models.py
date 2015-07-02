@@ -3,7 +3,7 @@ from django.db import models
 
 # ABSTRACT MODELS
 class TimeStampedModel(models.Model):
-    """An abstract base class model that provides creation and modification date 
+    """An abstract base class model that provides creation and modification date
     information to all models in AVA
     """
 
@@ -15,8 +15,7 @@ class TimeStampedModel(models.Model):
 
 
 class ReferenceModel(TimeStampedModel):
-    """An abstract base class model for reference tables 
-    """
+    """An abstract base class model for reference tables."""
     name = models.CharField(max_length=100, verbose_name='Name')
     description = models.TextField(max_length=500, verbose_name='Description')
 

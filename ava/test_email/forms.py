@@ -1,11 +1,12 @@
 from django.forms import ModelForm
 
-from ava.test_email.models import *
+from . import models
 
 
 class EmailTestForm(ModelForm):
+
     class Meta:
-        model = EmailTest
+        model = models.EmailTest
         exclude = ['project', 'user', 'test_status', 'test_type', 'redirect_url', 'page_template']
         labels = {
             'name': 'Test Name',
@@ -14,6 +15,7 @@ class EmailTestForm(ModelForm):
 
 
 class EmailTargetForm(ModelForm):
+
     class Meta:
-        model = EmailTestTarget
+        model = models.EmailTestTarget
         exclude = []

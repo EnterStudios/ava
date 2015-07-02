@@ -10,6 +10,7 @@ from ava.test_twitter.models import TwitterTest
 
 
 class FormsetMixin(object):
+
     """
     This is a generic mixin to provide clean functionality for creating and updating related models via FormSet
     This mixin can be inherited and used as an alternative to generic.CreateView and generic.UpdateView
@@ -76,12 +77,13 @@ class FormsetMixin(object):
 
 
 class AddManyToManyView(generic.DetailView):
+
     """
     A sublass of DetailView that specialises in adding items to a many to
     many relationship between models.
-    
+
     Example:
-    
+
     class PersonAddIdentities(AddManyToManyView):
         template_name = 'person/person_addidentities.html'
         model = Person
@@ -89,10 +91,10 @@ class AddManyToManyView(generic.DetailView):
         context_object_name = 'person'
         targets_context_object_name = 'identity_list'
         target_id_field = 'identity'
-        
+
         def search_targets(self, target_queryset, search_term):
             return target_queryset.filter(name__contains=search_term)
-        
+
         def get_many_to_many(self):
             return self.object.identities
     """
@@ -210,12 +212,13 @@ class AddManyToManyView(generic.DetailView):
 
 
 class RemoveManyToManyView(generic.DetailView):
+
     """
     A sublass of DetailView that specialises in removing items from a many to
     many relationship between models.
-    
+
     Example:
-    
+
     class PersonRemoveIdentities(RemoveManyToManyView):
         template_name = 'person/person_removeidentities.html'
         model = Person
@@ -223,7 +226,7 @@ class RemoveManyToManyView(generic.DetailView):
         targets_context_object_name = 'identity_list'
         target_post_field = 'identity'
         target_kwargs_field = 'identity'
-        
+
         def get_many_to_many(self):
             return self.object.identities
     """

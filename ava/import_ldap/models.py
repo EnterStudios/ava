@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from ava.core.models import TimeStampedModel
 from ava.import_ldap.ldap_interface import ActiveDirectoryHelper
-from ava.core_identity.models import Identifier, Person, Identity
+from ava.core_identity.models import Identifier, Identity
 from ava.core_group.models import Group
 
 
@@ -311,6 +311,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
 
 
 class LDAPConfiguration(TimeStampedModel):
+
     """
     user_dn = "cn=Administrator,cn=Users,dc=ava,dc=test,dc=domain"
     user_pw = "Password1"
@@ -333,6 +334,7 @@ class LDAPConfiguration(TimeStampedModel):
 
 
 class ExportLDAP:
+
     def __init__(self):
         pass
 

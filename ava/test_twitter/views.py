@@ -3,8 +3,8 @@ from django.views import generic
 from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
-from twython import Twython
-from ava.core_identity.models import Identifier, Identity
+# from twython import Twython
+# from ava.core_identity.models import Identifier, Identity
 
 from ava.test_twitter.models import TwitterTest
 from ava.test_twitter.forms import TwitterTestForm
@@ -14,7 +14,7 @@ class TwitterTestIndex(ListView):
     template_name = 'twitter/test_twitter_index.html'
     context_object_name = 'list'
 
-    ''' TODO Left in as we will need this concept of ownership soon... this is a reminder '''
+    # ''' TODO Left in as we will need this concept of ownership soon... this is a reminder '''
     # def get_queryset(self):
     #    return TwitterTest.objects.filter(user=self.request.user)
 

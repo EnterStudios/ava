@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Model
 
-from ava.core.models import TimeStampedModel, ReferenceModel
+from ava.core.models import TimeStampedModel
 from ava.test.models import Test, TestResult
 from ava.test.helpers import generate_hex_token
 

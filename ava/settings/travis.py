@@ -2,7 +2,7 @@
 This settings file is used during Travis CI runs.
 """
 
-from .base import *
+from .base import *  # noqa
 
 DATABASES = {
     'default': {

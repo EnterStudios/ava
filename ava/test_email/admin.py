@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from ava.test_email.models import *
+from . import models
 
-admin.site.register(EmailTest)
-admin.site.register(EmailTestTarget)
-admin.site.register(EmailTemplate)
+admin.site.register(models.EmailTest)
+admin.site.register(models.EmailTestTarget)
+admin.site.register(models.EmailTemplate)
