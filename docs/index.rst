@@ -3,14 +3,22 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to AVA's documentation!
-===============================
+AVA: Protect your people
+========================
+
+AVA is a next-generation vulnerability scanner designed to make human
+security testing repeatable, measurable, and empowering.
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
+   intro
+   install
+   administration
+   user
+   dev
 
 
 Indices and tables
