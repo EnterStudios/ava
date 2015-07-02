@@ -15,7 +15,6 @@ class Identity(ReferenceModel):
     """
 
     groups = models.ManyToManyField(Group,
-                                    null=True,
                                     blank=True,
                                     related_name='identities')
 

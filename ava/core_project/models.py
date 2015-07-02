@@ -16,9 +16,9 @@ class Project(TimeStampedModel):
     enddate = models.DateField(verbose_name='End Date', null=True, blank=True, )
     authorised_by = models.CharField(max_length=100, null=True, blank=True, verbose_name='Authorised By')
     # Test targets
-    groups = models.ManyToManyField('core_group.Group', null=True, blank=True)
-    identities = models.ManyToManyField('core_identity.Identity', null=True, blank=True)
-    identifiers = models.ManyToManyField('core_identity.Identifier', null=True, blank=True)
+    groups = models.ManyToManyField('core_group.Group', blank=True)
+    identities = models.ManyToManyField('core_identity.Identity', blank=True)
+    identifiers = models.ManyToManyField('core_identity.Identifier', blank=True)
 
     def __unicode__(self):
         return self.name or ''

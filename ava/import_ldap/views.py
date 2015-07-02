@@ -168,7 +168,7 @@ class LDAPConfigurationImport(ListView):
 
     def get_context_data(self, **kwargs):
         self.import_all()
-        context = super(LDAPConfigurationGetUsers, self).get_context_data(**kwargs)
+        context = super(LDAPConfigurationImport, self).get_context_data(**kwargs)
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
