@@ -254,7 +254,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
                             for e in value:
                                 if isinstance(e, str):
                                     value_string = ''.join(e)
-                                    value_string = value_string.decode('utf-8')
+                                    #value_string = value_string.decode('utf-8')
                                 else:
                                     value_string = e['encoded']
 
