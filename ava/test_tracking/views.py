@@ -7,6 +7,7 @@ from django.http.response import Http404
 
 
 class RecordTestResultView(generic.TemplateView):
+
     class Meta:
         abstract = True
 
@@ -115,6 +116,7 @@ class RecordTestResultView(generic.TemplateView):
 
 
 class RecordEmailTestResultView(RecordTestResultView):
+
     """
     Records information about a URL that was clicked in a test email.
     """
@@ -131,6 +133,7 @@ class RecordEmailTestResultView(RecordTestResultView):
 
 
 class RecordTwitterTestResultView(RecordTestResultView):
+
     """
     Records information about a URL that was clicked in a test tweet.
     """

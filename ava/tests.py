@@ -6,13 +6,14 @@ from django.test import TestCase
 
 
 class SimpleTests(TestCase):
+
     def test_pass(self):
         """This test will always pass, unless the boostrapping is broken."""
         self.assertTrue(True)
 
 
-@unittest.skip("Skipping code compliance test until we've done initial cleanup.")
 class CodeComplianceTest(unittest.TestCase):
+
     def test_flake8_compliance(self):
         """Run the flake8 style compliance tool over the Python files.
 

@@ -47,6 +47,7 @@ class Project(TimeStampedModel):
 
 
 class ProjectAccess(object):
+
     """
     Constants that represent the level of access a team can have to project.
     """
@@ -65,8 +66,8 @@ class ProjectTeam(TimeStampedModel):
     project = models.ForeignKey(Project, related_name='teams')
     team = models.ForeignKey('core_auth.Team', related_name='projects')
     access_level = models.IntegerField(choices=ACCESS_LEVEL_CHOICES,
-                                      default=ProjectAccess.VIEW,
-                                      verbose_name='Access Level')
+                                       default=ProjectAccess.VIEW,
+                                       verbose_name='Access Level')
 
     def has_access(self, access_level):
         return self.access_level >= access_level

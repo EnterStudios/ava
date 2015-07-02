@@ -9,7 +9,7 @@ from django.shortcuts import resolve_url
 def access_check(test_func, view_func=None, login_url=None, redirect_field_name=REDIRECT_FIELD_NAME):
     """
     Decorator for views that should pass a test before allowing access.
-    
+
     :param test_func: A callable that returns True if access is allowed, or
                 False if the user should be sent to the login page.
     :param test_func: A callable that returns a HTTP response. This should only
@@ -20,7 +20,7 @@ def access_check(test_func, view_func=None, login_url=None, redirect_field_name=
     :param redirect_field_name: The name of the URL field that should contain
                 the page to display after login.
     """
-    
+
     def decorator(decorated_view_func):
         @wraps(decorated_view_func, assigned=available_attrs(decorated_view_func))
         def _wrapped_view(request, *args, **kwargs):
@@ -42,7 +42,7 @@ def access_check(test_func, view_func=None, login_url=None, redirect_field_name=
             return redirect_to_login(
                 path, resolved_login_url, redirect_field_name)
         return _wrapped_view
-    
+
     if view_func:
         return decorator(view_func)
     else:

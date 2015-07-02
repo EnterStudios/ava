@@ -9,15 +9,18 @@ register = template.Library()
 
 
 class Constants(object):
+
     '''
     Constants that are used by the filter functions in this file.
     '''
     TEST_TYPE_NAMES = dict(Test.TEST_TYPE_CHOICES)
     TEST_STATUS_NAMES = dict(Test.TEST_STATUS_CHOICES)
 
+
 @register.filter
 def test_type(value):
     return Constants.TEST_TYPE_NAMES[value]
+
 
 @register.filter
 def test_status(value):

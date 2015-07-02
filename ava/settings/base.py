@@ -83,7 +83,7 @@ LOCAL_APPS = (
     'ava.core_auth',
     'ava.core_project',
     'ava.import_ldap',
-   # 'ava.import_google',
+    # 'ava.import_google',
     'ava.core_identity',
     'ava.vis_graph',
     'ava.test',
@@ -135,12 +135,13 @@ LOGGING = {
 ## REDIS CONFIGURATION
 
 class REDIS_DATABASES(enum.IntEnum):
+
     """Define slots for our redis databases."""
     DJANGO_CACHING_FRAMEWORK = 0
     DJANGO_SESSION_FRAMEWORK = 1
     CELERY_BROKER = 2
     CELERY_RESULT_BACKEND = 3
-    
+
 USE_REDIS_SESSIONS = True  # Turned off for the moment -- not needed.
 if USE_REDIS_SESSIONS:
     SESSION_ENGINE = 'redis_sessions.session'
@@ -152,7 +153,7 @@ if USE_REDIS_SESSIONS:
 ## Using redis for the cache would be nice, but the library is still buggy
 ## with Python 3, When they fix the bugs hopefully we can just flip this
 ## switch.
-USE_REDIS_CACHE = False  ## Disabled because of Python 3 compatibility bugs.
+USE_REDIS_CACHE = False  # Disabled because of Python 3 compatibility bugs.
 if USE_REDIS_CACHE:
     CACHES = {
         'default': {
@@ -168,8 +169,8 @@ if USE_REDIS_CACHE:
             }
         },
     }
-    
-LOGIN_REDIRECT_URL= "/"
+
+LOGIN_REDIRECT_URL = "/"
 
 PUBLIC_SITE_URLS = [
     'http://localhost:8000/',
@@ -177,7 +178,7 @@ PUBLIC_SITE_URLS = [
 
 # IMPORT EMAIL SETTINGS
 try:
-    from .email import *
+    from .email import *  # noqa
 except ImportError:
     pass
 
@@ -218,7 +219,7 @@ BROKER_TRANSPORT_OPTIONS = {
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_RESULT_BACKEND ='redis://{}:{}/{}'.format(
+CELERY_RESULT_BACKEND = 'redis://{}:{}/{}'.format(
     os.environ.get('REDIS_PORT_6379_TCP_ADDR', None),
     os.environ.get('REDIS_PORT_6379_TCP_PORT', None),
     REDIS_DATABASES.CELERY_RESULT_BACKEND

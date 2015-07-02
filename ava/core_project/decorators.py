@@ -6,7 +6,7 @@ from ava.core_project.models import Project
 
 
 def project_access_check(get_project, access_level, view_func=None, login_url=None, raise_exception=True):
-    
+
     def check_project_access(request):
         # Get the project.
         project = get_project(request)
@@ -23,20 +23,20 @@ def project_access_check(get_project, access_level, view_func=None, login_url=No
             raise PermissionDenied
         # User doesn't have the correct rights.
         return False
-    
+
     return access_check(test_func=check_project_access,
                         view_func=view_func,
                         login_url=login_url)
 
 
 def project_access_required(access_level, view_func=None, login_url=None, raise_exception=True):
-    
+
     def get_project(request):
         project_id = request.resolver_match.kwargs['pk']
         if project_id:
             return get_object_or_404(Project, pk=project_id)
         return None
-    
+
     return project_access_check(get_project=get_project,
                                 access_level=access_level,
                                 view_func=view_func,

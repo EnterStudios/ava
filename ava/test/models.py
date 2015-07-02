@@ -40,14 +40,14 @@ class Test(ReferenceModel):
 
     # The type of test being performed.
     test_type = models.CharField(max_length=7,
-                                choices=TEST_TYPE_CHOICES,
-                                default=EMAIL,
-                                verbose_name='Test Type')
+                                 choices=TEST_TYPE_CHOICES,
+                                 default=EMAIL,
+                                 verbose_name='Test Type')
     # The current status of the test.
     test_status = models.CharField(max_length=10,
-                                  choices=TEST_STATUS_CHOICES,
-                                  default=NEW,
-                                  verbose_name='Test Status')
+                                   choices=TEST_STATUS_CHOICES,
+                                   default=NEW,
+                                   verbose_name='Test Status')
 
     # Optional URL that users are redirected to after clicking on the link.
     redirect_url = models.CharField(max_length=2000, null=True, blank=True)
@@ -60,6 +60,7 @@ class Test(ReferenceModel):
 
 
 class TestResult(TimeStampedModel):
+
     class Meta:
         abstract = True
 

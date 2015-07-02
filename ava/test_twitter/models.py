@@ -3,7 +3,6 @@ from django.db import models
 
 from ava.core.models import TimeStampedModel, ReferenceModel
 from ava.test.models import Test, TestResult
-from ava.core_identity.models import Identifier, Person
 
 
 class TwitterTest(Test):

@@ -1,3 +1,5 @@
+# flake8: noqa
+
 import ldap, ldif, datetime, re
 
 from django.db import models

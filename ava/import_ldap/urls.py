@@ -24,7 +24,7 @@ urlpatterns = patterns(
         name='ad-user-update'),
     url(r'^aduser/(?P<pk>\d+)/delete/$', login_required(views.ActiveDirectoryUserDelete.as_view()),
         name='ad-user-delete'),
-    
+
     url(r'^(?P<pk>\d+)/adgroup/$', login_required(views.ActiveDirectoryGroupIndex.as_view()), name='ad-group-index'),
     url(r'^(?P<pk>\d+)/adgroup/new/$', login_required(views.ActiveDirectoryGroupCreate.as_view()),
         name='ad-group-create'),
@@ -36,9 +36,9 @@ urlpatterns = patterns(
         name='ad-group-delete'),
 
     url(r'^(?P<pk>\d+)/import/$', login_required(views.LDAPConfigurationImport.as_view()), name='ldap-import-all'),
-#    """
-#    url(r'^(?P<pk>\d+)/getusers/$', login_required(views.LDAPConfigurationGetUsers.as_view()), name='ldap-get-users'),
-#    url(r'^(?P<pk>\d+)/getgroups/$', login_required(views.LDAPConfigurationGetGroups.as_view()),
-#    name='ldap-get-groups'),
-#    """  
+    #    """
+    #    url(r'^(?P<pk>\d+)/getusers/$', login_required(views.LDAPConfigurationGetUsers.as_view()), name='ldap-get-users'),
+    #    url(r'^(?P<pk>\d+)/getgroups/$', login_required(views.LDAPConfigurationGetGroups.as_view()),
+    #    name='ldap-get-groups'),
+    #    """
 )

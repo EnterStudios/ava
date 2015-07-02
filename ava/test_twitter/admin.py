@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from ava.test_twitter.models import *
+from . import models
 
-admin.site.register(TwitterTest)
-admin.site.register(TwitterAccount)
-admin.site.register(TweetTemplate)
-admin.site.register(TweetLink)
+admin.site.register(models.TwitterTest)
+admin.site.register(models.TwitterAccount)
+admin.site.register(models.TweetTemplate)
+admin.site.register(models.TweetLink)

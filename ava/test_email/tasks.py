@@ -16,6 +16,7 @@ def run_email_test(email_test_id):
 
 
 class EmailTestSender(TestRunner):
+
     """
     A helper class for generating and sending messages for an email test.
     """
@@ -51,7 +52,7 @@ class EmailTestSender(TestRunner):
     def build_email(self, target):
         """
         Builds up an individual email message to send.
-        
+
         :param target: The email identifier that the message will be sent to.
         """
         url = helpers.generate_tracking_link('email-test-tracking', target.token)

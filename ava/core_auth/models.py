@@ -5,6 +5,7 @@ from ava.core.models import ReferenceModel
 
 
 class UserRights(models.Model):
+
     class Meta:
         verbose_name = 'User Rights'
         verbose_name_plural = verbose_name

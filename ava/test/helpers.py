@@ -1,4 +1,6 @@
-import os, binascii, random
+import os
+import binascii
+import random
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
@@ -7,7 +9,7 @@ def generate_hex_token(token_chars=32):
     """
     Generates a cryptographically random token containing a specified number of
     hexadecimal characters.
-    
+
     :param token_chars: The number of characters in the returned token.
     """
     # One byte becomes two hex chars. The +1 accounts for odd number lengths.

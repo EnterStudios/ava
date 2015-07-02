@@ -2,7 +2,6 @@ from django.views import generic
 from django.db.models import Count, Q
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
 from ava.core.views import AddManyToManyView, RemoveManyToManyView
 from ava.core_auth.models import Team
 from ava.core_auth.forms import UserCreateForm, UserUpdateForm, TeamForm

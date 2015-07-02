@@ -5,6 +5,7 @@ from ava.core_identity.models import Identity, Person, Identifier
 
 
 class IdentityForm(ModelForm):
+
     class Meta:
         model = Identity
         fields = ('name', 'description', 'groups')
@@ -16,6 +17,7 @@ class IdentityForm(ModelForm):
 
 
 class PersonForm(ModelForm):
+
     class Meta:
         model = Person
         fields = ('first_name', 'surname', 'identity')
@@ -27,6 +29,7 @@ class PersonForm(ModelForm):
 
 
 class IdentifierForm(ModelForm):
+
     class Meta:
         model = Identifier
         fields = ('identifier_type', 'identifier')

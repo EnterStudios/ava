@@ -8,11 +8,12 @@ from ava.core_identity.validators import validate_skype, validate_twitter
 
 
 class Identity(ReferenceModel):
+
     """
     An identity is an online persona that can map to a single person, a group
     of people, or an automated service.
     """
-    
+
     groups = models.ManyToManyField(Group,
                                     null=True,
                                     blank=True,
@@ -28,10 +29,11 @@ class Identity(ReferenceModel):
 
 
 class Person(TimeStampedModel):
+
     """
     TODO: DocString
     """
-    
+
     first_name = models.CharField(max_length=75, validators=[validate_slug])
     surname = models.CharField(max_length=75, validators=[validate_slug])
     identity = models.ManyToManyField('Identity', blank=True)
@@ -41,7 +43,7 @@ class Person(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse('person-detail', kwargs={'pk': self.id})
-    
+
     class Meta:
         verbose_name = 'person'
         verbose_name_plural = 'people'
@@ -49,6 +51,7 @@ class Person(TimeStampedModel):
 
 
 class Identifier(TimeStampedModel):
+
     """
     TODO: DocString
     """
@@ -60,18 +63,18 @@ class Identifier(TimeStampedModel):
     TWITTER = 'TWITTER'
 
     IDENTIFIER_TYPE_CHOICES = (
-        (EMAIL,   'Email Address'),
-        (SKYPE,   'Skype ID'),
-        (IP,      'IP Address'),
-        (UNAME,   'Username'),
+        (EMAIL, 'Email Address'),
+        (SKYPE, 'Skype ID'),
+        (IP, 'IP Address'),
+        (UNAME, 'Username'),
         (TWITTER, 'Twitter ID'),
     )
-    
+
     identifier = models.CharField(max_length=100)
     identifier_type = models.CharField(max_length=10,
-                                      choices=IDENTIFIER_TYPE_CHOICES,
-                                      default=EMAIL,
-                                      verbose_name='Identifier Type')
+                                       choices=IDENTIFIER_TYPE_CHOICES,
+                                       default=EMAIL,
+                                       verbose_name='Identifier Type')
     identity = models.ForeignKey('Identity', related_name='identifiers')
 
     def __unicode__(self):
@@ -79,14 +82,14 @@ class Identifier(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse('identifier-detail', kwargs={'pk': self.id})
-    
+
     def clean(self):
         if self.identifier_type is 'EMAIL':
             try:
                 validate_email(self.identifier)
             except ValidationError:
                 raise ValidationError('Identifier is not a valid email address')
-        
+
         if self.identifier_type is 'IPADD':
             try:
                 validate_ipv46_address(self.identifier)
