@@ -4,6 +4,7 @@ import re
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.html import escape
+from django.forms.models import model_to_dict
 from ava.core.models import TimeStampedModel
 from ava.import_ldap.ldap_interface import ActiveDirectoryHelper
 from ava.core_identity.models import Identifier, Identity
@@ -254,7 +255,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
                             for e in value:
                                 if isinstance(e, str):
                                     value_string = ''.join(e)
-                                    #value_string = value_string.decode('utf-8')
+                                    # value_string = value_string.decode('utf-8')
                                 else:
                                     value_string = e['encoded']
 
@@ -350,7 +351,7 @@ class ExportLDAP:
                        'logonCount', 'pwdLastSet']
         for user in ldap_users:
             elements.append(user)
-            current = self.model_to_dict(user, user_fields)
+            current = model_to_dict(user, user_fields)
             current['name'] = escape(current['name'])
             current['node_type'] = 'user'
             nodes.append(current)
@@ -358,7 +359,7 @@ class ExportLDAP:
         ldap_groups = ActiveDirectoryGroup.objects.filter(ldap_configuration=parameters)
         group_fields = ['id', 'cn']
         for group in ldap_groups:
-            current = self.model_to_dict(group, group_fields)
+            current = model_to_dict(group, group_fields)
             current['node_type'] = 'group'
             if group.users.count() > 0:
                 nodes.append(current)
@@ -389,45 +390,3 @@ class ExportLDAP:
         results['nodes'] = nodes
         results['links'] = edges
         return results
-
-    def model_to_dict(self, instance, fields=None, exclude=None):
-        """
-        Returns a dict containing the data in ``instance`` suitable for passing as
-        a Form's ``initial`` keyword argument.
-
-        ``fields`` is an optional list of field names. If provided, only the named
-        fields will be included in the returned dict.
-
-
-        ``exclude`` is an optional list of field names. If provided, the named
-        fields will be excluded from the returned dict, even if they are listed in
-        the ``fields`` argument.
-        """
-        # avoid a circular import
-        from django.db.models.fields.related import ManyToManyField
-
-        opts = instance._meta
-        data = {}
-        for f in opts.concrete_fields + opts.virtual_fields + opts.many_to_many:
-            if not getattr(f, 'editable', False):
-                continue
-            if fields and f.name not in fields:
-                continue
-            if exclude and f.name in exclude:
-                continue
-            if isinstance(f, ManyToManyField):
-                # If the object doesn't have a primary key yet, just use an empty
-                # list for its m2m fields. Calling f.value_from_object will raise
-                # an exception.
-                if instance.pk is None:
-                    data[f.name] = []
-                else:
-                    # MultipleChoiceWidget needs a list of pks, not object instances.
-                    qs = f.value_from_object(instance)
-                    if qs._result_cache is not None:
-                        data[f.name] = [item.pk for item in qs]
-                    else:
-                        data[f.name] = list(qs.values_list('pk', flat=True))
-            else:
-                data[f.name] = f.value_from_object(instance)
-        return data
