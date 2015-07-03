@@ -45,7 +45,7 @@ class GoogleDirectoryUserIndex(ListView):
     template_name = 'google_apps/GoogleDirectoryUser_index.html'
 
     def get_context_data(self, **kwargs):
-        context = super(GoogleDirectoryUserIndex, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(GoogleConfiguration, pk=config_pk)
@@ -83,7 +83,7 @@ class GoogleDirectoryGroupIndex(ListView):
     template_name = 'google_apps/GoogleDirectoryGroup_index.html'
 
     def get_context_data(self, **kwargs):
-        context = super(GoogleDirectoryGroupIndex, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(GoogleConfiguration, pk=config_pk)
@@ -123,7 +123,7 @@ class GoogleConfigurationGetUsers(ListView):
 
     def get_context_data(self, **kwargs):
         self.get_users()
-        context = super(GoogleConfigurationGetUsers, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(GoogleConfiguration, pk=config_pk)
@@ -147,7 +147,7 @@ class GoogleConfigurationGetGroups(ListView):
 
     def get_context_data(self, **kwargs):
         self.get_groups()
-        context = super(GoogleConfigurationGetGroups, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(GoogleConfiguration, pk=config_pk)

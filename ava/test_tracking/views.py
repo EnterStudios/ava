@@ -48,7 +48,7 @@ class RecordTestResultView(generic.TemplateView):
             if test.page_template:
                 self.page_template = test.page_template
         # Continue to render the page.
-        return super(RecordTestResultView, self).get(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
     def get_template_names(self):
         if self.page_template:

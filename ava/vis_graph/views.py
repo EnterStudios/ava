@@ -13,7 +13,7 @@ class LDAPGraph(generic.TemplateView):
         # Make sure that this is a valid LDAP config before the page is shown.
         pk = kwargs['pk']
         get_object_or_404(LDAPConfiguration, pk=pk)
-        return super(LDAPGraph, self).get(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
 
 def graph_data(request, pk):

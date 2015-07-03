@@ -13,7 +13,7 @@ class TestDashboardView(generic.ListView):
     context_object_name = 'list'
 
     def get_context_data(self, **kwargs):
-        context = super(TestDashboardView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         context['project_list'] = Project.objects.filter(owner=self.request.user)
 
@@ -40,7 +40,7 @@ class TestProjectDashboardView(generic.ListView):
     context_object_name = 'list'
 
     def get_context_data(self, **kwargs):
-        context = super(TestProjectDashboardView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         pk = self.kwargs.get('pk')
         if pk:

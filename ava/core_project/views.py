@@ -33,7 +33,7 @@ class ProjectDetail(DetailView):
     template_name = 'project/project_detail.html'
 
     def get_context_data(self, **kwargs):
-        context_data = super(ProjectDetail, self).get_context_data(**kwargs)
+        context_data = super().get_context_data(**kwargs)
         context_data.update({
             'can_run_test': self.object.user_has_access(self.request.user, ProjectAccess.RUN_TEST),
             'can_modify': self.object.user_has_access(self.request.user, ProjectAccess.MODIFY),
@@ -57,7 +57,7 @@ class ProjectCreate(CreateView):
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
-        return super(ProjectCreate, self).form_valid(form)
+        return super().form_valid(form)
 
 
 class ProjectUpdate(UpdateView):

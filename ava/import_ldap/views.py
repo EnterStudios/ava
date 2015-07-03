@@ -43,7 +43,7 @@ class ActiveDirectoryUserIndex(ListView):
     template_name = 'ldap/ActiveDirectoryUser_index.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ActiveDirectoryUserIndex, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
@@ -81,7 +81,7 @@ class ActiveDirectoryGroupIndex(ListView):
     template_name = 'ldap/ActiveDirectoryGroup_index.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ActiveDirectoryGroupIndex, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
@@ -121,7 +121,7 @@ class LDAPConfigurationGetUsers(ListView):
 
     def get_context_data(self, **kwargs):
         self.get_users()
-        context = super(LDAPConfigurationGetUsers, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
@@ -145,7 +145,7 @@ class LDAPConfigurationGetGroups(ListView):
 
     def get_context_data(self, **kwargs):
         self.get_groups()
-        context = super(LDAPConfigurationGetGroups, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
@@ -168,7 +168,7 @@ class LDAPConfigurationImport(ListView):
 
     def get_context_data(self, **kwargs):
         self.import_all()
-        context = super(LDAPConfigurationImport, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
