@@ -341,7 +341,7 @@ class DashboardView(generic.TemplateView):
     template_name = 'core/dashboard.html'
 
     def get_context_data(self, **kwargs):
-        context = super(DashboardView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['person_count'] = Person.objects.count()
         context['identity_count'] = Identity.objects.count()
         context['ldap_count'] = LDAPConfiguration.objects.count()

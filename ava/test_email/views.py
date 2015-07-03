@@ -31,10 +31,10 @@ class EmailTestDetail(generic.DetailView):
         if pk:
             self.test = get_object_or_404(EmailTest, pk=pk)
             request.session['test'] = self.test.id
-        return super(EmailTestDetail, self).get(self, request, *args, **kwargs)
+        return super().get(self, request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context_data = super(EmailTestDetail, self).get_context_data(**kwargs)
+        context_data = super().get_context_data(**kwargs)
         status_names = dict(Test.TEST_STATUS_CHOICES)
         context_data['test_status'] = status_names[self.test.test_status]
         return context_data
@@ -60,10 +60,10 @@ class EmailTestCreate(generic.CreateView):
         self.project = get_object_or_404(Project, pk=project_id)
         if not self.project.user_has_access(request.user, ProjectAccess.RUN_TEST):
             raise PermissionDenied
-        return super(EmailTestCreate, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context_data = super(EmailTestCreate, self).get_context_data(**kwargs)
+        context_data = super().get_context_data(**kwargs)
         context_data['project'] = self.project
         return context_data
 
@@ -72,7 +72,7 @@ class EmailTestCreate(generic.CreateView):
         form.instance.user = self.request.user
         form.instance.test_status = Test.NEW
         form.instance.test_type = Test.EMAIL
-        result = super(EmailTestCreate, self).form_valid(form)
+        result = super().form_valid(form)
         self.success_url = form.instance.get_absolute_url()
         self.add_targets(form.instance)
         return result
