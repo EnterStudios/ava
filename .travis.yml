@@ -17,6 +17,7 @@ cache:
     - ${HOME}/.cache/wheelhouse
 services:
   - redis-server
+  - elasticsearch
 after_success:
   - coveralls
 
