@@ -13,11 +13,11 @@ DATABASES = {
 }
 
 
-## HAYSTACK SETTINGS
-## (copied from local_settings)
+## HAYSTACK CONFIGURATION
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://localhost:9200/',
+        'INDEX_NAME': 'haystack',
     },
 }
