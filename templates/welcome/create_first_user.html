@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block mainpage %}
+
+{# TODO: this is a placeholder template, someone replace me with something pretty! #}
+
+{% if no_users_exist %}
+
+<p>Welcome to AVA, please create an account for your first user:</p>
+
+<form method='post'>
+  {% csrf_token %}
+  {{ form.as_p }}
+  <p><button type="submit">SSubmit</button></p>
+</form>
+
+{% else %}
+
+<p>A user has already been created. Please proceed to the next step</p>
+
+{% endif %}
+
+{% endblock %}
