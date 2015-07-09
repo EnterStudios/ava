@@ -5,7 +5,7 @@
 ## ensure the database is built, and then executes the internal
 ## Django devserver.
 
-DIRECTORY=$(dirname $0)/..
+DIRECTORY=$(dirname $0)/../..
 PYTHON=python
 MANAGE=${DIRECTORY}/manage.py
 

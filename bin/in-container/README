@@ -1,0 +1,4 @@
+
+Scripts in this directory are expecting to be run from WITHIN the
+context of the AVA container.
+

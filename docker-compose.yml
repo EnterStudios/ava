@@ -25,7 +25,7 @@ elasticsearch:
 ## AVA Application Server
 web:
   build: .
-  command: bin/run-devserver.sh
+  command: bin/in-container/run-devserver.sh
   volumes:
     - .:/code
   ports:
@@ -40,7 +40,7 @@ web:
 ## AVA Asynchronous Task Worker
 worker:
   build: .
-  command: bin/run-celery-worker.sh
+  command: bin/in-container/run-celery-worker.sh
   volumes:
     - .:/code
   links:

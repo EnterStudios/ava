@@ -10,7 +10,7 @@
 ## A TODO is to either configure this script to run in a non-debug
 ## "production" mode, or a separate script.
 
-DIRECTORY=$(dirname $0)/..
+DIRECTORY=$(dirname $0)/../..
 PYTHON=python
 MANAGE=${DIRECTORY}/manage.py
 
