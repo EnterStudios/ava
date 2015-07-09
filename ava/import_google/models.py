@@ -60,9 +60,9 @@ from ava.core.models import TimeStampedModel
 #    }
 class GoogleDirectoryUser(TimeStampedModel):
     dn = models.CharField(max_length=300)
-    accountExpires = models.CharField(max_length=300)
-    adminCount = models.CharField(max_length=300)
-    badPasswordTime = models.CharField(max_length=300)
+    account_expires = models.CharField(max_length=300)
+    admin_count = models.CharField(max_length=300)
+    bad_passwordTime = models.CharField(max_length=300)
     badPwdCount = models.CharField(max_length=300)
     cn = models.CharField(max_length=300)
     description = models.CharField(max_length=300)
