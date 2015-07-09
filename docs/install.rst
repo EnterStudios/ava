@@ -25,6 +25,6 @@ Install and run AVA
 1. Pull down the latest version of the project ``git clone git@github.com:SafeStack/ava.git``
 2. ``cd ava``
 3. Use docker-compose to build the AVA application images and its dependencies and boot the app ``docker-compose up``
-4. Once the app is running, in a second terminal, create our first user ``docker-compose run --rm web python src/manage.py createsuperuser``
+4. Once the app is running, in a second terminal, create our first user ``docker-compose run --rm web python manage.py createsuperuser``
 5. Browse to http://localhost:8000 to access the AVA web frontend.
 
