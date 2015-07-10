@@ -1,4 +1,5 @@
 # flake8: noqa
+import os
 
 __author__ = 'ladynerd'
 import httplib2
@@ -8,9 +9,14 @@ from oauth2client.client import OAuth2WebServerFlow
 
 
 class GoogleAppsHelper:
+
+    # Define the specific access we would like to request from the user
     # Check https://developers.google.com/admin-sdk/directory/v1/guides/authorizing for all available scopes
-    OAUTH_SCOPE = 'https://www.googleapis.com/auth/admin.directory.user.readonly '
-        'https://www.googleapis.com/auth/admin.directory.group.readonly https://www.googleapis.com/auth/admin.directory.group.member.readonly https://www.googleapis.com/auth/admin.directory.orgunit.readonly https://www.googleapis.com/auth/admin.directory.user.alias.readonly'
+    OAUTH_SCOPE = 'https://www.googleapis.com/auth/admin.directory.user.readonly ' \
+        'https://www.googleapis.com/auth/admin.directory.group.readonly ' \
+        'https://www.googleapis.com/auth/admin.directory.group.member.readonly ' \
+        'https://www.googleapis.com/auth/admin.directory.orgunit.readonly ' \
+        'https://www.googleapis.com/auth/admin.directory.user.alias.readonly'
 
     # Redirect URI for installed apps
     REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
@@ -19,7 +25,19 @@ class GoogleAppsHelper:
 
     CLIENT_SECRET = ""
 
+    def __init__(self):
+        try:
+            self.CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+            self.CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
+        except OSError as e:
+            print(e.message)
+            print(e.args)
+            sys.exit(1)
+
     def get_connection(self):
+
+
+
         # Run through the OAuth flow and retrieve credentials
         flow = OAuth2WebServerFlow(self.CLIENT_ID, self.CLIENT_SECRET, self.OAUTH_SCOPE, self.REDIRECT_URI)
         authorize_url = flow.step1_get_authorize_url()
