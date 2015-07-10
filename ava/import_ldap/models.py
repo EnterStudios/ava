@@ -51,6 +51,44 @@ class ActiveDirectoryUser(TimeStampedModel):
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in ActiveDirectoryUser._meta.fields]
 
+    model_schema = {
+        'dn': 'dn',
+        'account_expires': 'accountExpires',
+        'admin_count': 'adminCount',
+        'bad_password_time': 'badPasswordTime',
+        'bad_pwd_count': 'badPwdCount',
+        'cn': 'cn',
+        'description': 'description',
+        'display_name': 'displayName',
+        'distinguished_name': 'distinguishedName',
+        'is_critical_system_object': 'isCriticalSystemObject',
+        'last_logoff': 'lastLogoff',
+        'last_logon': 'lastLogon',
+        'last_logon_timestamp': 'lastLogonTimestamp',
+        'logon_count': 'logonCount',
+        'logon_hours': 'logonHours',
+        'name': 'name',
+        'object_guid': 'objectGUID',
+        'object_sid': 'objectSid',
+        'primary_group_id': 'primaryGroupID',
+        'pwd_last_set': 'pwdLastSet',
+        'sam_account_name': 'sAMAccountName',
+        'sam_account_type': 'sAMAccountType',
+        'usn_changed': 'uSNChanged',
+        'usn_created': 'uSNCreated',
+        'user_account_control': 'userAccountControl',
+        'when_changed': 'whenChanged',
+        'when_created': 'whenCreated',
+
+    }
+
+    def model_field_to_ldap(self, fieldname):
+        return self.model_schema.get(fieldname)
+
+    def ldap_field_to_model(self, fieldname):
+        model_schema_reversed = {value: key for key, value in self.model_schema.items()}
+        return model_schema_reversed.get(fieldname)
+
     class Meta:
         unique_together = ('object_guid', 'object_sid')
         ordering = ['cn', 'distinguished_name']
@@ -209,6 +247,9 @@ class ActiveDirectoryUser(TimeStampedModel):
 
 
 class ActiveDirectoryGroup(TimeStampedModel):
+
+
+
     cn = models.CharField(max_length=300)
     distinguished_name = models.CharField(max_length=300, unique=True)
     name = models.CharField(max_length=100)
@@ -227,6 +268,24 @@ class ActiveDirectoryGroup(TimeStampedModel):
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in ActiveDirectoryGroup._meta.fields]
+
+    model_schema = {
+        'cn': 'cn',
+        'distinguished_name': 'distinguishedName',
+        'name': 'name',
+        'object_category': 'objectCategory',
+        'sam_account_name': 'sAMAccountName',
+        'object_guid': 'objectGUID',
+        'object_sid': 'objectSid',
+
+    }
+
+    def model_field_to_ldap(self, fieldname):
+        return self.model_schema.get(fieldname)
+
+    def ldap_field_to_model(self, fieldname):
+        model_schema_reversed = {value: key for key, value in self.model_schema.items()}
+        return model_schema_reversed.get(fieldname)
 
     def get_groups(self, parameters):
         filter_fields = '(objectclass=group)'
@@ -259,10 +318,10 @@ class ActiveDirectoryGroup(TimeStampedModel):
                                 else:
                                     value_string = e['encoded']
 
-                        attributes[key] = value_string
+                        attributes[self.ldap_field_to_model(key)] = value_string
 
                     except UnicodeDecodeError:
-                        attributes[key] = self.cleanhex(value_string)
+                        attributes[self.ldap_field_to_model(key)] = self.cleanhex(value_string)
 
             """
             Don't filter on everything. Start with the properties that are
@@ -271,23 +330,19 @@ class ActiveDirectoryGroup(TimeStampedModel):
             """
             filter_attrs = {}
             if 'objectGUID' in attributes:
-                filter_attrs['objectGUID'] = attributes['objectGUID']
+                filter_attrs['object_guid'] = attributes['object_guid']
             elif 'objectSid' in attributes:
-                filter_attrs['objectSid'] = attributes['objectSid']
+                filter_attrs['object_sid'] = attributes['object_sid']
             elif 'distinguishedName' in attributes:
-                filter_attrs['distinguishedName'] = attributes['distinguishedName']
+                filter_attrs['distinguished_name'] = attributes['distinguished_name']
             else:
                 continue
-
-            print(attributes['objectGUID'])
-            print(attributes['objectSid'])
-            print(attributes['distinguishedName'])
 
             # If no matching group currently exists then create one, otherwise
             # update the existing group.
             ad_groups = ActiveDirectoryGroup.objects.filter(**filter_attrs)
             if ad_groups.count() == 0:
-                print("new group")
+
                 ad_group = ActiveDirectoryGroup.objects.create(ldap_configuration=parameters, **attributes)
 
                 gen_group = Group.objects.create(name=ad_group.cn, group_type=Group.AD,
