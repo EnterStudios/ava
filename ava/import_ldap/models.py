@@ -380,6 +380,12 @@ class LDAPConfiguration(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('ldap-configuration-detail', kwargs={'pk': self.id})
 
+    def import_all(self):
+        ad_group = ActiveDirectoryGroup()
+        ad_group.get_groups(self)
+        ad_user = ActiveDirectoryUser()
+        ad_user.get_users(self)
+
 
 class ExportLDAP:
 

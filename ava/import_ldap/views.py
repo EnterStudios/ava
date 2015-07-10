@@ -179,8 +179,5 @@ class LDAPConfigurationImport(ListView):
         config_pk = self.kwargs.get('pk')
         if config_pk:
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
-            ad_group = ActiveDirectoryGroup()
-            ad_group.get_groups(instance)
-            ad_user = ActiveDirectoryUser()
-            ad_user.get_users(instance)
+            instance.import_all()
         return True
