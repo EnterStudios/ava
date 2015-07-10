@@ -59,7 +59,7 @@ class ActiveDirectoryHelper:
                       'uSNCreated', 'userAccountControl', 'whenChanged', 'whenCreated', 'memberOf', 'proxyAddresses']
 
         # return a search result for these filter_fields and attributes in JSON format
-        return search(parameters, filter_fields, attributes)
+        return ActiveDirectoryHelper.search(parameters, filter_fields, attributes)
 
     # imports the groups from an LDAP instance
     @staticmethod
@@ -71,4 +71,4 @@ class ActiveDirectoryHelper:
         attributes = ['distinguishedName', 'objectGUID', 'objectSid', 'cn', 'name', 'objectCategory', 'sAMAccountName']
 
         # return a search result for these filter_fields and attributes in JSON format
-        return search(parameters, filter_fields, attributes)
+        return ActiveDirectoryHelper.search(parameters, filter_fields, attributes)
