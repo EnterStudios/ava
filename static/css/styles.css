@@ -5797,8 +5797,16 @@ button.close {
     display: none !important; } }
 body {
   padding-top: 50px !important;
-  background-color: #F5F7FA !important;
-  font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; }
+  background-color: #F5F7FA !important; }
+
+table {
+  background-color: #FFFFFF;
+  webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  border-radius: 3px; }
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #FCFCFC; }
 
 .content {
   margin-left: 220px;
@@ -5888,17 +5896,36 @@ body {
 
 .panel {
   border-color: #D5E2EE;
-  min-height: 150px; }
+  min-height: 150px;
+  position: relative; }
   .panel .panel-title {
     background-color: #3A3F50;
     padding: 10px; }
+  .panel .panel-bottom {
+    border-top: 1px solid #F0F0F0;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    padding: 10px 15px;
+    text-align: center; }
+    .panel .panel-bottom a {
+      padding: 5px 10px; }
+      .panel .panel-bottom a:nth-child(even) {
+        border-left: 1px solid #F0F0F0; }
+
+.dashboard-count {
+  font-size: 24px;
+  font-weight: bold; }
+
+.dashboard-item {
+  font-size: 15px; }
 
 .btn {
   color: #FDFDFD !important;
   background-color: #085676 !important;
   padding: 9px 30px 8px 30px;
   text-transform: uppercase;
-  transition: all .5s ease;
+  transition: all .2s ease;
   border-left: 0px;
   border-top: 0px;
   border-right: 0px;
@@ -5912,6 +5939,21 @@ body {
     color: #085676;
     background-color: #FBB726 !important;
     border-bottom: 2px solid #C08A17 !important; }
+  .btn.btn-danger {
+    background-color: #C22A2A !important;
+    border-bottom: 2px solid #6B0E0E !important; }
+    .btn.btn-danger:hover {
+      color: #FFFFFF;
+      background-color: #6B0E0E !important;
+      border-bottom: 2px solid #420808 !important; }
+  .btn.btn-sm, .btn-group-sm > .btn {
+    padding: 3px 18px;
+    font-size: 14px;
+    margin: 0px 5px; }
+  .btn.btn-md {
+    padding: 5px 21px;
+    font-size: 14px;
+    margin: 0px 5px; }
 
 .auth {
   background-color: #FFFFFF;

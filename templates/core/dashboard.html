@@ -13,30 +13,48 @@
     <div class="row dashboard">
         <div class="col-sm-4">
             <div class="panel">
-                <!-- <i class="glyphicon glyphicon-user"></i> -->
-                <h3>People and Identities</h3>
+                <!-- <i class="glyphicon glyphicon-user"></i> 
+                <h3>People and Identities</h3> -->
                 <div class="panel-body">
-                    <span>{{ person_count }} pe{{ person_count|pluralize:'rson,ople' }}</span><a href="{% url 'person-index' %}">View People</a>
-                    <span>{{ identity_count }} identit{{ identity_count|pluralize:'y,ies' }}</span><a href="{% url 'identity-index' %}"></a>
+                    <div class="body-item"><span class="dashboard-count">{{ person_count }}</span> <span class="dashboard-item">pe{{ person_count|pluralize:'rson,ople' }}</span></div>
+                    <div class="body-item"><span class="dashboard-count">{{ identity_count }}</span> <span class="dashboard-item">identit{{ identity_count|pluralize:'y,ies' }}</span></div>
+                </div>
+                <div class="panel-bottom">
+                    <a href="{% url 'person-index' %}" class="">View People</a>
+                    <a href="{% url 'identity-index' %}" class="">View Identities</a>
                 </div>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="panel">
-                <!-- <i class="glyphicon glyphicon-list"></i> -->
-                <h3>Directory Servers</h3>
-                <span>{{ ldap_count }} directory server{{ ldap_count|pluralize }}</span><a href="{% url 'ldap-configuration-index' %}">View LDAP</a>
+                <!-- <i class="glyphicon glyphicon-list"></i>
+                <h3>Directory Servers</h3> -->
+                <div class="panel-body">
+                    <div class="body-item"><span class="dashboard-count">{{ ldap_count }}</span> <span class="dashboard-item">directory server{{ ldap_count|pluralize }}</span></div>
+                </div>
+                <div class="panel-bottom">
+                    <a href="{% url 'ldap-configuration-index' %}" class="">View LDAP</a>
+                </div>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="panel">
-                <!-- <i class="glyphicon glyphicon-dashboard"></i> -->
-                <h3>Tests</h3>
-                <p><a href="{% url 'project-index' %}">{{ project_count }} test project{{ project_count|pluralize }}</a></p>
-                <p><a href="{% url 'email-test-index' %}">{{ email_test_count }} email test{{ email_test_count|pluralize }}</a></p>
-                {% comment %}
-                <p><a href="{% url 'twitter-test-index' %}">{{ twitter_test_count }} Twitter test{{ twitter_test_count|pluralize }}</a></p>
-                {% endcomment %}
+                <!-- <i class="glyphicon glyphicon-dashboard"></i>
+                <h3>Tests</h3> -->
+                <div class="panel-body">
+                    <div class="body-item"><span class="dashboard-count">{{ project_count }}</span> <span class="dashboard-item">test project{{ project_count|pluralize }}</span></div>
+                    <div class="body-item"><span class="dashboard-count">{{ email_test_count }}</span> <span class="dashboard-item">email test{{ email_test_count|pluralize }}</span></div>
+                    {% comment %}
+                    <div class="body-item"><span class="dashboard-count">{{ twitter_test_count }}</span> <span class="dashboard-item">Twitter test{{ twitter_test_count|pluralize }}</span></div>
+                    {% endcomment %}
+                </div>
+                <div class="panel-bottom">
+                    <a href="{% url 'project-index' %}" class="">View Tests</a>
+                    <a href="{% url 'email-test-index' %}" class="">View Email Tests</a>
+                    {% comment %}
+                    <a href="{% url 'twitter-test-index' %}" class="">View Twitter Tests</a>
+                    {% endcomment %}
+                </div>
             </div>
         </div>
     </div>
