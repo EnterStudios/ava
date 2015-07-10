@@ -46,18 +46,22 @@ class ActiveDirectoryHelper:
 
         results_json = connection.response_to_json(search_result=results)
 
-        # Temporary code required to build the mock ldap files.
-        if 'user' in filterby:
-            prefix = 'user'
-        else:
-            prefix = 'group'
-        self.export_ldap_json(prefix, results_json)
+        # Feature and testing toggle to allow developers to test export new test data from LDAP server
+        # Uses an environment variable to decide whether to dump the data to file or not
+        # To toggle this feature on, ensure that the environment variable 'CREATE_MOCK_LDAP' is set
+        if os.environ.get('CREATE_MOCK_LDAP'):
+            if 'user' in filterby:
+                prefix = 'user'
+            else:
+                prefix = 'group'
+            self.export_ldap_json(prefix, results_json)
 
-        # end of temporary code
+        # end of toggled feature
 
         return results_json
 
-    def export_ldap_json(self, prefix, results_json):
+    @staticmethod
+    def export_ldap_json(prefix, results_json):
         filename = 'ava/testdata/ldap_' + prefix + '_data.json'
 
         with open(filename, 'w') as outfile:
