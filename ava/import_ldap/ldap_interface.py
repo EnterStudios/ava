@@ -45,3 +45,17 @@ class ActiveDirectoryHelper:
         results_json = connection.response_to_json(search_result=results)
 
         return results_json
+
+    def import_users(self,parameters):
+        filter_fields = '(objectclass=user)'
+        attrs = ['distinguishedName', 'objectGUID', 'objectSid', 'cn', 'accountExpires', 'adminCount',
+                 'badPasswordTime', 'badPwdCount', 'description', 'displayName', 'isCriticalSystemObject',
+                 'lastLogoff', 'lastLogon', 'lastLogonTimestamp', 'logonCount', 'logonHours', 'name',
+                 'primaryGroupID', 'pwdLastSet', 'sAMAccountName', 'sAMAccountType', 'uSNChanged',
+                 'uSNCreated', 'userAccountControl', 'whenChanged', 'whenCreated', 'memberOf', 'proxyAddresses']
+        return search(parameters,filter_fields,attrs)
+
+    def import_groups(self,parameters):
+        filter_fields = '(objectclass=group)'
+        attrs = ['distinguishedName', 'objectGUID', 'objectSid', 'cn', 'name', 'objectCategory', 'sAMAccountName']
+        return search(parameters,filter_fields,attrs)
