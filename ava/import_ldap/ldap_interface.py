@@ -27,23 +27,32 @@ class ActiveDirectoryHelper:
 
     def search(self, parameters, filterby, attrs):
 
+        # bind to the LDAP server using the credentials provided
         connection = self.get_connection(parameters)
 
         connection.search(search_base=parameters.dump_dn, search_filter=filterby, search_scope=SUBTREE,
                           attributes=attrs, paged_size=5)
 
+        # store the search results
         results = connection.response
 
+        # extract the cookie from the search result to allow for paged session continuation
         cookie = connection.result['controls']['1.2.840.113556.1.4.319']['value']['cookie']
 
+        # while the results contain a cookie (ie. more records left to retrieve)
         while cookie:
+
+            # search again using the cookie to continue paging
             connection.search(search_base=parameters.dump_dn, search_filter=filterby, search_scope=SUBTREE,
                               attributes=attrs, paged_size=5, paged_cookie=cookie)
 
+            # append the search results
             results += connection.response
 
+            # get the cookie again
             cookie = connection.result['controls']['1.2.840.113556.1.4.319']['value']['cookie']
 
+        # export the combined paged results to json format
         results_json = connection.response_to_json(search_result=results)
 
         # Feature and testing toggle to allow developers to test export new test data from LDAP server
@@ -60,6 +69,7 @@ class ActiveDirectoryHelper:
 
         return results_json
 
+    # Exports a JSON string to a file
     @staticmethod
     def export_ldap_json(prefix, results_json):
         filename = 'ava/testdata/ldap_' + prefix + '_data.json'
