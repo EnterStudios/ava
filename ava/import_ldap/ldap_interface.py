@@ -5,7 +5,6 @@ import sys
 
 
 class ActiveDirectoryHelper:
-
     def __init__(self):
         pass
 
@@ -53,14 +52,14 @@ class ActiveDirectoryHelper:
         filter_fields = '(objectclass=user)'
 
         # specify the fields to bring back for this user
-        attrs = ['distinguishedName', 'objectGUID', 'objectSid', 'cn', 'accountExpires', 'adminCount',
-                 'badPasswordTime', 'badPwdCount', 'description', 'displayName', 'isCriticalSystemObject',
-                 'lastLogoff', 'lastLogon', 'lastLogonTimestamp', 'logonCount', 'logonHours', 'name',
-                 'primaryGroupID', 'pwdLastSet', 'sAMAccountName', 'sAMAccountType', 'uSNChanged',
-                 'uSNCreated', 'userAccountControl', 'whenChanged', 'whenCreated', 'memberOf', 'proxyAddresses']
+        attributes = ['distinguishedName', 'objectGUID', 'objectSid', 'cn', 'accountExpires', 'adminCount',
+                      'badPasswordTime', 'badPwdCount', 'description', 'displayName', 'isCriticalSystemObject',
+                      'lastLogoff', 'lastLogon', 'lastLogonTimestamp', 'logonCount', 'logonHours', 'name',
+                      'primaryGroupID', 'pwdLastSet', 'sAMAccountName', 'sAMAccountType', 'uSNChanged',
+                      'uSNCreated', 'userAccountControl', 'whenChanged', 'whenCreated', 'memberOf', 'proxyAddresses']
 
         # return a search result for these filter_fields and attributes in JSON format
-        return search(parameters,filter_fields,attrs)
+        return search(parameters, filter_fields, attributes)
 
     # imports the groups from an LDAP instance
     @staticmethod
@@ -69,7 +68,7 @@ class ActiveDirectoryHelper:
         filter_fields = '(objectclass=group)'
 
         # specify the fields to bring back for this group
-        attrs = ['distinguishedName', 'objectGUID', 'objectSid', 'cn', 'name', 'objectCategory', 'sAMAccountName']
+        attributes = ['distinguishedName', 'objectGUID', 'objectSid', 'cn', 'name', 'objectCategory', 'sAMAccountName']
 
         # return a search result for these filter_fields and attributes in JSON format
-        return search(parameters,filter_fields,attrs)
+        return search(parameters, filter_fields, attributes)
