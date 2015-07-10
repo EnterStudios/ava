@@ -52,8 +52,8 @@ class ActiveDirectoryUser(TimeStampedModel):
         return [(field.name, field.value_to_string(self)) for field in ActiveDirectoryUser._meta.fields]
 
     class Meta:
-        unique_together = ('objectGUID', 'objectSid')
-        ordering = ['cn', 'distinguishedName']
+        unique_together = ('object_guid', 'object_sid')
+        ordering = ['cn', 'distinguished_name']
 
     def convert_date_time(self, date_value):
 
@@ -307,8 +307,8 @@ class ActiveDirectoryGroup(TimeStampedModel):
                     gen_group.save()
 
     class Meta:
-        unique_together = ('objectGUID', 'objectSid')
-        ordering = ['cn', 'distinguishedName']
+        unique_together = ('object_guid', 'object_sid')
+        ordering = ['cn', 'distinguished_name']
 
 
 class LDAPConfiguration(TimeStampedModel):
