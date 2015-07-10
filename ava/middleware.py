@@ -15,7 +15,7 @@ class AVARedirectionMiddleware(object):
     def process_view(self, request, view_func, view_args, view_kwargs):
 
         # If no users exist: redirect to the create-superuser URL.
-        create_first_user_uri = reverse('first-user')
+        create_first_user_uri = reverse('welcome-first-user')
         if (
                 not request.user.is_authenticated() and
                 not User.objects.exists() and

@@ -46,7 +46,7 @@ class ViewTests(TestCase):
         # chain we should be at 'success_url' and logged in as
         # the user we just created.
         response = self.client.post(
-            reverse('first-user'),
+            reverse('welcome-first-user'),
             data={
                 'username': 'admin',
                 'password1': 'password',
