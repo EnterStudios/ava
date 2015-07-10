@@ -135,16 +135,10 @@ class ActiveDirectoryUser(TimeStampedModel):
         return ''.join(s)
 
     def get_users(self, parameters):
-        filterby = '(objectclass=user)'
-        attrs = ['distinguishedName', 'objectGUID', 'objectSid', 'cn', 'accountExpires', 'adminCount',
-                 'badPasswordTime', 'badPwdCount', 'description', 'displayName', 'isCriticalSystemObject',
-                 'lastLogoff', 'lastLogon', 'lastLogonTimestamp', 'logonCount', 'logonHours', 'name',
-                 'primaryGroupID', 'pwdLastSet', 'sAMAccountName', 'sAMAccountType', 'uSNChanged',
-                 'uSNCreated', 'userAccountControl', 'whenChanged', 'whenCreated', 'memberOf', 'proxyAddresses']
         ad_help = ActiveDirectoryHelper()
 
         # return json object containing all user records
-        results = ad_help.search(parameters, filterby, attrs)
+        results = ad_help.import_users(parameters)
 
         ldap_json = json.loads(results)
 
@@ -287,12 +281,8 @@ class ActiveDirectoryGroup(TimeStampedModel):
         return model_schema_reversed.get(fieldname)
 
     def get_groups(self, parameters):
-        filter_fields = '(objectclass=group)'
-        attrs = ['distinguishedName', 'objectGUID', 'objectSid', 'cn', 'name', 'objectCategory', 'sAMAccountName']
-
         ad_help = ActiveDirectoryHelper()
-
-        results = ad_help.search(parameters, filter_fields, attrs)
+        results = ad_help.import_groups(parameters)
 
         ldap_json = json.loads(results)
 
