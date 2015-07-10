@@ -51,11 +51,12 @@ body {
     .nav > li > a {
         padding: 8px 20px;
         line-height: 20px;
+        color: $ava-primary;
 
         &:hover,
         &:focus {
-            color: inherit;
-            background-color: inherit;
+            background-color: $ava-lighter-blue;
+            color: $ava-primary;
         }
     }
 
@@ -73,12 +74,17 @@ body {
         position: relative;
 
         > li {
-            padding: 8px 20px;
 
-            > a {
-                padding: 0px;
-                display:block;
-                color: #889097;
+            &:hover,
+            &:focus {
+                background-color: $ava-lighter-blue;
+                color: $ava-primary;
+            }
+
+            a {
+                padding: 8px 20px;
+                display: block;
+                color: $ava-primary;
                 text-decoration: none;
                 position: relative;
 
@@ -94,7 +100,7 @@ body {
 
                 &:hover,
                 &:focus {
-                    color: #fff;
+                    color: $ava-primary;
                 }
             }
         }
