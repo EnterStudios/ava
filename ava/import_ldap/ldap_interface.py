@@ -58,7 +58,7 @@ class ActiveDirectoryHelper:
         return results_json
 
     def export_ldap_json(self, prefix, results_json):
-        filename = 'ava/testdata/ldap_' + prefix + '_group_data.json'
+        filename = 'ava/testdata/ldap_' + prefix + '_data.json'
 
         with open(filename, 'w') as outfile:
             json.dump(results_json, outfile)
@@ -74,7 +74,10 @@ class ActiveDirectoryHelper:
         # To test locally, ensure that the environment variable 'USE_MOCK_LDAP' is set
 
         if os.environ.get('USE_MOCK_LDAP'):
-            return json.load("ava/testdata/ldap_user_data.json")
+            with open("ava/testdata/ldap_user_data.json", 'r') as infile:
+                results = json.load(infile)
+            infile.close()
+            return results
 
         else:
             # specify that we only care about users
@@ -102,7 +105,10 @@ class ActiveDirectoryHelper:
         # To test locally, ensure that the environment variable 'USE_MOCK_LDAP' is set
 
         if os.environ.get('USE_MOCK_LDAP'):
-            return json.load("ava/testdata/ldap_group_data.json")
+            with open("ava/testdata/ldap_group_data.json", 'r') as infile:
+                results = json.load(infile)
+            infile.close()
+            return results
 
         else:
             # specify that we only care about groups

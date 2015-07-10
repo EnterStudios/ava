@@ -36,6 +36,7 @@ web:
     - elasticsearch
   environment:
     - DJANGO_SETTINGS_MODULE=ava.settings.base
+    - USE_MOCK_LDAP=true
 
 ## AVA Asynchronous Task Worker
 worker:
