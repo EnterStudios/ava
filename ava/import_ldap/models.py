@@ -152,6 +152,7 @@ class ActiveDirectoryUser(TimeStampedModel):
 
         for person in entries:
             attributes = person['attributes']
+            model_attributes = {}
 
             groups = []
             gen_groups = []
@@ -162,7 +163,7 @@ class ActiveDirectoryUser(TimeStampedModel):
                     if key == 'memberOf':
                         for cn in value:
                             qs = ActiveDirectoryGroup.objects.filter(ldap_configuration=parameters,
-                                                                     distinguishedName=cn)
+                                                                     distinguished_name=cn)
                             for q in qs:
                                 groups.append(q)
                                 if q.group:
@@ -190,10 +191,10 @@ class ActiveDirectoryUser(TimeStampedModel):
                                 if date:
                                     value_string = date.isoformat()
 
-                            attributes[key] = value_string
+                            model_attributes[self.ldap_field_to_model(key)] = value_string
 
                         except UnicodeDecodeError:
-                            attributes[key] = self.cleanhex(value_string)
+                            model_attributes[self.ldap_field_to_model(key)] = self.cleanhex(value_string)
 
             attributes.pop('memberOf', None)
             attributes.pop('proxyAddresses', None)
@@ -203,11 +204,11 @@ class ActiveDirectoryUser(TimeStampedModel):
             # properties.
             filter_attrs = {}
             if 'objectGUID' in attributes:
-                filter_attrs['objectGUID'] = attributes['objectGUID']
+                filter_attrs['object_guid'] = model_attributes['object_guid']
             elif 'objectSid' in attributes:
-                filter_attrs['objectSid'] = attributes['objectSid']
+                filter_attrs['object_sid'] = model_attributes['object_sid']
             elif 'distinguishedName' in attributes:
-                filter_attrs['distinguishedName'] = attributes['distinguishedName']
+                filter_attrs['distinguished_name'] = model_attributes['distinguished_name']
             else:
                 continue
 
@@ -216,18 +217,18 @@ class ActiveDirectoryUser(TimeStampedModel):
             ad_users = ActiveDirectoryUser.objects.filter(**filter_attrs)
 
             if ad_users.count() == 0:
-                ad_user = ActiveDirectoryUser.objects.create(ldap_configuration=parameters, **attributes)
+                ad_user = ActiveDirectoryUser.objects.create(ldap_configuration=parameters, **model_attributes)
                 ad_user.save()
             else:
-                ad_users.update(**attributes)
+                ad_users.update(**model_attributes)
                 ad_user = ad_users.first()
 
-            identity, created = Identity.objects.get_or_create(name=ad_user.displayName)
+            identity, created = Identity.objects.get_or_create(name=ad_user.display_name)
             '''
             TODO Do we need to create a person object for this identity??
             '''
 
-            Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName, identifier_type=Identifier.UNAME,
+            Identifier.objects.get_or_create(identifier=ad_user.sam_account_name, identifier_type=Identifier.UNAME,
                                              identity=identity)
 
             # Import the email addresses.
@@ -301,6 +302,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
 
         for group in entries:
             attributes = group['attributes']
+            model_attributes = {}
 
             for key, value in attributes.items():
 
@@ -318,10 +320,10 @@ class ActiveDirectoryGroup(TimeStampedModel):
                                 else:
                                     value_string = e['encoded']
 
-                        attributes[self.ldap_field_to_model(key)] = value_string
+                        model_attributes[self.ldap_field_to_model(key)] = value_string
 
                     except UnicodeDecodeError:
-                        attributes[self.ldap_field_to_model(key)] = self.cleanhex(value_string)
+                        model_attributes[self.ldap_field_to_model(key)] = self.cleanhex(value_string)
 
             """
             Don't filter on everything. Start with the properties that are
@@ -330,11 +332,11 @@ class ActiveDirectoryGroup(TimeStampedModel):
             """
             filter_attrs = {}
             if 'objectGUID' in attributes:
-                filter_attrs['object_guid'] = attributes['object_guid']
+                filter_attrs['object_guid'] = model_attributes['object_guid']
             elif 'objectSid' in attributes:
-                filter_attrs['object_sid'] = attributes['object_sid']
+                filter_attrs['object_sid'] = model_attributes['object_sid']
             elif 'distinguishedName' in attributes:
-                filter_attrs['distinguished_name'] = attributes['distinguished_name']
+                filter_attrs['distinguished_name'] = model_attributes['distinguished_name']
             else:
                 continue
 
@@ -343,7 +345,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
             ad_groups = ActiveDirectoryGroup.objects.filter(**filter_attrs)
             if ad_groups.count() == 0:
 
-                ad_group = ActiveDirectoryGroup.objects.create(ldap_configuration=parameters, **attributes)
+                ad_group = ActiveDirectoryGroup.objects.create(ldap_configuration=parameters, **model_attributes)
 
                 gen_group = Group.objects.create(name=ad_group.cn, group_type=Group.AD,
                                                  description="Imported group from LDAP")
@@ -353,7 +355,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
                 ad_group.save()
             else:
                 print("existing group")
-                ad_groups.update(**attributes)
+                ad_groups.update(**model_attributes)
                 ad_group = ad_groups.first()
 
                 gen_group = ad_group.group
