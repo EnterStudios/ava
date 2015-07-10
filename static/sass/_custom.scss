@@ -1,0 +1,226 @@
+// AVA Overrides
+
+// Variables
+
+$ava-pure-white:        #FFFFFF;
+$ava-off-white:         #FCFCFC;
+$ava-white:             #FDFDFD;
+$ava-blue-grey:         #919DA8;
+$ava-light-blue:        #CFDBE2;
+$ava-dark-blue:         #3A3F50;
+$ava-main-bg:           #F5F7FA;
+
+$ava-grey:              #F4F8FB;
+$ava-lighter-blue:      #D5E2EE;
+$ava-black:             #242C39;
+$ava-primary:           #085676;
+$ava-secondary:         #FBB726;
+$ava-secondary-darker:  #C08A17;
+
+// Body
+
+body {
+    padding-top: 50px !important;
+    background-color: $ava-main-bg !important;
+    font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+}
+
+// HTML Components
+
+// Page Components
+
+.content {
+    margin-left: 220px;
+    padding: 20px 25px;
+}
+
+.no-auth {
+    margin-left: 0px;
+}
+
+.sidebar {
+    width: 220px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding-top: 54px;
+    z-index: 10;
+    -webkit-transform: translateZ(0);
+
+    .nav > li > a {
+        padding: 8px 20px;
+        line-height: 20px;
+
+        &:hover,
+        &:focus {
+            color: inherit;
+            background-color: inherit;
+        }
+    }
+
+    span {
+        background: $ava-primary;
+        color: $ava-white;
+        display: block;
+        padding: 10px 20px;
+    }
+
+    .sub-menu {
+        list-style-type: none;
+        padding: 0px;
+        margin: 0;
+        position: relative;
+
+        > li {
+            padding: 8px 20px;
+
+            > a {
+                padding: 0px;
+                display:block;
+                color: #889097;
+                text-decoration: none;
+                position: relative;
+
+                &:before {
+                    position: absolute;
+                    left: 0;
+                    font-size: 7px;
+                    color: #889097;
+                    top: 50%;
+                    margin-top: -4px;
+                    margin-left: -6px;
+                }
+
+                &:hover,
+                &:focus {
+                    color: #fff;
+                }
+            }
+        }
+    }
+
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 0px 0px 20px 0px;
+    overflow-x: hidden;
+    overflow-y: auto; /* scrollable contents if viewport is shorter than content */
+    background-color: $ava-off-white;
+  }
+}
+
+.sidebar-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 220px;
+    z-index: 0;
+}
+
+.page-header {
+    margin-top: 0px;
+}
+
+// Error, Warning, Info
+
+.alert.bg-danger { 
+  color: #BB252A;
+  border: 1px solid #E0C7C7;
+}
+
+// Panels
+
+.dashboard.row {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.panel {
+    border-color: $ava-lighter-blue;    
+    min-height: 150px;
+
+    .panel-title {
+        background-color: $ava-dark-blue;
+        padding: 10px;
+
+    }
+}
+
+// Buttons
+
+.btn {
+    color: $ava-white !important;
+    background-color: $ava-primary !important;
+    padding: 9px 30px 8px 30px;
+    text-transform: uppercase;
+    transition: all .5s ease;
+    border-left: 0px;
+    border-top: 0px;
+    border-right: 0px;
+    border-bottom: 2px solid $ava-dark-blue !important;
+    text-rendering: optimizelegibility;
+    text-decoration: none;
+    line-height: 28px;
+    margin: 6px 0 20px;
+    font-size: 16px;
+
+    &:hover {
+        color: $ava-primary;
+        background-color: $ava-secondary !important;
+        border-bottom: 2px solid $ava-secondary-darker !important;
+    }
+}
+
+// Base Page Components
+
+// Navigation
+
+// Auth
+
+.auth {
+    background-color: $ava-pure-white;
+    width: 30%;
+    min-height: 450px;
+    border: 1px solid $ava-light-blue;    
+    box-shadow: 0 2px 2px rgba(10,10,10,0.06);
+    border-radius: 3px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+
+    .logo {
+        padding-bottom: 30px;
+    }
+
+    .auth-inner {
+        display: block;
+        padding: 0px 0px 50px;
+    }
+
+    .auth-bottom {
+        position: absolute;
+        bottom: 0px;
+        border-top: 1px solid $ava-light-blue;
+        background-color: $ava-light-blue;
+        padding: 11px;
+        width: 100%;
+        left: 0px;
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+    }
+}
+
+
+
+

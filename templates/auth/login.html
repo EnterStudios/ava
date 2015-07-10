@@ -2,16 +2,19 @@
 {% load staticfiles %}
 {% block mainpage %}
 
-<div class="container">
   <div class="row">
-    <div class="Absolute-Center is-Responsive">
-      <div id="logo-container">
-		<img class=ava_logo src="{% static "images/ava_logo.png" %}" alt="AVA- Protect Your People"/></div>
-      <div class="col-sm-12 col-md-10 col-md-offset-1">
+      <div class="auth">
+      
+      <img class="logo" src="{% static "images/ava-large.png" %}" alt="AVA - Protect Your People"/>
+      
+        <div class="auth-inner">
           {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
-	<form action="/accounts/login/" method='POST'> {% csrf_token %}
+           <div class="alert bg-danger">
+              <p>Your username and password didn't match. Please try again.</p>
+            </div>
+          {% endif %}
+
+	       <form action="/accounts/login/" method='POST'> {% csrf_token %}
           <div class="form-group input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
             <input class="form-control" id="username" type="text" name='username' placeholder="username"/>          
@@ -25,12 +28,12 @@
               <input type="hidden" name="next" value="{{ next }}" />
           </div>
         </form>
-          <div class="form-group text-center">
-            <a href="{% url 'password_reset' %}">Forgot Password</a></br><a href="#">Support</a>&nbsp;|&nbsp;<a href="#">Terms & Conditions</a>
-          </div>
-      </div>  
+        <a href="{% url 'password_reset' %}">Forgot Password</a>
+      </div> 
+      <div class="auth-bottom">
+        <a href="#">Support</a>&nbsp;|&nbsp;<a href="#">Terms & Conditions</a>
+      </div>
     </div>    
   </div>
-</div>
 
  {% endblock %}

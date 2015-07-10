@@ -2,34 +2,42 @@
 {% load staticfiles %}
 {% block mainpage %}
 
-<div class="container" style="text-align:center; min-width:900px; max-width:1500px">
-    <div class="row" style="height:4.0em"></div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-sm-12">
-            <img class="ava_logo" src="{% static 'images/ava_logo.png' %}" alt="AVA - Protect Your People" />
+            <div class="">
+                <div class=""><img class="ava_logo" src="{% static 'images/ava-small.png' %}" alt="AVA - Protect Your People" /></div>
+                <div class="">Welcome to AVA.</div>
+            </div>
         </div>
-    </div>
-    <div class="row" style="height:5.0em"></div>
-    <div class="row">
+    </div> -->
+    <div class="row dashboard">
         <div class="col-sm-4">
-            <i class="glyphicon glyphicon-user" style="font-size:100px"></i>
-            <h3>People and Identities</h3>
-            <p><a href="{% url 'person-index' %}">{{ person_count }} pe{{ person_count|pluralize:'rson,ople' }}</a></p>
-            <p><a href="{% url 'identity-index' %}">{{ identity_count }} identit{{ identity_count|pluralize:'y,ies' }}</a></p>
+            <div class="panel">
+                <!-- <i class="glyphicon glyphicon-user"></i> -->
+                <h3>People and Identities</h3>
+                <div class="panel-body">
+                    <span>{{ person_count }} pe{{ person_count|pluralize:'rson,ople' }}</span><a href="{% url 'person-index' %}">View People</a>
+                    <span>{{ identity_count }} identit{{ identity_count|pluralize:'y,ies' }}</span><a href="{% url 'identity-index' %}"></a>
+                </div>
+            </div>
         </div>
         <div class="col-sm-4">
-            <i class="glyphicon glyphicon-list" style="font-size:100px"></i>
-            <h3>Directory Servers</h3>
-            <p><a href="{% url 'ldap-configuration-index' %}">{{ ldap_count }} directory server{{ ldap_count|pluralize }}</a></p>
+            <div class="panel">
+                <!-- <i class="glyphicon glyphicon-list"></i> -->
+                <h3>Directory Servers</h3>
+                <span>{{ ldap_count }} directory server{{ ldap_count|pluralize }}</span><a href="{% url 'ldap-configuration-index' %}">View LDAP</a>
+            </div>
         </div>
         <div class="col-sm-4">
-            <i class="glyphicon glyphicon-dashboard" style="font-size:100px"></i>
-            <h3>Tests</h3>
-            <p><a href="{% url 'project-index' %}">{{ project_count }} test project{{ project_count|pluralize }}</a></p>
-            <p><a href="{% url 'email-test-index' %}">{{ email_test_count }} email test{{ email_test_count|pluralize }}</a></p>
-            {% comment %}
-            <p><a href="{% url 'twitter-test-index' %}">{{ twitter_test_count }} Twitter test{{ twitter_test_count|pluralize }}</a></p>
-            {% endcomment %}
+            <div class="panel">
+                <!-- <i class="glyphicon glyphicon-dashboard"></i> -->
+                <h3>Tests</h3>
+                <p><a href="{% url 'project-index' %}">{{ project_count }} test project{{ project_count|pluralize }}</a></p>
+                <p><a href="{% url 'email-test-index' %}">{{ email_test_count }} email test{{ email_test_count|pluralize }}</a></p>
+                {% comment %}
+                <p><a href="{% url 'twitter-test-index' %}">{{ twitter_test_count }} Twitter test{{ twitter_test_count|pluralize }}</a></p>
+                {% endcomment %}
+            </div>
         </div>
     </div>
 </div>

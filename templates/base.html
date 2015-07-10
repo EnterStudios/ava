@@ -10,9 +10,7 @@
 {% block title %}AVA- Protect Your People{% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/jumbotron-narrow.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-glyphicons.css' %}" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
@@ -21,58 +19,98 @@
 {% endblock %}
 
 {% block content %}
+
+<div id="page-container" class="page-sidebar-fixed page-header-fixed">
+
 {% block topnavbar %}
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">AVA - Protect Your People</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                {% if user == None %}
+<!-- begin #header -->
+<div id="header" class="header navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">AVA - Protect Your People</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                {% if not user.is_authenticated %}
                     <li><a href="{% url 'login' %}">Login</a></li>
                 {% else %}
-                    <li><a href="/">Dashboard</a></li>
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                            Know <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="{% url 'vis-ldap-graph-index' %}">Know Dashboard</a></li>
-                            <li><a href="{% url 'group-index' %}">Groups</a></li>
-                            <li><a href="{% url 'identity-index' %}">People</a></li>
-                        </ul>
-                    </li>
-                    <li role="presentation">
-                        <a href="{% url 'test-dashboard' %}">Test</a>
-                    </li>
-                    <li role="presentation"></li>
-                            <li><a href="{% url 'project-index' %}">Analyse</a></li>
-                    </li>
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                            Settings <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            {% if user.rights.is_admin %}
-                                <li><a href="{% url 'ldap-configuration-index' %}">Manage LDAP Integration</a></li>
-                                <li><a href="{% url 'user-index' %}">Manage Users</a></li>
-                                <li><a href="{% url 'team-index' %}">Manage Teams</a></li>
-                            {% endif %}
-                            <li><a href="{% url 'password_change' %}">Change Password</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="{% url 'password_change' %}">Change Password</a></li>
                     <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% endif %}
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div> <!-- end of container-fluid -->
-</div> <!-- end of navbar -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
 
 {% endblock %}
 
-<div class="container-fluid">
-    {% block mainpage %}{% endblock %}
+{% if not user.is_authenticated %}
+
+{% else %}
+
+<!-- begin #sidebar -->
+<div id="sidebar" class="sidebar">
+    <div data-scrollbar="true" data-height="100%">
+        <!-- begin sidebar nav -->
+        <ul class="nav">
+        <li><a href="/">Dashboard</a></li>
+
+        <li class="nav-header has-sub-menu">
+            <span class="sidebar-header">Know</span>
+            <ul class="sub-menu">
+                <li><a href="{% url 'vis-ldap-graph-index' %}">Know Dashboard</a></li>
+                <li><a href="{% url 'group-index' %}">Groups</a></li>
+                <li><a href="{% url 'identity-index' %}">People</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-header has-sub-menu">
+            <span class="sidebar-header">Test</span>
+            <ul class="sub-menu">
+                <li><a href="{% url 'test-dashboard' %}">Test Dashboard</a></li>
+                <li><a href="{% url 'email-test-index' %}">Email Tests</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-header has-sub-menu">
+            <span class="sidebar-header">Analyse</span>
+            <ul class="sub-menu">
+                <li><a href="{% url 'project-index' %}">Analyse</a></li>
+            </ul>
+        </li>
+
+        {% if user.rights.is_admin %}
+        <li class="nav-header has-sub-menu">
+            <span class="sidebar-header">Settings</span>
+            <ul class="sub-menu">
+                <li><a href="{% url 'ldap-configuration-index' %}">Manage LDAP Integration</a></li>
+                <li><a href="{% url 'user-index' %}">Manage Users</a></li>
+                <li><a href="{% url 'team-index' %}">Manage Teams</a></li>   
+            </ul>
+        </li>
+        {% endif %}
+        </ul>
+        <!-- end sidebar nav -->    
+    </div>
+</div>
+<div class="sidebar-bg"></div>
+<!-- end #sidebar -->
+{% endif %}
+
+<div id="content" class="content {% if not user.is_authenticated %}no-auth{% endif %}">
+    {% block mainpage %}
+    {% endblock %}
+</div>
+
+</div>
 </div> <!-- end of container-fluid -->
 
 {% endblock %}
