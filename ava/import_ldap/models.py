@@ -249,8 +249,6 @@ class ActiveDirectoryUser(TimeStampedModel):
 
 class ActiveDirectoryGroup(TimeStampedModel):
 
-
-
     cn = models.CharField(max_length=300)
     distinguished_name = models.CharField(max_length=300, unique=True)
     name = models.CharField(max_length=100)
