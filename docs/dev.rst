@@ -108,6 +108,14 @@ to a basic running developer environment.
    this script *doesn't* get you back to a working developer
    environment, then report it as a bug.
 
+
+``./bin/make-migrations.sh``
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+A wrapper for Django's 'makemigrations' management command. Run this
+after database model changes to (hopefully) autodetect and build the
+correct migration files.
+
 Python development guidelines
 -----------------------------
 
