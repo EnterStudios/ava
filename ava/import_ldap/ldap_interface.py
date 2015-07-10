@@ -58,11 +58,11 @@ class ActiveDirectoryHelper:
         return results_json
 
     def export_ldap_json(self, prefix, results_json):
-        filename = '/tmp/ldap_'+ prefix +'_group_data.json'
+        filename = 'ava/testdata/ldap_' + prefix + '_group_data.json'
 
         with open(filename, 'w') as outfile:
             json.dump(results_json, outfile)
-
+        outfile.close()
 
     # imports the users from an LDAP instance
     @staticmethod
@@ -74,7 +74,7 @@ class ActiveDirectoryHelper:
         # To test locally, ensure that the environment variable 'USE_MOCK_LDAP' is set
 
         if os.environ.get('USE_MOCK_LDAP'):
-            return json.load("/tmp/ldap_user_data.json")
+            return json.load("ava/testdata/ldap_user_data.json")
 
         else:
             # specify that we only care about users
@@ -85,11 +85,12 @@ class ActiveDirectoryHelper:
                           'badPasswordTime', 'badPwdCount', 'description', 'displayName', 'isCriticalSystemObject',
                           'lastLogoff', 'lastLogon', 'lastLogonTimestamp', 'logonCount', 'logonHours', 'name',
                           'primaryGroupID', 'pwdLastSet', 'sAMAccountName', 'sAMAccountType', 'uSNChanged',
-                          'uSNCreated', 'userAccountControl', 'whenChanged', 'whenCreated', 'memberOf', 'proxyAddresses']
+                          'uSNCreated', 'userAccountControl', 'whenChanged', 'whenCreated', 'memberOf',
+                          'proxyAddresses']
 
             # return a search result for these filter_fields and attributes in JSON format
-            return ActiveDirectoryHelper.search(parameters, filter_fields, attributes)
-
+            ad_helper = ActiveDirectoryHelper()
+            return ad_helper.search(parameters, filter_fields, attributes)
 
     # imports the groups from an LDAP instance
     @staticmethod
@@ -101,14 +102,16 @@ class ActiveDirectoryHelper:
         # To test locally, ensure that the environment variable 'USE_MOCK_LDAP' is set
 
         if os.environ.get('USE_MOCK_LDAP'):
-            return json.load("/tmp/ldap_group_data.json")
+            return json.load("ava/testdata/ldap_group_data.json")
 
         else:
             # specify that we only care about groups
             filter_fields = '(objectclass=group)'
 
             # specify the fields to bring back for this group
-            attributes = ['distinguishedName', 'objectGUID', 'objectSid', 'cn', 'name', 'objectCategory', 'sAMAccountName']
+            attributes = ['distinguishedName', 'objectGUID', 'objectSid', 'cn', 'name', 'objectCategory',
+                          'sAMAccountName']
 
             # return a search result for these filter_fields and attributes in JSON format
-            return ActiveDirectoryHelper.search(parameters, filter_fields, attributes)
+            ad_helper = ActiveDirectoryHelper()
+            return ad_helper.search(parameters, filter_fields, attributes)
