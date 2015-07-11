@@ -1,12 +1,11 @@
 # flake8: noqa
-from django.views.generic import CreateView, ListView, DetailView
-from django.views.generic.edit import UpdateView, DeleteView
-from django.http import HttpResponseRedirect, HttpResponseBadRequest
+
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import DeleteView
+from django.http import HttpResponseRedirect
+from oauth2client.django_orm import Storage
 
 
-from ava.core_google_apps.models import *
-
-from oauth2client.django_orm import FlowField, CredentialsField, Storage
 from ava.import_google.google_apps_interface import GoogleAppsHelper
 from ava.import_google.models import CredentialsModel, GoogleDirectoryUser, GoogleDirectoryGroup
 
