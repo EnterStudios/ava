@@ -1,13 +1,14 @@
 # flake8: noqa
 import os
-import sys
 
-__author__ = 'ladynerd'
+from ava.import_google.models import CredentialsModel
+
 import httplib2
 from apiclient import errors
 from apiclient.discovery import build
 from oauth2client import xsrfutil
-from oauth2client.client import OAuth2WebServerFlow, flow_from_clientsecrets
+from oauth2client.client import OAuth2WebServerFlow
+from oauth2client.django_orm import FlowField, CredentialsField, Storage
 
 
 class GoogleAppsHelper:
@@ -26,9 +27,8 @@ class GoogleAppsHelper:
 
     CLIENT_SECRET = ""
 
-    FLOW = OAuth2WebServerFlow(CLIENT_ID, CLIENT_SECRET, OAUTH_SCOPE, REDIRECT_URI)
-    
-    DIRECTORY_SERVICE = None
+    FLOW = False
+
 
     def __init__(self):
         try:
@@ -43,40 +43,29 @@ class GoogleAppsHelper:
             print(e.args)
             sys.exit(1)
 
-    def generate_xsrf_token(self,user):
-        return xsrfutil.generate_token(self.CLIENT_SECRET, user)
-
-    def validate_xsrf_token(self, request):
-        print(request.REQUEST['state'])
-        return xsrfutil.validate_token(self.CLIENT_SECRET, request.REQUEST['state'], request.user)
-
-    def get_flow(self):
-        #return flow_from_clientsecrets(self.CLIENT_SECRET, self.OAUTH_SCOPE, self.REDIRECT_URI)
-        return OAuth2WebServerFlow(self.CLIENT_ID, self.CLIENT_SECRET, self.OAUTH_SCOPE, self.REDIRECT_URI)
-
-    def get_auth_url(self, flow):
-
+    def get_auth_url(self):
+        self.FLOW = OAuth2WebServerFlow(self.CLIENT_ID, self.CLIENT_SECRET, self.OAUTH_SCOPE, self.REDIRECT_URI)
         return self.FLOW.step1_get_authorize_url()
 
     def build_directory_service(self, credential):
         http = httplib2.Http()
         http = credential.authorize(http)
-        self.DIRECTORY_SERVICE= build("admin", "directory_v1", http=http)
+        self.directory_service = build("admin", "directory_v1", http=http)
 
-    def generate_credential(self, request):
-        # if not xsrfutil.validate_token(self.CLIENT_SECRET, request_state, request_user):
-        #    return False
+    def generate_credential(self, request_state, request_user, request):
+        if not xsrfutil.validate_token(self.CLIENT_SECRET, request_state, request_user):
+            return False
         return self.FLOW.step2_exchange(request)
 
     def import_google_directory(self):
-        users = GoogleAppsHelper.get_users(self.DIRECTORY_SERVICE)
-        groups = GoogleAppsHelper.get_groups(self.DIRECTORY_SERVICE)
+        users = GoogleAppsHelper.get_users(self.directory_service)
+        groups = GoogleAppsHelper.get_groups(self.directory_service)
 
         results = {
             'users': users,
             'groups': groups,
-            'user_groups': GoogleAppsHelper.get_users(self.DIRECTORY_SERVICE, users),
-            'group_members': GoogleAppsHelper.get_users(self.DIRECTORY_SERVICE, groups),
+            'user_groups': GoogleAppsHelper.get_users(self.directory_service, users),
+            'group_members': GoogleAppsHelper.get_users(self.directory_service, groups),
         }
 
         return results

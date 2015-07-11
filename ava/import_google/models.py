@@ -10,7 +10,20 @@ from django.contrib import admin
 
 from ava.core.models import TimeStampedModel
 
+<<<<<<< HEAD
 from oauth2client.django_orm import FlowField, CredentialsField
+=======
+from oauth2client.django_orm import CredentialsField
+
+
+class CredentialsModel(models.Model):
+  id = models.ForeignKey(User, primary_key=True)
+  credential = CredentialsField()
+
+
+class CredentialsAdmin(admin.ModelAdmin):
+    pass
+>>>>>>> 411ffc0... Restructuring
 
 
 class CredentialsModel(models.Model):
