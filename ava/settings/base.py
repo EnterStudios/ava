@@ -84,7 +84,7 @@ LOCAL_APPS = (
     'ava.core_auth',
     'ava.core_project',
     'ava.import_ldap',
-    # 'ava.import_google',
+    'ava.import_google',
     'ava.core_identity',
     'ava.vis_graph',
     'ava.test',
