@@ -94,7 +94,6 @@ class GoogleDirectoryGroup(TimeStampedModel):
     class Meta:
         ordering = ['name', 'id']
 
-
 class GoogleConfiguration(TimeStampedModel):
     domain = models.CharField(max_length=100, verbose_name='Primary Domain', unique=True)
 
@@ -103,32 +102,6 @@ class GoogleConfiguration(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse('google-configuration-detail', kwargs={'pk': self.id})
-
-
-class GoogleDirectoryHelper:
-
-    def __init__(self):
-        pass
-
-    def get_connection(self):
-        # try:
-        #
-        #     return google_conn
-        #
-        # except GoogleError as e:
-        #     if type(e.message) == dict:
-        #         for (k, v) in e.message.items():
-        #             sys.stderr.write("%s: %sn" % (k, v))
-        #             sys.stderr.write("\n")
-        #     else:
-        #         sys.stderr.write(e.message)
-        #         sys.exit(1)1
-
-    def get_groups(self, parameters):
-        pass
-
-    def get_users(self, parameters):
-        pass
 
 
 class ExportGoogle:
