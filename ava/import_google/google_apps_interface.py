@@ -1,14 +1,12 @@
 # flake8: noqa
 import os
-
-from ava.import_google.models import CredentialsModel
+import sys
 
 import httplib2
 from apiclient import errors
 from apiclient.discovery import build
 from oauth2client import xsrfutil
 from oauth2client.client import OAuth2WebServerFlow
-from oauth2client.django_orm import FlowField, CredentialsField, Storage
 
 
 class GoogleAppsHelper:

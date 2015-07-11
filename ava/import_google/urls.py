@@ -7,6 +7,6 @@ urlpatterns = patterns(
     '',
     url(r'^import/$', login_required(views.GoogleDirectoryImport.as_view()),
         name='google-import'),
-    url(r'^auth/$', login_required(views.google_directory_authorize_import.as_view()),
+    url(r'^auth/$', login_required(views.google_directory_authorize_import),
         name='google-auth-import'),
 )

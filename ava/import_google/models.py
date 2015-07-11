@@ -14,9 +14,9 @@ from ava.core.models import TimeStampedModel
 from oauth2client.django_orm import CredentialsField
 
 
-# class CredentialsModel(models.Model):
-#   id = models.OneToOneField(User, primary_key=True)
-#   credential = CredentialsField()
+class CredentialsModel(models.Model):
+    id = models.OneToOneField(User, primary_key=True)
+    credential = CredentialsField()
 
 
 class CredentialsAdmin(admin.ModelAdmin):
@@ -92,7 +92,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
     email = models.EmailField()
     etag = models.CharField(max_length=300)
     google_configuration = models.ForeignKey('GoogleConfiguration')
-    #group = models.ForeignKey('core_group.Group', null=True, blank=True)
+    # group = models.ForeignKey('core_group.Group', null=True, blank=True)
 
     def __unicode__(self):
         return self.name or ''
@@ -105,6 +105,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
 
     class Meta:
         ordering = ['name', 'google_id']
+
 
 class GoogleConfiguration(TimeStampedModel):
     domain = models.CharField(max_length=100, verbose_name='Primary Domain', unique=True)
