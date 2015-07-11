@@ -77,7 +77,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
     email = models.EmailField()
     etag = models.CharField(max_length=300)
     google_configuration = models.ForeignKey('GoogleConfiguration')
-    group = models.ForeignKey('core_group.Group', null=True, blank=True)
+    #group = models.ForeignKey('core_group.Group', null=True, blank=True)
 
     def __unicode__(self):
         return self.name or ''
