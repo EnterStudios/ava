@@ -5,9 +5,21 @@ from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from django.forms.models import model_to_dict
 
+from django.contrib.auth.models import User
+from django.contrib import admin
 
 from ava.core.models import TimeStampedModel
 
+from oauth2client.django_orm import CredentialsField
+
+
+class CredentialsModel(models.Model):
+  id = models.ForeignKey(User, primary_key=True)
+  credential = CredentialsField()
+
+
+class CredentialsAdmin(admin.ModelAdmin):
+    pass
 
 
 # TO DO - THESE FIELDS PROBABLY NEED SOME LOVE

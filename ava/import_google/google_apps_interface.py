@@ -1,22 +1,24 @@
 # flake8: noqa
 import os
+from ava.import_google.models import CredentialsModel
 
 __author__ = 'ladynerd'
 import httplib2
 from apiclient import errors
 from apiclient.discovery import build
+from oauth2client import xsrfutil
 from oauth2client.client import OAuth2WebServerFlow
+from oauth2client.django_orm import FlowField, CredentialsField, Storage
 
 
 class GoogleAppsHelper:
-
     # Define the specific access we would like to request from the user
     # Check https://developers.google.com/admin-sdk/directory/v1/guides/authorizing for all available scopes
     OAUTH_SCOPE = 'https://www.googleapis.com/auth/admin.directory.user.readonly ' \
-        'https://www.googleapis.com/auth/admin.directory.group.readonly ' \
-        'https://www.googleapis.com/auth/admin.directory.group.member.readonly ' \
-        'https://www.googleapis.com/auth/admin.directory.orgunit.readonly ' \
-        'https://www.googleapis.com/auth/admin.directory.user.alias.readonly'
+                  'https://www.googleapis.com/auth/admin.directory.group.readonly ' \
+                  'https://www.googleapis.com/auth/admin.directory.group.member.readonly ' \
+                  'https://www.googleapis.com/auth/admin.directory.orgunit.readonly ' \
+                  'https://www.googleapis.com/auth/admin.directory.user.alias.readonly'
 
     # Redirect URI for installed apps
     REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
@@ -25,8 +27,13 @@ class GoogleAppsHelper:
 
     CLIENT_SECRET = ""
 
+    FLOW = False
+
     def __init__(self):
         try:
+            # Pull the client_id and client_secret from environment variables. If these variables do not exist. Log and
+            # exit as this will not work
+
             self.CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
             self.CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
         except OSError as e:
@@ -34,29 +41,36 @@ class GoogleAppsHelper:
             print(e.args)
             sys.exit(1)
 
-    def get_connection(self):
+    def get_auth_url(self):
+        self.FLOW = OAuth2WebServerFlow(self.CLIENT_ID, self.CLIENT_SECRET, self.OAUTH_SCOPE, self.REDIRECT_URI)
+        return self.FLOW.step1_get_authorize_url()
 
-
-
-        # Run through the OAuth flow and retrieve credentials
-        flow = OAuth2WebServerFlow(self.CLIENT_ID, self.CLIENT_SECRET, self.OAUTH_SCOPE, self.REDIRECT_URI)
-        authorize_url = flow.step1_get_authorize_url()
-        print 'Go to the following link in your browser: ' + authorize_url
-        code = raw_input('Enter verification code: ').strip()
-        credentials = flow.step2_exchange(code)
-
-        # Create an httplib2.Http object and authorize it with our credentials
+    def build_directory_service(self, credential):
         http = httplib2.Http()
-        http = credentials.authorize(http)
+        http = credential.authorize(http)
+        self.directory_service = build("admin", "directory_v1", http=http)
 
-        directory_service = build('admin', 'directory_v1', http=http)
-        return directory_service
+    def generate_credential(self, request_state, request_user, request):
+        if not xsrfutil.validate_token(self.CLIENT_SECRET, request_state, request_user):
+            return False
+        return self.FLOW.step2_exchange(request)
 
-    def __init__(self):
-        pass
+    def import_google_directory(self):
+        users = GoogleAppsHelper.get_users(self.directory_service)
+        groups = GoogleAppsHelper.get_groups(self.directory_service)
 
-    def get_users(self):
-        directory_service = self.get_connection()
+        results = {
+            'users': users,
+            'groups': groups,
+            'user_groups': GoogleAppsHelper.get_users(self.directory_service, users),
+            'group_members': GoogleAppsHelper.get_users(self.directory_service, groups),
+        }
+
+        return results
+
+
+    @staticmethod
+    def get_users(directory_service):
         page_token = None
 
         params = {'customer': 'my_customer'}
@@ -78,8 +92,8 @@ class GoogleAppsHelper:
 
         return all_users
 
-    def get_groups(self):
-        directory_service = self.get_connection()
+    @staticmethod
+    def get_groups(directory_service):
         page_token = None
         params = {'customer': 'my_customer'}
         all_groups = []
@@ -100,8 +114,8 @@ class GoogleAppsHelper:
 
         return all_groups
 
-    def get_user_groups(self, all_users):
-        directory_service = self.get_connection()
+    @staticmethod
+    def get_user_groups(directory_service, all_users):
         page_token = None
         params = {}
         user_groups = {}
@@ -133,11 +147,12 @@ class GoogleAppsHelper:
 
         return user_groups
 
-    def get_group_members(self, all_groups):
-        directory_service = self.get_connection()
+    @staticmethod
+    def get_group_members(directory_service, all_groups):
         page_token = None
         params = {}
         group_members = {}
+
         for group in all_groups:
             group_members[group['id']] = []
 
@@ -166,7 +181,8 @@ class GoogleAppsHelper:
 
         return group_members
 
-    def to_string(self, dictionary):
+    @staticmethod
+    def to_string(dictionary):
         for key, value in dictionary:
             print key
             for item in value:
