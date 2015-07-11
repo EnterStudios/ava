@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from ava.core_google_apps.models import GoogleDirectoryUser, GoogleDirectoryGroup, GoogleConfiguration
+import ava.import_google.models
 
-admin.site.register(GoogleDirectoryUser)
-admin.site.register(GoogleDirectoryGroup)
-admin.site.register(GoogleConfiguration)
+admin.site.register(ava.import_google.models.GoogleDirectoryUser)
+admin.site.register(ava.import_google.models.GoogleDirectoryGroup)
+admin.site.register(ava.import_google.models.GoogleConfiguration)
