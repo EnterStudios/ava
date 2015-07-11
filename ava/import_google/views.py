@@ -55,7 +55,7 @@ class GoogleDirectoryGroupDelete(DeleteView):
 
 class GoogleDirectoryImport(ListView):
     template_name = 'google_apps/import.html'
-    model = GoogleAppsHelper
+    model = GoogleDirectoryUser
 
 
 def google_directory_authorize_import(request):

@@ -1,6 +1,6 @@
 # flake8: noqa
 import os
-from ava.import_google.models import CredentialsModel
+import sys
 
 __author__ = 'ladynerd'
 import httplib2
@@ -8,7 +8,6 @@ from apiclient import errors
 from apiclient.discovery import build
 from oauth2client import xsrfutil
 from oauth2client.client import OAuth2WebServerFlow
-from oauth2client.django_orm import FlowField, CredentialsField, Storage
 
 
 class GoogleAppsHelper:
@@ -87,7 +86,7 @@ class GoogleAppsHelper:
                     break
 
             except errors.HttpError as error:
-                print 'An error occurred: %s' % error
+                print ('An error occurred: %s' % error)
                 break
 
         return all_users
@@ -109,7 +108,7 @@ class GoogleAppsHelper:
                     break
 
             except errors.HttpError as error:
-                print 'An error occurred: %s' % error
+                print ('An error occurred: %s' % error)
                 break
 
         return all_groups
@@ -142,7 +141,7 @@ class GoogleAppsHelper:
                     break
 
             except errors.HttpError as error:
-                print 'An error occurred: %s' % error
+                print ('An error occurred: %s' % error)
                 break
 
         return user_groups
@@ -165,7 +164,7 @@ class GoogleAppsHelper:
                 current_page = directory_service.members().list(**params).execute()
                 curr_members = []
 
-                print current_page
+                print (current_page)
 
                 if 'members' in current_page:
                     curr_members.extend(current_page['members'])
@@ -176,7 +175,7 @@ class GoogleAppsHelper:
                     break
 
             except errors.HttpError as error:
-                print 'An error occurred: %s' % error
+                print ('An error occurred: %s' % error)
                 break
 
         return group_members
@@ -184,6 +183,6 @@ class GoogleAppsHelper:
     @staticmethod
     def to_string(dictionary):
         for key, value in dictionary:
-            print key
+            print (key)
             for item in value:
-                print item
+                print (item)
