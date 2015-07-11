@@ -13,9 +13,9 @@ from ava.core.models import TimeStampedModel
 from oauth2client.django_orm import CredentialsField
 
 
-class CredentialsModel(models.Model):
-  id = models.ForeignKey(User, primary_key=True)
-  credential = CredentialsField()
+# class CredentialsModel(models.Model):
+#   id = models.OneToOneField(User, primary_key=True)
+#   credential = CredentialsField()
 
 
 class CredentialsAdmin(admin.ModelAdmin):
@@ -39,7 +39,7 @@ class GoogleDirectoryUser(TimeStampedModel):
     dn = models.CharField(max_length=300)
     isDelegatedAdmin = models.BooleanField()
     suspended = models.BooleanField()
-    id = models.CharField(max_length=300)
+    google_id = models.CharField(max_length=300)
     deletion_time = models.CharField(max_length=300)
     suspension_reason = models.CharField(max_length=300)
     is_admin = models.BooleanField()
@@ -68,13 +68,10 @@ class GoogleDirectoryUser(TimeStampedModel):
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in GoogleDirectoryUser._meta.fields]
 
-    class Meta:
-        unique_together = ('objectGUID', 'objectSid')
-        ordering = ['cn', 'distinguishedName']
 
 class GoogleDirectoryGroup(TimeStampedModel):
     name = models.CharField(max_length=300, unique=True)
-    id = models.CharField(max_length=300, unique=True)
+    google_id = models.CharField(max_length=300, unique=True)
     description = models.CharField(max_length=1000)
     admin_created = models.BooleanField()
     email = models.EmailField()
@@ -92,7 +89,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
         return [(field.name, field.value_to_string(self)) for field in GoogleDirectoryGroup._meta.fields]
 
     class Meta:
-        ordering = ['name', 'id']
+        ordering = ['name', 'google_id']
 
 class GoogleConfiguration(TimeStampedModel):
     domain = models.CharField(max_length=100, verbose_name='Primary Domain', unique=True)
