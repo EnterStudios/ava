@@ -108,7 +108,6 @@ class GoogleDirectoryGroup(TimeStampedModel):
     class Meta:
         ordering = ['name', 'google_id']
 
-
 class GoogleConfiguration(TimeStampedModel):
     domain = models.CharField(max_length=100, verbose_name='Primary Domain', unique=True)
 

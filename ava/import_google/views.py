@@ -2,7 +2,6 @@
 from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
-from django.views import
 
 
 from ava.core_google_apps.models import *
@@ -70,7 +69,6 @@ def google_directory_authorize_import(request):
         authorize_url = gd_helper.get_auth_url()
         return HttpResponseRedirect(authorize_url)
     else:
-        print "goose"
         gd_helper.build_directory_service(credential)
 
 
