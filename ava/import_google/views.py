@@ -66,7 +66,7 @@ def google_directory_authorize_import(request):
 
     oauth_flow = gd_helper.get_flow()
     if credential is None or credential.invalid is True:
-        oauth_flow.params['state'] = gd_helper.generate_xsrf_token(user)
+        # oauth_flow.params['state'] = gd_helper.generate_xsrf_token(user)
         authorize_url = oauth_flow.step1_get_authorize_url()
         f = FlowModel(id=user, flow=oauth_flow)
         f.save()
@@ -80,8 +80,8 @@ def google_directory_authorize_import(request):
 def google_directory_auth_return(request):
     user = request.user
     gd_helper = GoogleAppsHelper()
-    if not gd_helper.validate_xsrf_token(request, user):
-        return HttpResponseBadRequest()
+    # if not gd_helper.validate_xsrf_token(request, user):
+    #     return HttpResponseBadRequest()
     oauth_flow = FlowModel.objects.get(id=user).flow
     credential = oauth_flow.step2_exchange(request.REQUEST)
     storage = Storage(CredentialsModel, 'id', user, 'credential')
