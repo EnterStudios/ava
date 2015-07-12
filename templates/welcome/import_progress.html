@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block mainpage %}
+
+{# TODO: this is a placeholder template, someone replace me with something pretty! #}
+<h1>Import your directory into AVA</h1>
+
+<h2>We are currently importing your LDAP directory</h2>
+
+<p>Note: If the import is being done synchronously, then by the time you get to this
+  page it will have already been completed, and we can just present them with a link to
+  <a href="{% url 'vis-ldap-graph-index' %}">the knowledge dashboard</a>.
+
+{% endblock %}
