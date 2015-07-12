@@ -36,6 +36,10 @@ web:
     - elasticsearch
   environment:
     - DJANGO_SETTINGS_MODULE=ava.settings.base
+    - USE_MOCK_LDAP=TRUE
+    - GOOGLE_CLIENT_ID=431090302945-l81e18can2ge0a7qc43pf58hdjefii99.apps.googleusercontent.com
+    - GOOGLE_CLIENT_SECRET=4kg7_LH4rKBwlm0ghsPa3I7i
+
 
 ## AVA Asynchronous Task Worker
 worker:
