@@ -50,7 +50,7 @@ class GoogleAppsHelper:
 
     def validate_xsrf_token(self, request):
         print(request.REQUEST['state'])
-        return xsrfutil.validate_token(self.CLIENT_SECRET, request.REQUEST['state'], request.user)
+        return xsrfutil.validate_token(self.CLIENT_SECRET, str(request.REQUEST['state']), request.user)
 
     def get_flow(self):
         #return flow_from_clientsecrets(self.CLIENT_SECRET, self.OAUTH_SCOPE, self.REDIRECT_URI)
