@@ -21,8 +21,10 @@ class GoogleAppsHelper:
     # Redirect URI for installed apps
     REDIRECT_URI = 'http://avasecure.com:8000/google/auth/return/'
 
+    # these are pulled from environment variables. do not hard code these
     CLIENT_ID = ""
 
+    # these are pulled from environment variables. do not hard code these
     CLIENT_SECRET = ""
 
     FLOW = OAuth2WebServerFlow(CLIENT_ID, CLIENT_SECRET, OAUTH_SCOPE, REDIRECT_URI)

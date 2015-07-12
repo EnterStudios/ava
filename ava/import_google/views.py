@@ -81,7 +81,7 @@ def google_directory_authorize_import(request):
 def google_directory_auth_return(request):
     user = request.user
     gd_helper = GoogleAppsHelper()
-    if not gd_helper.validate_xsrf_token(request, user):
+    if not gd_helper.validate_xsrf_token(request):
         return HttpResponseBadRequest()
     oauth_flow = FlowModel.objects.get(id=user).flow
     credential = oauth_flow.step2_exchange(request.REQUEST)
