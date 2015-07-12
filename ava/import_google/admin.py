@@ -6,3 +6,6 @@ import ava.import_google.models
 admin.site.register(ava.import_google.models.GoogleDirectoryUser)
 admin.site.register(ava.import_google.models.GoogleDirectoryGroup)
 admin.site.register(ava.import_google.models.GoogleConfiguration)
+admin.site.register(ava.import_google.models.CredentialsModel)
+#admin.site.register(ava.import_google.models.CredentialsAdmin)
+admin.site.register(ava.import_google.models.FlowModel)
