@@ -51,6 +51,45 @@ class ActiveDirectoryUser(TimeStampedModel):
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in ActiveDirectoryUser._meta.fields]
 
+    model_schema = {
+        'dn': 'dn',
+        'account_expires': 'accountExpires',
+        'admin_count': 'adminCount',
+        'bad_password_time': 'badPasswordTime',
+        'bad_pwd_count': 'badPwdCount',
+        'cn': 'cn',
+        'description': 'description',
+        'display_name': 'displayName',
+        'distinguished_name': 'distinguishedName',
+        'is_critical_system_object': 'isCriticalSystemObject',
+        'last_logoff': 'lastLogoff',
+        'last_logon': 'lastLogon',
+        'last_logon_timestamp': 'lastLogonTimestamp',
+        'logon_count': 'logonCount',
+        'logon_hours': 'logonHours',
+        'name': 'name',
+        'object_guid': 'objectGUID',
+        'object_sid': 'objectSid',
+        'primary_group_id': 'primaryGroupID',
+        'pwd_last_set': 'pwdLastSet',
+        'sam_account_name': 'sAMAccountName',
+        'sam_account_type': 'sAMAccountType',
+        'usn_changed': 'uSNChanged',
+        'usn_created': 'uSNCreated',
+        'user_account_control': 'userAccountControl',
+        'when_changed': 'whenChanged',
+        'when_created': 'whenCreated',
+
+    }
+
+    model_schema_reversed = {value: key for key, value in model_schema.items()}
+
+    def model_field_to_ldap(self, fieldname):
+        return self.model_schema.get(fieldname)
+
+    def ldap_field_to_model(self, fieldname):
+        return self.model_schema_reversed.get(fieldname)
+
     class Meta:
         unique_together = ('object_guid', 'object_sid')
         ordering = ['cn', 'distinguished_name']
@@ -97,16 +136,10 @@ class ActiveDirectoryUser(TimeStampedModel):
         return ''.join(s)
 
     def get_users(self, parameters):
-        filterby = '(objectclass=user)'
-        attrs = ['distinguishedName', 'objectGUID', 'objectSid', 'cn', 'accountExpires', 'adminCount',
-                 'badPasswordTime', 'badPwdCount', 'description', 'displayName', 'isCriticalSystemObject',
-                 'lastLogoff', 'lastLogon', 'lastLogonTimestamp', 'logonCount', 'logonHours', 'name',
-                 'primaryGroupID', 'pwdLastSet', 'sAMAccountName', 'sAMAccountType', 'uSNChanged',
-                 'uSNCreated', 'userAccountControl', 'whenChanged', 'whenCreated', 'memberOf', 'proxyAddresses']
         ad_help = ActiveDirectoryHelper()
 
         # return json object containing all user records
-        results = ad_help.search(parameters, filterby, attrs)
+        results = ad_help.import_users(parameters)
 
         ldap_json = json.loads(results)
 
@@ -114,6 +147,7 @@ class ActiveDirectoryUser(TimeStampedModel):
 
         for person in entries:
             attributes = person['attributes']
+            model_attributes = {}
 
             groups = []
             gen_groups = []
@@ -124,7 +158,7 @@ class ActiveDirectoryUser(TimeStampedModel):
                     if key == 'memberOf':
                         for cn in value:
                             qs = ActiveDirectoryGroup.objects.filter(ldap_configuration=parameters,
-                                                                     distinguishedName=cn)
+                                                                     distinguished_name=cn)
                             for q in qs:
                                 groups.append(q)
                                 if q.group:
@@ -152,10 +186,10 @@ class ActiveDirectoryUser(TimeStampedModel):
                                 if date:
                                     value_string = date.isoformat()
 
-                            attributes[key] = value_string
+                            model_attributes[self.ldap_field_to_model(key)] = value_string
 
                         except UnicodeDecodeError:
-                            attributes[key] = self.cleanhex(value_string)
+                            model_attributes[self.ldap_field_to_model(key)] = self.cleanhex(value_string)
 
             attributes.pop('memberOf', None)
             attributes.pop('proxyAddresses', None)
@@ -165,11 +199,11 @@ class ActiveDirectoryUser(TimeStampedModel):
             # properties.
             filter_attrs = {}
             if 'objectGUID' in attributes:
-                filter_attrs['objectGUID'] = attributes['objectGUID']
+                filter_attrs['object_guid'] = model_attributes['object_guid']
             elif 'objectSid' in attributes:
-                filter_attrs['objectSid'] = attributes['objectSid']
+                filter_attrs['object_sid'] = model_attributes['object_sid']
             elif 'distinguishedName' in attributes:
-                filter_attrs['distinguishedName'] = attributes['distinguishedName']
+                filter_attrs['distinguished_name'] = model_attributes['distinguished_name']
             else:
                 continue
 
@@ -178,18 +212,18 @@ class ActiveDirectoryUser(TimeStampedModel):
             ad_users = ActiveDirectoryUser.objects.filter(**filter_attrs)
 
             if ad_users.count() == 0:
-                ad_user = ActiveDirectoryUser.objects.create(ldap_configuration=parameters, **attributes)
+                ad_user = ActiveDirectoryUser.objects.create(ldap_configuration=parameters, **model_attributes)
                 ad_user.save()
             else:
-                ad_users.update(**attributes)
+                ad_users.update(**model_attributes)
                 ad_user = ad_users.first()
 
-            identity, created = Identity.objects.get_or_create(name=ad_user.displayName)
+            identity, created = Identity.objects.get_or_create(name=ad_user.display_name)
             '''
             TODO Do we need to create a person object for this identity??
             '''
 
-            Identifier.objects.get_or_create(identifier=ad_user.sAMAccountName, identifier_type=Identifier.UNAME,
+            Identifier.objects.get_or_create(identifier=ad_user.sam_account_name, identifier_type=Identifier.UNAME,
                                              identity=identity)
 
             # Import the email addresses.
@@ -209,6 +243,7 @@ class ActiveDirectoryUser(TimeStampedModel):
 
 
 class ActiveDirectoryGroup(TimeStampedModel):
+
     cn = models.CharField(max_length=300)
     distinguished_name = models.CharField(max_length=300, unique=True)
     name = models.CharField(max_length=100)
@@ -228,13 +263,28 @@ class ActiveDirectoryGroup(TimeStampedModel):
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in ActiveDirectoryGroup._meta.fields]
 
+    model_schema = {
+        'cn': 'cn',
+        'distinguished_name': 'distinguishedName',
+        'name': 'name',
+        'object_category': 'objectCategory',
+        'sam_account_name': 'sAMAccountName',
+        'object_guid': 'objectGUID',
+        'object_sid': 'objectSid',
+
+    }
+
+    model_schema_reversed = {value: key for key, value in model_schema.items()}
+
+    def model_field_to_ldap(self, fieldname):
+        return self.model_schema.get(fieldname)
+
+    def ldap_field_to_model(self, fieldname):
+        return self.model_schema_reversed.get(fieldname)
+
     def get_groups(self, parameters):
-        filter_fields = '(objectclass=group)'
-        attrs = ['distinguishedName', 'objectGUID', 'objectSid', 'cn', 'name', 'objectCategory', 'sAMAccountName']
-
         ad_help = ActiveDirectoryHelper()
-
-        results = ad_help.search(parameters, filter_fields, attrs)
+        results = ad_help.import_groups(parameters)
 
         ldap_json = json.loads(results)
 
@@ -242,6 +292,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
 
         for group in entries:
             attributes = group['attributes']
+            model_attributes = {}
 
             for key, value in attributes.items():
 
@@ -259,10 +310,10 @@ class ActiveDirectoryGroup(TimeStampedModel):
                                 else:
                                     value_string = e['encoded']
 
-                        attributes[key] = value_string
+                        model_attributes[self.ldap_field_to_model(key)] = value_string
 
                     except UnicodeDecodeError:
-                        attributes[key] = self.cleanhex(value_string)
+                        model_attributes[self.ldap_field_to_model(key)] = self.cleanhex(value_string)
 
             """
             Don't filter on everything. Start with the properties that are
@@ -271,24 +322,20 @@ class ActiveDirectoryGroup(TimeStampedModel):
             """
             filter_attrs = {}
             if 'objectGUID' in attributes:
-                filter_attrs['objectGUID'] = attributes['objectGUID']
+                filter_attrs['object_guid'] = model_attributes['object_guid']
             elif 'objectSid' in attributes:
-                filter_attrs['objectSid'] = attributes['objectSid']
+                filter_attrs['object_sid'] = model_attributes['object_sid']
             elif 'distinguishedName' in attributes:
-                filter_attrs['distinguishedName'] = attributes['distinguishedName']
+                filter_attrs['distinguished_name'] = model_attributes['distinguished_name']
             else:
                 continue
-
-            print(attributes['objectGUID'])
-            print(attributes['objectSid'])
-            print(attributes['distinguishedName'])
 
             # If no matching group currently exists then create one, otherwise
             # update the existing group.
             ad_groups = ActiveDirectoryGroup.objects.filter(**filter_attrs)
             if ad_groups.count() == 0:
-                print("new group")
-                ad_group = ActiveDirectoryGroup.objects.create(ldap_configuration=parameters, **attributes)
+
+                ad_group = ActiveDirectoryGroup.objects.create(ldap_configuration=parameters, **model_attributes)
 
                 gen_group = Group.objects.create(name=ad_group.cn, group_type=Group.AD,
                                                  description="Imported group from LDAP")
@@ -298,7 +345,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
                 ad_group.save()
             else:
                 print("existing group")
-                ad_groups.update(**attributes)
+                ad_groups.update(**model_attributes)
                 ad_group = ad_groups.first()
 
                 gen_group = ad_group.group
