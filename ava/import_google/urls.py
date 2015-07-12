@@ -9,4 +9,6 @@ urlpatterns = patterns(
         name='google-import'),
     url(r'^auth/$', login_required(views.google_directory_authorize_import),
         name='google-auth-import'),
+    url(r'^auth/return/$', login_required(views.google_directory_auth_return),
+        name='google-auth-return'),
 )

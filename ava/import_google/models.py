@@ -11,7 +11,8 @@ from django.contrib import admin
 from ava.core.models import TimeStampedModel
 
 
-from oauth2client.django_orm import CredentialsField
+from oauth2client.django_orm import FlowField, CredentialsField
+
 
 
 class CredentialsModel(models.Model):
@@ -19,9 +20,13 @@ class CredentialsModel(models.Model):
     credential = CredentialsField()
 
 
+
 class CredentialsAdmin(admin.ModelAdmin):
     pass
 
+class FlowModel(models.Model):
+    id = models.OneToOneField(User, primary_key=True)
+    flow = FlowField()
 
 
 class CredentialsModel(models.Model):
