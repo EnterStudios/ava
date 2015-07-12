@@ -251,6 +251,9 @@ CSP_STYLE_SRC = (
 
 CSP_SCRIPT_SRC = (
     "'self'",
+    ## lodash.min.js requires the use of 'unsafe-eval', which is a shame.
+    "'unsafe-eval'",
+
     ## JQuery is being pulled from a CDN.
     "http://ajax.googleapis.com",
 
