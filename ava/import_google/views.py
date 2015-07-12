@@ -3,7 +3,6 @@
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import DeleteView
 from django.http import HttpResponseRedirect, HttpResponseBadRequest, JsonResponse
-from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.django_orm import Storage
 
 
@@ -68,7 +67,7 @@ def google_directory_authorize_import(request):
 
     oauth_flow = gd_helper.get_flow()
     if credential is None or credential.invalid is True:
-         oauth_flow.params['state'] = gd_helper.generate_xsrf_token(user)
+        oauth_flow.params['state'] = gd_helper.generate_xsrf_token(user)
         authorize_url = oauth_flow.step1_get_authorize_url()
         f = FlowModel(id=user, flow=oauth_flow)
         f.save()
@@ -82,11 +81,10 @@ def google_directory_authorize_import(request):
 def google_directory_auth_return(request):
     user = request.user
     gd_helper = GoogleAppsHelper()
-     if not gd_helper.validate_xsrf_token(request):
-         return HttpResponseBadRequest()
+    if not gd_helper.validate_xsrf_token(request):
+        return HttpResponseBadRequest()
     oauth_flow = FlowModel.objects.get(id=user).flow
-    print('Flow: ' + oauth_flow)
-    credential = FLOW.step2_exchange(request.REQUEST)
+    credential = oauth_flow.step2_exchange(request.REQUEST)
     storage = Storage(CredentialsModel, 'id', user, 'credential')
     storage.put(credential)
     return HttpResponseRedirect("/google/auth/")
