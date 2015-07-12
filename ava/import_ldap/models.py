@@ -82,12 +82,13 @@ class ActiveDirectoryUser(TimeStampedModel):
 
     }
 
+    model_schema_reversed = {value: key for key, value in model_schema.items()}
+
     def model_field_to_ldap(self, fieldname):
         return self.model_schema.get(fieldname)
 
     def ldap_field_to_model(self, fieldname):
-        model_schema_reversed = {value: key for key, value in self.model_schema.items()}
-        return model_schema_reversed.get(fieldname)
+        return self.model_schema_reversed.get(fieldname)
 
     class Meta:
         unique_together = ('object_guid', 'object_sid')
@@ -273,12 +274,13 @@ class ActiveDirectoryGroup(TimeStampedModel):
 
     }
 
+    model_schema_reversed = {value: key for key, value in model_schema.items()}
+
     def model_field_to_ldap(self, fieldname):
         return self.model_schema.get(fieldname)
 
     def ldap_field_to_model(self, fieldname):
-        model_schema_reversed = {value: key for key, value in self.model_schema.items()}
-        return model_schema_reversed.get(fieldname)
+        return self.model_schema_reversed.get(fieldname)
 
     def get_groups(self, parameters):
         ad_help = ActiveDirectoryHelper()
