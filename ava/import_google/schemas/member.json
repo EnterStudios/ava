@@ -1,0 +1,8 @@
+{
+  "kind": "admin#directory#member",
+  "etag": etag,
+  "id": string,
+  "email": string,
+  "role": string,
+  "type": string
+}

@@ -27,7 +27,7 @@ class GoogleDirectoryUserDetail(DetailView):
 class GoogleDirectoryUserDelete(DeleteView):
     model = GoogleDirectoryUser
     template_name = 'confirm_delete.html'
-    success_url = '/Google/'
+    success_url = '/google/'
 
 
 class GoogleDirectoryGroupIndex(ListView):
@@ -49,7 +49,7 @@ class GoogleDirectoryGroupDetail(DetailView):
 class GoogleDirectoryGroupDelete(DeleteView):
     model = GoogleDirectoryGroup
     template_name = 'confirm_delete.html'
-    success_url = '/Google/'
+    success_url = '/google/'
 
 
 class GoogleDirectoryImport(django.views.generic.View):
@@ -57,6 +57,8 @@ class GoogleDirectoryImport(django.views.generic.View):
     def get(self, request):
         credential = retrieve_credential_from_session(request)
         gd_helper = GoogleDirectoryHelper()
-        current_page = gd_helper.import_google_directory(credential)
+        import_data = gd_helper.import_google_directory(credential)
+        gd_user = GoogleDirectoryUser();
+        gd_user.import_from_json(import_data['users'])
         return django.http.HttpResponse(str(current_page))
 

@@ -1,4 +1,5 @@
 # flake8: noqa
+from django.core.serializers import json
 
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -56,28 +57,52 @@ class FlowModel(models.Model):
 #         "familyName": "A String", # Last Name
 
 class GoogleDirectoryUser(TimeStampedModel):
-    dn = models.CharField(max_length=300)
-    isDelegatedAdmin = models.BooleanField()
-    suspended = models.BooleanField()
+    is_delegated_admin = models.BooleanField(default=False)
+    suspended = models.BooleanField(default=False)
     google_id = models.CharField(max_length=300)
     deletion_time = models.CharField(max_length=300)
     suspension_reason = models.CharField(max_length=300)
-    is_admin = models.BooleanField()
+    is_admin = models.BooleanField(default=False)
     etag = models.CharField(max_length=300)
     last_login_time = models.CharField(max_length=300)
-    org_unit_path = models.CharField(max_length=300)
-    external_ids = models.CharField(max_length=300)
-    is_mailbox_setup = models.BooleanField()
+    is_mailbox_setup = models.BooleanField(default=False)
     password = models.CharField(max_length=300)
-    emails = models.CharField(max_length=300)
-    organizations = models.CharField(max_length=300)
     primary_email = models.EmailField()
+    ip_whitelisted = models.BooleanField(default=False)
     hash_function = models.CharField(max_length=300)
     creation_time = models.CharField(max_length=300)
-    websites = models.CharField(max_length=300)
-    change_password_at_next_login = models.BooleanField
+    change_password_at_next_login = models.BooleanField(default=False)
     groups = models.ManyToManyField('GoogleDirectoryGroup', related_name='users')
     google_configuration = models.ForeignKey('GoogleConfiguration')
+
+    model_schema = {
+        'account_expires': 'accountExpires',
+        'is_delegated_admin': 'isDelegatedAdmin',
+        'suspended': 'suspended',
+        'google_id': 'id',
+        'deletion_time': 'deletionTime',
+        'suspension_reason': 'suspensionReason',
+        'is_admin': 'isAdmin',
+        'etag': 'etag',
+        'last_login_time': 'lastLoginTime',
+        'is_mailbox_setup': 'isMailboxSetup',
+        'ip_whitelisted': 'ipWhitelisted',
+        'password': 'password',
+        'primary_email': 'primaryEmail',
+        'hash_function': 'hashFunction',
+        'creation_time': 'creationTime',
+        'change_password_at_next_login': 'changePasswordAtNextLogin',
+
+    }
+
+    model_schema_reversed = {value: key for key, value in model_schema.items()}
+
+    def model_field_to_google(self, fieldname):
+        return self.model_schema.get(fieldname)
+
+    def google_field_to_model(self, fieldname):
+        return self.model_schema_reversed.get(fieldname)
+
 
     def __unicode__(self):
         return self.name or ''
@@ -88,16 +113,40 @@ class GoogleDirectoryUser(TimeStampedModel):
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in GoogleDirectoryUser._meta.fields]
 
+    def import_from_json(self, json_data):
+        users = json.loads(json_data)
+        print(users)
+
 
 class GoogleDirectoryGroup(TimeStampedModel):
     name = models.CharField(max_length=300, unique=True)
     google_id = models.CharField(max_length=300, unique=True)
     description = models.CharField(max_length=1000)
-    admin_created = models.BooleanField()
+    admin_created = models.BooleanField(default=False)
     email = models.EmailField()
     etag = models.CharField(max_length=300)
     google_configuration = models.ForeignKey('GoogleConfiguration')
     # group = models.ForeignKey('core_group.Group', null=True, blank=True)
+
+    model_schema = {
+        'kind': 'kind',
+        'google_id': 'id',
+        'etag': 'etag',
+        'email': 'email',
+        'name': 'name',
+        'direct_members_count': 'directMembersCount',
+        'description': 'description',
+        'admin_created': 'adminCreated',
+    }
+
+    model_schema_reversed = {value: key for key, value in model_schema.items()}
+
+    def model_field_to_google(self, fieldname):
+        return self.model_schema.get(fieldname)
+
+    def google_field_to_model(self, fieldname):
+        return self.model_schema_reversed.get(fieldname)
+
 
     def __unicode__(self):
         return self.name or ''

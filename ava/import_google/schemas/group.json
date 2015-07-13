@@ -1,0 +1,16 @@
+{
+  "kind": "admin#directory#group",
+  "id": string,
+  "etag": etag,
+  "email": string,
+  "name": string,
+  "directMembersCount": long,
+  "description": string,
+  "adminCreated": boolean,
+  "aliases": [
+    string
+  ],
+  "nonEditableAliases": [
+    string
+  ]
+}
