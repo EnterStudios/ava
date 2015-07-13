@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 
 def build_flow():
     """Build and return a OAuth2WebServerFlow object."""
-    if (settings.GOOGLE_OAUTH2_CLIENT_ID is None or settings.GOOGLE_OAUTH2_CLIENT_SECRET is None):
+    if settings.GOOGLE_OAUTH2_CLIENT_ID is None or settings.GOOGLE_OAUTH2_CLIENT_SECRET is None:
         raise django.core.exceptions.ImproperlyConfigured(
             'Google OAuth2 Credentials have not been configured.'
         )
@@ -72,6 +72,7 @@ class GoogleOAuth2Callback(django.views.generic.View):
         # And send the user to the next step, wherever that might be. This URL
         # should be updated for the next step in the process.
         return django.http.HttpResponseRedirect(reverse('google-import'))
+
 
 class Main(django.views.generic.TemplateView):
     template_name = 'google_auth/main.html'

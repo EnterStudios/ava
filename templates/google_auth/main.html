@@ -1,12 +1,15 @@
-<html>
-  <body>
-    <p>This is just a placeholder</p>
+{% extends 'base.html' %}
+{% load bootstrap %}
+{% load staticfiles %}
 
-    <p>Go to <a href="{% url 'google-auth-login-redirect' %}">{% url 'google-auth-login-redirect' %}</a> to trigger the login
-    process.</p>
+{% block mainpage %}
 
-    <p>Once that's done, you can go to <a href="{% url 'google-import' %}">{% url 'google-import' %}
-      </a> to try and actually so something interesting with the
-      data, but that's as far as I was able to get without having data to retrieve.</p>
-  </body>
-</html>
+<div class="page-header">
+  <h1>Import Google Apps Directory</h1>
+</div>
+
+        <center><img src="{% static 'images/get_bacon.png' %}" width=300 alt="Push Button; Get Bacon" /></center>
+        <br/>
+        <center><a href="{% url 'google-auth-login-redirect' %}"><img src="{% static 'images/big_red_button.jpg' %}" /></a></center>
+
+{% endblock %}
