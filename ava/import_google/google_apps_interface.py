@@ -9,7 +9,7 @@ from oauth2client import xsrfutil
 from oauth2client.client import OAuth2WebServerFlow, flow_from_clientsecrets
 
 
-class GoogleAppsHelper:
+class GoogleDirectoryHelper:
     # Define the specific access we would like to request from the user
     # Check https://developers.google.com/admin-sdk/directory/v1/guides/authorizing for all available scopes
     OAUTH_SCOPE = 'https://www.googleapis.com/auth/admin.directory.user.readonly ' \
@@ -68,15 +68,19 @@ class GoogleAppsHelper:
         #    return False
         return self.FLOW.step2_exchange(request)
 
-    def import_google_directory(self):
-        users = GoogleAppsHelper.get_users(self.DIRECTORY_SERVICE)
-        groups = GoogleAppsHelper.get_groups(self.DIRECTORY_SERVICE)
+    def import_google_directory(self, credential):
+        http = httplib2.Http()
+        http = credential.authorize(http)
+        directory_service = build('admin', 'directory_v1', http=http)
+
+        users = self.get_users(directory_service)
+        groups = self.get_groups(directory_service)
 
         results = {
             'users': users,
             'groups': groups,
-            'user_groups': GoogleAppsHelper.get_users(self.DIRECTORY_SERVICE, users),
-            'group_members': GoogleAppsHelper.get_users(self.DIRECTORY_SERVICE, groups),
+            'user_groups': self.get_user_groups(directory_service, users),
+            'group_members': self.get_group_members(directory_service, groups),
         }
 
         return results
