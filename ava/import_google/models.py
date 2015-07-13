@@ -1,5 +1,5 @@
 # flake8: noqa
-from django.core.serializers import json
+import json
 
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -60,7 +60,6 @@ class GoogleDirectoryUser(TimeStampedModel):
     google_configuration = models.ForeignKey('GoogleConfiguration')
 
     model_schema = {
-        'account_expires': 'accountExpires',
         'is_delegated_admin': 'isDelegatedAdmin',
         'suspended': 'suspended',
         'google_id': 'id',
@@ -97,15 +96,24 @@ class GoogleDirectoryUser(TimeStampedModel):
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in GoogleDirectoryUser._meta.fields]
 
-    def import_from_json(self, json_data):
-        users = json.loads(json_data)
-        print(users)
+    def import_from_json(self, google_configuration, users):
+        for user in users:
+            user_attributes = {}
+            for key, value in user.items():
+                # print("key : " + key + " value : " + str(value))
+                if key in self.model_schema_reversed.keys():
+                    user_attributes[self.google_field_to_model(key)] = value
+            gd_user = GoogleDirectoryUser.objects.create(google_configuration=google_configuration, **user_attributes)
+            gd_user.save()
+
+
 
 
 class GoogleDirectoryGroup(TimeStampedModel):
     name = models.CharField(max_length=300, unique=True)
     google_id = models.CharField(max_length=300, unique=True)
     description = models.CharField(max_length=1000)
+    direct_members_count = models.CharField(max_length=5)
     admin_created = models.BooleanField(default=False)
     email = models.EmailField()
     etag = models.CharField(max_length=300)
@@ -113,7 +121,6 @@ class GoogleDirectoryGroup(TimeStampedModel):
     # group = models.ForeignKey('core_group.Group', null=True, blank=True)
 
     model_schema = {
-        'kind': 'kind',
         'google_id': 'id',
         'etag': 'etag',
         'email': 'email',
@@ -143,6 +150,16 @@ class GoogleDirectoryGroup(TimeStampedModel):
 
     class Meta:
         ordering = ['name', 'google_id']
+        
+    def import_from_json(self, google_configuration, groups):
+        for group in groups:
+            group_attributes = {}
+            for key, value in group.items():
+                # print("key : " + key + " value : " + str(value))
+                if key in self.model_schema_reversed.keys():
+                    group_attributes[self.google_field_to_model(key)] = value
+            gd_group = GoogleDirectoryGroup.objects.create(google_configuration=google_configuration, **group_attributes)
+            gd_group.save()
 
 
 class GoogleConfiguration(TimeStampedModel):
