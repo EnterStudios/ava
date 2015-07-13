@@ -30,7 +30,7 @@ def build_flow():
             'https://www.googleapis.com/auth/admin.directory.user.alias.readonly'
         ],
         user_agent='ava/0.1',
-        redirect_uri='http://avasecure.com8000/google_auth/oauth2callback'
+        redirect_uri='http://avasecure.com:8000/google_auth/oauth2callback'
     )
     return flow
 
@@ -71,21 +71,21 @@ class GoogleOAuth2Callback(django.views.generic.View):
         store_credential_in_session(request, credential)
         # And send the user to the next step, wherever that might be. This URL
         # should be updated for the next step in the process.
-        return django.http.HttpResponseRedirect(reverse('google-auth-main'))
+        return django.http.HttpResponseRedirect(reverse('google-import'))
 
 
-class GoogleRetrieveInfo(django.views.generic.View):
-    def get(self, request):
-        credential = retrieve_credential_from_session(request)
-
-        http = httplib2.Http()
-        http = credential.authorize(http)
-        directory_service = build('admin', 'directory_v1', http=http)
-
-        params = {'customer': 'my_customer'}
-        current_page = directory_service.users().list(**params).execute()
-
-        return django.http.HttpResponse(str(current_page))
+# class GoogleRetrieveInfo(django.views.generic.View):
+#     def get(self, request):
+#         credential = retrieve_credential_from_session(request)
+#
+#         http = httplib2.Http()
+#         http = credential.authorize(http)
+#         directory_service = build('admin', 'directory_v1', http=http)
+#
+#         params = {'customer': 'my_customer'}
+#         current_page = directory_service.users().list(**params).execute()
+#
+#         return django.http.HttpResponse(str(current_page))
 
 
 class Main(django.views.generic.TemplateView):
