@@ -73,20 +73,5 @@ class GoogleOAuth2Callback(django.views.generic.View):
         # should be updated for the next step in the process.
         return django.http.HttpResponseRedirect(reverse('google-import'))
 
-
-# class GoogleRetrieveInfo(django.views.generic.View):
-#     def get(self, request):
-#         credential = retrieve_credential_from_session(request)
-#
-#         http = httplib2.Http()
-#         http = credential.authorize(http)
-#         directory_service = build('admin', 'directory_v1', http=http)
-#
-#         params = {'customer': 'my_customer'}
-#         current_page = directory_service.users().list(**params).execute()
-#
-#         return django.http.HttpResponse(str(current_page))
-
-
 class Main(django.views.generic.TemplateView):
     template_name = 'google_auth/main.html'
