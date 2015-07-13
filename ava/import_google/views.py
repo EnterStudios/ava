@@ -15,20 +15,20 @@ class GoogleDirectoryUserIndex(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['Google_user_list'] = GoogleDirectoryUser.objects.all()
+        context['google_user_list'] = GoogleDirectoryUser.objects.all()
         return context
 
 
 class GoogleDirectoryUserDetail(DetailView):
     model = GoogleDirectoryUser
-    context_object_name = 'activedirectoryuser'
+    context_object_name = 'googledirectoryuser'
     template_name = 'google_apps/GoogleDirectoryUser_detail.html'
 
 
 class GoogleDirectoryUserDelete(DeleteView):
     model = GoogleDirectoryUser
     template_name = 'confirm_delete.html'
-    success_url = '/google/'
+    success_url = reverse('google-user-index')
 
 
 class GoogleDirectoryGroupIndex(ListView):
@@ -37,20 +37,20 @@ class GoogleDirectoryGroupIndex(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['Google_group_list'] = GoogleDirectoryGroup.objects.all()
+        context['google_group_list'] = GoogleDirectoryGroup.objects.all()
         return context
 
 
 class GoogleDirectoryGroupDetail(DetailView):
     model = GoogleDirectoryGroup
-    context_object_name = 'activedirectorygroup'
+    context_object_name = 'googledirectorygroup'
     template_name = 'google_apps/GoogleDirectoryGroup_detail.html'
 
 
 class GoogleDirectoryGroupDelete(DeleteView):
     model = GoogleDirectoryGroup
     template_name = 'confirm_delete.html'
-    success_url = '/google/'
+    success_url = reverse('google-group-index')
 
 
 class GoogleDirectoryImport(django.views.generic.View):
