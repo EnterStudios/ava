@@ -65,3 +65,6 @@ twitter_settings*
 
 ## Many .bak files were created during the 2to3 run
 *.bak
+
+secrets.env
+

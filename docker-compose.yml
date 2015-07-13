@@ -37,6 +37,8 @@ web:
   environment:
     - DJANGO_SETTINGS_MODULE=ava.settings.base
     - USE_MOCK_LDAP=true
+  env_file:
+    - secrets.env
 
 ## AVA Asynchronous Task Worker
 worker:
@@ -50,3 +52,5 @@ worker:
     - elasticsearch
   environment:
     - DJANGO_SETTINGS_MODULE=ava.settings.base
+  env_file:
+    - secrets.env
