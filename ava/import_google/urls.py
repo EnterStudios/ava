@@ -14,7 +14,7 @@ urlpatterns = patterns(
         name='google-user-detail'),
     url(r'^users/(?P<pk>\d+)/delete/$', login_required(views.GoogleDirectoryUserDelete.as_view()),
         name='google-user-delete'),
-    
+
     url(r'^groups/$', login_required(views.GoogleDirectoryGroupIndex.as_view()),
         name='google-group-index'),
     url(r'^groups/(?P<pk>\d+)/view/$', login_required(views.GoogleDirectoryGroupDetail.as_view()),
