@@ -1,9 +1,7 @@
 # flake8: noqa
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import DeleteView
-import httplib2
 
-from apiclient.discovery import build
 from ava.google_auth.views import retrieve_credential_from_session, django
 from ava.import_google.google_apps_interface import GoogleDirectoryHelper
 from ava.import_google.models import GoogleDirectoryUser, GoogleDirectoryGroup
@@ -59,7 +57,4 @@ class GoogleDirectoryImport(django.views.generic.View):
         credential = retrieve_credential_from_session(request)
         gd_helper = GoogleDirectoryHelper()
         current_page = gd_helper.import_google_directory(credential)
-
-        # current_page = directory_service.users().list(**params).execute()
-
         return django.http.HttpResponse(str(current_page))
