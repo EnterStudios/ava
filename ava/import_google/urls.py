@@ -7,4 +7,10 @@ urlpatterns = patterns(
     '',
     url(r'^import/$', login_required(views.GoogleDirectoryImport.as_view()),
         name='google-import'),
+    url(r'^users/$', login_required(views.GoogleDirectoryUserIndex.as_view()),
+        name='google-user-index'),
+    url(r'^users/$', login_required(views.GoogleDirectoryUserDetail.as_view()),
+        name='google-user-detail'),
+    url(r'^users/$', login_required(views.GoogleDirectoryUserDelete.as_view()),
+        name='google-user-delete'),
 )
