@@ -10,26 +10,22 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>CN</th>
-                <th>GUID</th>
-                <th># Members</th>
+                <th>Name</th>
+                <th>Member Count</th>
+                <th>Email</th>
                 <th>
-                    {% if google_configuration %}
-                        <a href="{% url 'google-get-groups' google_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Import Groups</button></a>
-                    {% endif %}
                 </th>
             </tr>
         </thead>
         <tbody>
         {% for googledirectorygroup in googledirectorygroup_list %}
             <tr>
-                <td>{{ googledirectorygroup.cn }}</td>
-                <td>{{ googledirectorygroup.objectGUID }}</td>
-                <td>{{ googledirectorygroup.users.count }}</td>
+                <td>{{ googledirectorygroup.name }}</td>
+                <td>{{ googledirectorygroup.direct_members_count }}</td>
+                <td>{{ googledirectorygroup.email }}</td>
         
                 <td>
                     <a href="{% url 'google-group-detail' googledirectorygroup.id  %}" class="btn btn-primary btn-sm">View</a>
-                    <a href="{% url 'google-group-update' googledirectorygroup.id  %}" class="btn btn-primary btn-sm">Update</a>
                     <a href="{% url 'google-group-delete' googledirectorygroup.id  %}" class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>
