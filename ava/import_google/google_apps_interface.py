@@ -1,72 +1,15 @@
 # flake8: noqa
-import os
-import sys
 
 import httplib2
 from apiclient import errors
+
 from apiclient.discovery import build
-from oauth2client import xsrfutil
-from oauth2client.client import OAuth2WebServerFlow, flow_from_clientsecrets
 
 
 class GoogleDirectoryHelper:
-    # Define the specific access we would like to request from the user
-    # Check https://developers.google.com/admin-sdk/directory/v1/guides/authorizing for all available scopes
-    OAUTH_SCOPE = 'https://www.googleapis.com/auth/admin.directory.user.readonly ' \
-                  'https://www.googleapis.com/auth/admin.directory.group.readonly ' \
-                  'https://www.googleapis.com/auth/admin.directory.group.member.readonly ' \
-                  'https://www.googleapis.com/auth/admin.directory.orgunit.readonly ' \
-                  'https://www.googleapis.com/auth/admin.directory.user.alias.readonly'
-
-    # Redirect URI for installed apps
-    REDIRECT_URI = 'http://avasecure.com:8000/google/auth/return/'
-
-    CLIENT_ID = ""
-
-    CLIENT_SECRET = ""
-
-    FLOW = OAuth2WebServerFlow(CLIENT_ID, CLIENT_SECRET, OAUTH_SCOPE, REDIRECT_URI)
-    
-    DIRECTORY_SERVICE = None
-
 
     def __init__(self):
-        try:
-            # Pull the client_id and client_secret from environment variables. If these variables do not exist. Log and
-            # exit as this will not work
-
-            self.CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
-            self.CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
-            self.FLOW = OAuth2WebServerFlow(self.CLIENT_ID, self.CLIENT_SECRET, self.OAUTH_SCOPE, self.REDIRECT_URI)
-        except OSError as e:
-            print(e.message)
-            print(e.args)
-            sys.exit(1)
-
-    def generate_xsrf_token(self,user):
-        return xsrfutil.generate_token(self.CLIENT_SECRET, user)
-
-    def validate_xsrf_token(self, request):
-        print(request.REQUEST['state'])
-        return xsrfutil.validate_token(self.CLIENT_SECRET, request.REQUEST['state'], request.user)
-
-    def get_flow(self):
-        #return flow_from_clientsecrets(self.CLIENT_SECRET, self.OAUTH_SCOPE, self.REDIRECT_URI)
-        return OAuth2WebServerFlow(self.CLIENT_ID, self.CLIENT_SECRET, self.OAUTH_SCOPE, self.REDIRECT_URI)
-
-    def get_auth_url(self, flow):
-
-        return self.FLOW.step1_get_authorize_url()
-
-    def build_directory_service(self, credential):
-        http = httplib2.Http()
-        http = credential.authorize(http)
-        self.DIRECTORY_SERVICE= build("admin", "directory_v1", http=http)
-
-    def generate_credential(self, request):
-        # if not xsrfutil.validate_token(self.CLIENT_SECRET, request_state, request_user):
-        #    return False
-        return self.FLOW.step2_exchange(request)
+        pass
 
     def import_google_directory(self, credential):
         http = httplib2.Http()
@@ -84,7 +27,6 @@ class GoogleDirectoryHelper:
         }
 
         return results
-
 
     @staticmethod
     def get_users(directory_service):
@@ -104,7 +46,7 @@ class GoogleDirectoryHelper:
                     break
 
             except errors.HttpError as error:
-                print ('An error occurred: %s' % error)
+                print('An error occurred: %s' % error)
                 break
 
         return all_users
@@ -126,7 +68,7 @@ class GoogleDirectoryHelper:
                     break
 
             except errors.HttpError as error:
-                print ('An error occurred: %s' % error)
+                print('An error occurred: %s' % error)
                 break
 
         return all_groups
@@ -159,7 +101,7 @@ class GoogleDirectoryHelper:
                     break
 
             except errors.HttpError as error:
-                print ('An error occurred: %s' % error)
+                print('An error occurred: %s' % error)
                 break
 
         return user_groups
@@ -182,7 +124,7 @@ class GoogleDirectoryHelper:
                 current_page = directory_service.members().list(**params).execute()
                 curr_members = []
 
-                print (current_page)
+                print(current_page)
 
                 if 'members' in current_page:
                     curr_members.extend(current_page['members'])
@@ -193,7 +135,7 @@ class GoogleDirectoryHelper:
                     break
 
             except errors.HttpError as error:
-                print ('An error occurred: %s' % error)
+                print('An error occurred: %s' % error)
                 break
 
         return group_members
@@ -201,6 +143,6 @@ class GoogleDirectoryHelper:
     @staticmethod
     def to_string(dictionary):
         for key, value in dictionary:
-            print (key)
+            print(key)
             for item in value:
-                print (item)
+                print(item)
