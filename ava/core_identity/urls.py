@@ -6,7 +6,7 @@ from ava.core_identity import views
 
 urlpatterns = patterns(
     '',
-    url(r'^$', login_required(views.IdentityIndex.as_view()), name='index'),
+    url(r'^$', login_required(views.IdentityIndex.as_view()), name='identity-dashboard'),
     url(r'^search/', login_required(include('haystack.urls'))),
 
     url(r'^identity/$', login_required(views.IdentityIndex.as_view()), name='identity-index'),

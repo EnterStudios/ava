@@ -62,6 +62,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # AVA Redirection Middleware must happen after AuthenticationMiddleware
+    'ava.middleware.AVARedirectionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'csp.middleware.CSPMiddleware',
 )
@@ -249,6 +251,9 @@ CSP_STYLE_SRC = (
 
 CSP_SCRIPT_SRC = (
     "'self'",
+    ## lodash.min.js requires the use of 'unsafe-eval', which is a shame.
+    "'unsafe-eval'",
+
     ## JQuery is being pulled from a CDN.
     "http://ajax.googleapis.com",
 
@@ -275,3 +280,8 @@ CSP_IMG_SRC = (
     ## remove this exemption again.
     "data:",
 )
+
+
+## GOOGLE OAUTH2 CONFIGURATION
+GOOGLE_OAUTH2_CLIENT_ID = os.environ.get('GOOGLE_OAUTH2_CLIENT_ID', None)
+GOOGLE_OAUTH2_CLIENT_SECRET = os.environ.get('GOOGLE_OAUTH2_CLIENT_SECRET', None)
