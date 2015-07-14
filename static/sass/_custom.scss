@@ -5,23 +5,58 @@
 $ava-pure-white:        #FFFFFF;
 $ava-off-white:         #FCFCFC;
 $ava-white:             #FDFDFD;
-$ava-blue-grey:         #919DA8;
-$ava-light-blue:        #CFDBE2;
-$ava-dark-blue:         #3A3F50;
-$ava-main-bg:           #F5F7FA;
 
-$ava-grey:              #F4F8FB;
+$ava-main-bg:           #F5F7FA;
 $ava-lighter-blue:      #D5E2EE;
+$ava-light-blue:        #CFDBE2;
+$ava-blue-grey:         #919DA8;
+$ava-dark-blue:         #3A3F50;
+
+$ava-light-grey:        #F0F0F0;
+$ava-grey:              #F4F8FB;
 $ava-black:             #242C39;
+
 $ava-primary:           #085676;
 $ava-secondary:         #FBB726;
 $ava-secondary-darker:  #C08A17;
+
+$ava-blue-light:        #0F4961;
+$ava-blue-mid:          #062D3D;
+$ava-blue-darker:       #1E405E;
+$ava-blue-black:        #0C1E2F;
+
+$ava-green:             #23A88A;
+$ava-green-mid:         #28987E;
+$ava-green-darker:      #157E66;
+$ava-green-darker-mid:  #106451;
+$ava-green-black:       #0A5746;
+
+$ava-red:               #C22A2A;
+$ava-red-darker:        #6B0E0E;
 
 // Body
 
 body {
     padding-top: 50px !important;
     background-color: $ava-main-bg !important;
+}
+
+h1, 
+.h1, 
+h2, 
+.h2, 
+h3, 
+.h3 {
+    margin-bottom: 0px;
+}
+
+.table > thead > tr > th, 
+.table > thead > tr > td, 
+.table > tbody > tr > th, 
+.table > tbody > tr > td, 
+.table > tfoot > tr > th, 
+.table > tfoot > tr > td {
+    border-top: 0px;
 }
 
 // HTML Components
@@ -46,6 +81,19 @@ table {
 
 .no-auth {
     margin-left: 0px;
+}
+
+.navbar-inverse {
+    background-color: $ava-primary;
+    color: $ava-pure-white;
+    
+    .navbar-brand {
+        color: $ava-pure-white;
+    }
+
+    .navbar-nav > li > a {
+        color: $ava-pure-white;
+    }
 }
 
 .sidebar {
@@ -172,7 +220,7 @@ table {
     }
 
     .panel-bottom {
-        border-top: 1px solid #F0F0F0;
+        border-top: 1px solid $ava-light-grey;
         position: absolute;
         bottom: 0px;
         width: 100%;
@@ -183,7 +231,7 @@ table {
             padding: 5px 10px;
 
             &:nth-child(even) {
-                border-left: 1px solid #F0F0F0;
+                border-left: 1px solid $ava-light-grey;
             }
         }
     }
@@ -201,35 +249,56 @@ table {
 // Buttons
 
 .btn {
-    color: $ava-white !important;
-    background-color: $ava-primary !important;
+    color: $ava-pure-white !important;
     padding: 9px 30px 8px 30px;
     text-transform: uppercase;
     transition: all .2s ease;
     border-left: 0px;
     border-top: 0px;
     border-right: 0px;
-    border-bottom: 2px solid $ava-dark-blue !important;
     text-rendering: optimizelegibility;
     text-decoration: none;
     line-height: 28px;
     margin: 6px 0 20px;
     font-size: 16px;
+    background-color: $ava-primary !important;
+    border-bottom: 2px solid $ava-blue-mid !important;
+    border: 1px solid $ava-blue-light;
+    text-shadow: 0px 2px 0px $ava-blue-mid;
 
     &:hover {
-        color: $ava-primary;
-        background-color: $ava-secondary !important;
-        border-bottom: 2px solid $ava-secondary-darker !important;
+        background-color: $ava-blue-darker !important;
+        border-bottom: 2px solid $ava-blue-black !important;
+        border: 1px solid $ava-blue-black;
+        text-shadow: 0px 2px 0px $ava-blue-black;
+    }
+
+    &.btn-success {
+        background-color: $ava-green !important;
+        border-bottom: 2px solid $ava-green-darker !important;
+        border: 1px solid $ava-green-mid;
+        text-shadow: 0px 2px 0px $ava-green-darker;
+
+        &:hover {
+            background-color: $ava-green-darker !important;
+            border-bottom: 2px solid $ava-green-black !important;
+            border: 1px solid $ava-green-darker-mid;
+            text-shadow: 0px 2px 0px $ava-green-black;
+        }
     }
 
     &.btn-danger {
-        background-color: #C22A2A !important;
-        border-bottom: 2px solid #6B0E0E !important;
+        background-color: $ava-red !important;
+        border-bottom: 2px solid $ava-red-darker !important;
+        text-shadow: 0px 2px 0px $ava-red-darker;
+        border: 1px solid $ava-red-darker;
 
         &:hover {
             color: $ava-pure-white;
-            background-color: #6B0E0E !important;
-            border-bottom: 2px solid #420808 !important;
+            background-color: $ava-red-darker !important;
+            border-bottom: 2px solid $ava-red-darker !important;
+            border: 1px solid $ava-red-darker;
+            text-shadow: 0px 2px 0px $ava-red-darker;
         }
     }
 
@@ -286,6 +355,20 @@ table {
     }
 }
 
+// Page Specific
 
+.wrapper {
+    float: left;
+    width: 100%;
+    padding: 0px 0px 40px 0px;
+}
 
+.target-table {
+    float: left;
+    width: 100%;
+} 
+
+.search {
+    padding: 0px 0px 20px 0px;
+}
 

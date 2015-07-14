@@ -24,9 +24,9 @@
         <td>{{ ldap_configuration.dump_dn }}</td>
         <td>
             <div class="pull-right">
+                <a href="{% url 'ldap-configuration-delete' ldap_configuration.id  %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
                 <a href="{% url 'ldap-configuration-detail' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
                 <a href="{% url 'ldap-configuration-update' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
-                <a href="{% url 'ldap-configuration-delete' ldap_configuration.id  %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
             </div>
         </td>
     </tr>
@@ -34,7 +34,7 @@
      </tbody>
     </table>
     <div class="button pull-right">
-         <a href="{% url 'ldap-configuration-create' %}" class="btn btn-primary btn-md">Create LDAP Configuration</a> <!-- glyphicon glyphicon-plus -->
+         <a href="{% url 'ldap-configuration-create' %}" class="btn btn-success btn-md">Create LDAP Configuration</a> <!-- glyphicon glyphicon-plus -->
     </div>
 
 

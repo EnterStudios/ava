@@ -28,8 +28,10 @@
                         </td>
                         <td> {{ test.test_status }}</td>
                         <td>
-                            <a href="{% url 'email-test-update' test.id %}" class="btn btn-primary">Update</a>
-                            <a href="{% url 'email-test-delete' test.id %}" class="btn btn-danger">Delete</a>
+                            <div class="pull-right">
+                                <a href="{% url 'email-test-delete' test.id %}" class="btn btn-danger btn-sm">Delete</a>
+                                <a href="{% url 'email-test-update' test.id %}" class="btn btn-primary btn-sm">Update</a>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}

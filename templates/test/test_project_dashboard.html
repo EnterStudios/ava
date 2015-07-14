@@ -6,35 +6,45 @@
         <h2>Project Dashboard : {{ project.name }}</h2>
     </div>
 
-<div class="container" style="text-align:center; min-width:900px; max-width:1500px">
-    <div class="row" style="height:4.0em"></div>
       <div class="row">
 
-                <div class="col-md-3 col-lg-3" align="center">
-                    <i class="fa fa-star fa-5x"></i>
-                    <h2>New Tests</h2>
-                    <p>{{ tests_new }}</p>
-                </div>
 
-                <div class="col-md-3 col-lg-3" align="center">
-                    <i class="fa fa-check-square fa-5x"></i>
-                    <h2>Completed</h2>
-                    <p>{{ tests_complete }}</p>
-                </div>
-                <div class="col-md-3 col-lg-3" align="center">
-                    <i class="fa fa-history fa-5x"></i>
-                    <h2>Scheduled</h2>
-                    <p>{{ tests_scheduled }}</p>
-                </div>
-                <div class="col-md-3 col-lg-3" align="center">
-                    <i class="fa fa-exclamation-circle fa-5x"></i>
-                    <h2>Errors</h2>
-                    <p>{{ tests_error }}</p>
+        <div class="col-sm-3">
+            <div class="panel">
+                <div class="panel-body">
+                    <!-- <i class="fa fa-star fa-5x"></i> -->
+                    <div class="body-item"><span class="dashboard-count">{{ tests_new }}</span> <span class="dashboard-item">new tests</span></div>
                 </div>
             </div>
+        </div>
 
+        <div class="col-sm-3">
+            <div class="panel">
+                <div class="panel-body">
+                    <!-- <i class="fa fa-check-square fa-5x"></i> -->
+                    <div class="body-item"><span class="dashboard-count">{{ tests_complete }}</span> <span class="dashboard-item">completed</span></div>
+                </div>
+            </div>
+        </div>
 
-</div>
+        <div class="col-sm-3">
+            <div class="panel">
+                <div class="panel-body">
+                    <!-- <i class="fa fa-history fa-5x"></i> -->
+                    <div class="body-item"><span class="dashboard-count">{{ tests_scheduled }}</span> <span class="dashboard-item">scheduled</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="panel">
+                <div class="panel-body">
+                    <!-- <i class="fa fa-exclamation-circle fa-5x"></i> -->
+                    <div class="body-item"><span class="dashboard-count">{{ tests_error }}</span> <span class="dashboard-item">errors</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
   <div class="page-header">
             <h2>Current Tests: </h2>
         </div>
@@ -48,17 +58,7 @@
                         <th>Name</th>
                         <th>Description</th>
                         <th>Status</th>
-                        <th>
-                        <div class="btn-group">
-                            <a class="btn btn-primary" href="#"><i class="fa fa-plus fa-fw"></i>Add Test</a>
-                                  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown"  aria-expanded="false" href="#">
-                                        <span class="fa fa-caret-down"></span></a>
-                                          <ul class="dropdown-menu">
-                                              <li><a href="{% url 'email-test-create' project.id %}"><i class="fa fa-envelope fa-fw"></i> Email</a></li>
-                                              <li><a href="{% url 'twitter-test-create' project.id %}"><i class="fa fa-twitter fa-fw"></i> Twitter</a></li>
-                                          </ul>
-                        </div>
-                        </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,11 +69,11 @@
         <td>{{ item.description }}</td>
         <td>{{ item.test_status }}</td>
         <td>
-
-
-          <a href="{% url 'email-test-detail' item.id %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
-          <a href="{% url 'email-test-update' item.id %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
-          <a href="{% url 'email-test-delete' item.id %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+            <div class="pull-right">
+                <a href="{% url 'email-test-delete' item.id %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+                <a href="{% url 'email-test-detail' item.id %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
+                <a href="{% url 'email-test-update' item.id %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
+            </div>
     </tr>
     {% endfor %}
 
@@ -84,18 +84,22 @@
         <td>{{ item.description }}</td>
         <td>{{ item.test_status }}</td>
         <td>
-
-          <a href="{% url 'twitter-test-detail' item.id %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
-          <a href="{% url 'twitter-test-update' item.id %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
-          <a href="{% url 'twitter-test-delete' item.id %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+            <div class="pull-right">
+                <a href="{% url 'twitter-test-delete' item.id %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+                <a href="{% url 'twitter-test-detail' item.id %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>
+                <a href="{% url 'twitter-test-update' item.id %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
+            </div>
     </tr>
     {% endfor %}
 
      </tbody>
     </table>
 
-
-        </div>
+    <div class="button pull-right">
+        <a href="{% url 'email-test-create' project.id %}" class="btn btn-success btn-md"><i class="fa fa-envelope fa-fw"></i> Add Email Test</a>
+        <a href="{% url 'twitter-test-create' project.id %}" class="btn btn-success btn-md"><i class="fa fa-twitter fa-fw"></i> Add Twitter Test</a>                   
+    </div>
+</div>
 
 
 {% endblock %}
