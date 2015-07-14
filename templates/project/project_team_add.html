@@ -5,13 +5,15 @@
     <h2 class="sub-header">Add teams to: {{ project.name }}</h2>
 </div>
 
+<div class="search">
 <form method="get" action="." class="form-inline">
     <div class="form-group">
         <label for="search" class="sr-only">Search for</label>
         <input type="text" class="form-control" id="search" name="search" value="{{ search_term }}">
     </div>
-    <button type="submit" class="btn btn-default">Search</button>
+    <button type="submit" class="btn btn-success btn-sm">Search</button>
 </form>
+</div>
 
 {% if team_list %}
     <form method="post" action=".">
@@ -40,8 +42,10 @@
                 {% endfor %}
             </tbody>
         </table>
-        <button type="submit" class="btn btn-primary">Add</button>
-        <a href="{% url 'project-detail' project.id %}" class="btn btn-default">Cancel</a>
+        <div class="button pull-right">
+            <a href="{% url 'project-detail' project.id %}" class="btn btn-primary btn-md">Cancel</a>
+            <button type="submit" class="btn btn-success btn-md">Add</button>
+        </div>
     </form>
 {% endif %}
 

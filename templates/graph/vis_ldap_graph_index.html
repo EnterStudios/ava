@@ -12,9 +12,7 @@
                         <th>Server</th>
                         <th># Users</th>
                         <th># Groups</th>
-                        <th>
-
-                        </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,8 +22,9 @@
         <td>{{ ldap_configuration.activedirectoryuser_set.count }}</td>
         <td>{{ ldap_configuration.activedirectorygroup_set.count }}</td>
         <td>
-
-          <a href="{% url 'vis-ldap-graph-view' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">View Graph</button></a>
+            <div class="pull-right">
+                <a href="{% url 'vis-ldap-graph-view' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">View Graph</button></a>
+            </div>
         </td>
     </tr>
     {% endfor %}

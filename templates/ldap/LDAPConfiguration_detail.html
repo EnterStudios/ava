@@ -30,9 +30,13 @@
                         </tr>
                         </tbody>
                     </table>
-                    <a href="{% url 'ldap-import-all' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Import</button></a>
-                    <a href="{% url 'ldap-configuration-update' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
-                    <a href="{% url 'ldap-configuration-delete' ldap_configuration.id  %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+                    <div class="button pull-left">
+                        <a href="{% url 'ldap-configuration-delete' ldap_configuration.id  %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+                    </div>
+                    <div class="button pull-right"><a href="{% url 'ldap-configuration-update' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
+                        <a href="{% url 'ldap-import-all' ldap_configuration.id  %}"><button type="button" class="btn btn-success btn-sm">Import</button></a>
+                        
+                    </div>
 
                 </div> <!-- end of column -->
 

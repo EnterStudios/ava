@@ -16,10 +16,10 @@
 
     {{ form|bootstrap }}
     
-    <p>
-        <button type="submit" class="btn btn-primary">Save</button>
-        <a href="{% url 'project-detail' project_team.project.id %}" class="btn btn-default">Cancel</a>
-    </p>
+    <div class="button pull-right">
+        <a href="{% url 'project-detail' project_team.project.id %}" class="btn btn-primary btn-md">Cancel</a>
+        <button type="submit" class="btn btn-success btn-md">Save</button>
+    </div>
 </form>
 
 {% endblock %}

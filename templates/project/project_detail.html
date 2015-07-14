@@ -37,17 +37,19 @@
 
 
 {% if can_update %}
-    <hr>
-    <p>
-        <a href="{% url 'project-update' project.id %}" class="btn btn-primary">Update</a>
-        <a href="{% url 'project-delete' project.id %}" class="btn btn-danger">Delete</a>
-    </p>
-{% endif %}
-
+    <div class="wrapper">
+        <div class="button pull-left">
+            <a href="{% url 'project-delete' project.id %}" class="btn btn-danger btn-md">Delete</a>
+        </div>
+        <div class="button pull-right">
+            <a href="{% url 'project-update' project.id %}" class="btn btn-primary btn-md">Update</a>
+        </div>
+    </div>
+{% endif %}    
 <hr>
 
 <div role="tabpanel">
-    <ul class="nav nav-pills" role="tablist">
+    <ul class="nav nav-tabs" role="tablist">
         <li class="active"><a href="#project-tests" aria-controls="project-tests" role="tab" data-toggle="tab">Tests</a></li>
         <li><a href="#project-targets" aria-controls="project-targets" role="tab" data-toggle="tab">Targets</a></li>
         <li><a href="#project-access" aria-controls="project-access" role="tab" data-toggle="tab">Access Controls</a></li>
@@ -55,7 +57,6 @@
     
     <div class="tab-content">
         <div class="tab-pane active" id="project-tests">
-            <div class="container-fluid">
                 <table class="table table-striped">
                     <colgroup>
                         <col width="20%">
@@ -68,20 +69,7 @@
                             <th>Type</th>
                             <th>Name</th>
                             <th>Status</th>
-                            <th>
-                                {% if can_run_test %}
-                                    <div class="btn-group">
-                                        <a class="btn btn-primary btn-sm" href="#"><i class="fa fa-plus fa-fw"></i> Add Test</a>
-                                        <a class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">
-                                            <span class="fa fa-caret-down"></span>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="{% url 'email-test-create' project.id %}"><i class="fa fa-envelope fa-fw"></i> Email</a></li>
-                                            <li><a href="{% url 'twitter-test-create' %}"><i class="fa fa-twitter fa-fw"></i> Twitter</a></li>
-                                        </ul>
-                                    </div>
-                                {% endif %}
-                            </th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -91,19 +79,28 @@
                                 <td>{{ test.name }}</td>
                                 <td>{{ test.test_status|test_status }}</td>
                                 <td>
+                                    <div class="pull-right">
                                     {% if test.test_type == 'EMAIL' %}
                                         <a href="{% url 'email-test-detail' test.id %}" class="btn btn-primary btn-sm">View</a>
                                     {% endif %}
+                                    </div>
                                 </td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
+                {% if can_run_test %}
+                <div class="btn-group button pull-right">
+                    <a href="{% url 'email-test-create' project.id %}" class="btn btn-success btn-md"><i class="fa fa-envelope fa-fw"></i> Add Email Test</a>
+                    {% comment %}
+                    <a href="{% url 'twitter-test-create' %}" class="btn btn-success btn-md"><i class="fa fa-twitter fa-fw"></i> Add Twitter Test</a>
+                    {% endcomment %}
+                </div>
+                {% endif %}
         </div>
 
         <div class="tab-pane" id="project-targets">
-            <div class="container-fluid">
+            <div class="target-table">
                 <h4>Groups</h4>
                 <table class="table table-striped">
                     <colgroup>
@@ -117,11 +114,7 @@
                             <th>Name</th>
                             <th>Type</th>
                             <th># Members</th>
-                            <th>
-                                {% if can_modify %}
-                                    <a href="{% url 'project-groups-add' project.id %}" class="glyphicon glyphicon-plus" title="Add Groups"></a>
-                                {% endif %}
-                            </th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -131,21 +124,31 @@
                                 <td>{{ group.group_type|group_type }}</td>
                                 <td>{{ group.identity_count }}</td>
                                 <td>
-                                    {% if user.rights.is_admin %}
-                                        <a href="{% url 'group-detail' group.id %}" class="btn btn-primary btn-sm">View</a>
-                                    {% endif %}
+                                    <div class="pull-right">
                                     {% if can_modify %}
                                         <a href="{% url 'project-groups-remove' project.id group.id %}" class="btn btn-danger btn-sm">Remove</a>
                                     {% endif %}
+                                    {% if user.rights.is_admin %}
+                                        <a href="{% url 'group-detail' group.id %}" class="btn btn-primary btn-sm">View</a>
+                                    {% endif %}
+                                    </div>
                                 </td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
                 
-                <hr>
+                {% if can_modify %}
+                <div class="button pull-right">
+                    <a href="{% url 'project-groups-add' project.id %}" class="btn btn-success btn-md" title="Add Groups">Add Groups</a>
+                </div>
+                {% endif %}
+            </div>
+
+            <hr>
                     
-                <h4>Identities</h4>
+            <h4>Identities</h4>
+            <div class="target-table">
                 <table class="table table-striped">
                     <colgroup>
                         <col width="40%">
@@ -158,11 +161,7 @@
                             <th>Name</th>
                             <th># Groups</th>
                             <th># Identifiers</th>
-                            <th>
-                                {% if can_modify %}
-                                    <a href="{% url 'project-identities-add' project.id %}" class="glyphicon glyphicon-plus" title="Add Identities"></a>
-                                {% endif %}
-                            </th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -172,21 +171,31 @@
                                 <td>{{ identity.groups.count }}</td>
                                 <td>{{ identity.identifier_count }}</td>
                                 <td>
-                                    {% if user.rights.is_admin %}
-                                        <a href="{% url 'identity-detail' identity.id %}" class="btn btn-primary btn-sm">View</a>
-                                    {% endif %}
+                                    <div class="pull-right">
                                     {% if can_modify %}
                                         <a href="{% url 'project-identities-remove' project.id identity.id %}" class="btn btn-danger btn-sm">Remove</a>
                                     {% endif %}
+                                    {% if user.rights.is_admin %}
+                                        <a href="{% url 'identity-detail' identity.id %}" class="btn btn-primary btn-sm">View</a>
+                                    {% endif %}                                    
+                                    </div>
                                 </td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+
+                {% if can_modify %}
+                <div class="button pull-right">
+                    <a href="{% url 'project-identities-add' project.id %}" class="btn btn-success btn-md" title="Add Identities">Add Identities</a>
+                </div>
+                {% endif %}
+            </div>    
+
+            <hr>
                 
-                <hr>
-                
-                <h4>Identifiers</h4>
+            <h4>Identifiers</h4>
+            <div class="target-table">
                 <table class="table table-striped">
                     <colgroup>
                         <col width="25%">
@@ -199,11 +208,7 @@
                             <th>Identifier</th>
                             <th>Type</th>
                             <th>Belongs To</th>
-                            <th>
-                                {% if can_modify %}
-                                    <a href="{% url 'project-identifiers-add' project.id %}" class="glyphicon glyphicon-plus" title="Add Identifiers"></a>
-                                {% endif %}
-                            </th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -213,14 +218,22 @@
                                 <td>{{ identifier.identifier_type|identifier_type }}</td>
                                 <td>{{ identifier.identity.name }}</td>
                                 <td>
+                                    <div class="pull-right">
                                     {% if can_modify %}
                                         <a href="{% url 'project-identifiers-remove' project.id identifier.id %}" class="btn btn-danger btn-sm">Remove</a>
                                     {% endif %}
+                                    </div>
                                 </td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+
+                {% if can_modify %}
+                <div class="button pull-right">
+                    <a href="{% url 'project-identifiers-add' project.id %}" class="btn btn-success btn-md" title="Add Identifiers">Add Identifiers</a>
+                </div>
+                {% endif %}
             </div>
         </div>
 
@@ -233,28 +246,12 @@
                 
                 <h4>Teams</h4>
                 <table class="table table-striped">
-                    <colgroup>
-                        {% if can_modify %}
-                            <col width="25%">
-                            <col width="35%">
-                            <col width="20%">
-                            <col width="20%">
-                        {% else %}
-                            <col width="30%">
-                            <col width="45%">
-                            <col width="25%">
-                        {% endif %}
-                    </colgroup>
                     <thead>
                         <tr>
                             <th>Name</th>
                             <th>Description</th>
                             <th>Access</th>
-                            {% if can_modify %}
-                                <th>
-                                    <a href="{% url 'project-teams-add' project.id %}" class="glyphicon glyphicon-plus" title="Add Teams"></a>
-                                </th>
-                            {% endif %}
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -263,16 +260,23 @@
                                 <td>{{ team.team.name }}</td>
                                 <td>{{ team.description.name }}</td>
                                 <td>{{ team.access_level|access_level }}</td>
+                                <td>
+                                <div class="pull-right">
                                 {% if can_modify %}
-                                    <td>
-                                        <a href="{% url 'project-teams' project.id team.team.id %}" class="btn btn-primary btn-sm">Change Access</a>
-                                        <a href="{% url 'project-teams-remove' project.id team.team.id %}" class="btn btn-danger btn-sm">Remove</a>
-                                    </td>
+                                    <a href="{% url 'project-teams' project.id team.team.id %}" class="btn btn-primary btn-sm">Change Access</a>
+                                    <a href="{% url 'project-teams-remove' project.id team.team.id %}" class="btn btn-danger btn-sm">Remove</a>
                                 {% endif %}
+                                </div>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+                <div class="button pull-right">
+                {% if can_modify %}
+                    <a href="{% url 'project-teams-add' project.id %}" class="btn btn-success btn-md" title="Add Teams">Add Teams</a>
+                {% endif %}
+                </div>
             </div>
         </div>
     </div>

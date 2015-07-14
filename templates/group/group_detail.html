@@ -30,11 +30,11 @@
                 </tr>
             </tbody>
         </table>
+        <div class="button pull-right">
+            <a href="{% url 'group-delete' group.id %}" class="btn btn-danger btn-md">Delete</a>
+            <a href="{% url 'group-update' group.id %}" class="btn btn-success btn-md">Update</a>
+        </div>
         
-        <p>
-            <a href="{% url 'group-update' group.id %}" class="btn btn-primary">Update</a>
-            <a href="{% url 'group-delete' group.id %}" class="btn btn-danger">Delete</a>
-        </p>
 </div> <!-- end of column -->
 
 
@@ -48,9 +48,7 @@
             <tr>
                 <th>Name</th>
                 <th>Description</th>
-                <th>
-                       <a href="{% url 'identity-create' %}" class="glyphicon glyphicon-plus"></a>
-                </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -59,14 +57,19 @@
                     <td>{{ identity.name }}</td>
                     <td>{{ identity.description }}</td>
                     <td>
-                        <a href="{% url 'identity-detail' identity.id  %}" class="btn btn-primary btn-sm">View</a>
-                        <a href="{% url 'identity-update' identity.id  %}" class="btn btn-primary btn-sm">Update</a>
-                        <a href="{% url 'identity-delete' identity.id  %}" class="btn btn-danger btn-sm">Delete</a>
+                        <div class="pull-right">
+                            <a href="{% url 'identity-delete' identity.id  %}" class="btn btn-danger btn-sm">Delete</a>
+                            <a href="{% url 'identity-detail' identity.id  %}" class="btn btn-primary btn-sm">View</a>
+                            <a href="{% url 'identity-update' identity.id  %}" class="btn btn-primary btn-sm">Update</a>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    <div class="button pull-right">
+        <a href="{% url 'identity-create' %}" class="btn btn-success btn-md">Create Identity</a> <!-- glyphicon glyphicon-plus -->
+    </div>
 </div>
 
 {% endblock %}
