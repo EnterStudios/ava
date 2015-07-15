@@ -169,7 +169,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
     class Meta:
         ordering = ['name', 'google_id']
 
-    def import_from_json(self, google_configuration, groups):
+    def import_from_json(self, google_configuration, groups, group_members):
         for group in groups:
 
             group_attributes = {}
@@ -202,6 +202,20 @@ class GoogleDirectoryGroup(TimeStampedModel):
                     google_configuration=google_configuration,
                     identity=curr_identity,
                     group=curr_group, **group_attributes)
+
+        # sort out group memberships
+
+        for key, value in group_members.items():
+            group = GoogleDirectoryGroup.objects.get(google_id=key)
+            for user in value:
+                print("Searching for id ::" + user['id'])
+                try:
+                    gd_user = GoogleDirectoryUser.objects.get(google_id=user['id'])
+                    gd_user.groups.add(group)
+                except GoogleDirectoryUser.DoesNotExist:
+                    print("No such user found")
+
+
 
 
 class GoogleConfiguration(TimeStampedModel):

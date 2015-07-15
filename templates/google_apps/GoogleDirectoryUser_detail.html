@@ -39,8 +39,8 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                         <th>CN</th>
-                        <th>GUID</th>
+                         <th>ID</th>
+                        <th>Name</th>
 
                         <th>
 
@@ -51,8 +51,8 @@
                 <tbody>
     {% for googledirectorygroup in googledirectoryuser.groups.all %}
     <tr>
-        <td>{{ googledirectorygroup.cn }}</td>
-        <td>{{ googledirectorygroup.objectGUID }}</td>
+        <td>{{ googledirectorygroup.google_id}}</td>
+        <td>{{ googledirectorygroup.name }}</td>
         <td>
 
           <a href="{% url 'google-group-detail' googledirectorygroup.id  %}"><button type="button" class="btn btn-primary btn-sm">View</button></a>

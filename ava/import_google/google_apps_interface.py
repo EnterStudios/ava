@@ -82,27 +82,27 @@ class GoogleDirectoryHelper:
         for user in all_users:
             user_groups[user['primaryEmail']] = []
 
-        while True:
-            try:
-                if page_token:
-                    params['pageToken'] = page_token
+            while True:
+                try:
+                    if page_token:
+                        params['pageToken'] = page_token
 
-                params['userKey'] = user['id']
-                current_page = directory_service.groups().list(**params).execute()
-                curr_groups = []
+                    params['userKey'] = user['id']
+                    current_page = directory_service.groups().list(**params).execute()
+                    curr_groups = []
 
-                if 'groups' in current_page:
-                    curr_groups.extend(current_page['groups'])
-                    # print current_page['groups']
+                    if 'groups' in current_page:
+                        curr_groups.extend(current_page['groups'])
+                        # print current_page['groups']
 
-                page_token = current_page.get('nextPageToken')
-                if not page_token:
-                    user_groups[user['primaryEmail']] = curr_groups
+                    page_token = current_page.get('nextPageToken')
+                    if not page_token:
+                        user_groups[user['primaryEmail']] = curr_groups
+                        break
+
+                except errors.HttpError as error:
+                    print('An error occurred: %s' % error)
                     break
-
-            except errors.HttpError as error:
-                print('An error occurred: %s' % error)
-                break
 
         return user_groups
 
@@ -115,28 +115,26 @@ class GoogleDirectoryHelper:
         for group in all_groups:
             group_members[group['id']] = []
 
-        while True:
-            try:
-                if page_token:
-                    params['pageToken'] = page_token
+            while True:
+                try:
+                    if page_token:
+                        params['pageToken'] = page_token
 
-                params['groupKey'] = group['id']
-                current_page = directory_service.members().list(**params).execute()
-                curr_members = []
+                    params['groupKey'] = group['id']
+                    current_page = directory_service.members().list(**params).execute()
+                    curr_members = []
 
-                print(current_page)
+                    if 'members' in current_page:
+                        curr_members.extend(current_page['members'])
 
-                if 'members' in current_page:
-                    curr_members.extend(current_page['members'])
+                    page_token = current_page.get('nextPageToken')
+                    if not page_token:
+                        group_members[group['id']] = curr_members
+                        break
 
-                page_token = current_page.get('nextPageToken')
-                if not page_token:
-                    group_members[group['name']] = curr_members
+                except errors.HttpError as error:
+                    print('An error occurred: %s' % error)
                     break
-
-            except errors.HttpError as error:
-                print('An error occurred: %s' % error)
-                break
 
         return group_members
 
