@@ -6,42 +6,8 @@ from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from django.forms.models import model_to_dict
 
-from django.contrib.auth.models import User
-from django.contrib import admin
-
 from ava.core.models import TimeStampedModel
-
-
-from oauth2client.django_orm import FlowField, CredentialsField
-
-
-
-class CredentialsModel(models.Model):
-    id = models.OneToOneField(User, primary_key=True)
-    credential = CredentialsField()
-
-
-
-class CredentialsAdmin(admin.ModelAdmin):
-    pass
-
-class FlowModel(models.Model):
-    id = models.OneToOneField(User, primary_key=True)
-    flow = FlowField()
-
-
-class CredentialsModel(models.Model):
-    id = models.OneToOneField(User, primary_key=True)
-    credential = CredentialsField()
-
-
-
-class CredentialsAdmin(admin.ModelAdmin):
-    pass
-
-class FlowModel(models.Model):
-    id = models.OneToOneField(User, primary_key=True)
-    flow = FlowField()
+from ava.core_identity.models import Person, Identity, Identifier
 
 # TO DO - THESE FIELDS PROBABLY NEED SOME LOVE
 # aliases": [ # List of aliases (Read-only)
@@ -74,6 +40,7 @@ class GoogleDirectoryUser(TimeStampedModel):
     change_password_at_next_login = models.BooleanField(default=False)
     groups = models.ManyToManyField('GoogleDirectoryGroup', related_name='users')
     google_configuration = models.ForeignKey('GoogleConfiguration')
+    identity = models.ManyToManyField(Identity)
 
     model_schema = {
         'is_delegated_admin': 'isDelegatedAdmin',
@@ -102,7 +69,6 @@ class GoogleDirectoryUser(TimeStampedModel):
     def google_field_to_model(self, fieldname):
         return self.model_schema_reversed.get(fieldname)
 
-
     def __unicode__(self):
         return self.name or ''
 
@@ -114,15 +80,39 @@ class GoogleDirectoryUser(TimeStampedModel):
 
     def import_from_json(self, google_configuration, users):
         for user in users:
-            user_attributes = {}
+            identity = Identity()
+            identity.save()
+
+            user_attributes = {
+                'identity': identity,
+            }
             for key, value in user.items():
                 # print("key : " + key + " value : " + str(value))
                 if key in self.model_schema_reversed.keys():
                     user_attributes[self.google_field_to_model(key)] = value
+                else:
+                    if key is "name":
+                        # create a person
+
+                        identity.name = value['fullName']
+                        identity.save()
+
+                        person = Person()
+                        person.first_name = value['givenName']
+                        person.surname = value['familyName']
+
+                        person.identity = identity
+                        person.save()
+
+                    if key is "emails":
+
+                        for address_key, address in value:
+                            Identifier.objects.get_or_create(identifier=address,
+                                                             identifier_type=Identifier.EMAIL,
+                                                             identity=identity)
+
             gd_user = GoogleDirectoryUser.objects.create(google_configuration=google_configuration, **user_attributes)
             gd_user.save()
-
-
 
 
 class GoogleDirectoryGroup(TimeStampedModel):
@@ -154,7 +144,6 @@ class GoogleDirectoryGroup(TimeStampedModel):
     def google_field_to_model(self, fieldname):
         return self.model_schema_reversed.get(fieldname)
 
-
     def __unicode__(self):
         return self.name or ''
 
@@ -166,7 +155,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
 
     class Meta:
         ordering = ['name', 'google_id']
-        
+
     def import_from_json(self, google_configuration, groups):
         for group in groups:
             group_attributes = {}
@@ -174,7 +163,8 @@ class GoogleDirectoryGroup(TimeStampedModel):
                 # print("key : " + key + " value : " + str(value))
                 if key in self.model_schema_reversed.keys():
                     group_attributes[self.google_field_to_model(key)] = value
-            gd_group = GoogleDirectoryGroup.objects.create(google_configuration=google_configuration, **group_attributes)
+            gd_group = GoogleDirectoryGroup.objects.create(google_configuration=google_configuration,
+                                                           **group_attributes)
             gd_group.save()
 
 
