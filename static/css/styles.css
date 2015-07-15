@@ -6007,11 +6007,24 @@ table {
   padding: 20px;
   text-align: center;
   position: relative; }
+  .auth h3 {
+    margin-top: 0px;
+    padding-bottom: 10px; }
   .auth .logo {
     padding-bottom: 30px; }
   .auth .auth-inner {
     display: block;
     padding: 0px 0px 50px; }
+    .auth .auth-inner.first-user {
+      padding: 0px 0px 0px; }
+      .auth .auth-inner.first-user .has-error input {
+        border-color: #A94442; }
+      .auth .auth-inner.first-user .has-error ul {
+        list-style-type: none;
+        padding: 0px;
+        color: #a94442; }
+        .auth .auth-inner.first-user .has-error ul li {
+          padding: 10px 0px 0px 0px; }
   .auth .auth-bottom {
     position: absolute;
     bottom: 0px;
@@ -6022,6 +6035,34 @@ table {
     left: 0px;
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px; }
+  .auth .form-group {
+    width: 100%;
+    text-align: left; }
+  .auth .first-user-intro {
+    border-bottom: 1px solid #F0F0F0;
+    padding-bottom: 5px;
+    margin-bottom: 15px; }
+  .auth .first-user-intro-alt {
+    padding-bottom: 15px; }
+  .auth .first-time {
+    width: 100%; }
+    .auth .first-time input {
+      display: block;
+      width: 100%;
+      height: 34px;
+      padding: 6px 12px;
+      font-size: 14px;
+      line-height: 1.42857;
+      color: #555555;
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+      -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+      transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s; }
 
 .wrapper {
   float: left;
