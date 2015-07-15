@@ -7,12 +7,14 @@ from ava.core_group.models import Group
 from ava.core_identity.validators import validate_skype, validate_twitter
 
 
-class Identity(ReferenceModel):
+class Identity(TimeStampedModel):
 
-    """
-    An identity is an online persona that can map to a single person, a group
-    of people, or an automated service.
-    """
+
+    # An identity is an online persona that can map to a single person, a group
+    # of people, or an automated service.
+
+    name = models.CharField(max_length=100, verbose_name='Name', null=True, blank=True)
+    description = models.TextField(max_length=500, verbose_name='Description', null=True, blank=True)
 
     groups = models.ManyToManyField(Group,
                                     blank=True,
@@ -28,10 +30,6 @@ class Identity(ReferenceModel):
 
 
 class Person(TimeStampedModel):
-
-    """
-    TODO: DocString
-    """
 
     first_name = models.CharField(max_length=75, validators=[validate_slug])
     surname = models.CharField(max_length=75, validators=[validate_slug])
