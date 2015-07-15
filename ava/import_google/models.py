@@ -76,7 +76,7 @@ class GoogleDirectoryUser(TimeStampedModel):
     def google_field_to_model(self, fieldname):
         return self.model_schema_reversed.get(fieldname)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name or ''
 
     def get_absolute_url(self):
@@ -157,7 +157,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
     def google_field_to_model(self, fieldname):
         return self.model_schema_reversed.get(fieldname)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name or ''
 
     def get_absolute_url(self):
@@ -207,7 +207,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
 class GoogleConfiguration(TimeStampedModel):
     domain = models.CharField(max_length=100, verbose_name='Primary Domain', unique=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.domain or ''
 
     def get_absolute_url(self):
