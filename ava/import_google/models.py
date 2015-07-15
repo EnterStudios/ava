@@ -47,7 +47,7 @@ class GoogleDirectoryUser(TimeStampedModel):
     groups = models.ManyToManyField('GoogleDirectoryGroup', related_name='users')
     google_configuration = models.ForeignKey('GoogleConfiguration')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name or ''
 
     def get_absolute_url(self):
@@ -70,7 +70,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
     google_configuration = models.ForeignKey('GoogleConfiguration')
     group = models.ForeignKey('core_group.Group', null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name or ''
 
     def get_absolute_url(self):
@@ -86,7 +86,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
 class GoogleConfiguration(TimeStampedModel):
     domain = models.CharField(max_length=100, verbose_name='Primary Domain', unique=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.domain or ''
 
     def get_absolute_url(self):

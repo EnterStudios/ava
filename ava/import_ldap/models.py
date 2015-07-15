@@ -42,7 +42,7 @@ class ActiveDirectoryUser(TimeStampedModel):
     groups = models.ManyToManyField('ActiveDirectoryGroup', related_name='users')
     ldap_configuration = models.ForeignKey('LDAPConfiguration')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name or ''
 
     def get_absolute_url(self):
@@ -254,7 +254,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
     ldap_configuration = models.ForeignKey('LDAPConfiguration')
     group = models.ForeignKey('core_group.Group', null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.cn or ''
 
     def get_absolute_url(self):
@@ -371,7 +371,7 @@ class LDAPConfiguration(TimeStampedModel):
     dump_dn = models.CharField(max_length=100, verbose_name='Domain')
     server = models.CharField(max_length=100, verbose_name='Server')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.server or ''
 
     class Meta:
