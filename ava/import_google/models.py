@@ -40,7 +40,7 @@ class GoogleDirectoryUser(TimeStampedModel):
     change_password_at_next_login = models.BooleanField(default=False)
     groups = models.ManyToManyField('GoogleDirectoryGroup', related_name='users')
     google_configuration = models.ForeignKey('GoogleConfiguration')
-    identity = models.ManyToManyField(Identity)
+    identity = models.ForeignKey(Identity)
 
     model_schema = {
         'is_delegated_admin': 'isDelegatedAdmin',
@@ -80,38 +80,47 @@ class GoogleDirectoryUser(TimeStampedModel):
 
     def import_from_json(self, google_configuration, users):
         for user in users:
-            identity = Identity()
-            identity.save()
+            curr_identity = Identity()
+            curr_identity.save()
 
-            user_attributes = {
-                'identity': identity,
-            }
+            user_attributes = {}
             for key, value in user.items():
                 # print("key : " + key + " value : " + str(value))
                 if key in self.model_schema_reversed.keys():
                     user_attributes[self.google_field_to_model(key)] = value
                 else:
-                    if key is "name":
+                    print("Key :: " + key)
+                    if key == "name":
+                        print("Processing person")
                         # create a person
 
-                        identity.name = value['fullName']
-                        identity.save()
+                        curr_identity.name = value['fullName']
+                        curr_identity.save()
 
                         person = Person()
                         person.first_name = value['givenName']
                         person.surname = value['familyName']
-
-                        person.identity = identity
                         person.save()
 
-                    if key is "emails":
+                        person.identity.add(curr_identity)
+                        person.save()
 
-                        for address_key, address in value:
-                            Identifier.objects.get_or_create(identifier=address,
+                    if key == "emails":
+                        print("Processing emails")
+                        for email_item in value:
+                            Identifier.objects.get_or_create(identifier=email_item['address'],
                                                              identifier_type=Identifier.EMAIL,
-                                                             identity=identity)
+                                                             identity=curr_identity)
 
-            gd_user = GoogleDirectoryUser.objects.create(google_configuration=google_configuration, **user_attributes)
+                    if key == "aliases":
+                        print("Processing aliases")
+                        for alias in value:
+                            Identifier.objects.get_or_create(identifier=alias,
+                                                             identifier_type=Identifier.EMAIL,
+                                                             identity=curr_identity)
+
+            gd_user = GoogleDirectoryUser.objects.create(google_configuration=google_configuration,
+                                                         identity=curr_identity, **user_attributes)
             gd_user.save()
 
 
