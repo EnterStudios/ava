@@ -13,6 +13,7 @@ class Group(TimeStampedModel):
     GENERIC = 'GENERIC'
     ORG = 'ORGANISATION'
     DIST = 'DISTRIBUTION LIST'
+    GOOGLE = 'GOOGLE APPS'
 
     GROUP_TYPE_CHOICES = (
         (AD, 'Active Directory'),
@@ -23,6 +24,7 @@ class Group(TimeStampedModel):
         (GENERIC, 'Generic Group'),
         (ORG, 'Organisation'),
         (DIST, 'Distribution List'),
+        (GOOGLE, 'Google Apps Group'),
     )
 
     name = models.CharField(max_length=100)

@@ -8,13 +8,23 @@ from ava.core_identity.validators import validate_skype, validate_twitter
 
 
 class Identity(TimeStampedModel):
-
-
     # An identity is an online persona that can map to a single person, a group
     # of people, or an automated service.
 
+    GROUP = 'GROUP'
+    PERSON = 'PERSON'
+
+    IDENTITY_TYPE_CHOICES = (
+        (GROUP, 'Group'),
+        (PERSON, 'Person'),
+    )
+
     name = models.CharField(max_length=100, verbose_name='Name', null=True, blank=True)
     description = models.TextField(max_length=500, verbose_name='Description', null=True, blank=True)
+    identity_type = models.CharField(max_length=10,
+                                     choices=IDENTITY_TYPE_CHOICES,
+                                     default=PERSON,
+                                     verbose_name='Identity Type')
 
     groups = models.ManyToManyField(Group,
                                     blank=True,
@@ -30,7 +40,6 @@ class Identity(TimeStampedModel):
 
 
 class Person(TimeStampedModel):
-
     first_name = models.CharField(max_length=75, validators=[validate_slug])
     surname = models.CharField(max_length=75, validators=[validate_slug])
     identity = models.ManyToManyField('Identity', blank=True)
@@ -48,7 +57,6 @@ class Person(TimeStampedModel):
 
 
 class Identifier(TimeStampedModel):
-
     """
     TODO: DocString
     """

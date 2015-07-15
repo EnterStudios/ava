@@ -111,6 +111,7 @@ class GoogleDirectoryUser(TimeStampedModel):
     def import_from_json(self, google_configuration, users):
         for user in users:
             curr_identity = Identity()
+            curr_identity.identity_type=Identity.PERSON
             curr_identity.save()
 
             user_attributes = {}
@@ -230,6 +231,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
 
                 curr_identity = Identity()
                 curr_identity.name = group_attributes['name']
+                curr_identity.identity_type=Identity.GROUP
                 curr_identity.save()
 
                 gd_group = GoogleDirectoryGroup.objects.create(google_configuration=google_configuration,
