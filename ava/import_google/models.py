@@ -227,6 +227,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
             if group_attributes.get('name'):
                 curr_group = Group()
                 curr_group.name = group_attributes['name']
+                curr_group.group_type=Group.GOOGLE
                 curr_group.save()
 
                 curr_identity = Identity()
