@@ -60,9 +60,7 @@ class GoogleDirectoryImport(django.views.generic.View):
         gd_helper = GoogleDirectoryHelper()
 
         # this is a mess. figure out whether we actually need multiple google domains/configs
-        google_config = GoogleConfiguration()
-        google_config.domain="test"
-        google_config.save()
+        google_config = GoogleConfiguration.objects.update_or_create(domain="test")
 
         # import the directory information from google
         import_data = gd_helper.import_google_directory(credential)

@@ -111,7 +111,7 @@ class GoogleDirectoryUser(TimeStampedModel):
     def import_from_json(self, google_configuration, users):
         for user in users:
             curr_identity = Identity()
-            curr_identity.identity_type=Identity.PERSON
+            curr_identity.identity_type = Identity.PERSON
             curr_identity.save()
 
             user_attributes = {}
@@ -156,8 +156,8 @@ class GoogleDirectoryUser(TimeStampedModel):
                                                                  identifier_type=Identifier.NAME,
                                                                  identity=curr_identity)
 
-            gd_user = GoogleDirectoryUser.objects.create(google_configuration=google_configuration,
-                                                         identity=curr_identity, **user_attributes)
+            gd_user = GoogleDirectoryUser.objects.update_or_create(google_configuration=google_configuration,
+                                                                   identity=curr_identity, **user_attributes)
             gd_user.save()
 
 
@@ -227,17 +227,17 @@ class GoogleDirectoryGroup(TimeStampedModel):
             if group_attributes.get('name'):
                 curr_group = Group()
                 curr_group.name = group_attributes['name']
-                curr_group.group_type=Group.GOOGLE
+                curr_group.group_type = Group.GOOGLE
                 curr_group.save()
 
                 curr_identity = Identity()
                 curr_identity.name = group_attributes['name']
-                curr_identity.identity_type=Identity.GROUP
+                curr_identity.identity_type = Identity.GROUP
                 curr_identity.save()
 
-                gd_group = GoogleDirectoryGroup.objects.create(google_configuration=google_configuration,
-                                                               identity=curr_identity,
-                                                               group=curr_group, **group_attributes)
+                gd_group = GoogleDirectoryGroup.objects.update_or_create(google_configuration=google_configuration,
+                                                                         identity=curr_identity,
+                                                                         group=curr_group, **group_attributes)
                 gd_group.save()
 
 
