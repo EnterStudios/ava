@@ -77,7 +77,7 @@ class GoogleDirectoryUser(TimeStampedModel):
         return self.model_schema_reversed.get(fieldname)
 
     def __str__(self):
-        return self.name or ''
+        return self.first_name+" "+self.surname or ''
 
     def get_absolute_url(self):
         return reverse('google-user-detail', kwargs={'pk': self.id})
