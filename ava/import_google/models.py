@@ -206,12 +206,15 @@ class GoogleDirectoryGroup(TimeStampedModel):
         # sort out group memberships
 
         for key, value in group_members.items():
-            group = GoogleDirectoryGroup.objects.get(google_id=key)
+            gd_group = GoogleDirectoryGroup.objects.get(google_id=key)
+            group = gd_group.group
             for user in value:
                 print("Searching for id ::" + user['id'])
                 try:
                     gd_user = GoogleDirectoryUser.objects.get(google_id=user['id'])
-                    gd_user.groups.add(group)
+                    user_identity = gd_user.identity
+                    gd_user.groups.add(gd_group)
+                    user_identity.groups.add(group)
                 except GoogleDirectoryUser.DoesNotExist:
                     print("No such user found")
 
