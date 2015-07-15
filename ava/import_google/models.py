@@ -91,7 +91,8 @@ class GoogleDirectoryUser(TimeStampedModel):
 
             user_attributes = {}
             curr_identity, id_created = Identity.objects.update_or_create(identity_type=Identity.PERSON,
-                                                                          name=user['id'])
+                                                                          name=user['id'],
+                                                                          description="Exported from Google Apps")
             for key, value in user.items():
                 # print("key : " + key + " value : " + str(value))
                 if key in self.model_schema_reversed.keys():
@@ -191,7 +192,8 @@ class GoogleDirectoryGroup(TimeStampedModel):
             if group_attributes.get('name'):
 
                 curr_identity, id_created = Identity.objects.update_or_create(name=group_attributes['google_id'],
-                                                                              identity_type=Identity.GROUP)
+                                                                              identity_type=Identity.GROUP,
+                                                                              description="Exported from Google Apps")
 
                 curr_group, created = Group.objects.update_or_create(name=group_attributes['name'],
                                                                      group_type=Group.GOOGLE)
