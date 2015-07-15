@@ -2,7 +2,8 @@ from django.db import models
 from django.core.validators import validate_email, validate_slug, validate_ipv46_address
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
-from ava.core.models import ReferenceModel, TimeStampedModel
+
+from ava.core.models import TimeStampedModel
 from ava.core_group.models import Group
 from ava.core_identity.validators import validate_skype, validate_twitter
 

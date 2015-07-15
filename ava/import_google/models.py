@@ -26,6 +26,8 @@ from ava.core_identity.models import Person, Identity, Identifier
 #         "familyName": "A String", # Last Name
 
 class GoogleDirectoryUser(TimeStampedModel):
+    first_name = models.CharField(max_length=300)
+    surname = models.CharField(max_length=300)
     is_delegated_admin = models.BooleanField(default=False)
     suspended = models.BooleanField(default=False)
     google_id = models.CharField(max_length=300)
@@ -46,33 +48,8 @@ class GoogleDirectoryUser(TimeStampedModel):
     identity = models.ForeignKey(Identity)
 
     model_schema = {
-        'is_delegated_admin': 'isDelegatedAdmin',
-        'suspended': 'suspended',
-        'google_id': 'id',
-        'deletion_time': 'deletionTime',
-        'suspension_reason': 'suspensionReason',
-        'is_admin': 'isAdmin',
-        'etag': 'etag',
-        'last_login_time': 'lastLoginTime',
-        'is_mailbox_setup': 'isMailboxSetup',
-        'ip_whitelisted': 'ipWhitelisted',
-        'password': 'password',
-        'primary_email': 'primaryEmail',
-        'hash_function': 'hashFunction',
-        'creation_time': 'creationTime',
-        'change_password_at_next_login': 'changePasswordAtNextLogin',
-
-    }
-
-    model_schema_reversed = {value: key for key, value in model_schema.items()}
-
-    def model_field_to_google(self, fieldname):
-        return self.model_schema.get(fieldname)
-
-    def google_field_to_model(self, fieldname):
-        return self.model_schema_reversed.get(fieldname)
-
-    model_schema = {
+        'first_name': 'firstName',
+        'surname': 'givenName',
         'is_delegated_admin': 'isDelegatedAdmin',
         'suspended': 'suspended',
         'google_id': 'id',
@@ -109,43 +86,29 @@ class GoogleDirectoryUser(TimeStampedModel):
         return [(field.name, field.value_to_string(self)) for field in GoogleDirectoryUser._meta.fields]
 
     def import_from_json(self, google_configuration, users):
+
         for user in users:
-            curr_identity = Identity()
-            curr_identity.identity_type = Identity.PERSON
-            curr_identity.save()
 
             user_attributes = {}
+            curr_identity, id_created = Identity.objects.update_or_create(identity_type=Identity.PERSON,
+                                                                          name=user['id'])
             for key, value in user.items():
                 # print("key : " + key + " value : " + str(value))
                 if key in self.model_schema_reversed.keys():
                     user_attributes[self.google_field_to_model(key)] = value
 
                 else:
-                    print("Key :: " + key)
                     if key == "name":
-                        print("Processing person")
                         # create a person
-
-                        curr_identity.name = value['fullName']
-                        curr_identity.save()
-
-                        person = Person()
-                        person.first_name = value['givenName']
-                        person.surname = value['familyName']
-                        person.save()
-
-                        person.identity.add(curr_identity)
-                        person.save()
-
+                        user_attributes['first_name'] = value['givenName']
+                        user_attributes['surname'] = value['familyName']
                     if key == "emails":
-                        print("Processing emails")
                         for email_item in value:
                             Identifier.objects.get_or_create(identifier=email_item['address'],
                                                              identifier_type=Identifier.EMAIL,
                                                              identity=curr_identity)
 
                     if key == "aliases":
-                        print("Processing aliases")
                         for alias in value:
                             if validate_email(alias):
                                 Identifier.objects.get_or_create(identifier=alias,
@@ -156,9 +119,12 @@ class GoogleDirectoryUser(TimeStampedModel):
                                                                  identifier_type=Identifier.NAME,
                                                                  identity=curr_identity)
 
-            gd_user = GoogleDirectoryUser.objects.update_or_create(google_configuration=google_configuration,
-                                                                   identity=curr_identity, **user_attributes)
-            gd_user.save()
+            person, p_created = Person.objects.update_or_create(first_name=user_attributes['first_name'],
+                                                                surname=user_attributes['surname'])
+            person.identity.add(curr_identity)
+
+            gd_user, u_created = GoogleDirectoryUser.objects.update_or_create(google_configuration=google_configuration,
+                                                                              identity=curr_identity, **user_attributes)
 
 
 class GoogleDirectoryGroup(TimeStampedModel):
@@ -209,12 +175,10 @@ class GoogleDirectoryGroup(TimeStampedModel):
             group_attributes = {}
 
             for key, value in group.items():
-                # print("key : " + key + " value : " + str(value))
                 if key in self.model_schema_reversed.keys():
                     group_attributes[self.google_field_to_model(key)] = value
 
                 if key == "aliases":
-                    print("Processing aliases")
                     for alias in value:
                         if validate_email(alias):
                             Identifier.objects.get_or_create(identifier=alias,
@@ -225,20 +189,19 @@ class GoogleDirectoryGroup(TimeStampedModel):
                                                              identifier_type=Identifier.NAME,
                                                              identity=curr_identity)
             if group_attributes.get('name'):
-                curr_group = Group()
-                curr_group.name = group_attributes['name']
-                curr_group.group_type = Group.GOOGLE
-                curr_group.save()
 
-                curr_identity = Identity()
-                curr_identity.name = group_attributes['name']
-                curr_identity.identity_type = Identity.GROUP
-                curr_identity.save()
+                curr_identity, id_created = Identity.objects.update_or_create(name=group_attributes['google_id'],
+                                                                              identity_type=Identity.GROUP)
 
-                gd_group = GoogleDirectoryGroup.objects.update_or_create(google_configuration=google_configuration,
-                                                                         identity=curr_identity,
-                                                                         group=curr_group, **group_attributes)
-                gd_group.save()
+                curr_group, created = Group.objects.update_or_create(name=group_attributes['name'],
+                                                                     group_type=Group.GOOGLE)
+
+                curr_identity.groups.add(curr_group)
+
+                gd_group, gr_created = GoogleDirectoryGroup.objects.update_or_create(
+                    google_configuration=google_configuration,
+                    identity=curr_identity,
+                    group=curr_group, **group_attributes)
 
 
 class GoogleConfiguration(TimeStampedModel):
