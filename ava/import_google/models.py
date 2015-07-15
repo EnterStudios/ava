@@ -1,5 +1,6 @@
 # flake8: noqa
 import json
+from django.core.validators import validate_email
 
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -7,6 +8,7 @@ from django.utils.html import escape
 from django.forms.models import model_to_dict
 
 from ava.core.models import TimeStampedModel
+from ava.core_group.models import Group
 from ava.core_identity.models import Person, Identity, Identifier
 
 
@@ -97,7 +99,6 @@ class GoogleDirectoryUser(TimeStampedModel):
     def google_field_to_model(self, fieldname):
         return self.model_schema_reversed.get(fieldname)
 
-
     def __unicode__(self):
         return self.name or ''
 
@@ -145,14 +146,18 @@ class GoogleDirectoryUser(TimeStampedModel):
                     if key == "aliases":
                         print("Processing aliases")
                         for alias in value:
-                            Identifier.objects.get_or_create(identifier=alias,
-                                                             identifier_type=Identifier.EMAIL,
-                                                             identity=curr_identity)
+                            if validate_email(alias):
+                                Identifier.objects.get_or_create(identifier=alias,
+                                                                 identifier_type=Identifier.EMAIL,
+                                                                 identity=curr_identity)
+                            else:
+                                Identifier.objects.get_or_create(identifier=alias,
+                                                                 identifier_type=Identifier.NAME,
+                                                                 identity=curr_identity)
 
             gd_user = GoogleDirectoryUser.objects.create(google_configuration=google_configuration,
                                                          identity=curr_identity, **user_attributes)
             gd_user.save()
-
 
 
 class GoogleDirectoryGroup(TimeStampedModel):
@@ -164,7 +169,8 @@ class GoogleDirectoryGroup(TimeStampedModel):
     email = models.EmailField()
     etag = models.CharField(max_length=300)
     google_configuration = models.ForeignKey('GoogleConfiguration')
-    # group = models.ForeignKey('core_group.Group', null=True, blank=True)
+    identity = models.ForeignKey(Identity)
+    group = models.ForeignKey(Group, null=True, blank=True)
 
     model_schema = {
         'google_id': 'id',
@@ -198,14 +204,38 @@ class GoogleDirectoryGroup(TimeStampedModel):
 
     def import_from_json(self, google_configuration, groups):
         for group in groups:
+
             group_attributes = {}
+
             for key, value in group.items():
                 # print("key : " + key + " value : " + str(value))
                 if key in self.model_schema_reversed.keys():
                     group_attributes[self.google_field_to_model(key)] = value
 
-            gd_group = GoogleDirectoryGroup.objects.create(google_configuration=google_configuration, **group_attributes)
-            gd_group.save()
+                if key == "aliases":
+                    print("Processing aliases")
+                    for alias in value:
+                        if validate_email(alias):
+                            Identifier.objects.get_or_create(identifier=alias,
+                                                             identifier_type=Identifier.EMAIL,
+                                                             identity=curr_identity)
+                        else:
+                            Identifier.objects.get_or_create(identifier=alias,
+                                                             identifier_type=Identifier.NAME,
+                                                             identity=curr_identity)
+            if group_attributes.get('name'):
+                curr_group = Group()
+                curr_group.name = group_attributes['name']
+                curr_group.save()
+
+                curr_identity = Identity()
+                curr_identity.name = group_attributes['name']
+                curr_identity.save()
+
+                gd_group = GoogleDirectoryGroup.objects.create(google_configuration=google_configuration,
+                                                               identity=curr_identity,
+                                                               group=curr_group, **group_attributes)
+                gd_group.save()
 
 
 class GoogleConfiguration(TimeStampedModel):

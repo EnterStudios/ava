@@ -58,6 +58,7 @@ class Identifier(TimeStampedModel):
     IP = 'IPADD'
     UNAME = 'UNAME'
     TWITTER = 'TWITTER'
+    NAME = 'NAME'
 
     IDENTIFIER_TYPE_CHOICES = (
         (EMAIL, 'Email Address'),
@@ -65,6 +66,7 @@ class Identifier(TimeStampedModel):
         (IP, 'IP Address'),
         (UNAME, 'Username'),
         (TWITTER, 'Twitter ID'),
+        (NAME, 'Other name'),
     )
 
     identifier = models.CharField(max_length=100)
@@ -93,11 +95,11 @@ class Identifier(TimeStampedModel):
             except ValidationError:
                 raise ValidationError('Identifier is not a valid IPv4/IPv6 address')
 
-        if self.identifier_type is 'UNAME':
+        if self.identifier_type is 'UNAME' or self.identifier_type is 'NAME':
             try:
                 validate_slug(self.identifier)
             except ValidationError:
-                raise ValidationError('Identifier is not a valid username')
+                raise ValidationError('Identifier is not a valid username or name')
 
         if self.identifier_type is 'SKYPE':
             try:
