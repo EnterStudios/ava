@@ -9,6 +9,7 @@ from django.forms.models import model_to_dict
 from ava.core.models import TimeStampedModel
 from ava.core_identity.models import Person, Identity, Identifier
 
+
 # TO DO - THESE FIELDS PROBABLY NEED SOME LOVE
 # aliases": [ # List of aliases (Read-only)
 #         "A String",
@@ -69,6 +70,34 @@ class GoogleDirectoryUser(TimeStampedModel):
     def google_field_to_model(self, fieldname):
         return self.model_schema_reversed.get(fieldname)
 
+    model_schema = {
+        'is_delegated_admin': 'isDelegatedAdmin',
+        'suspended': 'suspended',
+        'google_id': 'id',
+        'deletion_time': 'deletionTime',
+        'suspension_reason': 'suspensionReason',
+        'is_admin': 'isAdmin',
+        'etag': 'etag',
+        'last_login_time': 'lastLoginTime',
+        'is_mailbox_setup': 'isMailboxSetup',
+        'ip_whitelisted': 'ipWhitelisted',
+        'password': 'password',
+        'primary_email': 'primaryEmail',
+        'hash_function': 'hashFunction',
+        'creation_time': 'creationTime',
+        'change_password_at_next_login': 'changePasswordAtNextLogin',
+
+    }
+
+    model_schema_reversed = {value: key for key, value in model_schema.items()}
+
+    def model_field_to_google(self, fieldname):
+        return self.model_schema.get(fieldname)
+
+    def google_field_to_model(self, fieldname):
+        return self.model_schema_reversed.get(fieldname)
+
+
     def __unicode__(self):
         return self.name or ''
 
@@ -88,6 +117,7 @@ class GoogleDirectoryUser(TimeStampedModel):
                 # print("key : " + key + " value : " + str(value))
                 if key in self.model_schema_reversed.keys():
                     user_attributes[self.google_field_to_model(key)] = value
+
                 else:
                     print("Key :: " + key)
                     if key == "name":
@@ -122,6 +152,7 @@ class GoogleDirectoryUser(TimeStampedModel):
             gd_user = GoogleDirectoryUser.objects.create(google_configuration=google_configuration,
                                                          identity=curr_identity, **user_attributes)
             gd_user.save()
+
 
 
 class GoogleDirectoryGroup(TimeStampedModel):
@@ -172,8 +203,8 @@ class GoogleDirectoryGroup(TimeStampedModel):
                 # print("key : " + key + " value : " + str(value))
                 if key in self.model_schema_reversed.keys():
                     group_attributes[self.google_field_to_model(key)] = value
-            gd_group = GoogleDirectoryGroup.objects.create(google_configuration=google_configuration,
-                                                           **group_attributes)
+
+            gd_group = GoogleDirectoryGroup.objects.create(google_configuration=google_configuration, **group_attributes)
             gd_group.save()
 
 

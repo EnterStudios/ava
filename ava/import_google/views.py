@@ -9,7 +9,6 @@ from ava.import_google.google_apps_interface import GoogleDirectoryHelper
 from ava.import_google.models import GoogleDirectoryUser, GoogleDirectoryGroup, GoogleConfiguration
 
 
-
 class GoogleDirectoryUserIndex(ListView):
     model = GoogleDirectoryUser
     template_name = 'google_apps/GoogleDirectoryUser_index.html'
@@ -77,4 +76,3 @@ class GoogleDirectoryImport(django.views.generic.View):
         gd_group.import_from_json(google_config, import_data['groups'])
 
         return django.http.HttpResponseRedirect(reverse('google-user-index'))
-
