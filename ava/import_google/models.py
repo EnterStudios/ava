@@ -196,8 +196,6 @@ class GoogleDirectoryGroup(TimeStampedModel):
                 curr_group, created = Group.objects.update_or_create(name=group_attributes['name'],
                                                                      group_type=Group.GOOGLE)
 
-                curr_identity.groups.add(curr_group)
-
                 gd_group, gr_created = GoogleDirectoryGroup.objects.update_or_create(
                     google_configuration=google_configuration,
                     identity=curr_identity,
