@@ -290,7 +290,9 @@ GOOGLE_OAUTH2_CLIENT_SECRET = os.environ.get('GOOGLE_OAUTH2_CLIENT_SECRET', None
 
 # DJANGO DEBUG TOOLBAR CONFIGURATION
 def _show_toolbar_callback(request):
-    return DEBUG
+    toolbar_is_enabled = os.environ.get('DISABLE_DJANGO_DEBUG_TOOLBAR', 'false').lower() != 'true'
+    return DEBUG and toolbar_is_enabled
+
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': _show_toolbar_callback,
 }
