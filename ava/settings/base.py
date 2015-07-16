@@ -104,6 +104,7 @@ THIRD_PARTY_APPS = (
     'd3',
     'djrill',
     'twython',
+    'debug_toolbar',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -285,3 +286,13 @@ CSP_IMG_SRC = (
 ## GOOGLE OAUTH2 CONFIGURATION
 GOOGLE_OAUTH2_CLIENT_ID = os.environ.get('GOOGLE_OAUTH2_CLIENT_ID', None)
 GOOGLE_OAUTH2_CLIENT_SECRET = os.environ.get('GOOGLE_OAUTH2_CLIENT_SECRET', None)
+
+
+# DJANGO DEBUG TOOLBAR CONFIGURATION
+def _show_toolbar_callback(request):
+    toolbar_is_enabled = os.environ.get('DISABLE_DJANGO_DEBUG_TOOLBAR', 'false').lower() != 'true'
+    return DEBUG and toolbar_is_enabled
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': _show_toolbar_callback,
+}
