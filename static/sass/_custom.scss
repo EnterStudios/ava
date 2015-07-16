@@ -333,6 +333,10 @@ table {
     text-align: center;
     position: relative;
 
+    &.wizard-setup {
+        width: 400px;
+    }
+
     h3 {
         margin-top: 0px;
         padding-bottom: 10px;
@@ -348,6 +352,7 @@ table {
 
         &.first-user {
             padding: 0px 0px 0px;
+            width: 100%;
 
             .has-error {
                 input {

@@ -6007,6 +6007,8 @@ table {
   padding: 20px;
   text-align: center;
   position: relative; }
+  .auth.wizard-setup {
+    width: 400px; }
   .auth h3 {
     margin-top: 0px;
     padding-bottom: 10px; }
@@ -6016,7 +6018,8 @@ table {
     display: block;
     padding: 0px 0px 50px; }
     .auth .auth-inner.first-user {
-      padding: 0px 0px 0px; }
+      padding: 0px 0px 0px;
+      width: 100%; }
       .auth .auth-inner.first-user .has-error input {
         border-color: #A94442; }
       .auth .auth-inner.first-user .has-error ul {
