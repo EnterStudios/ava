@@ -13,7 +13,9 @@ $ava-blue-grey:         #919DA8;
 $ava-dark-blue:         #3A3F50;
 
 $ava-light-grey:        #F0F0F0;
+$ava-mid-grey:          #E8E8E8;
 $ava-grey:              #F4F8FB;
+$ava-darker-grey:       #A8A8A8;
 $ava-black:             #242C39;
 
 $ava-primary:           #085676;
@@ -33,6 +35,13 @@ $ava-green-black:       #0A5746;
 
 $ava-red:               #C22A2A;
 $ava-red-darker:        #6B0E0E;
+
+$ava-error-text:        #BB252A;
+$ava-error-border:      #E0C7C7;
+$ava-error-form:        #A94442;
+
+$ava-input-text:        #555555;
+$ava-input-border:      #CCCCCC;             
 
 // Body
 
@@ -194,11 +203,24 @@ table {
     margin-top: 0px;
 }
 
-// Error, Warning, Info
+// Error, Warning, Info, Help
 
 .alert.bg-danger { 
-  color: #BB252A;
-  border: 1px solid #E0C7C7;
+  color: $ava-error-text;
+  border: 1px solid $ava-error-border;
+}
+
+.help-text {
+    &.internal {
+        background-color: $ava-light-grey;
+        border: 1px solid $ava-mid-grey;
+        border-radius: 4px;
+        padding: 10px;
+        text-align: left;
+        font-size: 11px;
+        text-transform: uppercase;
+        color: $ava-darker-grey;
+    }
 }
 
 // Panels
@@ -356,13 +378,13 @@ table {
 
             .has-error {
                 input {
-                    border-color: #A94442;
+                    border-color: $ava-error-form;
                 }
 
                 ul {
                     list-style-type: none;
                     padding: 0px;
-                    color: #a94442;
+                    color: $ava-error-form;
 
                     li {
                         padding: 10px 0px 0px 0px;
@@ -390,7 +412,7 @@ table {
     }
 
     .first-user-intro {
-        border-bottom: 1px solid #F0F0F0;
+        border-bottom: 1px solid $ava-light-grey;
         padding-bottom: 5px;
         margin-bottom: 15px;
     }
@@ -409,10 +431,10 @@ table {
             padding: 6px 12px;
             font-size: 14px;
             line-height: 1.42857;
-            color: #555555;
-            background-color: #fff;
+            color: $ava-input-text;
+            background-color: $ava-pure-white;
             background-image: none;
-            border: 1px solid #ccc;
+            border: 1px solid $ava-input-border;
             border-radius: 4px;
             -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
             box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -438,5 +460,52 @@ table {
 
 .search {
     padding: 0px 0px 20px 0px;
+}
+
+// Spinner
+
+.spinner {
+  margin: 0 auto;
+  padding: 20px 0px 20px 0px;
+  width: 70px;
+  text-align: center;
+}
+
+.spinner > div {
+  width: 18px;
+  height: 18px;
+  background-color: $ava-secondary;
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out;
+  /* Prevent first frame from flickering when animation starts */
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0.0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 40% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
 }
 
