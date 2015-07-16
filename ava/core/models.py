@@ -19,7 +19,7 @@ class ReferenceModel(TimeStampedModel):
     name = models.CharField(max_length=100, verbose_name='Name')
     description = models.TextField(max_length=500, verbose_name='Description')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name or ''
 
     class Meta:

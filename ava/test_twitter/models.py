@@ -11,7 +11,7 @@ class TwitterTest(Test):
     link = models.ForeignKey('TweetLink', null=False)
     twitter_account = models.ForeignKey('TwitterAccount', null=False, verbose_name='Send From Twitter Account')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name or ''
 
     def get_absolute_url(self):
@@ -25,7 +25,7 @@ class TwitterTestTarget(TimeStampedModel):
     class Meta:
         unique_together = ("twitter_test", "target")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.target or ''
 
 

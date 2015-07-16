@@ -13,7 +13,7 @@ class UserRights(models.Model):
     user = models.OneToOneField(User, related_name='rights')
     is_admin = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.user)
 
     @classmethod
