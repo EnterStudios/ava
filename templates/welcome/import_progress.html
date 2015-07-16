@@ -2,13 +2,22 @@
 {% load staticfiles %}
 {% block mainpage %}
 
-{# TODO: this is a placeholder template, someone replace me with something pretty! #}
-<h1>Import your directory into AVA</h1>
-
-<h2>We are currently importing your LDAP directory</h2>
-
-<p>Note: If the import is being done synchronously, then by the time you get to this
-  page it will have already been completed, and we can just present them with a link to
-  <a href="{% url 'vis-ldap-graph-index' %}">the knowledge dashboard</a>.
+<div class="row">
+    <div class="auth wizard-setup">
+      	<img class="logo" src="{% static "images/ava-large.png" %}" alt="AVA - Protect Your People"/>
+      	<div class="auth-inner first-user">
+			<div class="first-user-intro">
+				<h3>Importing your directory</h3>
+				<div class="spinner">
+  					<div class="bounce1"></div>
+  					<div class="bounce2"></div>
+  					<div class="bounce3"></div>
+				</div>
+				<p>We are currently importing your LDAP directory.</p>
+			</div>
+			<a href="{% url 'vis-ldap-graph-index' %}" class="btn btn-def btn-block btn-success">View Knowledge Dashboard</a>
+			<p class="help-text internal">Note: If the import is being done synchronously, then by the time you get to this page it will have already been completed, and we can just present them with a link to the Knowledge Dashboard.</p>
+	</div>
+</div>
 
 {% endblock %}
