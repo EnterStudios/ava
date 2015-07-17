@@ -12,4 +12,4 @@ AVA_APPS="core_auth core_group core_identity core core_project import_ldap test_
 
 cd $(dirname $0)/..
 
-docker-compose run --rm web ./manage.py makemigrations ${AVA_APPS}
+./bin/manage.sh makemigrations ${AVA_APPS}
