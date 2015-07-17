@@ -2,10 +2,11 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 
-from ava.import_ldap.models import ActiveDirectoryUser, ActiveDirectoryGroup, LDAPConfiguration
-from ava.import_ldap.forms import LDAPConfigurationForm
+from .models import ActiveDirectoryUser, ActiveDirectoryGroup, LDAPConfiguration
+from .forms import LDAPConfigurationForm, LDAPConfigurationCredentialsForm
 
 
+# CRUD/Import views for LDAP Configurations
 class LDAPConfigurationIndex(ListView):
     template_name = 'ldap/LDAPConfiguration_index.html'
     context_object_name = 'ldap_configuration_list'
@@ -38,6 +39,26 @@ class LDAPConfigurationDelete(DeleteView):
     success_url = '/ldap/'
 
 
+class LDAPConfigurationImport(UpdateView):
+    model = LDAPConfiguration
+    template_name = 'ldap/LDAPConfiguration_import.html'
+    form_class = LDAPConfigurationCredentialsForm
+
+    def form_valid(self, form):
+        import_successful = form.run_ldap_import()
+
+        if import_successful:
+            return super().form_valid(form)
+        else:
+            return super().form_invalid(form)
+
+
+class ActiveDirectoryUserDetail(DetailView):
+    model = ActiveDirectoryUser
+    context_object_name = 'activedirectoryuser'
+    template_name = 'ldap/ActiveDirectoryUser_detail.html'
+
+
 class ActiveDirectoryUserIndex(ListView):
     model = ActiveDirectoryUser
     template_name = 'ldap/ActiveDirectoryUser_index.html'
@@ -50,12 +71,6 @@ class ActiveDirectoryUserIndex(ListView):
             context['ldap_user_list'] = ActiveDirectoryUser.objects.filter(ldap_configuration=instance)
             context['ldap_configuration'] = instance
         return context
-
-
-class ActiveDirectoryUserDetail(DetailView):
-    model = ActiveDirectoryUser
-    context_object_name = 'activedirectoryuser'
-    template_name = 'ldap/ActiveDirectoryUser_detail.html'
 
 
 class ActiveDirectoryUserCreate(CreateView):
@@ -159,25 +174,3 @@ class LDAPConfigurationGetGroups(ListView):
             instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
             ad_group = ActiveDirectoryGroup()
             ad_group.get_groups(instance)
-
-
-class LDAPConfigurationImport(ListView):
-    model = ActiveDirectoryUser
-    context_object_name = 'activedirectoryuser_list'
-    template_name = 'ldap/ActiveDirectoryUser_index.html'
-
-    def get_context_data(self, **kwargs):
-        self.import_all()
-        context = super().get_context_data(**kwargs)
-        config_pk = self.kwargs.get('pk')
-        if config_pk:
-            instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
-            context['activedirectoryuser_list'] = ActiveDirectoryUser.objects.filter(ldap_configuration=instance)
-        return context
-
-    def import_all(self):
-        config_pk = self.kwargs.get('pk')
-        if config_pk:
-            instance = get_object_or_404(LDAPConfiguration, pk=config_pk)
-            instance.import_all()
-        return True

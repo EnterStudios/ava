@@ -359,15 +359,10 @@ class ActiveDirectoryGroup(TimeStampedModel):
 
 
 class LDAPConfiguration(TimeStampedModel):
-
     """
-    user_dn = "cn=Administrator,cn=Users,dc=ava,dc=test,dc=domain"
-    user_pw = "Password1"
     dump_dn = "dc=ava,dc=test,dc=domain"
     server = 'ldap://dc.ava.test.domain'
     """
-    user_dn = models.CharField(max_length=100, verbose_name='User')
-    user_pw = models.CharField(max_length=100, verbose_name='Password')
     dump_dn = models.CharField(max_length=100, verbose_name='Domain')
     server = models.CharField(max_length=100, verbose_name='Server')
 
@@ -375,12 +370,12 @@ class LDAPConfiguration(TimeStampedModel):
         return self.server or ''
 
     class Meta:
-        unique_together = ('server', 'user_dn')
+        unique_together = ('server', 'dump_dn')
 
     def get_absolute_url(self):
         return reverse('ldap-configuration-detail', kwargs={'pk': self.id})
 
-    def import_all(self):
+    def import_all(self, user_dn, user_pw):
         ad_group = ActiveDirectoryGroup()
         ad_group.get_groups(self)
         ad_user = ActiveDirectoryUser()
