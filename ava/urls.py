@@ -26,5 +26,6 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^welcome/', include('ava.welcome.urls')),
     url(r'^google_auth/', include('ava.google_auth.urls')),
+    url(r'^know/', include('ava.dashboard_know.urls')),
 )
 urlpatterns += dh5bp_urls
