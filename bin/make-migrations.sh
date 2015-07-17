@@ -7,7 +7,7 @@
 
 
 ## I don't like having to hardwire this list.
-AVA_APPS="core_auth core_group core_identity core core_project import_ldap test_email test test_twitter"
+AVA_APPS="core_auth core_group core_identity core core_project import_ldap import_google test_email test test_twitter"
 
 
 cd $(dirname $0)/..

@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from ava.core_google_apps.models import GoogleConfiguration
+from ava.import_google.models import GoogleConfiguration
 
 
 class GoogleConfigurationForm(ModelForm):

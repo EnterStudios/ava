@@ -68,7 +68,7 @@
             <ul class="sub-menu">
                 <li><a href="{% url 'know-dashboard' %}">Know Dashboard</a></li>
                 <li><a href="{% url 'group-index' %}">Groups</a></li>
-                <li><a href="{% url 'identity-index' %}">People</a></li>
+                <li><a href="{% url 'person-index' %}">People</a></li>
             </ul>
         </li>
 
@@ -92,6 +92,7 @@
             <span class="sidebar-header">Settings</span>
             <ul class="sub-menu">
                 <li><a href="{% url 'ldap-configuration-index' %}">Manage LDAP Integration</a></li>
+                 <li><a href="{% url 'google-auth-main' %}">Import from Google</a></li>
                 <li><a href="{% url 'user-index' %}">Manage Users</a></li>
                 <li><a href="{% url 'team-index' %}">Manage Teams</a></li>   
             </ul>

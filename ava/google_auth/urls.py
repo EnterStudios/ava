@@ -10,6 +10,5 @@ urlpatterns = patterns(
     # This URL is configured at google's end in their 'developer console', so it needs to be
     # chosen carefully.
     url('^oauth2callback/$', views.GoogleOAuth2Callback.as_view(), name='google-auth-callback'),
-    url('^retrieve-info/$', views.GoogleRetrieveInfo.as_view(), name='google-retrieve-info'),
 
 )

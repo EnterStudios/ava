@@ -1,43 +1,12 @@
 # flake8: noqa
+from django.core.urlresolvers import reverse
 
-from django.shortcuts import get_object_or_404
-from django.views.generic import CreateView, ListView, DetailView
-from django.views.generic.edit import UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import DeleteView
 
-from ava.core_google_apps.models import *
-from ava.core_google_apps.forms import GoogleConfigurationForm
-
-
-class GoogleConfigurationIndex(ListView):
-    template_name = 'google_apps/GoogleConfiguration_index.html'
-    context_object_name = 'Google_configuration_list'
-
-    def get_queryset(self):
-        return GoogleConfiguration.objects.all()
-
-
-class GoogleConfigurationDetail(DetailView):
-    model = GoogleConfiguration
-    context_object_name = 'Google_configuration'
-    template_name = 'google_apps/GoogleConfiguration_detail.html'
-
-
-class GoogleConfigurationCreate(CreateView):
-    model = GoogleConfiguration
-    template_name = 'google_apps/GoogleConfiguration.html'
-    form_class = GoogleConfigurationForm
-
-
-class GoogleConfigurationUpdate(UpdateView):
-    model = GoogleConfiguration
-    template_name = 'google_apps/GoogleConfiguration.html'
-    form_class = GoogleConfigurationForm
-
-
-class GoogleConfigurationDelete(DeleteView):
-    model = GoogleConfiguration
-    template_name = 'confirm_delete.html'
-    success_url = '/Google/'
+from ava.google_auth.views import retrieve_credential_from_session, django
+from ava.import_google.google_apps_interface import GoogleDirectoryHelper
+from ava.import_google.models import GoogleDirectoryUser, GoogleDirectoryGroup, GoogleConfiguration
 
 
 class GoogleDirectoryUserIndex(ListView):
@@ -46,36 +15,20 @@ class GoogleDirectoryUserIndex(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        config_pk = self.kwargs.get('pk')
-        if config_pk:
-            instance = get_object_or_404(GoogleConfiguration, pk=config_pk)
-            context['Google_user_list'] = GoogleDirectoryUser.objects.filter(Google_configuration=instance)
-            context['Google_configuration'] = instance
+        context['google_user_list'] = GoogleDirectoryUser.objects.all()
         return context
 
 
 class GoogleDirectoryUserDetail(DetailView):
     model = GoogleDirectoryUser
-    context_object_name = 'activedirectoryuser'
+    context_object_name = 'googledirectoryuser'
     template_name = 'google_apps/GoogleDirectoryUser_detail.html'
-
-
-class GoogleDirectoryUserCreate(CreateView):
-    model = GoogleDirectoryUser
-    template_name = 'google_apps/GoogleDirectoryUser.html'
-    form_class = GoogleConfigurationForm
-
-
-class GoogleDirectoryUserUpdate(UpdateView):
-    model = GoogleDirectoryUser
-    template_name = 'google_apps/GoogleDirectoryUser.html'
-    form_class = GoogleConfigurationForm
 
 
 class GoogleDirectoryUserDelete(DeleteView):
     model = GoogleDirectoryUser
     template_name = 'confirm_delete.html'
-    success_url = '/Google/'
+    success_url = '/google/users/'
 
 
 class GoogleDirectoryGroupIndex(ListView):
@@ -84,79 +37,40 @@ class GoogleDirectoryGroupIndex(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        config_pk = self.kwargs.get('pk')
-        if config_pk:
-            instance = get_object_or_404(GoogleConfiguration, pk=config_pk)
-            context['Google_group_list'] = GoogleDirectoryGroup.objects.filter(Google_configuration=instance)
-            context['Google_configuration'] = instance
+        context['google_group_list'] = GoogleDirectoryGroup.objects.all()
         return context
 
 
 class GoogleDirectoryGroupDetail(DetailView):
     model = GoogleDirectoryGroup
-    context_object_name = 'activedirectorygroup'
+    context_object_name = 'googledirectorygroup'
     template_name = 'google_apps/GoogleDirectoryGroup_detail.html'
-
-
-class GoogleDirectoryGroupCreate(CreateView):
-    model = GoogleDirectoryGroup
-    template_name = 'google_apps/GoogleDirectoryGroup.html'
-    form_class = GoogleConfigurationForm
-
-
-class GoogleDirectoryGroupUpdate(UpdateView):
-    model = GoogleDirectoryGroup
-    template_name = 'google_apps/GoogleDirectoryGroup.html'
-    form_class = GoogleConfigurationForm
 
 
 class GoogleDirectoryGroupDelete(DeleteView):
     model = GoogleDirectoryGroup
     template_name = 'confirm_delete.html'
-    success_url = '/Google/'
+    success_url = '/google/groups/'
 
 
-class GoogleConfigurationGetUsers(ListView):
-    model = GoogleDirectoryUser
-    context_object_name = 'activedirectoryuser_list'
-    template_name = 'google_apps/GoogleDirectoryUser_index.html'
+class GoogleDirectoryImport(django.views.generic.View):
 
-    def get_context_data(self, **kwargs):
-        self.get_users()
-        context = super().get_context_data(**kwargs)
-        config_pk = self.kwargs.get('pk')
-        if config_pk:
-            instance = get_object_or_404(GoogleConfiguration, pk=config_pk)
-            context['activedirectoryuser_list'] = GoogleDirectoryUser.objects.filter(Google_configuration=instance)
-        return context
+    def get(self, request):
+        credential = retrieve_credential_from_session(request)
+        gd_helper = GoogleDirectoryHelper()
 
-    def get_users(self):
-        config_pk = self.kwargs.get('pk')
-        if config_pk:
-            instance = get_object_or_404(GoogleConfiguration, pk=config_pk)
-            adHelper = GoogleDirectoryHelper()
-            adHelper.get_users(instance)
+        # this is a mess. figure out whether we actually need multiple google domains/configs
+        google_config, created = GoogleConfiguration.objects.update_or_create(domain="test")
 
-        return True
+        # import the directory information from google
+        import_data = gd_helper.import_google_directory(credential)
 
+        # parse and store the users
+        gd_user = GoogleDirectoryUser()
+        gd_user.import_from_json(google_config, import_data['users'])
 
-class GoogleConfigurationGetGroups(ListView):
-    model = GoogleDirectoryGroup
-    context_object_name = 'activedirectorygroup_list'
-    template_name = 'google_apps/GoogleDirectoryGroup_index.html'
+        # parse and store the groups
+        gd_group = GoogleDirectoryGroup()
+        gd_group.import_from_json(google_config, import_data['groups'], import_data['group_members'] )
 
-    def get_context_data(self, **kwargs):
-        self.get_groups()
-        context = super().get_context_data(**kwargs)
-        config_pk = self.kwargs.get('pk')
-        if config_pk:
-            instance = get_object_or_404(GoogleConfiguration, pk=config_pk)
-            context['activedirectorygroup_list'] = GoogleDirectoryGroup.objects.filter(Google_configuration=instance)
-        return context
-
-    def get_groups(self):
-        config_pk = self.kwargs.get('pk')
-        if config_pk:
-            instance = get_object_or_404(GoogleConfiguration, pk=config_pk)
-            adHelper = GoogleDirectoryHelper()
-            adHelper.get_groups(instance)
+        return django.http.HttpResponseRedirect(reverse('google-user-index'))

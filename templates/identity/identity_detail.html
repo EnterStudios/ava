@@ -3,45 +3,59 @@
 {% block title %}View Identity{% endblock %}
 {% block mainpage %}
 
-<div class="page-header">
-    <h1>View Identity and Identifiers</h1>
-</div>
-
-
-<h2>{{ identity.name }} </h2>
-<p>{{ identity.description }}</p>
+    <div class="page-header">
+        <h1>View Identity</h1>
+    </div>
 
 <div class="table-responsive">
     <table class="table table-striped">
-        <thead>
+        <tbody>
+                <tr>
+                    <td>Name:</td>
+                    <td>{{ identity.name }}</td>
+                </tr>
+                <tr>
+                    <td>Group Type:</td>
+                    <td>{{ identity.identity_type }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+</div>
+
+
+    <div class="page-header">
+        <h2>Associated Identifiers: </h2>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
             <tr>
                 <th>Identifier</th>
                 <th>Identifier Type</th>
                 <th></th>
             </tr>
-        </thead>
-        <tbody>
-        {% for identifier in identity.identifiers.all %}
-            <tr>
-                <td>{{ identifier.identifier }}</td>
-                <td>{{ identifier.identifier_type|identifier_type }}</td>
-                <td>
-                    <div class="pull-right">
-                        <a href="{% url 'identifier-delete' identifier.id  %}" class="btn btn-danger btn-sm">Delete Identifier</a>
-                        <a href="{% url 'identifier-update' identifier.id  %}" class="btn btn-primary btn-sm">Update Identifier</a>
-                    </div>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+            {% for identifier in identity.identifiers.all %}
+                <tr>
+                    <td>{{ identifier.identifier }}</td>
+                    <td>{{ identifier.identifier_type|identifier_type }}</td>
+                    <td>
+                        <div class="pull-right">
+                            <a href="{% url 'identifier-delete' identifier.id %}" class="btn btn-danger btn-sm">Delete
+                                Identifier</a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-<div class="button pull-right">
-    <a href="{% url 'identity-delete' identity.id %}" class="btn btn-danger btn-md">Delete Identity</a>
-    <a href="{% url 'identity-update' identity.id %}" class="btn btn-primary btn-md">Update Identidy</a>
-    <a href="{% url 'identifier-create' identity.id %}" class="btn btn-success btn-md">Create New Identifier</a>
-</div>
+    <div class="button pull-right">
+        <a href="{% url 'identity-delete' identity.id %}" class="btn btn-danger btn-md">Delete Identity</a>
+    </div>
 
 {% endblock %}
 

@@ -17,6 +17,7 @@ urlpatterns = patterns(
     url(r'^accounts/', include('ava.core_auth.urls')),
     url(r'^group/', include('ava.core_group.urls')),
     url(r'^ldap/', include('ava.import_ldap.urls')),
+    url(r'^google/', include('ava.import_google.urls')),
     url(r'^people/', include('ava.core_identity.urls')),
     url(r'^graph/', include('ava.vis_graph.urls')),
     url(r'^test/', include('ava.test.urls')),
