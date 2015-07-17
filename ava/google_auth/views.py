@@ -30,7 +30,9 @@ def build_flow():
             'https://www.googleapis.com/auth/admin.directory.user.alias.readonly'
         ],
         user_agent='ava/0.1',
+
         redirect_uri=settings.GOOGLE_OAUTH2_REDIRECT_URL,
+
     )
     return flow
 
