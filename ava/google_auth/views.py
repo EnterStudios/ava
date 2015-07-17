@@ -1,7 +1,5 @@
 import logging
 import os
-import httplib2
-from apiclient.discovery import build
 
 import django.views.generic
 import django.core.exceptions

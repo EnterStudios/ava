@@ -4,6 +4,7 @@ from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import models as auth_models
 from ava.core_auth import models as core_auth_models
 
+
 class CreateFirstSuperUser(auth_forms.UserCreationForm):
     # TODO: add any other interesting fields other than the defaults
     #       (username and password).
