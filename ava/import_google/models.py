@@ -12,19 +12,6 @@ from ava.core_group.models import Group
 from ava.core_identity.models import Person, Identity, Identifier
 
 
-# TO DO - THESE FIELDS PROBABLY NEED SOME LOVE
-# aliases": [ # List of aliases (Read-only)
-#         "A String",
-#       ],
-# nonEditableAliases": [ # List of non editable aliases (Read-only)
-#         "A String",
-#       ],
-#
-# name": { # JSON template for name of a user in Directory API. # User's name
-#         "fullName": "A String", # Full Name
-#         "givenName": "A String", # First Name
-#         "familyName": "A String", # Last Name
-
 class GoogleDirectoryUser(TimeStampedModel):
     first_name = models.CharField(max_length=300)
     surname = models.CharField(max_length=300)

@@ -32,7 +32,7 @@ class Group(TimeStampedModel):
     group_type = models.CharField(max_length=20, choices=GROUP_TYPE_CHOICES, default=GENERIC, verbose_name='Group Type')
     parent = models.ForeignKey('Group', null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name or ''
 
     def get_absolute_url(self):

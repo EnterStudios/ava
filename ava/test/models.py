@@ -55,7 +55,7 @@ class Test(ReferenceModel):
     # if a redirect URL is specified.
     page_template = models.CharField(max_length=100, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name or ''
 
 
@@ -74,5 +74,5 @@ class TestResult(TimeStampedModel):
     referrer = models.TextField(null=True, blank=True)  # Referer
     via = models.TextField(null=True, blank=True)  # Via
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.created)

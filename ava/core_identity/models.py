@@ -45,7 +45,7 @@ class Person(TimeStampedModel):
     surname = models.CharField(max_length=75, validators=[validate_slug])
     identity = models.ManyToManyField('Identity', blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return (self.first_name + " " + self.surname).strip() or ''
 
     def get_absolute_url(self):
@@ -85,7 +85,7 @@ class Identifier(TimeStampedModel):
                                        verbose_name='Identifier Type')
     identity = models.ForeignKey('Identity', related_name='identifiers')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.identifier or ''
 
     def get_absolute_url(self):

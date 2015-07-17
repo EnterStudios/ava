@@ -2,16 +2,19 @@
 {% load staticfiles %}
 {% block mainpage %}
 
-{# TODO: this is a placeholder template, someone replace me with something pretty! #}
-
-
-<h1>Import your directory into AVA</h1>
-
-<p>To begin mapping out your organisation, please import your LDAP or Google Account directory.</p>
-
-<ul>
-  <li><a href="{% url 'welcome-import-ldap' %}">Import from LDAP</a></li>
-  <li>Import from Google Apps (coming soon)</li>
-</ul>
-
+<div class="row">
+    <div class="auth wizard-setup">
+      	<img class="logo" src="{% static "images/ava-large.png" %}" alt="AVA - Protect Your People"/>
+      	<div class="auth-inner first-user">
+			<div class="first-user-intro">
+				<h3>Import your directory into AVA</h3>
+				<p>To begin mapping out your organisation, please import your LDAP or Google Account directory.</p>
+				<p>(Import from Google Apps coming soon.)</p>
+			</div>
+			
+			<a href="{% url 'welcome-import-ldap' %}" class="btn btn-def btn-block btn-success">Import from LDAP</a>
+			<!-- <a href="#" class="btn btn-def btn-block btn-success">Import from Google Apps</a> -->
+		</div>
+	</div>
+</div>
 {% endblock %}

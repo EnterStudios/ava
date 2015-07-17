@@ -6,4 +6,4 @@ set -e
 
 cd $(dirname $0)/..
 
-docker-compose run --rm web ./manage.py test -v2
+./bin/manage.sh test -v2
