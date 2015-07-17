@@ -7,26 +7,71 @@ from apiclient.discovery import build
 
 
 class GoogleDirectoryHelper:
-
     def __init__(self):
         pass
 
+    MOCK_DATA_LOCATION = 'ava/testdata/'
+    DATA_SOURCE = 'google'
+
     def import_google_directory(self, credential):
-        http = httplib2.Http()
-        http = credential.authorize(http)
-        directory_service = build('admin', 'directory_v1', http=http)
 
-        users = self.get_users(directory_service)
-        groups = self.get_groups(directory_service)
+        # Feature and testing toggle to allow developers to test LDAP import without having
+        # Google Apps at hand
+        # Uses an environment variable to decide whether to test against local JSON file or actual
+        # Google Apps instance
+        # To test locally, ensure that the environment variable 'USE_MOCK_GOOGLE' is set
 
-        results = {
-            'users': users,
-            'groups': groups,
-            'user_groups': self.get_user_groups(directory_service, users),
-            'group_members': self.get_group_members(directory_service, groups),
+        import_files = {
+            'users': 'user',
+            'groups': 'group',
+            'user_groups': 'user_group',
+            'group_members': 'group_member',
         }
 
+        if os.environ.get('USE_MOCK_GOOGLE'):
+            results = {}
+
+            for key, prefix in import_files:
+                with open(self.MOCK_DATA_LOCATION + self.DATA_SOURCE+"_" + prefix + "_data.json", 'r') as infile:
+                    results['key'] = json.load(infile)
+                infile.close()
+
+            return results
+
+        else:
+            http = httplib2.Http()
+            http = credential.authorize(http)
+            directory_service = build('admin', 'directory_v1', http=http)
+
+            users = self.get_users(directory_service)
+            groups = self.get_groups(directory_service)
+
+            results = {
+                'users': users,
+                'groups': groups,
+                'user_groups': self.get_user_groups(directory_service, users),
+                'group_members': self.get_group_members(directory_service, groups),
+            }
+
+            # Feature and testing toggle to allow developers to test export new test data from LDAP server
+            # Uses an environment variable to decide whether to dump the data to file or not
+            # To toggle this feature on, ensure that the environment variable 'CREATE_MOCK_LDAP' is set
+            if os.environ.get('CREATE_MOCK_GOOGLE'):
+                for key, prefix in import_files:
+                    with open(self.MOCK_DATA_LOCATION + self.DATA_SOURCE+"_" + prefix + "_data.json", 'w') as infile:
+                        self.export_ldap_json(prefix, results['key'])
+                    infile.close()
+            # end of toggled feature
+
         return results
+
+    # Exports a JSON string to a file
+    def export_ldap_json(self, prefix, results_json):
+        filename = self.MOCK_DATA_LOCATION + self.DATA_SOURCE+"_" + prefix + '_data.json'
+
+        with open(filename, 'w') as outfile:
+            json.dump(results_json, outfile)
+        outfile.close()
 
     @staticmethod
     def get_users(directory_service):
