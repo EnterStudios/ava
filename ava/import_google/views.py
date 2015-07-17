@@ -1,4 +1,5 @@
 # flake8: noqa
+import os
 from django.core.urlresolvers import reverse
 
 from django.views.generic import ListView, DetailView
@@ -56,7 +57,12 @@ class GoogleDirectoryGroupDelete(DeleteView):
 class GoogleDirectoryImport(django.views.generic.View):
 
     def get(self, request):
-        credential = retrieve_credential_from_session(request)
+
+        if os.environ.get('USE_MOCK_GOOGLE'):
+            credential = retrieve_credential_from_session(request)
+        else:
+            credential = "not needed due to local install"
+
         gd_helper = GoogleDirectoryHelper()
 
         # this is a mess. figure out whether we actually need multiple google domains/configs
