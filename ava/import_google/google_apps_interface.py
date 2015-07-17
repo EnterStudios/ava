@@ -1,4 +1,6 @@
 # flake8: noqa
+import json
+import os
 
 import httplib2
 from apiclient import errors
@@ -31,9 +33,9 @@ class GoogleDirectoryHelper:
         if os.environ.get('USE_MOCK_GOOGLE'):
             results = {}
 
-            for key, prefix in import_files:
+            for key, prefix in import_files.items():
                 with open(self.MOCK_DATA_LOCATION + self.DATA_SOURCE+"_" + prefix + "_data.json", 'r') as infile:
-                    results['key'] = json.load(infile)
+                    results[key] = json.load(infile)
                 infile.close()
 
             return results
@@ -57,9 +59,9 @@ class GoogleDirectoryHelper:
             # Uses an environment variable to decide whether to dump the data to file or not
             # To toggle this feature on, ensure that the environment variable 'CREATE_MOCK_GOOGLE' is set
             if os.environ.get('CREATE_MOCK_GOOGLE'):
-                for key, prefix in import_files:
+                for key, prefix in import_files.items():
                     with open(self.MOCK_DATA_LOCATION + self.DATA_SOURCE+"_" + prefix + "_data.json", 'w') as infile:
-                        self.export_ldap_json(prefix, results['key'])
+                        self.export_ldap_json(prefix, results[key])
                     infile.close()
             # end of toggled feature
 
