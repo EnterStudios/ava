@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block mainpage %}
+
+    <div class="page-header">
+        <h2>Know Dashboard</h2>
+    </div>
+
+<div class="container" style="text-align:center; min-width:900px; max-width:1500px">
+   STUFF
+</div>
+  <div class="page-header">
+            <h2>Another heading: </h2>
+        </div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Column Name</th>
+                <th>Column Name</th>
+                <th># Targets</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in item_list %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.description }}</td>
+                    <td> <3 Luci</td>
+
+                    <td>
+                        <a href="" class="btn btn-primary btn-sm">View Details/a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
+
