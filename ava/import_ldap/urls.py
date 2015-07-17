@@ -15,6 +15,9 @@ urlpatterns = patterns(
         name='ldap-configuration-update'),
     url(r'^(?P<pk>\d+)/delete/$', login_required(views.LDAPConfigurationDelete.as_view()),
         name='ldap-configuration-delete'),
+    url(r'^(?P<pk>\d+)/import/$', login_required(views.LDAPConfigurationImport.as_view()),
+        name='ldap-import-all'),
+
 
     url(r'^(?P<pk>\d+)/aduser/$', login_required(views.ActiveDirectoryUserIndex.as_view()), name='ad-user-index'),
     url(r'^(?P<pk>\d+)/aduser/new/$', login_required(views.ActiveDirectoryUserCreate.as_view()), name='ad-user-create'),
@@ -35,7 +38,6 @@ urlpatterns = patterns(
     url(r'^adgroup/(?P<pk>\d+)/delete/$', login_required(views.ActiveDirectoryGroupDelete.as_view()),
         name='ad-group-delete'),
 
-    url(r'^(?P<pk>\d+)/import/$', login_required(views.LDAPConfigurationImport.as_view()), name='ldap-import-all'),
     #    """
     #    url(r'^(?P<pk>\d+)/getusers/$', login_required(views.LDAPConfigurationGetUsers.as_view()), name='ldap-get-users'),
     #    url(r'^(?P<pk>\d+)/getgroups/$', login_required(views.LDAPConfigurationGetGroups.as_view()),
