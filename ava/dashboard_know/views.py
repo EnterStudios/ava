@@ -20,17 +20,4 @@ class KnowDashboardView(generic.ListView):
 
         return context
 
-    def get_admins(self, ldap_config):
-        return ActiveDirectoryUser.objects.filter(ldap_configuration=ldap_config,)
 
-    def get_account_never_expires(self, ldap_config):
-        pass
-
-    def get_never_logged_in(self, ldap_config):
-        pass
-
-    def get_oldest_password(self, ldap_config):
-        pass
-
-    def get_logon_count(self, ldap_config):
-        pass
