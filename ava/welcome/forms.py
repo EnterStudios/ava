@@ -2,7 +2,7 @@ import django.forms
 
 from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import models as auth_models
-
+from ava.core_auth import models as core_auth_models
 
 class CreateFirstSuperUser(auth_forms.UserCreationForm):
     # TODO: add any other interesting fields other than the defaults
@@ -17,17 +17,18 @@ class CreateFirstSuperUser(auth_forms.UserCreationForm):
             )
         return super().clean()
 
-    def save(self, commit=True):
+    def save(self):
         assert self.is_valid(), "Attempted to call save() on invalid form"
 
         # Use the superclass's save() but don't commit to the db yet.
         user = super().save(commit=False)
 
-        # Set the elevated privileges.
+        # Set the Django elevated privileges.
         user.is_staff = True
         user.is_superuser = True
+        user.save()
 
-        # and *now* commit to the DB.
-        if commit:
-            user.save()
+        # Set the AVA elevated privilege, this implicitly creates the object.
+        core_auth_models.UserRights.get(user)
+
         return user
