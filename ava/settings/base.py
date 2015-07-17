@@ -93,6 +93,7 @@ LOCAL_APPS = (
     'ava.test_email',
     'ava.test_twitter',
     'ava.test_tracking',
+    'ava.dashboard_know',
 )
 
 THIRD_PARTY_APPS = (
