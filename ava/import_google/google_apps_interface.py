@@ -15,7 +15,7 @@ class GoogleDirectoryHelper:
 
     def import_google_directory(self, credential):
 
-        # Feature and testing toggle to allow developers to test LDAP import without having
+        # Feature and testing toggle to allow developers to test Google import without having
         # Google Apps at hand
         # Uses an environment variable to decide whether to test against local JSON file or actual
         # Google Apps instance
@@ -53,9 +53,9 @@ class GoogleDirectoryHelper:
                 'group_members': self.get_group_members(directory_service, groups),
             }
 
-            # Feature and testing toggle to allow developers to test export new test data from LDAP server
+            # Feature and testing toggle to allow developers to test export new test data from Google Apps
             # Uses an environment variable to decide whether to dump the data to file or not
-            # To toggle this feature on, ensure that the environment variable 'CREATE_MOCK_LDAP' is set
+            # To toggle this feature on, ensure that the environment variable 'CREATE_MOCK_GOOGLE' is set
             if os.environ.get('CREATE_MOCK_GOOGLE'):
                 for key, prefix in import_files:
                     with open(self.MOCK_DATA_LOCATION + self.DATA_SOURCE+"_" + prefix + "_data.json", 'w') as infile:
