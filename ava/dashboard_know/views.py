@@ -12,12 +12,8 @@ class KnowDashboardView(generic.ListView):
         context = super(KnowDashboardView, self).get_context_data(**kwargs)
         # context['ldap_users_count'] =
         pk = self.kwargs.get('pk')
-        if pk:
-            ldap_config = get_object_or_404(LDAPConfiguration, pk=pk)
-            context['ldap_config'] = ldap_config
-        context['ldap_admins'] = self.get_admins(ldap_config)
-
-
+        # if pk:
+        #     ldap_config = get_object_or_404(LDAPConfiguration, pk=pk)
+        #     context['ldap_config'] = ldap_config
+        # context['ldap_admins'] = self.get_admins(ldap_config)
         return context
-
-
