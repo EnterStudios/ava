@@ -1,4 +1,5 @@
 import logging
+import os
 import httplib2
 from apiclient.discovery import build
 
@@ -30,7 +31,9 @@ def build_flow():
             'https://www.googleapis.com/auth/admin.directory.user.alias.readonly'
         ],
         user_agent='ava/0.1',
+
         redirect_uri=settings.GOOGLE_OAUTH2_REDIRECT_URL,
+
     )
     return flow
 
@@ -49,11 +52,17 @@ def retrieve_credential_from_session(request):
 
 class RedirectToGoogleLogin(django.views.generic.View):
     def get(self, request):
-        flow = build_flow()
-        # Build the URI that we send the client browser to.
-        authorize_url = flow.step1_get_authorize_url()
-        # Send the client web browser to the authorize_url
-        return django.http.HttpResponseRedirect(authorize_url)
+
+        # bypass the google auth flow if using the mock local version
+
+        if os.environ.get('USE_MOCK_GOOGLE'):
+            return django.http.HttpResponseRedirect(reverse('google-import'))
+        else:
+            flow = build_flow()
+            # Build the URI that we send the client browser to.
+            authorize_url = flow.step1_get_authorize_url()
+            # Send the client web browser to the authorize_url
+            return django.http.HttpResponseRedirect(authorize_url)
 
 
 class GoogleOAuth2Callback(django.views.generic.View):
