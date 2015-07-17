@@ -14,9 +14,10 @@ class FormTests(TestCase):
         })
         self.assertTrue(form.is_valid())
 
-        user = form.save(commit=False)
+        user = form.save()
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+        self.assertTrue(user.rights.is_admin)
 
     def test_users_already_exist(self):
         """Form validation fails if any users already exist."""
