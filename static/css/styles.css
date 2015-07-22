@@ -6018,12 +6018,14 @@ table {
   text-align: center;
   position: relative; }
   .auth.wizard-setup {
-    width: 400px; }
+    width: 400px;
+    margin-top: 20px; }
   .auth h3 {
     margin-top: 0px;
     padding-bottom: 10px; }
   .auth .logo {
-    padding-bottom: 30px; }
+    padding-bottom: 30px;
+    padding-top: 15px; }
   .auth .auth-inner {
     display: block;
     padding: 0px 0px 50px; }
@@ -6076,6 +6078,33 @@ table {
       -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
       -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
       transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s; }
+
+.step-breadcrumb {
+  position: relative; }
+  .step-breadcrumb .active {
+    background-color: #FFFFFF;
+    color: #085676; }
+  .step-breadcrumb span {
+    border: 1px solid #CFDBE2;
+    background-color: #F5F7FA;
+    color: #B7CDDA;
+    position: absolute; }
+    .step-breadcrumb span.step-one {
+      padding: 8px 9px;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      top: -39px;
+      left: -3px; }
+    .step-breadcrumb span.step-two {
+      padding: 8px 10px;
+      top: -39px;
+      left: 113px; }
+    .step-breadcrumb span.step-three {
+      padding: 8px 9px;
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+      top: -39px;
+      left: 234px; }
 
 .wrapper {
   float: left;

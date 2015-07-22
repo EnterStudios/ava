@@ -9,6 +9,7 @@ $ava-white:             #FDFDFD;
 $ava-main-bg:           #F5F7FA;
 $ava-lighter-blue:      #D5E2EE;
 $ava-light-blue:        #CFDBE2;
+$ava-grey-blue:         #B7CDDA;
 $ava-blue-grey:         #919DA8;
 $ava-dark-blue:         #3A3F50;
 
@@ -357,6 +358,7 @@ table {
 
     &.wizard-setup {
         width: 400px;
+        margin-top: 20px;
     }
 
     h3 {
@@ -366,6 +368,7 @@ table {
 
     .logo {
         padding-bottom: 30px;
+        padding-top: 15px;
     }
 
     .auth-inner {
@@ -441,6 +444,44 @@ table {
             -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
             -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
             transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+        }
+    }
+}
+
+.step-breadcrumb {
+    position: relative;
+
+    .active {
+        background-color: $ava-pure-white;
+        color: $ava-primary;
+    }
+
+    span {
+        border: 1px solid $ava-light-blue;
+        background-color: $ava-main-bg;
+        color: $ava-grey-blue;
+        position: absolute;
+
+        &.step-one {
+            padding: 8px 9px;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            top: -39px;
+            left: -3px;
+        }
+
+        &.step-two {
+            padding: 8px 10px;
+            top: -39px;
+            left: 113px;
+        }
+
+        &.step-three {  
+            padding: 8px 9px;
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            top: -39px;
+            left: 234px;
         }
     }
 }
