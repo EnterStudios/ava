@@ -2,11 +2,14 @@
 {% load staticfiles %}
 {% block mainpage %}
 
-{# TODO: this is a placeholder template, someone replace me with something pretty! #}
-
 {% if no_users_exist %}
 <div class="row">
       <div class="auth wizard-setup">
+      	<div class="step-breadcrumb">
+      		<span class="step-one active">Create Account</span>
+      		<span class="step-two">Import Directory</span>
+      		<span class="step-three">View Dashboard</span>
+      	</div>
       	<img class="logo" src="{% static "images/ava-large.png" %}" alt="AVA - Protect Your People"/>
       		<div class="auth-inner first-user">
 			<div class="first-user-intro">
