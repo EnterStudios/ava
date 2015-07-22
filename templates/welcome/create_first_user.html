@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block mainpage %}
+{% block content %}
+
+{% block sidebar %}
+{% endblock %}
 
 {% if no_users_exist %}
 <div class="row">
@@ -54,7 +57,7 @@
 {% else %}
 
 <div class="row">
-    <div class="auth">
+    <div class="auth wizard-setup">
       	<img class="logo" src="{% static "images/ava-large.png" %}" alt="AVA - Protect Your People"/>
       	<div class="auth-inner first-user">
 			<div class="first-user-intro-alt">
