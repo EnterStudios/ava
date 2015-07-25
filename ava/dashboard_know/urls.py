@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
-from ava.test import views
+from ava.dashboard_know import views
 
 
 urlpatterns = patterns(

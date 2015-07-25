@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.views import generic
-from ava.import_ldap.models import LDAPConfiguration, ActiveDirectoryUser
+from ava.import_ldap.models import LDAPConfiguration
 
 
 class KnowDashboardView(generic.ListView):
