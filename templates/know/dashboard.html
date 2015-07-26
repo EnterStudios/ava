@@ -37,6 +37,51 @@
         </tbody>
     </table>
 </div>
+ <div class="page-header">
+            <h2>Admins: </h2>
+     </div>
+
+
+    <div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in ldap.admin_accounts %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+     <div class="page-header">
+            <h2>Never logged in: </h2>
+     </div>
+
+
+    <div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in ldap.never_logged_in %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
      <div class="page-header">
             <h2>Logon Count (desc): </h2>
@@ -79,7 +124,7 @@
             {% for item in ldap.password_last_set %}
                 <tr>
                     <td>{{ item.name }}</td>
-                    <td>{{ item.password_last_set }}</td>
+                    <td>{{ item.pwd_last_set }}</td>
                 </tr>
             {% endfor %}
         </tbody>
