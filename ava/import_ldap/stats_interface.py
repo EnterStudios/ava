@@ -29,11 +29,10 @@ class LDAPStatistics():
 
         for user in users:
             if str.startswith(str(user.account_expires), "9999"):
-                print("found one : " + user.name + " = " + user.account_expires)
+                # print("found one : " + user.name + " = " + user.account_expires)
                 results.append(user)
-            else:
-                print("ignoring :: " + user.name)
-        print(len(results))
+
+        # print(len(results))
         return results
 
     def get_admin_accounts(self):
@@ -58,15 +57,13 @@ class LDAPStatistics():
 
     def get_logon_count(self, direction):
         if direction is self.DESC:
-            return ActiveDirectoryUser.objects.filter(ldap_configuration=self.LDAP_CONFIG).order_by(
-                direction + 'logon_count')
+            return ActiveDirectoryUser.objects.filter(ldap_configuration=self.LDAP_CONFIG).order_by('-logon_count')
         else:
             return ActiveDirectoryUser.objects.filter(ldap_configuration=self.LDAP_CONFIG).order_by('logon_count')
 
     def get_password_last_set(self, direction):
         if direction is self.DESC:
-            return ActiveDirectoryUser.objects.filter(ldap_configuration=self.LDAP_CONFIG).order_by(
-                direction + 'pwd_last_set')
+            return ActiveDirectoryUser.objects.filter(ldap_configuration=self.LDAP_CONFIG).order_by('-pwd_last_set')
         else:
             return ActiveDirectoryUser.objects.filter(ldap_configuration=self.LDAP_CONFIG).order_by('pwd_last_set')
 
