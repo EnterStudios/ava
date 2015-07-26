@@ -42,7 +42,7 @@ class LDAPStatistics():
         users = ActiveDirectoryUser.objects.filter(ldap_configuration=self.LDAP_CONFIG)
 
         for user in users:
-            if user.admin_count is "1":
+            if user.admin_count == 1:
                 results.append(user)
 
         return results
@@ -52,7 +52,7 @@ class LDAPStatistics():
         users = ActiveDirectoryUser.objects.filter(ldap_configuration=self.LDAP_CONFIG)
 
         for user in users:
-            if user.logon_count is "":
+            if user.logon_count is None:
                 results.append(user)
 
         return results
