@@ -5,8 +5,6 @@ from django.views import generic
 from ava.import_ldap.models import LDAPConfiguration
 from ava.import_ldap.stats_interface import LDAPStatistics
 
-
-
 class KnowDashboardView(generic.ListView):
     template_name = 'know/dashboard.html'
     model = LDAPConfiguration
