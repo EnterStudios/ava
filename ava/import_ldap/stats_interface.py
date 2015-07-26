@@ -11,10 +11,11 @@ class LDAPStatistics():
 
     def get_stats(self, ldap_config):
         self.LDAP_CONFIG = ldap_config
+        all_users = ActiveDirectoryUser.objects.filter(ldap_configuration=self.LDAP_CONFIG)
         results = {
-            'never_expires': self.get_never_expires(),
-            'admin_accounts': self.get_admin_accounts(),
-            'never_logged_in': self.get_never_logged_in(),
+            'never_expires': self.get_never_expires(all_users),
+            'admin_accounts': self.get_admin_accounts(all_users),
+            'never_logged_in': self.get_never_logged_in(all_users),
             'logon_count': self.get_logon_count(self.DESC),
             'password_last_set': self.get_password_last_set(self.DESC),
             'connection_size': self.get_connection_size(self.DESC),
@@ -23,9 +24,9 @@ class LDAPStatistics():
         return results
 
     # Checks the current active directory users for this ldap configuration and returns all users that do not expire
-    def get_never_expires(self):
+    @staticmethod
+    def get_never_expires(users):
         results = []
-        users = ActiveDirectoryUser.objects.filter(ldap_configuration=self.LDAP_CONFIG)
 
         for user in users:
             if str.startswith(str(user.account_expires), "9999"):
@@ -35,9 +36,9 @@ class LDAPStatistics():
         # print(len(results))
         return results
 
-    def get_admin_accounts(self):
+    @staticmethod
+    def get_admin_accounts(users):
         results = []
-        users = ActiveDirectoryUser.objects.filter(ldap_configuration=self.LDAP_CONFIG)
 
         for user in users:
             if user.admin_count == 1:
@@ -45,9 +46,9 @@ class LDAPStatistics():
 
         return results
 
-    def get_never_logged_in(self):
+    @staticmethod
+    def get_never_logged_in(users):
         results = []
-        users = ActiveDirectoryUser.objects.filter(ldap_configuration=self.LDAP_CONFIG)
 
         for user in users:
             if user.logon_count is None:
