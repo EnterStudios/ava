@@ -27,6 +27,7 @@ class ActiveDirectoryUser(TimeStampedModel):
     last_logon_timestamp = models.CharField(max_length=300)
     logon_count = models.IntegerField(null=True, blank=True)
     # logon_hours = models.CharField(max_length=300)
+    lockoutTime = models.CharField(max_length=300)
     name = models.CharField(max_length=300)
     object_guid = models.CharField(max_length=300)
     object_sid = models.CharField(max_length=300)
@@ -67,6 +68,7 @@ class ActiveDirectoryUser(TimeStampedModel):
         'last_logon_timestamp': 'lastLogonTimestamp',
         'logon_count': 'logonCount',
         # 'logon_hours': 'logonHours',
+        'lockout_time': 'lockoutTime',
         'name': 'name',
         'object_guid': 'objectGUID',
         'object_sid': 'objectSid',
