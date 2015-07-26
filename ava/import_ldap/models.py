@@ -14,9 +14,9 @@ from ava.core_group.models import Group
 class ActiveDirectoryUser(TimeStampedModel):
     dn = models.CharField(max_length=300)
     account_expires = models.CharField(max_length=300)
-    admin_count = models.IntegerField(null=True)
+    admin_count = models.IntegerField(null=True, blank=True)
     bad_password_time = models.CharField(max_length=300)
-    bad_pwd_count = models.IntegerField(null=True)
+    bad_pwd_count = models.IntegerField(null=True, blank=True)
     cn = models.CharField(max_length=300)
     description = models.CharField(max_length=300)
     display_name = models.CharField(max_length=300)
@@ -25,8 +25,8 @@ class ActiveDirectoryUser(TimeStampedModel):
     last_logoff = models.CharField(max_length=300)
     last_logon = models.CharField(max_length=300)
     last_logon_timestamp = models.CharField(max_length=300)
-    logon_count = models.IntegerField(null=True)
-    logon_hours = models.CharField(max_length=300)
+    logon_count = models.IntegerField(null=True, blank=True)
+    # logon_hours = models.CharField(max_length=300)
     name = models.CharField(max_length=300)
     object_guid = models.CharField(max_length=300)
     object_sid = models.CharField(max_length=300)
@@ -66,7 +66,7 @@ class ActiveDirectoryUser(TimeStampedModel):
         'last_logon': 'lastLogon',
         'last_logon_timestamp': 'lastLogonTimestamp',
         'logon_count': 'logonCount',
-        'logon_hours': 'logonHours',
+        # 'logon_hours': 'logonHours',
         'name': 'name',
         'object_guid': 'objectGUID',
         'object_sid': 'objectSid',
@@ -186,7 +186,16 @@ class ActiveDirectoryUser(TimeStampedModel):
                                 if date:
                                     value_string = date.isoformat()
 
-                            model_attributes[self.ldap_field_to_model(key)] = value_string
+                            if key in ('adminCount', 'badPwdCount', 'logonCount'):
+                                # print("WTF IS HAPPENING HERE")
+                                print(value_string)
+                                if value_string is None or value_string is "":
+                                    value_string = 0
+                                else:
+                                    value_string = int(value_string)
+
+                            if not self.ldap_field_to_model(key) is None:
+                                model_attributes[self.ldap_field_to_model(key)] = value_string
 
                         except UnicodeDecodeError:
                             model_attributes[self.ldap_field_to_model(key)] = self.cleanhex(value_string)
@@ -210,7 +219,7 @@ class ActiveDirectoryUser(TimeStampedModel):
             # If no matching user currently exists then create one, otherwise
             # update the existing user.
             ad_users = ActiveDirectoryUser.objects.filter(**filter_attrs)
-
+            # print(model_attributes)
             if ad_users.count() == 0:
                 ad_user = ActiveDirectoryUser.objects.create(ldap_configuration=parameters, **model_attributes)
                 ad_user.save()
@@ -232,12 +241,12 @@ class ActiveDirectoryUser(TimeStampedModel):
                                                  identity=identity)
 
             for group in groups:
-                print(groups)
+                # print(groups)
                 if ad_user.groups.filter(id=group.id).count() == 0:
                     ad_user.groups.add(group)
 
             for gen_group in gen_groups:
-                print(gen_group.id)
+                # print(gen_group.id)
                 if identity.groups.filter(id=gen_group.id).count() == 0:
                     identity.groups.add(gen_group)
 
@@ -344,7 +353,7 @@ class ActiveDirectoryGroup(TimeStampedModel):
                 ad_group.group = gen_group
                 ad_group.save()
             else:
-                print("existing group")
+                # print("existing group")
                 ad_groups.update(**model_attributes)
                 ad_group = ad_groups.first()
 
