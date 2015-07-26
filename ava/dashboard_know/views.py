@@ -12,7 +12,9 @@ class KnowDashboardView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(KnowDashboardView, self).get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
+        print('PK : ' + pk)
         if pk:
+            print('entered the if clause')
             ldap_config = get_object_or_404(LDAPConfiguration, pk=pk)
-            context['ldap'] = LDAPStatistics(ldap_config)
+            context['ldap'] = LDAPStatistics().get_stats(ldap_config)
         return context
