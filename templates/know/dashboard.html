@@ -165,10 +165,12 @@
         </thead>
         <tbody>
             {% for item in ldap.logon_count %}
+                {% if item.logon_count != None %}
                 <tr>
                     <td>{{ item.name }}</td>
                     <td>{{ item.logon_count }}</td>
                 </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
     </table>
