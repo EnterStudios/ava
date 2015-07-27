@@ -1,6 +1,10 @@
 * Visit our homepage at [http://avasecure.com](http://avasecure.com)
 * Join the mailing list at [https://groups.google.com/forum/#!forum/avasecure] (https://groups.google.com/forum/#!forum/avasecure)
 
+### Project Status
+This project is under heavy development and should be considered unstable. 
+A stable release should be expected in August 2015. Please use the mailing list or issues tracker to report issues.
+
 ### We build secure people
 
 [![Build Status](https://travis-ci.org/SafeStack/ava.svg?branch=master)](https://travis-ci.org/SafeStack/ava)   [![Coverage Status](https://coveralls.io/repos/SafeStack/ava/badge.svg?branch=master)](https://coveralls.io/r/SafeStack/ava?branch=master)
