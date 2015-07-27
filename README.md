@@ -1,5 +1,5 @@
-> Visit our homepage at [http://avasecure.com](http://avasecure.com)
-> Join the mailing list at [https://groups.google.com/forum/#!forum/avasecure] (https://groups.google.com/forum/#!forum/avasecure)
+* Visit our homepage at [http://avasecure.com](http://avasecure.com)
+* Join the mailing list at [https://groups.google.com/forum/#!forum/avasecure] (https://groups.google.com/forum/#!forum/avasecure)
 
 ### We build secure people
 
