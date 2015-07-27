@@ -5954,6 +5954,76 @@ table {
 .dashboard-item {
   font-size: 15px; }
 
+.dash-info {
+  float: left;
+  width: 40%;
+  padding-left: 15px; }
+
+.dash-img {
+  float: left; }
+
+.dash-desc {
+  float: left;
+  width: 55%;
+  font-size: 14px;
+  padding-left: 20px; }
+  .dash-desc h3 {
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    margin-top: 0px;
+    margin-bottom: 12px; }
+
+.dash-stats {
+  float: left;
+  width: 60%; }
+
+.dash-stat {
+  width: 33%;
+  float: left;
+  border-left: 1px solid #D5E2EE;
+  min-height: 145px;
+  text-align: center;
+  padding-top: 10px; }
+
+.dash-count {
+  display: block;
+  width: 100%;
+  font-size: 34px;
+  font-weight: 700;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+.dash-type {
+  display: block;
+  width: 100%;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  padding-bottom: 15px; }
+
+.row.dash-extra {
+  padding-top: 45px; }
+
+.dash-errors {
+  position: absolute;
+  bottom: 0px;
+  width: 100%; }
+
+.dash-error {
+  background-color: #f2dede;
+  padding: 10px 0px 10px 15px; }
+
+.know .panel {
+  min-height: 100px; }
+  .know .panel.dash-connected {
+    background: url(../images/network.png) #FFFFFF no-repeat 177px -100px; }
+  .know .panel.dash-passwords {
+    background: url(../images/password.png) #FFFFFF no-repeat 209px 13px; }
+  .know .panel.dash-logged {
+    background: url(../images/login.png) #FFFFFF no-repeat 243px -7px; }
+
+.filter {
+  padding: 10px; }
+
 .btn {
   color: #FFFFFF !important;
   padding: 9px 30px 8px 30px;

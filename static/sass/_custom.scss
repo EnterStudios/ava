@@ -42,7 +42,11 @@ $ava-error-border:      #E0C7C7;
 $ava-error-form:        #A94442;
 
 $ava-input-text:        #555555;
-$ava-input-border:      #CCCCCC;             
+$ava-input-border:      #CCCCCC; 
+
+// Fonts
+
+$font-family-dashboard:  "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif !default;            
 
 // Body
 
@@ -260,6 +264,8 @@ table {
     }
 }
 
+// Old Dashboard -- Update
+
 .dashboard-count {
     font-size: 24px;
     font-weight: bold;
@@ -267,6 +273,100 @@ table {
 
 .dashboard-item {
     font-size: 15px;
+}
+
+// New Dashboard Panels
+
+.dash-info {
+    float: left;
+    width: 40%;
+    padding-left: 15px; 
+}
+
+.dash-img {
+    float: left;
+}
+
+.dash-desc {
+    float: left;
+    width: 55%;
+    font-size: 14px;
+    padding-left: 20px;
+
+    h3 {
+        font-family: $font-family-dashboard;
+        font-weight: 700;
+        font-size: 20px;
+        margin-top: 0px;
+        margin-bottom: 12px;
+    }
+}
+
+.dash-stats {
+    float: left;
+    width: 60%;
+}
+
+.dash-stat {
+    width: 33%;
+    float: left;
+    border-left: 1px solid $ava-lighter-blue;
+    min-height: 145px;
+    text-align: center;
+    padding-top: 10px;
+}
+
+.dash-count {
+    display: block;
+    width: 100%;
+    font-size: 34px;
+    font-weight: 700;
+    font-family: $font-family-dashboard;
+}
+
+.dash-type {
+    display: block;
+    width: 100%;
+    font-family: $font-family-dashboard;
+    font-size: 18px;
+    padding-bottom: 15px;
+}
+
+.row.dash-extra {
+    padding-top: 45px;
+}
+
+.dash-errors {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+
+.dash-error {
+    background-color: #f2dede;
+    padding: 10px 0px 10px 15px;
+}
+
+.know {
+    .panel {
+        min-height: 100px;
+
+        &.dash-connected {
+            background: url(../images/network.png) #FFFFFF no-repeat 177px -100px;
+        }
+
+        &.dash-passwords {
+            background: url(../images/password.png) #FFFFFF no-repeat 209px 13px;
+        }
+
+         &.dash-logged {
+            background: url(../images/login.png) #FFFFFF no-repeat 243px -7px;
+        }
+    }
+}
+
+.filter {
+    padding: 10px;
 }
 
 // Buttons
