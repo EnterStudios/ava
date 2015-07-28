@@ -2,13 +2,45 @@
 import os
 from django.core.urlresolvers import reverse
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic.edit import DeleteView
 
 from ava.google_auth.views import retrieve_credential_from_session, django
+from ava.import_google.forms import GoogleConfigurationForm
 from ava.import_google.google_apps_interface import GoogleDirectoryHelper
 from ava.import_google.models import GoogleDirectoryUser, GoogleDirectoryGroup, GoogleConfiguration
 
+# CRUD/Import views for Google Configurations
+class GoogleConfigurationIndex(ListView):
+    template_name = 'google/GoogleConfiguration_index.html'
+    context_object_name = 'google_configuration_list'
+
+    def get_queryset(self):
+        return GoogleConfiguration.objects.all()
+
+
+class GoogleConfigurationDetail(DetailView):
+    model = GoogleConfiguration
+    context_object_name = 'google_configuration'
+    template_name = 'google/GoogleConfiguration_detail.html'
+
+
+class GoogleConfigurationCreate(CreateView):
+    model = GoogleConfiguration
+    template_name = 'google/GoogleConfiguration.html'
+    form_class = GoogleConfigurationForm
+
+
+class GoogleConfigurationUpdate(UpdateView):
+    model = GoogleConfiguration
+    template_name = 'google/GoogleConfiguration.html'
+    form_class = GoogleConfigurationForm
+
+
+class GoogleConfigurationDelete(DeleteView):
+    model = GoogleConfiguration
+    template_name = 'confirm_delete.html'
+    success_url = '/google/'
 
 class GoogleDirectoryUserIndex(ListView):
     model = GoogleDirectoryUser
