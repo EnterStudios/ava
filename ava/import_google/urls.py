@@ -5,6 +5,16 @@ from ava.import_google import views
 
 urlpatterns = patterns(
     '',
+    url(r'^$', login_required(views.GoogleConfigurationIndex.as_view()), name='google-configuration-index'),
+    url(r'^new/$', login_required(views.GoogleConfigurationCreate.as_view()),
+        name='google-configuration-create'),
+    url(r'^(?P<pk>\d+)/view/$', login_required(views.GoogleConfigurationDetail.as_view()),
+        name='google-configuration-detail'),
+    url(r'^(?P<pk>\d+)/update/$', login_required(views.GoogleConfigurationUpdate.as_view()),
+        name='google-configuration-update'),
+    url(r'^(?P<pk>\d+)/delete/$', login_required(views.GoogleConfigurationDelete.as_view()),
+        name='google-configuration-delete'),
+    
     url(r'^import/$', login_required(views.GoogleDirectoryImport.as_view()),
         name='google-import'),
 
