@@ -6088,8 +6088,7 @@ table {
   text-align: center;
   position: relative; }
   .auth.wizard-setup {
-    width: 400px;
-    margin-top: 20px; }
+    width: 400px; }
   .auth h3 {
     margin-top: 0px;
     padding-bottom: 10px; }
