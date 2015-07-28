@@ -14,9 +14,7 @@
                 <th>GUID</th>
                 <th># Members</th>
                 <th>
-                    {% if ldap_configuration %}
-                        <a href="{% url 'ldap-get-groups' ldap_configuration.id  %}"><button type="button" class="btn btn-primary btn-sm">Import Groups</button></a>
-                    {% endif %}
+
                 </th>
             </tr>
         </thead>
@@ -29,8 +27,6 @@
         
                 <td>
                     <a href="{% url 'ad-group-detail' activedirectorygroup.id  %}" class="btn btn-primary btn-sm">View</a>
-                    <a href="{% url 'ad-group-update' activedirectorygroup.id  %}" class="btn btn-primary btn-sm">Update</a>
-                    <a href="{% url 'ad-group-delete' activedirectorygroup.id  %}" class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>
     {% endfor %}

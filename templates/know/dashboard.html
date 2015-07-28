@@ -2,107 +2,176 @@
 {% load staticfiles %}
 {% block mainpage %}
 
-<div class="row dashboard">
-    <div class="col-sm-12">
-        <div class="panel">
-            <div class="panel-body">
-               <div class="row">
-                    <div class="dash-info">
-                        <div class="dash-img">
-                            <img src="{% static 'images/know.png' %}">
+    <div class="row dashboard">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="dash-info">
+                            <div class="dash-img">
+                                <img src="{% static 'images/know.png' %}">
+                            </div>
+                            <div class="dash-desc">
+                                <h3>Know: Dashboard</h3>
+
+                                <p>See how people are connected and learn how your organisation is really structured.
+                                    Use information from internal systems to reveal trust boundaries and pathways.</p>
+                            </div>
                         </div>
-                        <div class="dash-desc">
-                            <h3>Know: Dashboard</h3>
-                            <p>See how people are connected and learn how your organisation is really structured. Use information from internal systems to reveal trust boundaries and pathways.</p>
+                        <div class="dash-stats">
+                            <div class="dash-stat">
+                                <span class="dash-count">{{ person_count }}</span>
+                                <span class="dash-type">people</span>
+                                <a href="{% url 'person-index' %}" class="btn btn-sm btn-default">View People</a>
+                            </div>
+                            <div class="dash-stat">
+                                <span class="dash-count">{{ identity_count }}</span>
+                                <span class="dash-type">identities</span>
+                                <a href="{% url 'identity-index' %}" class="btn btn-sm btn-default">View Identities</a>
+                            </div>
+                            <div class="dash-stat">
+                                <span class="dash-count">{{ group_count }}</span>
+                                <span class="dash-type">active groups</span>
+                                <a href="{% url 'group-index' %}" class="btn btn-sm btn-default">View Groups</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="dash-stats">
-                        <div class="dash-stat">
-                            <span class="dash-count">0</span>
-                            <span class="dash-type">people</span>
-                            <a href="" class="btn btn-sm btn-default">View People</a>
-                        </div>
-                        <div class="dash-stat">
-                            <span class="dash-count">0</span>
-                            <span class="dash-type">identities</span>
-                            <a href="" class="btn btn-sm btn-default">View Identities</a>
-                        </div>
-                        <div class="dash-stat">
-                            <span class="dash-count">0</span>
-                            <span class="dash-type">active groups</span>
-                            <a href="" class="btn btn-sm btn-default">View Groups</a>
-                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row dashboard know">
+        <div class="col-sm-4">
+            <div class="panel dash-connected">
+                <div class="panel-body">
+                    <div class="body-item">
+                        <span class="dash-count">0</span>
+                        <span class="dash-type">people are highly connected</span>
                     </div>
-               </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row dashboard know">
-   <div class="col-sm-4">
-        <div class="panel dash-connected">
-            <div class="panel-body">
-                <div class="body-item">
-                    <span class="dash-count">0</span>
-                    <span class="dash-type">people are highly connected</span>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div class="col-sm-4">
-        <div class="panel dash-passwords">
-            <div class="panel-body">
-                <div class="body-item">
-                    <span class="dash-count">0</span> 
-                    <span class="dash-type">passwords never expire</span>
+
+        <div class="col-sm-4">
+            <div class="panel dash-passwords">
+                <div class="panel-body">
+                    <div class="body-item">
+                        <span class="dash-count">{{ ldap.never_expires|length }}</span>
+                        <span class="dash-type">passwords never expire</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div class="col-sm-4">
-        <div class="panel dash-logged">
-            <div class="panel-body">
-                <div class="body-item">
-                    <span class="dash-count">0</span>
-                    <span class="dash-type">people have never logged in</span>
+
+        <div class="col-sm-4">
+            <div class="panel dash-logged">
+                <div class="panel-body">
+                    <div class="body-item">
+                        <span class="dash-count">{{ ldap.never_logged_in|length }}</span>
+                        <span class="dash-type">people have never logged in</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="page-header">
-    <h3>Know: Organisation</h3>
-</div>
+        </div>
 
-<div class="table-responsive">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Column Name</th>
-                <th>Column Name</th>
-                <th># Targets</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in item_list %}
+        <div class="page-header">
+            <h2>Admins: </h2>
+        </div>
+
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
                 <tr>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.description }}</td>
-                    <td></td>
+                    <th>Name</th>
 
-                    <td>
-                        <div class="pull-right"><a href="" class="btn btn-primary btn-md">View Details</a></div>
-                    </td>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+                </thead>
+                <tbody>
+                {% for item in ldap.admin_accounts %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="page-header">
+            <h2>Never logged in: </h2>
+        </div>
+
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in ldap.never_logged_in %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="page-header">
+            <h2>Logon Count (desc): </h2>
+        </div>
+
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in ldap.logon_count %}
+                    {% if item.logon_count != None %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.logon_count }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="page-header">
+            <h2>Password last set (desc): </h2>
+        </div>
+
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in ldap.password_last_set %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.pwd_last_set }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
 
 {% endblock %}
-

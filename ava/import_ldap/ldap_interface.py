@@ -100,7 +100,7 @@ class ActiveDirectoryHelper:
             # specify the fields to bring back for this user
             attributes = ['distinguishedName', 'objectGUID', 'objectSid', 'cn', 'accountExpires', 'adminCount',
                           'badPasswordTime', 'badPwdCount', 'description', 'displayName', 'isCriticalSystemObject',
-                          'lastLogoff', 'lastLogon', 'lastLogonTimestamp', 'logonCount', 'logonHours', 'name',
+                          'lastLogoff', 'lastLogon', 'lastLogonTimestamp', 'logonCount', 'lockoutTime', 'name',
                           'primaryGroupID', 'pwdLastSet', 'sAMAccountName', 'sAMAccountType', 'uSNChanged',
                           'uSNCreated', 'userAccountControl', 'whenChanged', 'whenCreated', 'memberOf',
                           'proxyAddresses']
