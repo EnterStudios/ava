@@ -9,8 +9,7 @@ class LDAPStatistics():
     DESC = '-'
     ASC = ''
 
-    def get_all_stats(self, ldap_config):
-        self.LDAP_CONFIG = ldap_config
+    def get_all_stats(self):
         all_users = ActiveDirectoryUser.objects.filter()
         results = {
             'never_expires': self.get_never_expires(all_users),
