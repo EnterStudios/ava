@@ -62,7 +62,13 @@
     <div data-scrollbar="true" data-height="100%">
         <!-- begin sidebar nav -->
         <ul class="nav">
-        <li><a href="/">Dashboard</a></li>
+        <!-- <li><a href="/">Dashboard</a></li> -->
+        <li class="user-welcome">
+            <div>
+                <span class="user-image"><img src="{% static 'images/ava-small.png' %}"></span>
+                <span class="user">Hi, {{ user }}</span>
+            </div>
+        </li>
 
         <li class="nav-header has-sub-menu">
             <span class="sidebar-header">Know</span>
