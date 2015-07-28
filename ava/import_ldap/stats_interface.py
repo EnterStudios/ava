@@ -9,6 +9,20 @@ class LDAPStatistics():
     DESC = '-'
     ASC = ''
 
+    def get_all_stats(self, ldap_config):
+        self.LDAP_CONFIG = ldap_config
+        all_users = ActiveDirectoryUser.objects.filter()
+        results = {
+            'never_expires': self.get_never_expires(all_users),
+            'admin_accounts': self.get_admin_accounts(all_users),
+            'never_logged_in': self.get_never_logged_in(all_users),
+            'logon_count': self.get_logon_count(self.DESC),
+            'password_last_set': self.get_password_last_set(self.DESC),
+            'connection_size': self.get_connection_size(self.DESC),
+        }
+
+        return results
+
     def get_stats(self, ldap_config):
         self.LDAP_CONFIG = ldap_config
         all_users = ActiveDirectoryUser.objects.filter(ldap_configuration=self.LDAP_CONFIG)
