@@ -12,7 +12,7 @@ from ava.import_google.models import GoogleDirectoryUser, GoogleDirectoryGroup, 
 
 # CRUD/Import views for Google Configurations
 class GoogleConfigurationIndex(ListView):
-    template_name = 'google/GoogleConfiguration_index.html'
+    template_name = 'google_apps/GoogleConfiguration_index.html'
     context_object_name = 'google_configuration_list'
 
     def get_queryset(self):
@@ -22,18 +22,18 @@ class GoogleConfigurationIndex(ListView):
 class GoogleConfigurationDetail(DetailView):
     model = GoogleConfiguration
     context_object_name = 'google_configuration'
-    template_name = 'google/GoogleConfiguration_detail.html'
+    template_name = 'google_apps/GoogleConfiguration_detail.html'
 
 
 class GoogleConfigurationCreate(CreateView):
     model = GoogleConfiguration
-    template_name = 'google/GoogleConfiguration.html'
+    template_name = 'google_apps/GoogleConfiguration.html'
     form_class = GoogleConfigurationForm
 
 
 class GoogleConfigurationUpdate(UpdateView):
     model = GoogleConfiguration
-    template_name = 'google/GoogleConfiguration.html'
+    template_name = 'google_apps/GoogleConfiguration.html'
     form_class = GoogleConfigurationForm
 
 
