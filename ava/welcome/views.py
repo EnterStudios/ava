@@ -63,9 +63,9 @@ class ImportLDAP(django.views.generic.edit.FormView):
 
 class ImportGoogle(django.views.generic.edit.FormView):
     template_name = 'welcome/import_google.html'
-    success_url = reverse_lazy('welcome-import-progress')
+    success_url = reverse_lazy('google-auth-login-redirect')
 
-    form_class = import_google_forms.GoogleConfigurationForm
+    form_class = import_google_forms.GoogleConfigurationWelcomeForm
 
     def form_valid(self, form):
         import_successful = form.run_google_import()
