@@ -18,7 +18,10 @@ class KnowDashboardView(generic.ListView):
         if pk:
             ldap_config = get_object_or_404(LDAPConfiguration, pk=pk)
             context['ldap'] = LDAPStatistics().get_stats(ldap_config)
-            context['person_count'] = Person.objects.count()
-            context['identity_count'] = Identity.objects.count()
-            context['group_count'] = Group.objects.count()
+        else:
+            context['ldap'] = LDAPStatistics().get_all_stats()
+
+        context['person_count'] = Person.objects.count()
+        context['identity_count'] = Identity.objects.count()
+        context['group_count'] = Group.objects.count()
         return context

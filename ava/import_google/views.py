@@ -59,9 +59,9 @@ class GoogleDirectoryImport(django.views.generic.View):
     def get(self, request):
 
         if os.environ.get('USE_MOCK_GOOGLE'):
-            credential = retrieve_credential_from_session(request)
-        else:
             credential = "not needed due to local install"
+        else:
+            credential = retrieve_credential_from_session(request)
 
         gd_helper = GoogleDirectoryHelper()
 
@@ -79,4 +79,4 @@ class GoogleDirectoryImport(django.views.generic.View):
         gd_group = GoogleDirectoryGroup()
         gd_group.import_from_json(google_config, import_data['groups'], import_data['group_members'] )
 
-        return django.http.HttpResponseRedirect(reverse('google-user-index'))
+        return django.http.HttpResponseRedirect(reverse('know-dashboard'))

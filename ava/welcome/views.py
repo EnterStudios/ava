@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from . import forms
 
 from ava.import_ldap import forms as import_ldap_forms
+from ava.import_google import forms as import_google_forms
 
 log = logging.getLogger(__name__)
 
@@ -54,6 +55,20 @@ class ImportLDAP(django.views.generic.edit.FormView):
 
     def form_valid(self, form):
         import_successful = form.run_ldap_import()
+
+        if import_successful:
+            return super().form_valid(form)
+        else:
+            return super().form_invalid(form)
+
+class ImportGoogle(django.views.generic.edit.FormView):
+    template_name = 'welcome/import_google.html'
+    success_url = reverse_lazy('google-auth-login-redirect')
+
+    form_class = import_google_forms.GoogleConfigurationWelcomeForm
+
+    def form_valid(self, form):
+        import_successful = form.run_google_import()
 
         if import_successful:
             return super().form_valid(form)

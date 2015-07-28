@@ -37,7 +37,6 @@ web:
   environment:
     - DJANGO_SETTINGS_MODULE=ava.settings.base
     - USE_MOCK_LDAP=true
-    - USE_MOCK_GOOGLE=true
   env_file:
     - secrets.env
 

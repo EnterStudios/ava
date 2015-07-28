@@ -17,11 +17,24 @@
 			<div class="first-user-intro">
 				<h3>Import your directory into AVA</h3>
 				<p>To begin mapping out your organisation, please import your LDAP or Google Account directory.</p>
-				<p>(Import from Google Apps coming soon.)</p>
 			</div>
+
+			<form method='post'>
+  			{% csrf_token %}
+
+  			<div class="form-group {% if form.user_dn.errors %}has-error{% endif %}">
+				<label for="{{ form.domain.id_for_label }}" class="control-label">Domain</label>
+				<div class="first-time">{{ form.domain }}</div>
+				{% if form.domain.errors %}
+			  	{{ form.domain.errors }}
+			  	{% endif %}  
+				<div class="help-block">{{ form.domain.help_text }}</div>
+          	</div>
+
+          	<button type="submit" class="btn btn-def btn-block btn-success">Submit</button>
 			
-			<a href="{% url 'welcome-import-ldap' %}" class="btn btn-def btn-block btn-success">Import from LDAP</a>
-			<a href="{% url 'welcome-import-google' %}" class="btn btn-def btn-block btn-success">Import from Google Apps</a>
+			</div>
+			</form>
 		</div>
 	</div>
 </div>

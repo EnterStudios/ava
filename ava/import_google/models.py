@@ -217,6 +217,8 @@ class GoogleConfiguration(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('google-configuration-detail', kwargs={'pk': self.id})
 
+    def import_all(self):
+        pass
 
 class ExportGoogle:
     def __init__(self):
