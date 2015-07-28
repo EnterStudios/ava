@@ -5859,7 +5859,8 @@ table {
     background: #085676;
     color: #FDFDFD;
     display: block;
-    padding: 10px 20px; }
+    padding: 10px 20px;
+    clear: left; }
   .sidebar .sub-menu {
     list-style-type: none;
     padding: 0px;
@@ -6075,6 +6076,23 @@ table {
     padding: 5px 21px;
     font-size: 14px;
     margin: 0px 5px; }
+
+.user-welcome {
+  background-color: #FCFCFC; }
+  .user-welcome .user {
+    padding: 0px;
+    margin: 0px;
+    position: absolute;
+    top: 27px;
+    display: inline-block;
+    background-color: #FCFCFC;
+    color: #333333 !important; }
+
+.user-image {
+  margin: 10px;
+  display: inline-block !important;
+  background-color: #FCFCFC !important;
+  padding: 0px !important; }
 
 .auth {
   background-color: #FFFFFF;
