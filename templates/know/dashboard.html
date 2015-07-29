@@ -74,104 +74,101 @@
                 </div>
             </div>
         </div>
+        
+    </div>
 
-        </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Administrators</h2>
 
-        <div class="page-header">
-            <h2>Admins: </h2>
-        </div>
-
-
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Name</th>
-
-                </tr>
-                </thead>
-                <tbody>
-                {% for item in ldap.admin_accounts %}
-                    <tr>
-                        <td>{{ item.name }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <div class="page-header">
-            <h2>Never logged in: </h2>
-        </div>
-
-
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Name</th>
-
-                </tr>
-                </thead>
-                <tbody>
-                {% for item in ldap.never_logged_in %}
-                    <tr>
-                        <td>{{ item.name }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <div class="page-header">
-            <h2>Logon Count (desc): </h2>
-        </div>
-
-
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Value</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for item in ldap.logon_count %}
-                    {% if item.logon_count != None %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.logon_count }}</td>
+                            <th>Name</th>
                         </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in ldap.admin_accounts %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <h2>Never logged in</h2>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in ldap.never_logged_in %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Logon Count (desc)</h2>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in ldap.logon_count %}
+                    {% if item.logon_count != None %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.logon_count }}</td>
+                    </tr>
                     {% endif %}
-                {% endfor %}
-                </tbody>
-            </table>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="page-header">
-            <h2>Password last set (desc): </h2>
-        </div>
+        <div class="col-sm-6">
+            <h2>Password last set (desc)</h2>
 
-
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Value</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for item in ldap.password_last_set %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in ldap.password_last_set %}
                     <tr>
                         <td>{{ item.name }}</td>
                         <td>{{ item.pwd_last_set }}</td>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-
+    </div>
 
 {% endblock %}
