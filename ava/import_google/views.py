@@ -1,6 +1,7 @@
 # flake8: noqa
 import os
 from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic.edit import DeleteView
@@ -97,18 +98,24 @@ class GoogleDirectoryImport(django.views.generic.View):
 
         gd_helper = GoogleDirectoryHelper()
 
-        # this is a mess. figure out whether we actually need multiple google domains/configs
-        google_config, created = GoogleConfiguration.objects.update_or_create(domain="test")
+        config_pk = self.kwargs.get('pk')
+        if config_pk:
+            google_config = get_object_or_404(GoogleConfiguration, pk=config_pk)
+        else:
+            google_config = request.session.get('google_configuration_id')
 
-        # import the directory information from google
-        import_data = gd_helper.import_google_directory(credential)
+        if google_config:
+            # import the directory information from google
+            import_data = gd_helper.import_google_directory(credential)
 
-        # parse and store the users
-        gd_user = GoogleDirectoryUser()
-        gd_user.import_from_json(google_config, import_data['users'])
+            # parse and store the users
+            gd_user = GoogleDirectoryUser()
+            gd_user.import_from_json(google_config, import_data['users'])
 
-        # parse and store the groups
-        gd_group = GoogleDirectoryGroup()
-        gd_group.import_from_json(google_config, import_data['groups'], import_data['group_members'] )
+            # parse and store the groups
+            gd_group = GoogleDirectoryGroup()
+            gd_group.import_from_json(google_config, import_data['groups'], import_data['group_members'])
+
+            self.request.session['google_configuration_id'] = None
 
         return django.http.HttpResponseRedirect(reverse('know-dashboard'))

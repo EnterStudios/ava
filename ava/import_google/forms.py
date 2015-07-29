@@ -44,7 +44,8 @@ class GoogleConfigurationWelcomeForm(GoogleConfigurationForm):
             # enter the transaction.
             # with transaction.atomic():
             # save the form.
-            # self.save()
+            self.save()
+            self.request.session['google_configuration_id'] = self.id
             # run the Google Import
 
             # This needs love. It should redirect through the google auth flow...
