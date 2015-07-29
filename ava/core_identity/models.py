@@ -31,7 +31,7 @@ class Identity(TimeStampedModel):
                                     blank=True,
                                     related_name='identities')
 
-     def __str__(self):
+    def __str__(self):
         return self.name or ''
 
     def get_absolute_url(self):
