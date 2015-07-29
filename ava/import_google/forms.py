@@ -44,7 +44,8 @@ class GoogleConfigurationWelcomeForm(GoogleConfigurationForm):
             # enter the transaction.
             # with transaction.atomic():
             # save the form.
-            # self.save()
+
+            google_config = self.save()
             # run the Google Import
 
             # This needs love. It should redirect through the google auth flow...
@@ -56,7 +57,7 @@ class GoogleConfigurationWelcomeForm(GoogleConfigurationForm):
             # At the moment 'no exception being thrown' is the best
             # measure for success we have, so if we got here, it
             # must have worked.
-            return True
+            return True, google_config
 
         except Exception as e:
             # Something went wrong, the transaction has already rolled
@@ -69,4 +70,4 @@ class GoogleConfigurationWelcomeForm(GoogleConfigurationForm):
                 field=None,
                 error="Sorry, an error occurred during Google import. See the debug log for details"
             )
-            return False
+            return False, None
