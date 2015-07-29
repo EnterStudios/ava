@@ -43,6 +43,7 @@ class GoogleConfigurationDelete(DeleteView):
     template_name = 'confirm_delete.html'
     success_url = '/google/'
 
+
 class GoogleDirectoryUserIndex(ListView):
     model = GoogleDirectoryUser
     template_name = 'google_apps/GoogleDirectoryUser_index.html'
@@ -86,9 +87,19 @@ class GoogleDirectoryGroupDelete(DeleteView):
     template_name = 'confirm_delete.html'
     success_url = '/google/groups/'
 
+class GoogleDirectoryImportAuthorisation(django.views.generic.View):
+
+   def get(self, request, pk):
+        config_pk = pk
+        if config_pk:
+            google_config = get_object_or_404(GoogleConfiguration, pk=config_pk)
+
+        if google_config:
+            request.session['google_configuration_id'] = google_config.id
+
+        return django.http.HttpResponseRedirect(reverse('google-auth-login-redirect'))
 
 class GoogleDirectoryImport(django.views.generic.View):
-
     def get(self, request):
 
         if os.environ.get('USE_MOCK_GOOGLE'):
@@ -102,7 +113,7 @@ class GoogleDirectoryImport(django.views.generic.View):
         if config_pk:
             google_config = get_object_or_404(GoogleConfiguration, pk=config_pk)
         else:
-            google_config = request.session.get('google_configuration_id')
+            google_config = get_object_or_404(GoogleConfiguration, pk=request.session.get('google_configuration_id'))
 
         if google_config:
             # import the directory information from google

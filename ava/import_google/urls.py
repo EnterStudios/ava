@@ -17,6 +17,8 @@ urlpatterns = patterns(
     
     url(r'^import/$', login_required(views.GoogleDirectoryImport.as_view()),
         name='google-import'),
+    url(r'^(?P<pk>\d+)/import/$', login_required(views.GoogleDirectoryImportAuthorisation.as_view()),
+        name='google-import-id'),
 
     url(r'^users/$', login_required(views.GoogleDirectoryUserIndex.as_view()),
         name='google-user-index'),
