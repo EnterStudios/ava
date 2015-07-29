@@ -64,7 +64,7 @@ class GoogleDirectoryUser(TimeStampedModel):
         return self.model_schema_reversed.get(fieldname)
 
     def __str__(self):
-        return self.first_name+" "+self.surname or ''
+        return self.first_name + " " + self.surname or ''
 
     class Meta:
         ordering = ['first_name', 'surname', 'google_id']
@@ -182,7 +182,6 @@ class GoogleDirectoryGroup(TimeStampedModel):
                                                              identifier_type=Identifier.NAME,
                                                              identity=curr_identity)
             if group_attributes.get('name'):
-
                 curr_identity, id_created = Identity.objects.update_or_create(name=group_attributes['google_id'],
                                                                               identity_type=Identity.GROUP,
                                                                               description="Exported from Google Apps")
@@ -198,19 +197,18 @@ class GoogleDirectoryGroup(TimeStampedModel):
         # sort out group memberships
 
         for key, value in group_members.items():
-            gd_group = GoogleDirectoryGroup.objects.get(google_id=key)
+            gd_group = GoogleDirectoryGroup.objects.get(google_id=key, google_configuration=google_configuration)
             group = gd_group.group
             for user in value:
                 print("Searching for id ::" + user['id'])
                 try:
-                    gd_user = GoogleDirectoryUser.objects.get(google_id=user['id'])
+                    gd_user = GoogleDirectoryUser.objects.get(google_id=user['id'],
+                                                              google_configuration=google_configuration)
                     user_identity = gd_user.identity
                     gd_user.groups.add(gd_group)
                     user_identity.groups.add(group)
                 except GoogleDirectoryUser.DoesNotExist:
                     print("No such user found")
-
-
 
 
 class GoogleConfiguration(TimeStampedModel):
@@ -224,6 +222,7 @@ class GoogleConfiguration(TimeStampedModel):
 
     def import_all(self):
         pass
+
 
 class ExportGoogle:
     def __init__(self):
