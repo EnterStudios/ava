@@ -66,6 +66,10 @@ class GoogleDirectoryUser(TimeStampedModel):
     def __str__(self):
         return self.first_name+" "+self.surname or ''
 
+    class Meta:
+        ordering = ['first_name', 'surname', 'google_id']
+        unique_together = ['google_id', 'google_configuration']
+
     def get_absolute_url(self):
         return reverse('google-user-detail', kwargs={'pk': self.id})
 
@@ -116,8 +120,8 @@ class GoogleDirectoryUser(TimeStampedModel):
 
 
 class GoogleDirectoryGroup(TimeStampedModel):
-    name = models.CharField(max_length=300, unique=True)
-    google_id = models.CharField(max_length=300, unique=True)
+    name = models.CharField(max_length=300)
+    google_id = models.CharField(max_length=300)
     description = models.CharField(max_length=1000)
     direct_members_count = models.CharField(max_length=5)
     admin_created = models.BooleanField(default=False)
@@ -156,6 +160,7 @@ class GoogleDirectoryGroup(TimeStampedModel):
 
     class Meta:
         ordering = ['name', 'google_id']
+        unique_together = ['google_id', 'google_configuration']
 
     def import_from_json(self, google_configuration, groups, group_members):
         for group in groups:
