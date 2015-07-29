@@ -5799,13 +5799,34 @@ body {
   padding-top: 50px !important;
   background-color: #F5F7FA !important; }
 
+h1 {
+  font-size: 26px !important;
+  padding-bottom: 12px;
+  font-weight: 600;
+  padding-left: 5px;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 20px 0px 0px !important; }
+
+h2 {
+  font-size: 23px;
+  padding-bottom: 12px;
+  font-weight: 600;
+  padding-left: 5px;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
 h1,
 .h1,
 h2,
 .h2,
 h3,
 .h3 {
-  margin-bottom: 0px; }
+  margin-bottom: 0px;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+.page-header,
+.sub-header {
+  padding: 0px 0px 5px;
+  font-size: 26px; }
 
 .table > thead > tr > th,
 .table > thead > tr > td,
@@ -5815,11 +5836,16 @@ h3,
 .table > tfoot > tr > td {
   border-top: 0px; }
 
+.table > tbody > tr > td {
+  vertical-align: middle; }
+
 table {
   background-color: #FFFFFF;
   webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-  border-radius: 3px; }
+  border-radius: 3px;
+  border: 1px solid #D5E2EE;
+  border-collapse: separate !important; }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
   background-color: #FCFCFC; }
