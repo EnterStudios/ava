@@ -1,3 +1,5 @@
+![ava-large](https://cloud.githubusercontent.com/assets/228527/9003419/fc1107b0-37c1-11e5-9faf-f4157d9c9b1a.png)
+
 * Visit our homepage at [http://avasecure.com](http://avasecure.com)
 * Join the mailing list at [https://groups.google.com/forum/#!forum/avasecure] (https://groups.google.com/forum/#!forum/avasecure)
 
