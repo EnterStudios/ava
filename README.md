@@ -9,9 +9,6 @@ This project is under heavy development and should be considered unstable.
 A stable release should be expected in August 2015. Please use the mailing list or issues tracker to report issues.
 
 ### We build secure people
-
-
-
 Information security is often misunderstood. Most people believe that if you throw enough gadgets at an organisation you will mitigate any potential vulnerability. Technology is only a fraction of the picture.
 Information security is at its heart a human problem. Wherever there exists choice, there is risk. 
 
