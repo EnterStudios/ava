@@ -1,5 +1,7 @@
 ![ava-large](https://cloud.githubusercontent.com/assets/228527/9003419/fc1107b0-37c1-11e5-9faf-f4157d9c9b1a.png)
 
+[![Build Status](https://travis-ci.org/SafeStack/ava.svg?branch=master)](https://travis-ci.org/SafeStack/ava)   [![Coverage Status](https://coveralls.io/repos/SafeStack/ava/badge.svg?branch=master)](https://coveralls.io/r/SafeStack/ava?branch=master)
+
 * Visit our homepage at [http://avasecure.com](http://avasecure.com)
 * Join the mailing list at [https://groups.google.com/forum/#!forum/avasecure] (https://groups.google.com/forum/#!forum/avasecure)
 
@@ -9,7 +11,7 @@ A stable release should be expected in August 2015. Please use the mailing list 
 
 ### We build secure people
 
-[![Build Status](https://travis-ci.org/SafeStack/ava.svg?branch=master)](https://travis-ci.org/SafeStack/ava)   [![Coverage Status](https://coveralls.io/repos/SafeStack/ava/badge.svg?branch=master)](https://coveralls.io/r/SafeStack/ava?branch=master)
+
 
 Information security is often misunderstood. Most people believe that if you throw enough gadgets at an organisation you will mitigate any potential vulnerability. Technology is only a fraction of the picture.
 Information security is at its heart a human problem. Wherever there exists choice, there is risk. 
