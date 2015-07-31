@@ -10,12 +10,12 @@ Visit our [homepage](http://avasecure.com) or join our [mailing list](https://gr
 We are on the look out for testers, Django/Python developers, documentation folk, graphics wizards, and UX people to help make AVA awesome. If you have some spare cycles and want to contribute get stuck in.
 
 ### Project Status
-This project is under heavy development and should be considered unstable. 
+This project is under heavy development and should be considered unstable.
 A stable release should be expected in August 2015. Please use the mailing list or issues tracker to report issues.
 
 ### We build secure people
 Information security is often misunderstood. Most people believe that if you throw enough gadgets at an organisation you will mitigate any potential vulnerability. Technology is only a fraction of the picture.
-Information security is at its heart a human problem. Wherever there exists choice, there is risk. 
+Information security is at its heart a human problem. Wherever there exists choice, there is risk.
 
 > We specialise in the **Assessment**, **Visualization** and **Analysis** of human organisational information security risk.
 
