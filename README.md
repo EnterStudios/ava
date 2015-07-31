@@ -2,8 +2,7 @@
 
 [![Build Status](https://travis-ci.org/SafeStack/ava.svg?branch=master)](https://travis-ci.org/SafeStack/ava)   [![Coverage Status](https://coveralls.io/repos/SafeStack/ava/badge.svg?branch=master)](https://coveralls.io/r/SafeStack/ava?branch=master)
 
-* Visit our homepage at [http://avasecure.com](http://avasecure.com)
-* Join the mailing list at [https://groups.google.com/forum/#!forum/avasecure] (https://groups.google.com/forum/#!forum/avasecure)
+Visit our [homepage](http://avasecure.com) or join our [mailing list](https://groups.google.com/forum/#!forum/avasecure).
 
 ### Project Status
 This project is under heavy development and should be considered unstable. 
