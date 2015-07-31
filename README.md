@@ -4,7 +4,7 @@
 
 Visit our [homepage](http://avasecure.com) or join our [mailing list](https://groups.google.com/forum/#!forum/avasecure).
 
-[Install guide](http://ava.readthedocs.org/en/latest/install/)
+## [Install Guide](http://ava.readthedocs.org/en/latest/install/)
 
 ### AVA is looking for collaborators
 We are on the look out for testers, Django/Python developers, documentation folk, graphics wizards, and UX people to help make AVA awesome. If you have some spare cycles and want to contribute get stuck in.
