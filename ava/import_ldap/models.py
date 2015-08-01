@@ -151,10 +151,6 @@ class ActiveDirectoryUser(TimeStampedModel):
             attributes = person['attributes']
             model_attributes = {}
 
-            curr_identity, id_created = Identity.objects.get_or_create(identity_type=Identity.PERSON,
-                                                                       name=attributes['objectGUID'],
-                                                                       description="Exported from LDAP")
-
             groups = []
             gen_groups = []
             email_addresses = []
@@ -222,6 +218,10 @@ class ActiveDirectoryUser(TimeStampedModel):
             else:
                 continue
 
+
+            curr_identity, id_created = Identity.objects.get_or_create(identity_type=Identity.PERSON,
+                                                                       name=model_attributes['object_guid'],
+                                                                       description="Exported from LDAP")
             # If no matching user currently exists then create one, otherwise
             # update the existing user.
             ad_users = ActiveDirectoryUser.objects.filter(**filter_attrs)
