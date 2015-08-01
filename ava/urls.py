@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from dh5bp.urls import urlpatterns as dh5bp_urls
 from django.contrib.auth.decorators import login_required
-from ava.core.views import DashboardView
+from ava.dashboard_know.views import KnowDashboardView
 
 admin.autodiscover()
 
@@ -11,7 +11,7 @@ handler500 = 'dh5bp.views.server_error'
 
 urlpatterns = patterns(
     '',
-    url(r'^$', login_required(DashboardView.as_view()), name='index'),
+    url(r'^$', login_required(KnowDashboardView.as_view()), name='index'),
     url(r'^ava/', include('ava.core.urls')),
     url(r'^project/', include('ava.core_project.urls')),
     url(r'^accounts/', include('ava.core_auth.urls')),
