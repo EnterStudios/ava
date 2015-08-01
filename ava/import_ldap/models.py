@@ -190,7 +190,7 @@ class ActiveDirectoryUser(TimeStampedModel):
 
                             if key in ('adminCount', 'badPwdCount', 'logonCount'):
                                 # print("WTF IS HAPPENING HERE")
-                                print(value_string)
+                                # print(value_string)
                                 if value_string is None or value_string is "":
                                     value_string = 0
                                 else:
