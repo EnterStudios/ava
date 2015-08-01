@@ -54,7 +54,7 @@ class ImportLDAP(django.views.generic.edit.FormView):
     form_class = import_ldap_forms.LDAPConfigurationCredentialsForm
 
     def form_valid(self, form):
-        import_successful, google_configuration = form.run_ldap_import()
+        import_successful = form.run_ldap_import()
 
         if import_successful:
             return super().form_valid(form)
