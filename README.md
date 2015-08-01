@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/SafeStack/ava.svg?branch=master)](https://travis-ci.org/SafeStack/ava)   [![Coverage Status](https://coveralls.io/repos/SafeStack/ava/badge.svg?branch=master)](https://coveralls.io/r/SafeStack/ava?branch=master)
 
-Visit our [homepage](http://avasecure.com), join our [mailing list](https://groups.google.com/forum/#!forum/avasecure)or get an invite to our [slack community](http://avasecure.slack.com). The AVA slack community is the central place to meet other contributors, get help/support and discuss new features/bugs. Please email [hello@avasecure.com](mailto:hello@avasecure.com) for an invite.
+Visit our [homepage](http://avasecure.com), join our [mailing list](https://groups.google.com/forum/#!forum/avasecure) or get an invite to our [slack community](http://avasecure.slack.com). The AVA slack community is the central place to meet other contributors, get help/support and discuss new features/bugs. Please email [hello@avasecure.com](mailto:hello@avasecure.com) for an invite.
 
 ## [Install Guide](http://ava.readthedocs.org/en/latest/install/)
 
