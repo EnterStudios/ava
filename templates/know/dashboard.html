@@ -42,133 +42,100 @@
     </div>
 
     <div class="row dashboard know">
-        <div class="col-sm-4">
-            <div class="panel dash-connected">
+        <div class="col-sm-12">
+            <div class="panel">
                 <div class="panel-body">
-                    <div class="body-item">
-                        <span class="dash-count">0</span>
-                        <span class="dash-type">people are highly connected</span>
+                    <div class="row">
+
+                        <div class="col-sm-4">
+                            <div class="panel dash-passwords">
+                                <div class="panel-body">
+                                    <div class="body-item">
+                                        <span class="dash-count">{{ ldap_config|length }}</span>
+                                        <span class="dash-type">LDAP Integrations</span>
+                                        <a href="{% url 'know-ldap-dashboard' %}"
+                                           class="btn btn-def btn-block btn-success">LDAP Know
+                                            Dashboard</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="panel dash-passwords">
+                                <div class="panel-body">
+                                    <div class="body-item">
+                                        <span class="dash-count">{{ ldap.admin_accounts|length }}</span>
+                                        <span class="dash-type">Administrators</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-4">
+                            <div class="panel dash-passwords">
+                                <div class="panel-body">
+                                    <div class="body-item">
+                                        <span class="dash-count">{{ ldap.never_logged_in|length }}</span>
+                                        <span class="dash-type">Never Logged In</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="col-sm-4">
-            <div class="panel dash-passwords">
+    <div class="row dashboard know">
+        <div class="col-sm-12">
+            <div class="panel">
                 <div class="panel-body">
-                    <div class="body-item">
-                        <span class="dash-count">{{ ldap.never_expires|length }}</span>
-                        <span class="dash-type">passwords never expire</span>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="panel dash-connected">
+                                <div class="panel-body">
+                                    <div class="body-item">
+                                        <span class="dash-count">{{ google_config|length }}</span>
+                                        <span class="dash-type">Google Integrations</span>
+                                        <a href="{% url 'know-google-dashboard' %}"
+                                           class="btn btn-def btn-block btn-success">Google
+                                            Know Dashboard</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="panel dash-passwords">
+                                <div class="panel-body">
+                                    <div class="body-item">
+                                        <span class="dash-count">{{ google.admin_accounts|length }}</span>
+                                        <span class="dash-type">Administrators</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="panel dash-passwords">
+                                <div class="panel-body">
+                                    <div class="body-item">
+                                        <span class="dash-count">{{ google.never_logged_in|length }}</span>
+                                        <span class="dash-type">Never Logged In</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-sm-4">
-            <div class="panel dash-logged">
-                <div class="panel-body">
-                    <div class="body-item">
-                        <span class="dash-count">{{ ldap.never_logged_in|length }}</span>
-                        <span class="dash-type">people have never logged in</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
     </div>
 
-    <div class="row">
-        <div class="col-sm-6">
-            <h2>Administrators</h2>
 
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for item in ldap.admin_accounts %}
-                    <tr>
-                        <td>{{ item.name }}</td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
-        <div class="col-sm-6">
-            <h2>Never logged in</h2>
-
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for item in ldap.never_logged_in %}
-                    <tr>
-                        <td>{{ item.name }}</td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-6">
-            <h2>Logon Count (desc)</h2>
-
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for item in ldap.logon_count %}
-                    {% if item.logon_count != None %}
-                    <tr>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.logon_count }}</td>
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="col-sm-6">
-            <h2>Password last set (desc)</h2>
-
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for item in ldap.password_last_set %}
-                    <tr>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.pwd_last_set }}</td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 
 {% endblock %}

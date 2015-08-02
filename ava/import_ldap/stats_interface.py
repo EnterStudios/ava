@@ -1,4 +1,5 @@
 # flake8: noqa
+import operator
 
 __author__ = 'ladynerd'
 
@@ -17,7 +18,7 @@ class LDAPStatistics():
             'never_logged_in': self.get_never_logged_in(all_users),
             'logon_count': self.get_logon_count(self.DESC),
             'password_last_set': self.get_password_last_set(self.DESC),
-            'connection_size': self.get_connection_size(self.DESC),
+            'connection_size': self.get_connection_size(all_users),
         }
 
         return results
@@ -31,7 +32,7 @@ class LDAPStatistics():
             'never_logged_in': self.get_never_logged_in(all_users),
             'logon_count': self.get_logon_count(self.DESC),
             'password_last_set': self.get_password_last_set(self.DESC),
-            'connection_size': self.get_connection_size(self.DESC),
+            'connection_size': self.get_connection_size(all_users),
         }
 
         return results
@@ -81,5 +82,11 @@ class LDAPStatistics():
         else:
             return ActiveDirectoryUser.objects.filter(ldap_configuration=self.LDAP_CONFIG).order_by('pwd_last_set')
 
-    def get_connection_size(self, direction):
-        pass
+    def get_connection_size(self, users):
+        results = {}
+
+        for user in users:
+            results[user] = user.groups.all().count()
+
+        sorted_results = sorted(results.items(), key=operator.itemgetter(1))
+        return sorted_results
