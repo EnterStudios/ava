@@ -12,7 +12,7 @@ class GoogleDirectoryHelper:
     def __init__(self):
         pass
 
-    MOCK_DATA_LOCATION = 'ava/testdata/'
+    MOCK_DATA_LOCATION = 'ava/testdata/google/'
     DATA_SOURCE = 'google'
 
     def import_google_directory(self, credential):
@@ -60,7 +60,7 @@ class GoogleDirectoryHelper:
             # Uses an environment variable to decide whether to dump the data to file or not
             # To toggle this feature on, ensure that the environment variable 'CREATE_MOCK_GOOGLE' is set
             if os.environ.get('CREATE_MOCK_GOOGLE'):
-                for key, prefix in import_files.items():
+                for key, prefix in results.items():
                     with open(self.MOCK_DATA_LOCATION + self.DATA_SOURCE+"_" + prefix + "_data.json", 'w') as infile:
                         self.export_ldap_json(prefix, results[key])
                     infile.close()
@@ -69,7 +69,7 @@ class GoogleDirectoryHelper:
         return results
 
     # Exports a JSON string to a file
-    def export_ldap_json(self, prefix, results_json):
+    def export_google_json(self, prefix, results_json):
         filename = self.MOCK_DATA_LOCATION + self.DATA_SOURCE+"_" + prefix + '_data.json'
 
         with open(filename, 'w') as outfile:
