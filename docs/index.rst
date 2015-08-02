@@ -15,10 +15,12 @@ Contents:
    :maxdepth: 2
 
    intro
+   coc
    install
    administration
    user
    dev
+   faq
 
 
 Indices and tables
