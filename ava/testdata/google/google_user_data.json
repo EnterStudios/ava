@@ -1,0 +1,452 @@
+[
+  {
+    "kind": "admin#directory#user",
+    "includeInGlobalAddressList": true,
+    "nonEditableAliases": [
+      "dipper@gnomes.com",
+      "dipper@secret.io",
+      "dipper@mysteryshack.io"
+    ],
+    "changePasswordAtNextLogin": false,
+    "ipWhitelisted": false,
+    "lastLoginTime": "2015-07-07T06:07:19.000Z",
+    "primaryEmail": "dipper@gravityfalls.io",
+    "creationTime": "2015-05-04T20:47:02.000Z",
+    "isAdmin": false,
+    "emails": [
+      {
+        "address": "dipper@secret.io"
+      },
+      {
+        "address": "dipper@mysteryshack.io"
+      },
+      {
+        "address": "dipper@gnomes.com"
+      },
+      {
+        "address": "dipper@gravityfalls.io",
+        "primary": true
+      }
+    ],
+    "isDelegatedAdmin": false,
+    "orgUnitPath": "/",
+    "isMailboxSetup": true,
+    "id": "118093768751161249150",
+    "name": {
+      "fullName": "Dipper Pines",
+      "familyName": "Pines",
+      "givenName": "Dipper"
+    },
+    "agreedToTerms": true,
+    "customerId": "C03kiwkv1",
+    "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/gDqNz8af6VWyfJUTS_F1j-XASeE\"",
+    "suspended": false
+  },
+  {
+    "kind": "admin#directory#user",
+    "includeInGlobalAddressList": true,
+    "nonEditableAliases": [
+      "deputy@gnomes.com",
+      "deputy@secret.io",
+      "deputy@mysteryshack.io"
+    ],
+    "changePasswordAtNextLogin": false,
+    "ipWhitelisted": false,
+    "lastLoginTime": "2015-06-26T00:37:56.000Z",
+    "primaryEmail": "deputy@gravityfalls.io",
+    "creationTime": "2015-03-10T20:00:46.000Z",
+    "isAdmin": false,
+    "emails": [
+      {
+        "address": "deputy@secret.io"
+      },
+      {
+        "address": "deputy@gravityfalls.io",
+        "primary": true
+      },
+      {
+        "address": "deputy@mysteryshack.io"
+      },
+      {
+        "address": "deputy@gnomes.com"
+      }
+    ],
+    "isDelegatedAdmin": false,
+    "orgUnitPath": "/",
+    "isMailboxSetup": true,
+    "id": "112888711067976984835",
+    "name": {
+      "fullName": "Deputy Durland",
+      "familyName": "Durland",
+      "givenName": "Deputy"
+    },
+    "agreedToTerms": true,
+    "customerId": "C03kiwkv1",
+    "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/uKrX_r_4XcuwbH_AbPRcSAvACw0\"",
+    "suspended": false
+  },
+  {
+    "kind": "admin#directory#user",
+    "includeInGlobalAddressList": true,
+    "nonEditableAliases": [
+      "grunkle@gnomes.com",
+      "grunkle@secret.io",
+      "grunkle@mysteryshack.io"
+    ],
+    "changePasswordAtNextLogin": false,
+    "ipWhitelisted": false,
+    "lastLoginTime": "2015-07-02T06:58:21.000Z",
+    "primaryEmail": "grunkle@gravityfalls.io",
+    "creationTime": "2015-06-23T03:27:07.000Z",
+    "isAdmin": false,
+    "emails": [
+      {
+        "address": "grunkle@mysteryshack.io"
+      },
+      {
+        "address": "grunkle@gravityfalls.io",
+        "primary": true
+      },
+      {
+        "address": "grunkle@secret.io"
+      },
+      {
+        "address": "grunkle@gnomes.com"
+      }
+    ],
+    "isDelegatedAdmin": false,
+    "thumbnailPhotoEtag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/4j7EMT2R0Zg3fqKPxBlxiZOo_fg\"",
+    "orgUnitPath": "/",
+    "isMailboxSetup": true,
+    "id": "105976784206269459495",
+    "name": {
+      "fullName": "Grunkle Stan",
+      "familyName": "Stan",
+      "givenName": "Grunkle"
+    },
+    "agreedToTerms": true,
+    "customerId": "C03kiwkv1",
+    "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/Fsw5omSO1rytRBWPCdXpDyCJHcY\"",
+    "suspended": false,
+    "thumbnailPhotoUrl": "https://plus.google.com/_/focus/photos/private/redacted"
+  },
+  {
+    "kind": "admin#directory#user",
+    "includeInGlobalAddressList": true,
+    "nonEditableAliases": [
+      "candy@gnomes.com",
+      "candy@secret.io",
+      "candy@mysteryshack.io"
+    ],
+    "changePasswordAtNextLogin": false,
+    "ipWhitelisted": false,
+    "lastLoginTime": "2015-06-26T01:42:16.000Z",
+    "primaryEmail": "candy@gravityfalls.io",
+    "creationTime": "2015-03-19T03:06:41.000Z",
+    "isAdmin": false,
+    "emails": [
+      {
+        "address": "candy@mysteryshack.io"
+      },
+      {
+        "address": "candy@secret.io"
+      },
+      {
+        "address": "candy@gnomes.com"
+      },
+      {
+        "address": "candy@gravityfalls.io",
+        "primary": true
+      }
+    ],
+    "isDelegatedAdmin": false,
+    "orgUnitPath": "/",
+    "isMailboxSetup": true,
+    "id": "110279810540053375906",
+    "name": {
+      "fullName": "Candy Chiu",
+      "familyName": "Chiu",
+      "givenName": "Candy"
+    },
+    "agreedToTerms": true,
+    "customerId": "C03kiwkv1",
+    "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/aX9mcjIU5LCPUAF-LkqQO8bvzhI\"",
+    "suspended": false
+  },
+  {
+    "orgUnitPath": "/",
+    "kind": "admin#directory#user",
+    "includeInGlobalAddressList": true,
+    "nonEditableAliases": [
+      "robbie@gnomes.com",
+      "robbie@secret.io",
+      "robbie@mysteryshack.io"
+    ],
+    "changePasswordAtNextLogin": false,
+    "ipWhitelisted": false,
+    "lastLoginTime": "2015-07-17T00:33:53.000Z",
+    "primaryEmail": "robbie@gravityfalls.io",
+    "creationTime": "2015-02-01T21:55:16.000Z",
+    "isAdmin": false,
+    "emails": [
+      {
+        "address": "robbie@gnomes.com"
+      },
+      {
+        "address": "robbie@gravityfalls.io",
+        "primary": true
+      },
+      {
+        "address": "robbie@mysteryshack.io"
+      },
+      {
+        "address": "robbie@secret.io"
+      }
+    ],
+    "isDelegatedAdmin": false,
+    "phones": [
+      {
+        "type": "mobile",
+        "value": "Redacted"
+      }
+    ],
+    "isMailboxSetup": true,
+    "id": "101903099504842975487",
+    "name": {
+      "fullName": "Robbie Valentino",
+      "familyName": "Valentino",
+      "givenName": "Robbie"
+    },
+    "agreedToTerms": true,
+    "customerId": "C03kiwkv1",
+    "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/SSNMaEVJxnkQ6NQofgeqJiasM38\"",
+    "suspended": false
+  },
+  {
+    "addresses": [
+      {
+        "type": "home",
+        "formatted": "Redacted"
+      }
+    ],
+    "changePasswordAtNextLogin": false,
+    "lastLoginTime": "2015-07-16T22:50:03.000Z",
+    "creationTime": "2014-11-24T01:56:25.000Z",
+    "isAdmin": true,
+    "includeInGlobalAddressList": true,
+    "isDelegatedAdmin": false,
+    "phones": [
+      {
+        "type": "home",
+        "value": "Redacted"
+      }
+    ],
+    "isMailboxSetup": true,
+    "id": "101086816198977510077",
+    "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/pQwq6lmRTf51lexywq5s--gTUx4\"",
+    "thumbnailPhotoEtag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/pHBF7WhlcV6gOxcr7ABLVbQv7qQ\"",
+    "thumbnailPhotoUrl": "https://plus.google.com/_/focus/photos/public/redacted",
+    "kind": "admin#directory#user",
+    "nonEditableAliases": [
+      "admin@mysteryshack.io",
+      "mabel@mysteryshack.io",
+      "mabel.pines@mysteryshack.io",
+      "admin@gnomes.com",
+      "mabel@gnomes.com",
+      "mabel.pines@gnomes.com",
+      "admin@secret.io",
+      "mabel@secret.io",
+      "mabel.pines@secret.io"
+    ],
+    "customerId": "C03kiwkv1",
+    "primaryEmail": "mabel@gravityfalls.io",
+    "aliases": [
+      "mabel.pines@gravityfalls.io",
+      "admin@gravityfalls.io"
+    ],
+    "emails": [
+      {
+        "address": "mabel.pines@gmail.com",
+        "customType": "",
+        "type": "custom"
+      },
+      {
+        "address": "mabel@mysteryshack.io"
+      },
+      {
+        "address": "mabel@gravityfalls.io",
+        "primary": true
+      },
+      {
+        "address": "mabel.pines@gnomes.com"
+      },
+      {
+        "address": "admin@gravityfalls.io"
+      },
+      {
+        "address": "mabel.pines@secret.io"
+      },
+      {
+        "address": "admin@gnomes.com"
+      },
+      {
+        "address": "admin@mysteryshack.io"
+      },
+      {
+        "address": "admin@secret.io"
+      },
+      {
+        "address": "mabel@gnomes.com"
+      },
+      {
+        "address": "mabel@secret.io"
+      },
+      {
+        "address": "mabel.pines@gravityfalls.io"
+      },
+      {
+        "address": "mabel.pines@mysteryshack.io"
+      }
+    ],
+    "ipWhitelisted": false,
+    "name": {
+      "fullName": "Mabel Pines",
+      "familyName": "Pines",
+      "givenName": "Mabel"
+    },
+    "orgUnitPath": "/",
+    "agreedToTerms": true,
+    "suspended": false
+  },
+  {
+    "kind": "admin#directory#user",
+    "includeInGlobalAddressList": true,
+    "nonEditableAliases": [
+      "wendy@gnomes.com",
+      "wendy@secret.io",
+      "wendy@mysteryshack.io"
+    ],
+    "changePasswordAtNextLogin": false,
+    "ipWhitelisted": false,
+    "lastLoginTime": "2015-07-12T22:38:00.000Z",
+    "primaryEmail": "wendy@gravityfalls.io",
+    "creationTime": "2015-02-01T21:54:32.000Z",
+    "isAdmin": false,
+    "emails": [
+      {
+        "address": "wendy@gnomes.com"
+      },
+      {
+        "address": "wendy@secret.io"
+      },
+      {
+        "address": "wendy@gravityfalls.io",
+        "primary": true
+      },
+      {
+        "address": "wendy@mysteryshack.io"
+      }
+    ],
+    "isDelegatedAdmin": false,
+    "thumbnailPhotoEtag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/Jx3fc1P_aJ63lW7AGoE-W551cS8\"",
+    "orgUnitPath": "/",
+    "isMailboxSetup": true,
+    "id": "100891007974265089821",
+    "name": {
+      "fullName": "Wendy Corduroy",
+      "familyName": "Corduroy",
+      "givenName": "Wendy"
+    },
+    "agreedToTerms": true,
+    "customerId": "C03kiwkv1",
+    "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/5IO_fgApAGPmHMEt1VDVb0fwsPI\"",
+    "suspended": false,
+    "thumbnailPhotoUrl": "https://plus.google.com/_/focus/photos/private/AIbEiA"
+  },
+  {
+    "kind": "admin#directory#user",
+    "includeInGlobalAddressList": true,
+    "nonEditableAliases": [
+      "pacifica@gnomes.com",
+      "pacifica@secret.io",
+      "pacifica@mysteryshack.io"
+    ],
+    "changePasswordAtNextLogin": false,
+    "ipWhitelisted": false,
+    "lastLoginTime": "2015-06-25T21:06:33.000Z",
+    "primaryEmail": "pacifica@gravityfalls.io",
+    "creationTime": "2015-03-17T19:34:01.000Z",
+    "isAdmin": false,
+    "emails": [
+      {
+        "address": "pacifica@gnomes.com"
+      },
+      {
+        "address": "pacifica@mysteryshack.io"
+      },
+      {
+        "address": "pacifica@gravityfalls.io",
+        "primary": true
+      },
+      {
+        "address": "pacifica@secret.io"
+      }
+    ],
+    "isDelegatedAdmin": false,
+    "orgUnitPath": "/",
+    "isMailboxSetup": true,
+    "id": "104364148506400852482",
+    "name": {
+      "fullName": "Pacifica Northwest",
+      "familyName": "Northwest",
+      "givenName": "Pacifica"
+    },
+    "agreedToTerms": true,
+    "customerId": "C03kiwkv1",
+    "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/EyZQz3TgUrohuTh2E6as2m6oRo8\"",
+    "suspended": false
+  },
+  {
+    "kind": "admin#directory#user",
+    "includeInGlobalAddressList": true,
+    "nonEditableAliases": [
+      "gideon@gnomes.com",
+      "gideon@secret.io",
+      "gideon@mysteryshack.io"
+    ],
+    "changePasswordAtNextLogin": false,
+    "ipWhitelisted": false,
+    "lastLoginTime": "2015-07-17T02:17:08.000Z",
+    "primaryEmail": "gideon@gravityfalls.io",
+    "creationTime": "2015-03-19T03:05:56.000Z",
+    "isAdmin": false,
+    "emails": [
+      {
+        "address": "gideon@mysteryshack.io"
+      },
+      {
+        "address": "gideon@gnomes.com"
+      },
+      {
+        "address": "gideon@secret.io"
+      },
+      {
+        "address": "gideon@gravityfalls.io",
+        "primary": true
+      }
+    ],
+    "isDelegatedAdmin": false,
+    "orgUnitPath": "/",
+    "isMailboxSetup": true,
+    "id": "114241503923725719403",
+    "name": {
+      "fullName": "Gideon Gleeful",
+      "familyName": "Gleeful",
+      "givenName": "Gideon"
+    },
+    "agreedToTerms": true,
+    "customerId": "C03kiwkv1",
+    "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/uvdJxi_z8lJx9nPT70H-GamUJ58\"",
+    "suspended": false
+  }
+]

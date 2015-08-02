@@ -1,0 +1,147 @@
+{
+  "026in1rg3cgfs1f": [
+    {
+      "kind": "admin#directory#member",
+      "id": "101086816198977510077",
+      "role": "MEMBER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/bL5DTJpQBZt6gzrU9jJjDP1i9Bg\"",
+      "email": "mabel@gravityfalls.io",
+      "type": "USER"
+    }
+  ],
+  "01opuj5n1skngr8": [
+    {
+      "kind": "admin#directory#member",
+      "id": "118093768751161249150",
+      "role": "MEMBER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/n9t_Eb-gnElGG2wuqIEtBsGWwH0\"",
+      "email": "dipper@gravityfalls.io",
+      "type": "USER"
+    },
+    {
+      "kind": "admin#directory#member",
+      "id": "101086816198977510077",
+      "role": "MEMBER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/bL5DTJpQBZt6gzrU9jJjDP1i9Bg\"",
+      "email": "mabel@gravityfalls.io",
+      "type": "USER"
+    }
+  ],
+  "03s49zyc104k55m": [
+    {
+      "kind": "admin#directory#member",
+      "id": "101086816198977510077",
+      "role": "OWNER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/vzH6Nt9e8ZHrQXz97dnTEBP9CWQ\"",
+      "email": "mabel@gravityfalls.io",
+      "type": "USER"
+    }
+  ],
+  "04du1wux485xl7h": [
+    {
+      "kind": "admin#directory#member",
+      "id": "112888711067976984835",
+      "role": "MEMBER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/WVoSMF2629218wA0WL6DOiUILfI\"",
+      "email": "deputy@gravityfalls.io",
+      "type": "USER"
+    },
+    {
+      "kind": "admin#directory#member",
+      "id": "101086816198977510077",
+      "role": "OWNER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/vzH6Nt9e8ZHrQXz97dnTEBP9CWQ\"",
+      "email": "mabel@gravityfalls.io",
+      "type": "USER"
+    },
+    {
+      "kind": "admin#directory#member",
+      "id": "100891007974265089821",
+      "role": "MEMBER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/JA02x6v7AVNpe0ocvWqUp-WsvaI\"",
+      "email": "wendy@gravityfalls.io",
+      "type": "USER"
+    },
+    {
+      "kind": "admin#directory#member",
+      "id": "114241503923725719403",
+      "role": "MEMBER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/Ff9RLSwoD3lBHdX78ezlwE1BMOs\"",
+      "email": "gideon@gravityfalls.io",
+      "type": "USER"
+    }
+  ],
+  "01v1yuxt34t6gv3": [
+    {
+      "kind": "admin#directory#member",
+      "id": "101086816198977510077",
+      "role": "OWNER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/vzH6Nt9e8ZHrQXz97dnTEBP9CWQ\"",
+      "email": "mabel@gravityfalls.io",
+      "type": "USER"
+    }
+  ],
+  "02lwamvv20kjeqm": [
+    {
+      "kind": "admin#directory#member",
+      "id": "101086816198977510077",
+      "role": "OWNER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/vzH6Nt9e8ZHrQXz97dnTEBP9CWQ\"",
+      "email": "mabel@gravityfalls.io",
+      "type": "USER"
+    }
+  ],
+  "03dy6vkm3gty9an": [
+    {
+      "kind": "admin#directory#member",
+      "id": "100891007974265089821",
+      "role": "MEMBER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/JA02x6v7AVNpe0ocvWqUp-WsvaI\"",
+      "email": "wendy@gravityfalls.io",
+      "type": "USER"
+    }
+  ],
+  "017dp8vu13w84c6": [
+    {
+      "role": "MEMBER",
+      "kind": "admin#directory#member",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/61xUhrs7DqELFjQ9XFkDhQlgBqg\"",
+      "type": "CUSTOMER",
+      "id": "C03kiwkv1"
+    },
+    {
+      "kind": "admin#directory#member",
+      "id": "112888711067976984835",
+      "role": "MEMBER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/WVoSMF2629218wA0WL6DOiUILfI\"",
+      "email": "deputy@gravityfalls.io",
+      "type": "USER"
+    },
+    {
+      "kind": "admin#directory#member",
+      "id": "101086816198977510077",
+      "role": "OWNER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/vzH6Nt9e8ZHrQXz97dnTEBP9CWQ\"",
+      "email": "mabel@gravityfalls.io",
+      "type": "USER"
+    },
+    {
+      "kind": "admin#directory#member",
+      "id": "100891007974265089821",
+      "role": "MEMBER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/JA02x6v7AVNpe0ocvWqUp-WsvaI\"",
+      "email": "wendy@gravityfalls.io",
+      "type": "USER"
+    }
+  ],
+  "045jfvxd2a9vzt0": [
+    {
+      "kind": "admin#directory#member",
+      "id": "101086816198977510077",
+      "role": "OWNER",
+      "etag": "\"MO4FtId2-yiZq_-3TpU3AZTf2Ak/vzH6Nt9e8ZHrQXz97dnTEBP9CWQ\"",
+      "email": "mabel@gravityfalls.io",
+      "type": "USER"
+    }
+  ]
+}
