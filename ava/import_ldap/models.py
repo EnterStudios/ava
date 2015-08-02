@@ -7,7 +7,7 @@ from django.utils.html import escape
 from django.forms.models import model_to_dict
 from ava.core.models import TimeStampedModel
 from ava.import_ldap.ldap_interface import ActiveDirectoryHelper
-from ava.core_identity.models import Identifier, Identity
+from ava.core_identity.models import Identifier, Identity, Person
 from ava.core_group.models import Group
 
 
@@ -218,6 +218,10 @@ class ActiveDirectoryUser(TimeStampedModel):
             else:
                 continue
 
+
+            curr_identity, id_created = Identity.objects.get_or_create(identity_type=Identity.PERSON,
+                                                                       name=model_attributes['object_guid'],
+                                                                       description="Exported from LDAP")
             # If no matching user currently exists then create one, otherwise
             # update the existing user.
             ad_users = ActiveDirectoryUser.objects.filter(**filter_attrs)
@@ -229,18 +233,17 @@ class ActiveDirectoryUser(TimeStampedModel):
                 ad_users.update(**model_attributes)
                 ad_user = ad_users.first()
 
-            identity, created = Identity.objects.get_or_create(name=ad_user.display_name)
-            '''
-            TODO Do we need to create a person object for this identity??
-            '''
-
             Identifier.objects.get_or_create(identifier=ad_user.sam_account_name, identifier_type=Identifier.UNAME,
-                                             identity=identity)
+                                             identity=curr_identity)
+
+            person, p_created = Person.objects.get_or_create(first_name="AD Person",
+                                                             surname=ad_user.display_name)
+            person.identity.add(curr_identity)
 
             # Import the email addresses.
             for email_address in email_addresses:
                 Identifier.objects.get_or_create(identifier=email_address, identifier_type=Identifier.EMAIL,
-                                                 identity=identity)
+                                                 identity=curr_identity)
 
             for group in groups:
                 # print(groups)
@@ -249,12 +252,11 @@ class ActiveDirectoryUser(TimeStampedModel):
 
             for gen_group in gen_groups:
                 # print(gen_group.id)
-                if identity.groups.filter(id=gen_group.id).count() == 0:
-                    identity.groups.add(gen_group)
+                if curr_identity.groups.filter(id=gen_group.id).count() == 0:
+                    curr_identity.groups.add(gen_group)
 
 
 class ActiveDirectoryGroup(TimeStampedModel):
-
     cn = models.CharField(max_length=300)
     distinguished_name = models.CharField(max_length=300, unique=True)
     name = models.CharField(max_length=100)
@@ -394,7 +396,6 @@ class LDAPConfiguration(TimeStampedModel):
 
 
 class ExportLDAP:
-
     def __init__(self):
         pass
 
