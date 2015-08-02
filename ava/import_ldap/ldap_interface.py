@@ -13,6 +13,9 @@ class ActiveDirectoryHelper:
 
     PAGESIZE = 1000
 
+    MOCK_DATA_LOCATION = 'ava/testdata/ldap/'
+    DATA_SOURCE = 'ldap'
+
     def get_connection(self, parameters):
         try:
             server = Server(parameters.server)
@@ -41,7 +44,6 @@ class ActiveDirectoryHelper:
 
         # while the results contain a cookie (ie. more records left to retrieve)
         while cookie:
-
             # search again using the cookie to continue paging
             connection.search(search_base=parameters.dump_dn, search_filter=filterby, search_scope=SUBTREE,
                               attributes=attrs, paged_size=5, paged_cookie=cookie)
@@ -58,6 +60,7 @@ class ActiveDirectoryHelper:
         # Feature and testing toggle to allow developers to test export new test data from LDAP server
         # Uses an environment variable to decide whether to dump the data to file or not
         # To toggle this feature on, ensure that the environment variable 'CREATE_MOCK_LDAP' is set
+
         if os.environ.get('CREATE_MOCK_LDAP'):
             if 'user' in filterby:
                 prefix = 'user'
@@ -70,17 +73,15 @@ class ActiveDirectoryHelper:
         return results_json
 
     # Exports a JSON string to a file
-    @staticmethod
-    def export_ldap_json(prefix, results_json):
-        filename = 'ava/testdata/ldap_' + prefix + '_data.json'
+    def export_ldap_json(self, prefix, results_json):
+        filename = self.MOCK_DATA_LOCATION + self.DATA_SOURCE + "_" + prefix + "_data.json"
 
         with open(filename, 'w') as outfile:
             json.dump(results_json, outfile)
         outfile.close()
 
     # imports the users from an LDAP instance
-    @staticmethod
-    def import_users(parameters):
+    def import_users(self, parameters):
         # Feature and testing toggle to allow developers to test LDAP import without having
         # and LDAP VM or infrastructure at hand
         # Uses an environment variable to decide whether to test against local JSON file or actual
@@ -88,7 +89,8 @@ class ActiveDirectoryHelper:
         # To test locally, ensure that the environment variable 'USE_MOCK_LDAP' is set
 
         if os.environ.get('USE_MOCK_LDAP'):
-            with open("ava/testdata/ldap_user_data.json", 'r') as infile:
+            prefix = "user"
+            with open(self.MOCK_DATA_LOCATION + self.DATA_SOURCE + "_" + prefix + "_data.json", 'r') as infile:
                 results = json.load(infile)
             infile.close()
             return results
@@ -110,8 +112,7 @@ class ActiveDirectoryHelper:
             return ad_helper.search(parameters, filter_fields, attributes)
 
     # imports the groups from an LDAP instance
-    @staticmethod
-    def import_groups(parameters):
+    def import_groups(self, parameters):
         # Feature and testing toggle to allow developers to test LDAP import without having
         # and LDAP VM or infrastructure at hand
         # Uses an environment variable to decide whether to test against local JSON file or actual
@@ -119,7 +120,8 @@ class ActiveDirectoryHelper:
         # To test locally, ensure that the environment variable 'USE_MOCK_LDAP' is set
 
         if os.environ.get('USE_MOCK_LDAP'):
-            with open("ava/testdata/ldap_group_data.json", 'r') as infile:
+            prefix = "group"
+            with open(self.MOCK_DATA_LOCATION + self.DATA_SOURCE + "_" + prefix + "_data.json", 'r') as infile:
                 results = json.load(infile)
             infile.close()
             return results
