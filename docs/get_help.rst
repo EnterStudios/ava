@@ -9,6 +9,10 @@ Visit our [homepage](http://avasecure.com)
 
 AVA was founded and is led by [SafeStack](http://safestack.io)
 
+Email
+-----
+Drop the AVA project leadership an email to [hello@avasecure.com](mailto:hello@avasecure.com)
+
 Mailing List
 ------------
 AVA has a Google Groups mailing list. If you like low traffic mailing lists, this could be a good way to ask questions

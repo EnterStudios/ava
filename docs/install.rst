@@ -23,7 +23,7 @@ Install Docker and Compose
 
    For Mac OS X developers, you will need to use boot2docker[http://boot2docker.io/] and brew [http://brew.sh/]
 
-   If you get stuck with installation and setup we can help - ask on the mailing list or in our slack community.
+   If you get stuck with installation and setup we can help - :doc:`get_help`
 
 Install and run AVA
 -------------------
