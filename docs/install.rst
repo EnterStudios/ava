@@ -19,6 +19,12 @@ Install Docker and Compose
 * Docker now has an orchestration layer called compose. 
 * Installation instructions for compose can be found: [http://docs.docker.com/compose/install/]
 
+.. note::
+
+   For Mac OS X developers, you will need to use boot2docker[http://boot2docker.io/] and brew [http://brew.sh/]
+
+   If you get stuck with installation and setup we can help - ask on the mailing list or in our slack community.
+
 Install and run AVA
 -------------------
 
@@ -26,4 +32,5 @@ Install and run AVA
 2. ``cd ava``
 3. Use docker-compose to build the AVA application images and its dependencies and boot the app ``docker-compose up``
 4. Browse to http://localhost:8000 to access the AVA web frontend.
+
 
