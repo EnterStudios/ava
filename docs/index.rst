@@ -21,6 +21,8 @@ Contents:
    user
    dev
    faq
+   get_involved
+   get_help
 
 
 Indices and tables

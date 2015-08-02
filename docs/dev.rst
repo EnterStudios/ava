@@ -17,7 +17,7 @@ setting up your development environment.
 Django project layout
 ---------------------
 
-AVA is layed out as a typical Django project::
+AVA is laid out as a typical Django project::
 
     ava  (project root)
     ├── ava  (Python package)
@@ -108,6 +108,15 @@ to a basic running developer environment.
    this script *doesn't* get you back to a working developer
    environment, then report it as a bug.
 
+``./bin/database-flush.sh``
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+Remove all the records from the database but leave the docker containers
+intact. This is helpful if you are repeatedly testing data import and
+need to flush out the records from one import before starting the next.
+
+After running this script and ``docker-compose up``, you should be back
+to a basic running developer environment.
 
 ``./bin/make-migrations.sh``
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,
