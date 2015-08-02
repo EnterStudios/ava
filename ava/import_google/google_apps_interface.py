@@ -26,7 +26,7 @@ class GoogleDirectoryHelper:
         import_files = {
             'users': 'user',
             'groups': 'group',
-            'user_groups': 'user_group',
+            # 'user_groups': 'user_group', Not currently used
             'group_members': 'group_member',
         }
 
@@ -34,6 +34,7 @@ class GoogleDirectoryHelper:
             results = {}
 
             for key, prefix in import_files.items():
+                print("Importing from " + key + "file")
                 with open(self.MOCK_DATA_LOCATION + self.DATA_SOURCE+"_" + prefix + "_data.json", 'r') as infile:
                     results[key] = json.load(infile)
                 infile.close()
@@ -51,7 +52,7 @@ class GoogleDirectoryHelper:
             results = {
                 'users': users,
                 'groups': groups,
-                'user_groups': self.get_user_groups(directory_service, users),
+                # 'user_groups': self.get_user_groups(directory_service, users), Not currently used
                 'group_members': self.get_group_members(directory_service, groups),
             }
 
