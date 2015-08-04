@@ -18,7 +18,8 @@ class LDAPConfigurationForm(django.forms.ModelForm):
 
 class LDAPConfigurationCredentialsForm(LDAPConfigurationForm):
     user_dn = django.forms.CharField(max_length=100, help_text='User (not saved)')
-    user_pw = django.forms.CharField(max_length=100, help_text='Password (not saved)')
+    user_pw = django.forms.CharField(max_length=100, help_text='Password (not saved)',
+                                     widget=django.forms.PasswordInput)
 
     class Meta(LDAPConfigurationForm.Meta):
         widgets = {
