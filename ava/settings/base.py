@@ -128,6 +128,7 @@ LOGGING = {
         },
         'console': {
             'class': 'logging.StreamHandler',
+            'formatter': 'simple',
         },
     },
     'loggers': {
@@ -136,7 +137,17 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
-    }
+        'ava': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propogate': True,
+        },
+    },
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s %(name)s %(message)s'
+        },
+    },
 }
 
 
