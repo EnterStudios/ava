@@ -14,7 +14,7 @@ urlpatterns = patterns(
         name='google-configuration-update'),
     url(r'^(?P<pk>\d+)/delete/$', login_required(views.GoogleConfigurationDelete.as_view()),
         name='google-configuration-delete'),
-    
+
     url(r'^import/$', login_required(views.GoogleDirectoryImport.as_view()),
         name='google-import'),
     url(r'^(?P<pk>\d+)/import/$', login_required(views.GoogleDirectoryImportAuthorisation.as_view()),

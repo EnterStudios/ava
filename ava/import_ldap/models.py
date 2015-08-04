@@ -218,7 +218,6 @@ class ActiveDirectoryUser(TimeStampedModel):
             else:
                 continue
 
-
             curr_identity, id_created = Identity.objects.get_or_create(identity_type=Identity.PERSON,
                                                                        name=model_attributes['object_guid'],
                                                                        description="Exported from LDAP")
