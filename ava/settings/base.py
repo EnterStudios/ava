@@ -309,7 +309,7 @@ GOOGLE_OAUTH2_REDIRECT_URL = os.environ.get(
 
 # DJANGO DEBUG TOOLBAR CONFIGURATION
 def _show_toolbar_callback(request):
-    toolbar_is_enabled = os.environ.get('DISABLE_DJANGO_DEBUG_TOOLBAR', 'false').lower() != 'true'
+    toolbar_is_enabled = os.environ.get('ENABLE_DJANGO_DEBUG_TOOLBAR', 'false').lower() == 'true'
     return DEBUG and toolbar_is_enabled
 
 DEBUG_TOOLBAR_CONFIG = {
