@@ -26,6 +26,7 @@ Are you a student or academic with an interest in sociology, identity or securit
 We are actively seeking interested people to undertake or collaborate on human-centric security research topics.
 
 Areas of interest:
+
 * Community and trust structures within organisations
 * Power dynamics, hierarchy and security risk
 * Propagation of risk behaviours through connected groups
@@ -38,6 +39,7 @@ AVA is a challenging tool. It has many features (built and planned) that are unc
 To help keep us on track, ethical and privacy focused we have formed an Ethics and Privacy board.
 
 This board aims to be:
+
 * Objective
 * Representative
 * Independent
