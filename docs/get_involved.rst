@@ -48,6 +48,7 @@ This board aims to be:
 We openly invite people from all walks of life and experience to join us. We hope to find a diverse and representative group to provide scrutiny to the AVA project.
 
 The role of the board is to:
+
 * Question approaches
 * Suggest unexpected or unintended privacy concerns
 * Provide guidance as to community concerns
