@@ -4,7 +4,7 @@
 
 Visit our [homepage](http://avasecure.com), join our [mailing list](https://groups.google.com/forum/#!forum/avasecure) or get an invite to our [slack community](http://avasecure.slack.com). The AVA slack community is the central place to meet other contributors, get help/support and discuss new features/bugs. Please email [hello@avasecure.com](mailto:hello@avasecure.com) for an invite.
 
-## [Install Guide](http://ava.readthedocs.org/en/latest/install/)
+For step-by-step instructions on how to download and run ava, please read the [Installation Guide](http://ava.readthedocs.org/en/latest/install/). For more information see [Ava Documentation](http://ava.readthedocs.org/en/latest/#).
 
 ### AVA is looking for collaborators
 We are on the look out for testers, Django/Python developers, documentation folk, graphics wizards, and UX people to help make AVA awesome. If you have some spare cycles and want to contribute get stuck in.
