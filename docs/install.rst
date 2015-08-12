@@ -9,7 +9,8 @@ AVA Install Instructions using Docker
 AVA is designed to be built and run as a Docker container.
 
 For those not familiar with Docker, it is an open-source project that
-automates the deployment of applications inside software containers -
+automates the deployment of applications inside software containers - 
+`Link wikipedia <http://en.wikipedia.org/wiki/Docker_%28software%29>`_
 [Wikipedia](http://en.wikipedia.org/wiki/Docker_%28software%29)
 
 Install Docker and Compose
