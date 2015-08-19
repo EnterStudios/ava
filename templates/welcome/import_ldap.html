@@ -22,6 +22,12 @@
 			<form method='post'>
   			{% csrf_token %}
 
+                        {% if form.non_field_errors %}
+			<div class="form-group has-error">
+                          {{ form.non_field_errors }}
+			</div>
+			{% endif %}
+
   			<div class="form-group {% if form.user_dn.errors %}has-error{% endif %}">
 				<label for="{{ form.user_dn.id_for_label }}" class="control-label">Active Directory User</label>
 				<div class="first-time">{{ form.user_dn }}</div>
