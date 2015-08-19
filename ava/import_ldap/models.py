@@ -1,14 +1,20 @@
 import json
 import datetime
 import re
+import logging
+
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from django.forms.models import model_to_dict
+
 from ava.core.models import TimeStampedModel
 from ava.import_ldap.ldap_interface import ActiveDirectoryHelper
 from ava.core_identity.models import Identifier, Identity, Person
 from ava.core_group.models import Group
+
+
+log = logging.getLogger(__name__)
 
 
 class ActiveDirectoryUser(TimeStampedModel):
@@ -303,6 +309,8 @@ class ActiveDirectoryGroup(TimeStampedModel):
         entries = ldap_json['entries']
 
         for group in entries:
+            log.debug("Handling group '%s'", group.get('dn'))
+
             attributes = group['attributes']
             model_attributes = {}
 
@@ -388,6 +396,7 @@ class LDAPConfiguration(TimeStampedModel):
         return reverse('ldap-configuration-detail', kwargs={'pk': self.id})
 
     def import_all(self, user_dn, user_pw):
+        log.debug("Calling import_all() on LDAPConfiguration(%s, %s)", user_dn, user_pw)
         ad_group = ActiveDirectoryGroup()
         ad_group.get_groups(self)
         ad_user = ActiveDirectoryUser()
