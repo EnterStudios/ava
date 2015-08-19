@@ -5,13 +5,11 @@ import django.views.generic.base
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
-from django.utils.decorators import method_decorator
 
 from . import forms
 
 from ava.import_ldap import forms as import_ldap_forms
 from ava.import_google import forms as import_google_forms
-from ava.utils import require_ava_superuser
 
 log = logging.getLogger(__name__)
 
