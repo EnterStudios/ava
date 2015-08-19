@@ -5,11 +5,13 @@ import django.views.generic.base
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
+from django.utils.decorators import method_decorator
 
 from . import forms
 
 from ava.import_ldap import forms as import_ldap_forms
 from ava.import_google import forms as import_google_forms
+from ava.utils import require_ava_superuser
 
 log = logging.getLogger(__name__)
 
@@ -46,12 +48,24 @@ class CreateFirstUser(django.views.generic.edit.FormView):
 class ImportSelection(django.views.generic.base.TemplateView):
     template_name = 'welcome/import_selection.html'
 
+    ## Use 'method_decorator' and 'require_ava_superuser' to force
+    ## This view to be usable only by the AVA superuser.
+    @method_decorator(require_ava_superuser)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
 
 class ImportLDAP(django.views.generic.edit.FormView):
     template_name = 'welcome/import_ldap.html'
     success_url = reverse_lazy('welcome-import-progress')
 
     form_class = import_ldap_forms.LDAPConfigurationCredentialsForm
+
+    ## Use 'method_decorator' and 'require_ava_superuser' to force
+    ## This view to be usable only by the AVA superuser.
+    @method_decorator(require_ava_superuser)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
     def form_valid(self, form):
         import_successful = form.run_ldap_import()
@@ -68,6 +82,12 @@ class ImportGoogle(django.views.generic.edit.FormView):
 
     form_class = import_google_forms.GoogleConfigurationWelcomeForm
 
+    ## Use 'method_decorator' and 'require_ava_superuser' to force
+    ## This view to be usable only by the AVA superuser.
+    @method_decorator(require_ava_superuser)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def form_valid(self, form):
         import_successful, google_config = form.run_google_import()
 
@@ -82,3 +102,9 @@ class ImportGoogle(django.views.generic.edit.FormView):
 
 class ImportProgress(django.views.generic.base.TemplateView):
     template_name = 'welcome/import_progress.html'
+
+    ## Use 'method_decorator' and 'require_ava_superuser' to force
+    ## This view to be usable only by the AVA superuser.
+    @method_decorator(require_ava_superuser)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
