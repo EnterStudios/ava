@@ -2,6 +2,9 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
+import logging
+log = logging.getLogger(__name__)
+
 
 class AVARedirectionMiddleware(object):
     """Examine the request to see if the user needs to go somewhere else.
@@ -21,6 +24,7 @@ class AVARedirectionMiddleware(object):
                 not User.objects.exists() and
                 not request.path == create_first_user_uri
         ):
+            log.info("No AVA users: redirecting to 'create_first_user_uri'.")
             return HttpResponseRedirect(create_first_user_uri)
 
         return None
