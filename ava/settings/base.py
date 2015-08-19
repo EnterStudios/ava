@@ -128,7 +128,7 @@ LOGGING = {
         },
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'simple',
+            'formatter': 'devserver',
         },
     },
     'loggers': {
@@ -144,17 +144,24 @@ LOGGING = {
         },
     },
     'formatters': {
-        'simple': {
-            'format': '%(levelname)s %(name)s %(message)s'
+        ## This formatter is intended to be reasonably verbose but readable when
+        ## mixed in with the log messages the Django devserver spits out all the
+        ## time.
+        'devserver': {
+            ## Format the date such that it matches the date format the Django
+            ## Dev server spits out.
+            'datefmt': '[%d/%b/%Y %H:%M:%S]',
+            ## The whitespace gap after 'asctime' is just there to try
+            ## and make the log a bit more visually distinctive from
+            ## the 'access log' output on the dev server.
+            'format': '%(asctime)s      %(levelname)s %(message)s (%(name)s:%(lineno)s)',
         },
     },
 }
 
 
 ## REDIS CONFIGURATION
-
 class REDIS_DATABASES(enum.IntEnum):
-
     """Define slots for our redis databases."""
     DJANGO_CACHING_FRAMEWORK = 0
     DJANGO_SESSION_FRAMEWORK = 1
