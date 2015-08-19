@@ -4,6 +4,10 @@ from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import models as auth_models
 from ava.core_auth import models as core_auth_models
 
+import logging
+
+log = logging.getLogger(__name__)
+
 
 class CreateFirstSuperUser(auth_forms.UserCreationForm):
     # TODO: add any other interesting fields other than the defaults
@@ -32,4 +36,5 @@ class CreateFirstSuperUser(auth_forms.UserCreationForm):
         # Set the AVA elevated privilege, this implicitly creates the object.
         core_auth_models.UserRights.get(user)
 
+        log.info("Created new AVA superuser: '%s'", user)
         return user
