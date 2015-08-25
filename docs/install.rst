@@ -17,9 +17,8 @@ For more information on Docker go to the `Docker main site <https://www.docker.c
 Install Docker and Compose
 --------------------------
 
-* Docker installation instructions can be found here: `Linux <http://docs.docker.com/linux/started/>`_, `Windows <http://docs.docker.com/windows/started/>`_ and `Mac OS X <http://docs.docker.com/mac/started/>`_
+* Docker installation instructions can be found `here <https://docs.docker.com/installation>`_.
 * Docker now has an orchestration layer called compose. 
-* Please note that at the moment compose (which will be necessary to run ava) is not currently supported by windows (and is mostly aimed at linux). 
 * Installation instructions for compose can be found `here <http://docs.docker.com/compose/install/>`_.
 
 .. note::
@@ -32,8 +31,17 @@ Install and run AVA
 -------------------
 
 1. Pull down the latest version of the project ``git clone git@github.com:SafeStack/ava.git``
-2. ``cd ava``
-3. Use docker-compose to build the AVA application images and its dependencies and boot the app ``docker-compose up``
-4. Browse to http://localhost:8000 to access the AVA web frontend.
+2. Change into the folder "ava" that you have cloned ``cd ava``
+3. Make a copy of the file "secrets.env.example" and rename this copy as "secrets.env"
+4. Use docker-compose to build the AVA application images and its dependencies and boot the app ``docker-compose up`` (note this process may take some time)
+5. Once you see the message ``Starting development server at http://0.0.0.0:8000/`` displayed on the console, browse to http://localhost:8000 to access the AVA web frontend.
+
+.. note::
+
+   If an error message occurs when trying to use ``docker-compose up`` that is to do with the docker daemon not being up and running , check what docker processes are running: ``ps aux | grep docker`` (for linux users).
+   
+   If there is no docker daemon process running you will need to start one manually: ``docker run``
+   
+   Once this daemon is running you will need to restart you computer, navigate back into the "ava" folder and try ``docker-compose up`` again.
 
 
