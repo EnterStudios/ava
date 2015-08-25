@@ -37,8 +37,8 @@ to get involved. Only together can we make AVA the best first step to
 protecting your people.
 
 AVA is released under GPL v2. If you aren't sure what this means then
-you should probably [read
-this](http://www.gnu.org/licenses/gpl-2.0.html).  If the terms of GPL
+you should probably `read
+this <http://www.gnu.org/licenses/gpl-2.0.html>`_.  If the terms of GPL
 are not suitable to your environment, please get in touch. We would be
 happy to discuss this with you.
 
@@ -51,8 +51,8 @@ Authors and Contributors
 ------------------------
 
 AVA is the work of Laura Bell (@lady_nerd on Twitter) and her company,
-[SafeStack](http://safestack.io) - a specialist New Zealand based
+`SafeStack <http://safestack.io>`_ - a specialist New Zealand based
 application security firm.
 
 For more information or to talk about AVA, email
-[hello@avasecure.com](mailto:hello@avasecure.com).
+`hello@avasecure.com <mailto:hello@avasecure.com>`_.
