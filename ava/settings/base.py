@@ -14,8 +14,26 @@ BASE_DIR = os.path.abspath(
     )
 )
 
-DEBUG = True
-TEMPLATE_DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'true').lower() == 'true'
+TEMPLATE_DEBUG = DEBUG
+
+# The ALLOWED_HOSTS setting is a security setting. It should be set
+# with the host names that the application is expecting to receive
+# requests as. For example 'localhost' and 'avasecure.com'.
+#
+# It's not checked unless DEBUG is turned off, and so we're using
+# the liberal default of '*', this isn't appropriate for a production
+# deployment.
+#
+# You can set custom hostnames using the DJANGO_ALLOWED_HOSTS environment
+# variable in secrets.env
+#
+# See the link to the Django documentation for more details.
+#
+# https://docs.djangoproject.com/en/1.8/ref/settings/#allowed-hosts
+DEFAULT_ALLOWED_HOSTS = '*'
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS',
+                               DEFAULT_ALLOWED_HOSTS).strip().split()
 
 TEMPLATES = [
     {
