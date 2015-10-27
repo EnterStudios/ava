@@ -116,7 +116,6 @@ LOCAL_APPS = (
 
 THIRD_PARTY_APPS = (
     'dh5bp',
-    'haystack',
     'ldap3',
     'bootstrap3',
     'bootstrapform',
@@ -226,19 +225,6 @@ try:
 except ImportError:
     pass
 
-## HAYSTACK CONFIGURATION
-DOCKER_ELASTICSEARCH_URL = 'http://{}:{}'.format(
-    os.environ.get('ELASTICSEARCH_PORT_9200_TCP_ADDR'),
-    os.environ.get('ELASTICSEARCH_PORT_9200_TCP_PORT')
-)
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': DOCKER_ELASTICSEARCH_URL,
-        'INDEX_NAME': 'haystack',
-    },
-}
 
 
 ## (below commented out from local_settings.py)
