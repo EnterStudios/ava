@@ -19,8 +19,7 @@ db:
     - POSTGRES_PASSWORD=T7mKAQOhMmo6hv0zOmm7
 redis:
   image: redis:2.8
-elasticsearch:
-  image: elasticsearch
+
 
 ## AVA Application Server
 web:
@@ -33,7 +32,6 @@ web:
   links:
     - db
     - redis
-    - elasticsearch
   environment:
     - DJANGO_SETTINGS_MODULE=ava.settings.base
     - USE_MOCK_LDAP=true
@@ -50,7 +48,6 @@ worker:
   links:
     - db
     - redis
-    - elasticsearch
   environment:
     - DJANGO_SETTINGS_MODULE=ava.settings.base
   env_file:

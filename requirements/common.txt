@@ -9,7 +9,6 @@ pytz
 redis
 twython
 twython-django
-pyelasticsearch
 django-html5-boilerplate
 django-bootstrap3
 django-bootstrap-form
