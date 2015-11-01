@@ -225,8 +225,6 @@ try:
 except ImportError:
     pass
 
-
-
 ## (below commented out from local_settings.py)
 
 ## MANDRILL SETTINGS
