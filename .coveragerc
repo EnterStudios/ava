@@ -1,0 +1,7 @@
+[run]
+omit =
+	*/google_apps_interface.py
+	*/directory-quickstart.py
+	*/example_twitter_settings.py
+source =
+	ava
