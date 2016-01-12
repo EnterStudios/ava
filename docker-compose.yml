@@ -50,6 +50,6 @@ worker:
     - redis
   environment:
     - DJANGO_SETTINGS_MODULE=ava_core.settings.base
-    - C_FORCE_ROOT="true"  ## Get this the flip out of here
+    - C_FORCE_ROOT="true"  ## Get this the flip out of here DO NOT USE IN PRODUCTION
   env_file:
     - secrets.env
