@@ -1,0 +1,1 @@
+{"data": {"google integration adapter": {"standard": {"integrationadapter_ptr": "ONE-TO-ONE"}, "missing_integrationadapter_ptr": {"integrationadapter_ptr": ""}, "modified_integrationadapter_ptr": {"integrationadapter_ptr": "ONE-TO-ONE"}}}}

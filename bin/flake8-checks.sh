@@ -20,4 +20,4 @@ FLAKE8_ARGUMENTS="--ignore=E501,E265"
 
 cd $(dirname $0)/../
 
-find ava -type f -name '*.py' -not -path '*/migrations/*' | xargs flake8 ${FLAKE8_ARGUMENTS}
+find core -type f -name '*.py' -not -path '*/migrations/*' | xargs flake8 ${FLAKE8_ARGUMENTS}
