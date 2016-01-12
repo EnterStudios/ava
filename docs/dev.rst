@@ -22,30 +22,15 @@ AVA is laid out as a typical Django project::
 
     ava  (project root)
     ├── ava  (Python package)
-    │   ├── core  (Django apps)
-    │   ├── core_auth  (...)
-    │   ├── core_group
-    │   ├── core_identity
-    │   ├── core_project
-    │   ├── import_google
-    │   ├── import_ldap
+    │   ├── abstract
+            evaluate
+            ...
     │   ├── settings (Django settings/conf files)
-    │   ├── test
-    │   ├── testdata (fixtures for testing/development)
-    │   ├── test_email
-    │   ├── test_tracking
-    │   ├── test_twitter
-    │   └── vis_graph
+    │   ├── ...
     ├── bin  (utility scripts)
     │   └── in-container  (non-utility scripts)
     ├── docs  (project documentation)
     ├── requirements  (pip requirements)
-    ├── static  (static assets)
-    │   ├── css
-    │   ├── fonts
-    │   ├── images
-    │   └── js
-    └── templates  (Django templates)
 
 Utility scripts
 ---------------
@@ -104,6 +89,9 @@ to a basic running developer environment.
 
 .. note::
 
+   THIS SCRIPT WILL DELETE ALL DATA IN YOUR DATABASE. Remember you may need
+   to recreate users after running this.
+
    The goal is that this script will always "just work". With a fresh
    repository and a working installation of Docker/docker-compose, if
    this script *doesn't* get you back to a working developer
@@ -125,6 +113,12 @@ to a basic running developer environment.
 A wrapper for Django's 'makemigrations' management command. Run this
 after database model changes to (hopefully) autodetect and build the
 correct migration files.
+
+``./bin/create-superuser.sh``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A wrapper for Django's 'createsuperuser' management command. Run this
+after database model changes to create a superuser for AVA.
 
 Python development guidelines
 =============================
