@@ -67,4 +67,7 @@ twitter_settings*
 *.bak
 
 secrets.env
+media/testdata/google/*
+media/testdata/ldap/*
+
 
