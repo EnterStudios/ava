@@ -1,536 +1,1189 @@
 # Rest Imports
-import json
-
 from rest_framework import status
 # Local Imports
-from ava_core.organize.test_data_attributes import PersonTestDataAttributes, GroupTestDataAttributes
-from .test_data import data
-from ava_core.abstract.tests import AVATestCase
+from ava.abstract.tests import AvaTest
+from ava_core.organize.models import PersonIdentifier, Person, PersonIdentifierAttribute, GroupIdentifierAttribute, Group, GroupIdentifier, PersonAttribute, PersonIdentifierReport, GroupReport
+from ava_core.organize.test_data import PersonIdentifierTestData, PersonTestData, PersonIdentifierAttributeTestData, GroupIdentifierAttributeTestData, GroupTestData, GroupIdentifierTestData, PersonAttributeTestData, PersonIdentifierReportTestData, GroupReportTestData
+
 
 # Implementation
-"""
-Test harnesses for Person Model
-"""
+class PersonIdentifierTest(AvaTest):
+    """
+PersonIdentifier Test    """
 
-
-class PersonTests(AVATestCase):
     def setUp(self):
-        super(PersonTests, self).setUp()
-        self.data = json.loads(data['person'])
-        self.data_attributes = PersonTestDataAttributes
+        # Make call to super.        super(PersonIdentifierTest, self).setUp()
 
-    """
-     Create tests
-     """
+        # Set the data type.
+        self.data = PersonIdentifierTestData
 
-    def test_create_person_as_user(self):
-        # Log in as standard
-        self.login_user(user=self.user_standard)
+    def test_person_identifier_create_as_user(self):
+        # Log in as user.
+        self.login_user(self.user_user)
 
-        # Make post and ensure unauthorized response
-        response = self.client.post(self.data_attributes.url, self.data['standard'], format='json')
-        self.assertIn(response.status_code, self.status_forbidden)
-        self.assertEqual(self.data_attributes.query_set.count(), 0)
+        # Take count.
+        count = self.data.model.objects.count()
 
-    def test_create_person_as_admin(self):
-        # Log in as admin
-        self.login_user(user=self.user_admin)
+        # Store data to use.
+        data = self.data.get_data()
 
-        # Make post and ensure created response
-        response = self.client.post(self.data_attributes.url, self.data['standard'], format='json')
-        self.assertIn(response.status_code, self.status_forbidden)
-        self.assertEqual(self.data_attributes.query_set.count(), 0)
-
-    def test_create_person_unauthenticated(self):
-        # Make post and ensure unauthorized response
-        response = self.client.post(self.data_attributes.url, self.data['standard'], format='json')
-        self.assertIn(response.status_code, self.status_forbidden)
-        self.assertEqual(self.data_attributes.query_set.count(), 0)
-
-    def test_create_person_multiple(self):
-        # Log in as admin
-        self.login_user(user=self.user_admin)
-
-        # Make first post and ensure created response
-        response = self.client.post(self.data_attributes.url, self.data['standard'], format='json')
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(self.data_attributes.query_set.count(), 1)
-        self.assertTrue(self.does_contain_data(data_target=response.data, data_source=self.data['standard']))
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
 
-        # Make second post and ensure created response
-        response = self.client.post(self.data_attributes.url, self.data['modified'], format='json')
+    def test_person_identifier_create_as_admin(self):
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(self.data_attributes.query_set.count(), 2)
-        self.assertTrue(self.does_contain_data(data_target=response.data, data_source=self.data['modified']))
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
 
-    """
-    Retrieve tests
-    """
+    def test_person_identifier_create_as_unauthenticated(self):
+        # Take count.
+        count = self.data.model.objects.count()
 
-    def test_retrieve_person_as_user_single(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
+        # Store data to use.
+        data = self.data.get_data()
 
-        # Log in as standard
-        self.login_user(user=self.user_standard)
+        # Make push request and ensure unauthorized response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertIn(response.status_code, self.status_forbidden)
+        self.assertEqual(self.data.model.objects.count(), count)
 
-        # Make get request for single and ensure OK response
+    def test_person_identifier_retrieve_single_as_user(self):
+        # Create new PersonIdentifier models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_user)
+
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(self.does_contain_data(data_target=response.data, data_source=self.data['standard']))
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
 
-    def test_retrieve_person_as_user_all(self):
-        # Add new version, storing URL
-        self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                request_data=self.data['standard'], via_api=False)
-        self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                request_data=self.data['modified'], via_api=False)
 
-        # Log in as standard
-        self.login_user(user=self.user_standard)
+    def test_person_identifier_retrieve_all_as_user(self):
+        # Create new PersonIdentifier models.
+        self.create_model_logout(self.data, 'standard', self.user_user)
+        self.create_model_logout(self.data, 'modified', self.user_user)
 
-        # Make get request for all and ensure OK response
-        response = self.client.get(self.data_attributes.url)
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(self.does_contain_data_list(data_list_target=response.data,
-                                                    data_list_source=[self.data['standard'], self.data['modified']]))
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
 
-    def test_retrieve_person_as_admin_single(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
 
-        # Log in as standard
-        self.login_user(user=self.user_admin)
+    def test_person_identifier_retrieve_single_as_admin(self):
+        # Create new PersonIdentifier models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
 
-        # Make get request for single and ensure OK response
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(self.does_contain_data(data_target=response.data, data_source=self.data['standard']))
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
 
-    def test_retrieve_person_as_admin_all(self):
-        # Add new versions
-        self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                request_data=self.data['modified'], via_api=False)
-        self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                request_data=self.data['standard'], via_api=False)
 
-        # Log in as standard
-        self.login_user(user=self.user_standard)
+    def test_person_identifier_retrieve_all_as_admin(self):
+        # Create new PersonIdentifier models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
 
-        # Make get request for all and ensure OK response
-        response = self.client.get(self.data_attributes.url)
-        self.assertIn(response.status_code, self.status_forbidden)
+        # Log in as admin.
+        self.login_user(self.user_admin)
 
-    def test_retrieve_person_unauthenticated_single(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
 
-        # Make get request for single and ensure unauthorised response
+
+    def test_person_identifier_retrieve_single_as_unauthorized(self):
+        # Create new PersonIdentifier models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Make get request and ensure unauthorized response
         response = self.client.get(url)
         self.assertIn(response.status_code, self.status_forbidden)
 
-    def test_retrieve_person_unauthenticated_all(self):
-        # Add new versions
-        self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                request_data=self.data['standard'], via_api=False)
-        self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                request_data=self.data['modified'], via_api=False)
 
-        # Make get request for all and ensure unauthorised response
-        response = self.client.get(self.data_attributes.url)
+    def test_person_identifier_retrieve_all_as_unauthorized(self):
+        # Create new PersonIdentifier models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(self.format_url(self.data.url))
         self.assertIn(response.status_code, self.status_forbidden)
 
-    def test_retrieve_person_does_not_exist(self):
-        # Log in as admin
-        self.login_user(user=self.user_admin)
 
-        # Make get request for single and ensure moved permanently response
-        response = self.client.get(self.data_attributes.url_does_not_exist)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    # TODO: Write update tests
+    # TODO: Write delete tests
 
+
+class PersonTest(AvaTest):
     """
-    Update tests
-    """
+Person Test    """
 
-    def test_update_person_as_user(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
-
-        # Log in as standard
-        self.login_user(user=self.user_standard)
-
-        # Make put request and ensure unauthorised response
-        response = self.client.put(url, self.data['modified'])
-        self.assertIn(response.status_code, self.status_forbidden)
-
-    def test_update_person_as_admin(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
-
-        # Log in as admin
-        self.login_user(user=self.user_admin)
-
-        # Make put request and ensure OK response
-        response = self.client.put(url, self.data['modified'])
-        self.assertIn(response.status_code, self.status_forbidden)
-
-    def test_update_person_unauthenticated(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
-
-        # Make put request and ensure unauthorised response
-        response = self.client.put(url, self.data['modified'])
-        self.assertIn(response.status_code, self.status_forbidden)
-
-    """
-    Delete tests
-    """
-
-    def test_delete_person_as_user(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
-
-        # Log in as standard
-        self.login_user(user=self.user_standard)
-
-        # Make delete and ensure unauthorised response
-        response = self.client.delete(url)
-        self.assertIn(response.status_code, self.status_forbidden)
-        self.assertEqual(self.data_attributes.query_set.count(), 1)
-
-    def test_delete_person_as_admin(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
-
-        # Log in as admin
-        self.login_user(user=self.user_admin)
-
-        # Make delete and ensure no content response
-        response = self.client.delete(url)
-        self.assertIn(response.status_code, self.status_forbidden)
-        self.assertEqual(self.data_attributes.query_set.count(), 1)
-
-    def test_delete_person_unauthenticated(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
-
-        # Make delete and ensure unauthorised response
-        response = self.client.delete(url)
-        self.assertIn(response.status_code, self.status_forbidden)
-        self.assertEqual(self.data_attributes.query_set.count(), 1)
-
-    def test_delete_person_does_not_exist(self):
-        # Log in as admin
-        self.login_user(user=self.user_admin)
-
-        # Make delete and ensure not found response
-        response = self.client.delete(self.data_attributes.url_does_not_exist)
-        self.assertIn(response.status_code, self.status_forbidden)
-        self.assertEqual(self.data_attributes.query_set.count(), 1)
-
-
-class GroupTests(AVATestCase):
     def setUp(self):
-        super(GroupTests, self).setUp()
-        self.data =json.loads(data['group'])
-        self.data_attributes = GroupTestDataAttributes
+        # Make call to super.        super(PersonTest, self).setUp()
 
-    """
-     Create tests
-     """
+        # Set the data type.
+        self.data = PersonTestData
 
-    def test_create_group_as_user(self):
-        # Log in as standard
-        self.login_user(user=self.user_standard)
+    def test_person_create_as_user(self):
+        # Log in as user.
+        self.login_user(self.user_user)
 
-        # Make post and ensure unauthorized response
-        response = self.client.post(self.data_attributes.url, self.data['standard'], format='json')
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_person_create_as_admin(self):
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_person_create_as_unauthenticated(self):
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure unauthorized response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
         self.assertIn(response.status_code, self.status_forbidden)
-        self.assertEqual(self.data_attributes.query_set.count(), 0)
+        self.assertEqual(self.data.model.objects.count(), count)
 
-    def test_create_group_as_admin(self):
-        # Log in as admin
-        self.login_user(user=self.user_admin)
+    def test_person_retrieve_single_as_user(self):
+        # Create new Person models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_user)
 
-        # Make post and ensure created response
-        response = self.client.post(self.data_attributes.url, self.data['standard'], format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(self.data_attributes.query_set.count(), 1)
-        self.assertTrue(self.does_contain_data(data_target=response.data, data_source=self.data['standard']))
+        # Log in as user.
+        self.login_user(self.user_user)
 
-    def test_create_group_unauthenticated(self):
-        # Make post and ensure unauthorized response
-        response = self.client.post(self.data_attributes.url, self.data['standard'], format='json')
-        self.assertIn(response.status_code, self.status_forbidden)
-        self.assertEqual(self.data_attributes.query_set.count(), 0)
-
-    def test_create_group_multiple(self):
-        # Log in as admin
-        self.login_user(user=self.user_admin)
-
-        # Make first post and ensure created response
-        response = self.client.post(self.data_attributes.url, self.data['standard'], format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(self.data_attributes.query_set.count(), 1)
-        self.assertTrue(self.does_contain_data(data_target=response.data, data_source=self.data['standard']))
-
-        # Make second post and ensure created response
-        response = self.client.post(self.data_attributes.url, self.data['modified'], format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(self.data_attributes.query_set.count(), 2)
-        self.assertTrue(self.does_contain_data(data_target=response.data, data_source=self.data['modified']))
-
-    def test_create_group_duplicate(self):
-        # Log in as admin
-        self.login_user(user=self.user_admin)
-
-        # Make first post and ensure created response
-        response = self.client.post(self.data_attributes.url, self.data['standard'], format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(self.data_attributes.query_set.count(), 1)
-        self.assertTrue(self.does_contain_data(data_target=response.data, data_source=self.data['standard']))
-
-        # Make second post and ensure bad request response
-        response = self.client.post(self.data_attributes.url, self.data['standard'], format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(self.data_attributes.query_set.count(), 1)
-
-    def test_create_group_duplicate_altered_case(self):
-        # Log in as admin
-        self.login_user(user=self.user_admin)
-
-        # Make first post and ensure created response
-        response = self.client.post(self.data_attributes.url, self.data['standard'], format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(self.data_attributes.query_set.count(), 1)
-        self.assertTrue(self.does_contain_data(data_target=response.data, data_source=self.data['standard']))
-
-        # Make second post and ensure bad request response
-        response = self.client.post(self.data_attributes.url, self.data.altered_case, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(self.data_attributes.query_set.count(), 1)
-
-    """
-    Retrieve tests
-    """
-
-    def test_retrieve_group_as_user_single(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
-
-        # Log in as standard
-        self.login_user(user=self.user_standard)
-
-        # Make get request for single and ensure OK response
+        # Make get request and ensure OK response
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(self.does_contain_data(data_target=response.data, data_source=self.data['standard']))
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
 
-    def test_retrieve_group_as_user_all(self):
-        # Add new version, storing URL
-        self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                request_data=self.data['standard'], via_api=False)
-        self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                request_data=self.data['modified'], via_api=False)
 
-        # Log in as standard
-        self.login_user(user=self.user_standard)
+    def test_person_retrieve_all_as_user(self):
+        # Create new Person models.
+        self.create_model_logout(self.data, 'standard', self.user_user)
+        self.create_model_logout(self.data, 'modified', self.user_user)
 
-        # Make get request for all and ensure OK response
-        response = self.client.get(self.data_attributes.url)
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(self.does_contain_data_list(data_list_target=response.data, data_list_source=
-        [self.data['standard'], self.data['modified']]))
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
 
-    def test_retrieve_group_as_admin_single(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
 
-        # Log in as standard
-        self.login_user(user=self.user_admin)
+    def test_person_retrieve_single_as_admin(self):
+        # Create new Person models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
 
-        # Make get request for single and ensure OK response
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(self.does_contain_data(data_target=response.data, data_source=self.data['standard']))
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
 
-    def test_retrieve_group_as_admin_all(self):
-        # Add new versions
-        self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                request_data=self.data['modified'], via_api=False)
-        self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                request_data=self.data['standard'], via_api=False)
 
-        # Log in as standard
-        self.login_user(user=self.user_standard)
+    def test_person_retrieve_all_as_admin(self):
+        # Create new Person models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
 
-        # Make get request for all and ensure OK response
-        response = self.client.get(self.data_attributes.url)
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(self.does_contain_data_list(data_list_target=response.data, data_list_source=
-        [self.data['standard'], self.data['modified']]))
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
 
-    def test_retrieve_group_unauthenticated_single(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
 
-        # Make get request for single and ensure unauthorised response
+    def test_person_retrieve_single_as_unauthorized(self):
+        # Create new Person models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Make get request and ensure unauthorized response
         response = self.client.get(url)
         self.assertIn(response.status_code, self.status_forbidden)
 
-    def test_retrieve_group_unauthenticated_all(self):
-        # Add new versions
-        self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                request_data=self.data['standard'], via_api=False)
-        self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                request_data=self.data['modified'], via_api=False)
 
-        # Make get request for all and ensure unauthorised response
-        response = self.client.get(self.data_attributes.url)
+    def test_person_retrieve_all_as_unauthorized(self):
+        # Create new Person models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(self.format_url(self.data.url))
         self.assertIn(response.status_code, self.status_forbidden)
 
-    def test_retrieve_group_does_not_exist(self):
-        # Log in as admin
-        self.login_user(user=self.user_admin)
 
-        # Make get request for single and ensure moved permanently response
-        response = self.client.get(self.data_attributes.url_does_not_exist)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    # TODO: Write update tests
+    # TODO: Write delete tests
 
+
+class PersonIdentifierAttributeTest(AvaTest):
     """
-    Update tests
-    """
+PersonIdentifierAttribute Test    """
 
-    def test_update_group_as_user(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
+    def setUp(self):
+        # Make call to super.        super(PersonIdentifierAttributeTest, self).setUp()
 
-        # Log in as standard
-        self.login_user(user=self.user_standard)
+        # Set the data type.
+        self.data = PersonIdentifierAttributeTestData
 
-        # Make put request and ensure unauthorised response
-        response = self.client.put(url, self.data['modified'])
+    def test_person_identifier_attribute_create_as_user(self):
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_person_identifier_attribute_create_as_admin(self):
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_person_identifier_attribute_create_as_unauthenticated(self):
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure unauthorized response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
         self.assertIn(response.status_code, self.status_forbidden)
-        self.assertTrue(self.does_contain_data_url(url, self.data['standard']))
+        self.assertEqual(self.data.model.objects.count(), count)
 
-    def test_update_group_as_admin(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
+    def test_person_identifier_attribute_retrieve_single_as_user(self):
+        # Create new PersonIdentifierAttribute models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_user)
 
-        # Log in as admin
-        self.login_user(user=self.user_admin)
+        # Log in as user.
+        self.login_user(self.user_user)
 
-        # Make put request and ensure OK response
-        response = self.client.put(url, self.data['modified'])
+        # Make get request and ensure OK response
+        response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(self.does_contain_data_url(url, self.data['modified']))
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
 
-    def test_update_group_unauthenticated(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
 
-        # Make put request and ensure unauthorised response
-        response = self.client.put(url, self.data['modified'])
+    def test_person_identifier_attribute_retrieve_all_as_user(self):
+        # Create new PersonIdentifierAttribute models.
+        self.create_model_logout(self.data, 'standard', self.user_user)
+        self.create_model_logout(self.data, 'modified', self.user_user)
+
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+
+
+    def test_person_identifier_attribute_retrieve_single_as_admin(self):
+        # Create new PersonIdentifierAttribute models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
+
+
+    def test_person_identifier_attribute_retrieve_all_as_admin(self):
+        # Create new PersonIdentifierAttribute models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+
+
+    def test_person_identifier_attribute_retrieve_single_as_unauthorized(self):
+        # Create new PersonIdentifierAttribute models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(url)
         self.assertIn(response.status_code, self.status_forbidden)
-        self.assertTrue(self.does_contain_data_url(url, self.data['standard']))
 
-    def test_update_group_does_not_exist(self):
-        # Log in as admin
-        self.login_user(user=self.user_admin)
 
-        # Make put request and ensure moved permanently response
-        response = self.client.put(self.data_attributes.url_does_not_exist)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    def test_person_identifier_attribute_retrieve_all_as_unauthorized(self):
+        # Create new PersonIdentifierAttribute models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
 
-    def test_update_group_duplicate(self):
-        # Add new versions, storing URL to be updated
-        self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                request_data=self.data['modified'], via_api=False)
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
+        # Make get request and ensure unauthorized response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertIn(response.status_code, self.status_forbidden)
 
-        # Log in as admin
-        self.login_user(user=self.user_admin)
 
-        # Make duplicating put and ensure bad request response
-        response = self.client.put(url, self.data['modified'])
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertTrue(self.does_contain_data_url(url, self.data['standard']))
+    # TODO: Write update tests
+    # TODO: Write delete tests
 
-    def test_update_group_duplicate_altered_case(self):
-        # Add new versions, storing URL to be updated
-        self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                request_data=self.data['standard'], via_api=False)
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['modified'], via_api=False)
 
-        # Log in as admin
-        self.login_user(user=self.user_admin)
-
-        # Make duplicating put and ensure bad request response
-        response = self.client.put(url, self.data.altered_case)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertTrue(self.does_contain_data_url(url, self.data['modified']))
-
+class GroupIdentifierAttributeTest(AvaTest):
     """
-    Delete tests
+GroupIdentifierAttribute Test    """
+
+    def setUp(self):
+        # Make call to super.        super(GroupIdentifierAttributeTest, self).setUp()
+
+        # Set the data type.
+        self.data = GroupIdentifierAttributeTestData
+
+    def test_group_identifier_attribute_create_as_user(self):
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_group_identifier_attribute_create_as_admin(self):
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_group_identifier_attribute_create_as_unauthenticated(self):
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure unauthorized response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertIn(response.status_code, self.status_forbidden)
+        self.assertEqual(self.data.model.objects.count(), count)
+
+    def test_group_identifier_attribute_retrieve_single_as_user(self):
+        # Create new GroupIdentifierAttribute models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_user)
+
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
+
+
+    def test_group_identifier_attribute_retrieve_all_as_user(self):
+        # Create new GroupIdentifierAttribute models.
+        self.create_model_logout(self.data, 'standard', self.user_user)
+        self.create_model_logout(self.data, 'modified', self.user_user)
+
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+
+
+    def test_group_identifier_attribute_retrieve_single_as_admin(self):
+        # Create new GroupIdentifierAttribute models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
+
+
+    def test_group_identifier_attribute_retrieve_all_as_admin(self):
+        # Create new GroupIdentifierAttribute models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+
+
+    def test_group_identifier_attribute_retrieve_single_as_unauthorized(self):
+        # Create new GroupIdentifierAttribute models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(url)
+        self.assertIn(response.status_code, self.status_forbidden)
+
+
+    def test_group_identifier_attribute_retrieve_all_as_unauthorized(self):
+        # Create new GroupIdentifierAttribute models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertIn(response.status_code, self.status_forbidden)
+
+
+    # TODO: Write update tests
+    # TODO: Write delete tests
+
+
+class GroupTest(AvaTest):
     """
+Group Test    """
 
-    def test_delete_group_as_user(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
+    def setUp(self):
+        # Make call to super.        super(GroupTest, self).setUp()
 
-        # Log in as standard
-        self.login_user(user=self.user_standard)
+        # Set the data type.
+        self.data = GroupTestData
 
-        # Make delete and ensure unauthorised response
-        response = self.client.delete(url)
+    def test_group_create_as_user(self):
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_group_create_as_admin(self):
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_group_create_as_unauthenticated(self):
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure unauthorized response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
         self.assertIn(response.status_code, self.status_forbidden)
-        self.assertEqual(self.data_attributes.query_set.count(), 1)
+        self.assertEqual(self.data.model.objects.count(), count)
 
-    def test_delete_group_as_admin(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
+    def test_group_retrieve_single_as_user(self):
+        # Create new Group models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_user)
 
-        # Log in as admin
-        self.login_user(user=self.user_admin)
+        # Log in as user.
+        self.login_user(self.user_user)
 
-        # Make delete and ensure no content response
-        response = self.client.delete(url)
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(self.data_attributes.query_set.count(), 0)
+        # Make get request and ensure OK response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
 
-    def test_delete_group_unauthenticated(self):
-        # Add new version, storing URL
-        url = self.create_data_logout(user=self.user_admin, test_data_attributes=self.data_attributes,
-                                      request_data=self.data['standard'], via_api=False)
 
-        # Make delete and ensure unauthorised response
-        response = self.client.delete(url)
+    def test_group_retrieve_all_as_user(self):
+        # Create new Group models.
+        self.create_model_logout(self.data, 'standard', self.user_user)
+        self.create_model_logout(self.data, 'modified', self.user_user)
+
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+
+
+    def test_group_retrieve_single_as_admin(self):
+        # Create new Group models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
+
+
+    def test_group_retrieve_all_as_admin(self):
+        # Create new Group models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+
+
+    def test_group_retrieve_single_as_unauthorized(self):
+        # Create new Group models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(url)
         self.assertIn(response.status_code, self.status_forbidden)
-        self.assertEqual(self.data_attributes.query_set.count(), 1)
 
-    def test_delete_group_does_not_exist(self):
-        # Log in as admin
-        self.login_user(user=self.user_admin)
 
-        # Make delete and ensure not found response
-        response = self.client.delete(self.data_attributes.url_does_not_exist)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    def test_group_retrieve_all_as_unauthorized(self):
+        # Create new Group models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertIn(response.status_code, self.status_forbidden)
+
+
+    # TODO: Write update tests
+    # TODO: Write delete tests
+
+
+class GroupIdentifierTest(AvaTest):
+    """
+GroupIdentifier Test    """
+
+    def setUp(self):
+        # Make call to super.        super(GroupIdentifierTest, self).setUp()
+
+        # Set the data type.
+        self.data = GroupIdentifierTestData
+
+    def test_group_identifier_create_as_user(self):
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_group_identifier_create_as_admin(self):
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_group_identifier_create_as_unauthenticated(self):
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure unauthorized response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertIn(response.status_code, self.status_forbidden)
+        self.assertEqual(self.data.model.objects.count(), count)
+
+    def test_group_identifier_retrieve_single_as_user(self):
+        # Create new GroupIdentifier models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_user)
+
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
+
+
+    def test_group_identifier_retrieve_all_as_user(self):
+        # Create new GroupIdentifier models.
+        self.create_model_logout(self.data, 'standard', self.user_user)
+        self.create_model_logout(self.data, 'modified', self.user_user)
+
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+
+
+    def test_group_identifier_retrieve_single_as_admin(self):
+        # Create new GroupIdentifier models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
+
+
+    def test_group_identifier_retrieve_all_as_admin(self):
+        # Create new GroupIdentifier models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+
+
+    def test_group_identifier_retrieve_single_as_unauthorized(self):
+        # Create new GroupIdentifier models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(url)
+        self.assertIn(response.status_code, self.status_forbidden)
+
+
+    def test_group_identifier_retrieve_all_as_unauthorized(self):
+        # Create new GroupIdentifier models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertIn(response.status_code, self.status_forbidden)
+
+
+    # TODO: Write update tests
+    # TODO: Write delete tests
+
+
+class PersonAttributeTest(AvaTest):
+    """
+PersonAttribute Test    """
+
+    def setUp(self):
+        # Make call to super.        super(PersonAttributeTest, self).setUp()
+
+        # Set the data type.
+        self.data = PersonAttributeTestData
+
+    def test_person_attribute_create_as_user(self):
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_person_attribute_create_as_admin(self):
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_person_attribute_create_as_unauthenticated(self):
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure unauthorized response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertIn(response.status_code, self.status_forbidden)
+        self.assertEqual(self.data.model.objects.count(), count)
+
+    def test_person_attribute_retrieve_single_as_user(self):
+        # Create new PersonAttribute models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_user)
+
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
+
+
+    def test_person_attribute_retrieve_all_as_user(self):
+        # Create new PersonAttribute models.
+        self.create_model_logout(self.data, 'standard', self.user_user)
+        self.create_model_logout(self.data, 'modified', self.user_user)
+
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+
+
+    def test_person_attribute_retrieve_single_as_admin(self):
+        # Create new PersonAttribute models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
+
+
+    def test_person_attribute_retrieve_all_as_admin(self):
+        # Create new PersonAttribute models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+
+
+    def test_person_attribute_retrieve_single_as_unauthorized(self):
+        # Create new PersonAttribute models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(url)
+        self.assertIn(response.status_code, self.status_forbidden)
+
+
+    def test_person_attribute_retrieve_all_as_unauthorized(self):
+        # Create new PersonAttribute models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertIn(response.status_code, self.status_forbidden)
+
+
+    # TODO: Write update tests
+    # TODO: Write delete tests
+
+
+class PersonIdentifierReportTest(AvaTest):
+    """
+PersonIdentifierReport Test    """
+
+    def setUp(self):
+        # Make call to super.        super(PersonIdentifierReportTest, self).setUp()
+
+        # Set the data type.
+        self.data = PersonIdentifierReportTestData
+
+    def test_person_identifier_report_create_as_user(self):
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_person_identifier_report_create_as_admin(self):
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_person_identifier_report_create_as_unauthenticated(self):
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure unauthorized response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertIn(response.status_code, self.status_forbidden)
+        self.assertEqual(self.data.model.objects.count(), count)
+
+    def test_person_identifier_report_retrieve_single_as_user(self):
+        # Create new PersonIdentifierReport models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_user)
+
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
+
+
+    def test_person_identifier_report_retrieve_all_as_user(self):
+        # Create new PersonIdentifierReport models.
+        self.create_model_logout(self.data, 'standard', self.user_user)
+        self.create_model_logout(self.data, 'modified', self.user_user)
+
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+
+
+    def test_person_identifier_report_retrieve_single_as_admin(self):
+        # Create new PersonIdentifierReport models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
+
+
+    def test_person_identifier_report_retrieve_all_as_admin(self):
+        # Create new PersonIdentifierReport models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+
+
+    def test_person_identifier_report_retrieve_single_as_unauthorized(self):
+        # Create new PersonIdentifierReport models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(url)
+        self.assertIn(response.status_code, self.status_forbidden)
+
+
+    def test_person_identifier_report_retrieve_all_as_unauthorized(self):
+        # Create new PersonIdentifierReport models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertIn(response.status_code, self.status_forbidden)
+
+
+    # TODO: Write update tests
+    # TODO: Write delete tests
+
+
+class GroupReportTest(AvaTest):
+    """
+GroupReport Test    """
+
+    def setUp(self):
+        # Make call to super.        super(GroupReportTest, self).setUp()
+
+        # Set the data type.
+        self.data = GroupReportTestData
+
+    def test_group_report_create_as_user(self):
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_group_report_create_as_admin(self):
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure created response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(self.data.model.objects.count(), count + 1)
+        self.assertTrue(self.does_contain_data(response.data, data))
+
+    def test_group_report_create_as_unauthenticated(self):
+        # Take count.
+        count = self.data.model.objects.count()
+
+        # Store data to use.
+        data = self.data.get_data()
+
+        # Make push request and ensure unauthorized response.
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        self.assertIn(response.status_code, self.status_forbidden)
+        self.assertEqual(self.data.model.objects.count(), count)
+
+    def test_group_report_retrieve_single_as_user(self):
+        # Create new GroupReport models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_user)
+
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
+
+
+    def test_group_report_retrieve_all_as_user(self):
+        # Create new GroupReport models.
+        self.create_model_logout(self.data, 'standard', self.user_user)
+        self.create_model_logout(self.data, 'modified', self.user_user)
+
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+
+
+    def test_group_report_retrieve_single_as_admin(self):
+        # Create new GroupReport models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data(response.data, self.data.standard))
+
+
+    def test_group_report_retrieve_all_as_admin(self):
+        # Create new GroupReport models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make get request and ensure OK response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+
+
+    def test_group_report_retrieve_single_as_unauthorized(self):
+        # Create new GroupReport models, storing URL.
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(url)
+        self.assertIn(response.status_code, self.status_forbidden)
+
+
+    def test_group_report_retrieve_all_as_unauthorized(self):
+        # Create new GroupReport models.
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
+
+        # Make get request and ensure unauthorized response
+        response = self.client.get(self.format_url(self.data.url))
+        self.assertIn(response.status_code, self.status_forbidden)
+
+
+    # TODO: Write update tests
+    # TODO: Write delete tests
+
+
+
