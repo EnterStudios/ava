@@ -1,7 +1,6 @@
 # Rest Imports
-from rest_framework import status
 # Local Imports
-from ava.abstract.test_data import AvaTestData
+from ava_core.abstract.test_data import AvaTestData
 from ava_core.integration.integration_google.models import GoogleIntegrationAdapter, GoogleAuthorizationStore
 
 
