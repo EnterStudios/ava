@@ -1,8 +1,7 @@
 from django.conf.urls import url
-
-from .views import TestDataBuilder
+from .views import ProjectDataBuilder, ProjectTestBuilder
 
 urlpatterns = [
-    url(r'^build/data/$', TestDataBuilder.as_view()),
-    # url(r'^build/$', TestBuilder.as_view()),
+    url(r'^data/$', ProjectDataBuilder.as_view()),
+    url(r'^test/$', ProjectTestBuilder.as_view())
 ]
