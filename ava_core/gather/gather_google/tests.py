@@ -1,7 +1,7 @@
 # Rest Imports
 from rest_framework import status
 # Local Imports
-from ava.abstract.tests import AvaTest
+from ava_core.abstract.tests import AvaTest
 from ava_core.gather.gather_google.models import GoogleGatherHistory
 from ava_core.gather.gather_google.test_data import GoogleGatherHistoryTestData
 

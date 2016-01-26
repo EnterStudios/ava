@@ -1,7 +1,7 @@
 # Rest Imports
 from rest_framework import status
 # Local Imports
-from ava.abstract.tests import AvaTest
+from ava_core.abstract.tests import AvaTest
 from ava_core.evaluate.models import EvaluateSender, EvaluateTemplate, EvaluateResult, EvaluateTest, EvaluateController
 from ava_core.evaluate.test_data import EvaluateSenderTestData, EvaluateTemplateTestData, EvaluateResultTestData, EvaluateTestTestData, EvaluateControllerTestData
 

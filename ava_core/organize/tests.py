@@ -1,7 +1,7 @@
 # Rest Imports
 from rest_framework import status
 # Local Imports
-from ava.abstract.tests import AvaTest
+from ava_core.abstract.tests import AvaTest
 from ava_core.organize.models import PersonIdentifier, Person, PersonIdentifierAttribute, GroupIdentifierAttribute, Group, GroupIdentifier, PersonAttribute, PersonIdentifierReport, GroupReport
 from ava_core.organize.test_data import PersonIdentifierTestData, PersonTestData, PersonIdentifierAttributeTestData, GroupIdentifierAttributeTestData, GroupTestData, GroupIdentifierTestData, PersonAttributeTestData, PersonIdentifierReportTestData, GroupReportTestData
 

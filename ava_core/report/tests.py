@@ -1,7 +1,7 @@
 # Rest Imports
 from rest_framework import status
 # Local Imports
-from ava.abstract.tests import AvaTest
+from ava_core.abstract.tests import AvaTest
 from ava_core.report.models import Suspicious, ReportResponse, Question
 from ava_core.report.test_data import SuspiciousTestData, ReportResponseTestData, QuestionTestData
 

@@ -1,7 +1,7 @@
 # Rest Imports
 from rest_framework import status
 # Local Imports
-from ava.abstract.tests import AvaTest
+from ava_core.abstract.tests import AvaTest
 from ava_core.gather.gather_ldap.models import LDAPGatherHistory
 from ava_core.gather.gather_ldap.test_data import LDAPGatherHistoryTestData
 

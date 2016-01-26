@@ -1,7 +1,7 @@
 # Rest Imports
 from rest_framework import status
 # Local Imports
-from ava.abstract.tests import AvaTest
+from ava_core.abstract.tests import AvaTest
 from ava_core.my.models import LearningQueue, LearningHistory, ActivityLog, LearningProfile, ScoreCard, People, Friend
 from ava_core.my.test_data import LearningQueueTestData, LearningHistoryTestData, ActivityLogTestData, LearningProfileTestData, ScoreCardTestData, PeopleTestData, FriendTestData
 

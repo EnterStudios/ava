@@ -1,7 +1,7 @@
 # Rest Imports
 from rest_framework import status
 # Local Imports
-from ava.abstract.tests import AvaTest
+from ava_core.abstract.tests import AvaTest
 from ava_core.learn.models import Module, Path, Role
 from ava_core.learn.test_data import ModuleTestData, PathTestData, RoleTestData
 
