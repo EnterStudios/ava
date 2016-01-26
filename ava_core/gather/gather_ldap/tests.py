@@ -12,7 +12,8 @@ class LDAPGatherHistoryTest(AvaTest):
 LDAPGatherHistory Test    """
 
     def setUp(self):
-        # Make call to super.        super(LDAPGatherHistoryTest, self).setUp()
+        # Make call to super.
+        super(LDAPGatherHistoryTest, self).setUp()
 
         # Set the data type.
         self.data = LDAPGatherHistoryTestData

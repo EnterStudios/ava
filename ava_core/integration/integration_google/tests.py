@@ -12,7 +12,8 @@ class GoogleIntegrationAdapterTest(AvaTest):
 GoogleIntegrationAdapter Test    """
 
     def setUp(self):
-        # Make call to super.        super(GoogleIntegrationAdapterTest, self).setUp()
+        # Make call to super.
+        super(GoogleIntegrationAdapterTest, self).setUp()
 
         # Set the data type.
         self.data = GoogleIntegrationAdapterTestData
@@ -143,7 +144,8 @@ class GoogleAuthorizationStoreTest(AvaTest):
 GoogleAuthorizationStore Test    """
 
     def setUp(self):
-        # Make call to super.        super(GoogleAuthorizationStoreTest, self).setUp()
+        # Make call to super.
+        super(GoogleAuthorizationStoreTest, self).setUp()
 
         # Set the data type.
         self.data = GoogleAuthorizationStoreTestData

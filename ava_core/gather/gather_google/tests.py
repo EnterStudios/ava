@@ -12,7 +12,8 @@ class GoogleGatherHistoryTest(AvaTest):
 GoogleGatherHistory Test    """
 
     def setUp(self):
-        # Make call to super.        super(GoogleGatherHistoryTest, self).setUp()
+        # Make call to super.
+        super(GoogleGatherHistoryTest, self).setUp()
 
         # Set the data type.
         self.data = GoogleGatherHistoryTestData

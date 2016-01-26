@@ -9,10 +9,12 @@ from ava_core.evaluate.test_data import EvaluateSenderTestData, EvaluateTemplate
 # Implementation
 class EvaluateSenderTest(AvaTest):
     """
-EvaluateSender Test    """
+    EvaluateSender Test
+    """
 
     def setUp(self):
-        # Make call to super.        super(EvaluateSenderTest, self).setUp()
+        # Make call to super.
+        super(EvaluateSenderTest, self).setUp()
 
         # Set the data type.
         self.data = EvaluateSenderTestData
@@ -143,7 +145,8 @@ class EvaluateTemplateTest(AvaTest):
 EvaluateTemplate Test    """
 
     def setUp(self):
-        # Make call to super.        super(EvaluateTemplateTest, self).setUp()
+        # Make call to super.
+        super(EvaluateTemplateTest, self).setUp()
 
         # Set the data type.
         self.data = EvaluateTemplateTestData
@@ -274,7 +277,8 @@ class EvaluateResultTest(AvaTest):
 EvaluateResult Test    """
 
     def setUp(self):
-        # Make call to super.        super(EvaluateResultTest, self).setUp()
+        # Make call to super.
+        super(EvaluateResultTest, self).setUp()
 
         # Set the data type.
         self.data = EvaluateResultTestData
@@ -405,7 +409,8 @@ class EvaluateTestTest(AvaTest):
 EvaluateTest Test    """
 
     def setUp(self):
-        # Make call to super.        super(EvaluateTestTest, self).setUp()
+        # Make call to super.
+        super(EvaluateTestTest, self).setUp()
 
         # Set the data type.
         self.data = EvaluateTestTestData
@@ -536,7 +541,8 @@ class EvaluateControllerTest(AvaTest):
 EvaluateController Test    """
 
     def setUp(self):
-        # Make call to super.        super(EvaluateControllerTest, self).setUp()
+        # Make call to super.
+        super(EvaluateControllerTest, self).setUp()
 
         # Set the data type.
         self.data = EvaluateControllerTestData

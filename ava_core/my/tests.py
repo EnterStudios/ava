@@ -12,7 +12,8 @@ class LearningQueueTest(AvaTest):
 LearningQueue Test    """
 
     def setUp(self):
-        # Make call to super.        super(LearningQueueTest, self).setUp()
+        # Make call to super.
+        super(LearningQueueTest, self).setUp()
 
         # Set the data type.
         self.data = LearningQueueTestData
@@ -143,7 +144,8 @@ class LearningHistoryTest(AvaTest):
 LearningHistory Test    """
 
     def setUp(self):
-        # Make call to super.        super(LearningHistoryTest, self).setUp()
+        # Make call to super.
+        super(LearningHistoryTest, self).setUp()
 
         # Set the data type.
         self.data = LearningHistoryTestData
@@ -274,7 +276,8 @@ class ActivityLogTest(AvaTest):
 ActivityLog Test    """
 
     def setUp(self):
-        # Make call to super.        super(ActivityLogTest, self).setUp()
+        # Make call to super.
+        super(ActivityLogTest, self).setUp()
 
         # Set the data type.
         self.data = ActivityLogTestData
@@ -405,7 +408,8 @@ class LearningProfileTest(AvaTest):
 LearningProfile Test    """
 
     def setUp(self):
-        # Make call to super.        super(LearningProfileTest, self).setUp()
+        # Make call to super.
+        super(LearningProfileTest, self).setUp()
 
         # Set the data type.
         self.data = LearningProfileTestData
@@ -536,7 +540,8 @@ class ScoreCardTest(AvaTest):
 ScoreCard Test    """
 
     def setUp(self):
-        # Make call to super.        super(ScoreCardTest, self).setUp()
+        # Make call to super.
+        super(ScoreCardTest, self).setUp()
 
         # Set the data type.
         self.data = ScoreCardTestData
@@ -667,7 +672,8 @@ class PeopleTest(AvaTest):
 People Test    """
 
     def setUp(self):
-        # Make call to super.        super(PeopleTest, self).setUp()
+        # Make call to super.
+        super(PeopleTest, self).setUp()
 
         # Set the data type.
         self.data = PeopleTestData
@@ -798,7 +804,8 @@ class FriendTest(AvaTest):
 Friend Test    """
 
     def setUp(self):
-        # Make call to super.        super(FriendTest, self).setUp()
+        # Make call to super.
+        super(FriendTest, self).setUp()
 
         # Set the data type.
         self.data = FriendTestData

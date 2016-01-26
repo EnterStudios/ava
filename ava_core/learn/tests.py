@@ -9,10 +9,12 @@ from ava_core.learn.test_data import ModuleTestData, PathTestData, RoleTestData
 # Implementation
 class ModuleTest(AvaTest):
     """
-Module Test    """
+    Module Test
+    """
 
     def setUp(self):
-        # Make call to super.        super(ModuleTest, self).setUp()
+        # Make call to super.
+        super(ModuleTest, self).setUp()
 
         # Set the data type.
         self.data = ModuleTestData
@@ -143,7 +145,8 @@ class PathTest(AvaTest):
 Path Test    """
 
     def setUp(self):
-        # Make call to super.        super(PathTest, self).setUp()
+        # Make call to super.
+        super(PathTest, self).setUp()
 
         # Set the data type.
         self.data = PathTestData
@@ -274,7 +277,8 @@ class RoleTest(AvaTest):
 Role Test    """
 
     def setUp(self):
-        # Make call to super.        super(RoleTest, self).setUp()
+        # Make call to super.
+        super(RoleTest, self).setUp()
 
         # Set the data type.
         self.data = RoleTestData

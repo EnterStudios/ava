@@ -15,8 +15,6 @@ class AvaTest(APITestCase):
     """
 
     def setUp(self):
-
-
         # Create required users
         self.user_admin = {'email': 'admin@test.com', 'password': 'test'}
         self.user_user = {'email': 'user@test.com', 'password': 'test'}

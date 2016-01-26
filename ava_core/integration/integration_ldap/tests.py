@@ -12,7 +12,8 @@ class LDAPIntegrationAdapterTest(AvaTest):
 LDAPIntegrationAdapter Test    """
 
     def setUp(self):
-        # Make call to super.        super(LDAPIntegrationAdapterTest, self).setUp()
+        # Make call to super.
+        super(LDAPIntegrationAdapterTest, self).setUp()
 
         # Set the data type.
         self.data = LDAPIntegrationAdapterTestData

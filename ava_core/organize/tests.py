@@ -9,10 +9,12 @@ from ava_core.organize.test_data import PersonIdentifierTestData, PersonTestData
 # Implementation
 class PersonIdentifierTest(AvaTest):
     """
-PersonIdentifier Test    """
+    PersonIdentifier Test
+    """
 
     def setUp(self):
-        # Make call to super.        super(PersonIdentifierTest, self).setUp()
+        # Make call to super.
+        super(PersonIdentifierTest, self).setUp()
 
         # Set the data type.
         self.data = PersonIdentifierTestData
@@ -143,7 +145,8 @@ class PersonTest(AvaTest):
 Person Test    """
 
     def setUp(self):
-        # Make call to super.        super(PersonTest, self).setUp()
+        # Make call to super.
+        super(PersonTest, self).setUp()
 
         # Set the data type.
         self.data = PersonTestData
@@ -274,7 +277,8 @@ class PersonIdentifierAttributeTest(AvaTest):
 PersonIdentifierAttribute Test    """
 
     def setUp(self):
-        # Make call to super.        super(PersonIdentifierAttributeTest, self).setUp()
+        # Make call to super.
+        super(PersonIdentifierAttributeTest, self).setUp()
 
         # Set the data type.
         self.data = PersonIdentifierAttributeTestData
@@ -405,7 +409,8 @@ class GroupIdentifierAttributeTest(AvaTest):
 GroupIdentifierAttribute Test    """
 
     def setUp(self):
-        # Make call to super.        super(GroupIdentifierAttributeTest, self).setUp()
+        # Make call to super.
+        super(GroupIdentifierAttributeTest, self).setUp()
 
         # Set the data type.
         self.data = GroupIdentifierAttributeTestData
@@ -536,7 +541,8 @@ class GroupTest(AvaTest):
 Group Test    """
 
     def setUp(self):
-        # Make call to super.        super(GroupTest, self).setUp()
+        # Make call to super.
+        super(GroupTest, self).setUp()
 
         # Set the data type.
         self.data = GroupTestData
@@ -667,7 +673,8 @@ class GroupIdentifierTest(AvaTest):
 GroupIdentifier Test    """
 
     def setUp(self):
-        # Make call to super.        super(GroupIdentifierTest, self).setUp()
+        # Make call to super.
+        super(GroupIdentifierTest, self).setUp()
 
         # Set the data type.
         self.data = GroupIdentifierTestData
@@ -798,7 +805,8 @@ class PersonAttributeTest(AvaTest):
 PersonAttribute Test    """
 
     def setUp(self):
-        # Make call to super.        super(PersonAttributeTest, self).setUp()
+        # Make call to super.
+        super(PersonAttributeTest, self).setUp()
 
         # Set the data type.
         self.data = PersonAttributeTestData
@@ -929,7 +937,8 @@ class PersonIdentifierReportTest(AvaTest):
 PersonIdentifierReport Test    """
 
     def setUp(self):
-        # Make call to super.        super(PersonIdentifierReportTest, self).setUp()
+        # Make call to super.
+        super(PersonIdentifierReportTest, self).setUp()
 
         # Set the data type.
         self.data = PersonIdentifierReportTestData
@@ -1060,7 +1069,8 @@ class GroupReportTest(AvaTest):
 GroupReport Test    """
 
     def setUp(self):
-        # Make call to super.        super(GroupReportTest, self).setUp()
+        # Make call to super.
+        super(GroupReportTest, self).setUp()
 
         # Set the data type.
         self.data = GroupReportTestData

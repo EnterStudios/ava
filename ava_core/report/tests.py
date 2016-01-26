@@ -9,10 +9,12 @@ from ava_core.report.test_data import SuspiciousTestData, ReportResponseTestData
 # Implementation
 class SuspiciousTest(AvaTest):
     """
-Suspicious Test    """
+    Suspicious Test
+    """
 
     def setUp(self):
-        # Make call to super.        super(SuspiciousTest, self).setUp()
+        # Make call to super.
+        super(SuspiciousTest, self).setUp()
 
         # Set the data type.
         self.data = SuspiciousTestData

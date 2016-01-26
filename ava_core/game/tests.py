@@ -9,10 +9,12 @@ from ava_core.game.test_data import AchievementTestData
 # Implementation
 class AchievementTest(AvaTest):
     """
-Achievement Test    """
+    Achievement Test
+    """
 
     def setUp(self):
-        # Make call to super.        super(AchievementTest, self).setUp()
+        # Make call to super.
+        super(AchievementTest, self).setUp()
 
         # Set the data type.
         self.data = AchievementTestData

@@ -9,10 +9,12 @@ from ava_core.notify.test_data import NotificationEmailTestData
 # Implementation
 class NotificationEmailTest(AvaTest):
     """
-NotificationEmail Test    """
+    NotificationEmail Test
+    """
 
     def setUp(self):
-        # Make call to super.        super(NotificationEmailTest, self).setUp()
+        # Make call to super.
+        super(NotificationEmailTest, self).setUp()
 
         # Set the data type.
         self.data = NotificationEmailTestData
