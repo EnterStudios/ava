@@ -1,13 +1,12 @@
 # Rest Imports
 from rest_framework import status
 # Local Imports
-from ava_core.abstract.tests import AvaTest
-from ava_core.game.models import Achievement
+from ava_core.abstract.test import AvaCoreTest
 from ava_core.game.test_data import AchievementTestData
 
 
 # Implementation
-class AchievementTest(AvaTest):
+class AchievementTest(AvaCoreTest):
     """
     Achievement Test
     """
@@ -17,7 +16,7 @@ class AchievementTest(AvaTest):
         super(AchievementTest, self).setUp()
 
         # Set the data type.
-        self.data = AchievementTestData
+        self.data = AchievementTestData()
 
     def test_achievement_create_as_user(self):
         # Log in as user.
@@ -30,7 +29,7 @@ class AchievementTest(AvaTest):
         data = self.data.get_data()
 
         # Make push request and ensure created response.
-        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        response = self.client.post(self.format_url(self.data.url), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(self.data.model.objects.count(), count + 1)
         self.assertTrue(self.does_contain_data(response.data, data))
@@ -46,7 +45,7 @@ class AchievementTest(AvaTest):
         data = self.data.get_data()
 
         # Make push request and ensure created response.
-        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        response = self.client.post(self.format_url(self.data.url), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(self.data.model.objects.count(), count + 1)
         self.assertTrue(self.does_contain_data(response.data, data))
@@ -59,13 +58,13 @@ class AchievementTest(AvaTest):
         data = self.data.get_data()
 
         # Make push request and ensure unauthorized response.
-        response = self.client.push(self.format_url(self.data.url), data, format='json')
+        response = self.client.post(self.format_url(self.data.url), data, format='json')
         self.assertIn(response.status_code, self.status_forbidden)
         self.assertEqual(self.data.model.objects.count(), count)
 
     def test_achievement_retrieve_single_as_user(self):
         # Create new Achievement models, storing URL.
-        url = self.create_model_logout(self.data, 'standard', self.user_user)
+        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_user)
 
         # Log in as user.
         self.login_user(self.user_user)
@@ -74,12 +73,11 @@ class AchievementTest(AvaTest):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(self.does_contain_data(response.data, self.data.standard))
-
 
     def test_achievement_retrieve_all_as_user(self):
         # Create new Achievement models.
-        self.create_model_logout(self.data, 'standard', self.user_user)
-        self.create_model_logout(self.data, 'modified', self.user_user)
+        self.create_model_logout(self.data, data_name='standard', owner=self.user_user)
+        self.create_model_logout(self.data, data_name='modified', owner=self.user_user)
 
         # Log in as user.
         self.login_user(self.user_user)
@@ -89,10 +87,9 @@ class AchievementTest(AvaTest):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
 
-
     def test_achievement_retrieve_single_as_admin(self):
         # Create new Achievement models, storing URL.
-        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
 
         # Log in as admin.
         self.login_user(self.user_admin)
@@ -102,11 +99,10 @@ class AchievementTest(AvaTest):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(self.does_contain_data(response.data, self.data.standard))
 
-
     def test_achievement_retrieve_all_as_admin(self):
         # Create new Achievement models.
-        self.create_model_logout(self.data, 'standard', self.user_admin)
-        self.create_model_logout(self.data, 'modified', self.user_admin)
+        self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
+        self.create_model_logout(self.data, data_name='modified', owner=self.user_admin)
 
         # Log in as admin.
         self.login_user(self.user_admin)
@@ -116,28 +112,124 @@ class AchievementTest(AvaTest):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
 
-
     def test_achievement_retrieve_single_as_unauthorized(self):
         # Create new Achievement models, storing URL.
-        url = self.create_model_logout(self.data, 'standard', self.user_admin)
+        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
 
         # Make get request and ensure unauthorized response
         response = self.client.get(url)
         self.assertIn(response.status_code, self.status_forbidden)
 
-
     def test_achievement_retrieve_all_as_unauthorized(self):
         # Create new Achievement models.
-        self.create_model_logout(self.data, 'standard', self.user_admin)
-        self.create_model_logout(self.data, 'modified', self.user_admin)
+        self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
+        self.create_model_logout(self.data, data_name='modified', owner=self.user_admin)
 
         # Make get request and ensure unauthorized response
         response = self.client.get(self.format_url(self.data.url))
         self.assertIn(response.status_code, self.status_forbidden)
 
+    # TODO:    Write retrieve owner tests    def test_achievement_update_exists_as_user(self):
+        # Create new Achievement models, storing URL.
+        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_user)
+        # Log in as user.
+        self.login_user(self.user_user)
 
-    # TODO: Write update tests
-    # TODO: Write delete tests
+        # Make put request and ensure OK response.
+        response = self.client.put(url, self.data.get_data('unique'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_url(url, self.data.unique))
 
+    def test_achievement_update_does_not_exist_as_user(self):
+        # Log in as user.
+        self.login_user(self.user_user)
 
+        # Make put request and ensure not found response.
+        response = self.client.put(self.format_url(self.data.url + '/9999'), self.data.get_data('unique'))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_achievement_update_exists_as_admin(self):
+        # Create new Achievement models, storing URL.
+        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make put request and ensure OK response.
+        response = self.client.put(url, self.data.get_data('unique'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.does_contain_data_url(url, self.data.unique))
+
+    def test_achievement_update_does_not_exist_as_admin(self):
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make put request and ensure not found response.
+        response = self.client.put(self.format_url(self.data.url + '/9999'), self.data.get_data('unique'))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_achievement_update_exists_as_unauthorized(self):
+        # Create new Achievement models, storing URL.
+        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
+        # Make put request and ensure unauthorized response.
+        response = self.client.put(url, self.data.get_data('unique'))
+        self.assertIn(response.status_code, self.status_forbidden)
+        self.assertTrue(self.does_contain_data_url(url, self.data.standard))
+
+    def test_achievement_update_does_not_exist_as_unauthorized(self):
+        # Make put request and ensure unauthorized response.
+        response = self.client.put(self.format_url(self.data.url + '/9999'), self.data.get_data('unique'))
+        self.assertIn(response.status_code, self.status_forbidden)
+
+    # TODO:    Write update owner tests    def test_achievement_delete_exists_as_user(self):
+        # Create new Achievement models, storing URL.
+        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_user)
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make delete request and ensure no content response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(self.data.models.objects.count(), 0)
+
+    def test_achievement_delete_does_not_exist_as_user(self):
+        # Log in as user.
+        self.login_user(self.user_user)
+
+        # Make delete request and ensure not found response
+        response = self.client.get(self.format_url(self.data.url + '/9999'))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_achievement_delete_exists_as_admin(self):
+        # Create new Achievement models, storing URL.
+        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make delete request and ensure no content response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(self.data.models.objects.count(), 0)
+
+    def test_achievement_delete_does_not_exist_as_admin(self):
+        # Log in as admin.
+        self.login_user(self.user_admin)
+
+        # Make delete request and ensure not found response
+        response = self.client.get(self.format_url(self.data.url + '/9999'))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_achievement_delete_exists_as_unauthorized(self):
+        # Create new Achievement models, storing URL.
+        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
+        # Make delete request and ensure unauthorized response
+        response = self.client.get(url)
+        self.assertIn(response.status_code, self.status_forbidden)
+        self.assertEqual(self.data.models.objects.count(), 1)
+
+    def test_achievement_delete_does_not_exist_as_unauthorized(self):
+        # Make delete request and ensure unauthorized response
+        response = self.client.get(self.format_url(self.data.url + '/9999'))
+        self.assertIn(response.status_code, self.status_forbidden)
+
+    # TODO:    Write delete owner tests
 

@@ -17,6 +17,7 @@ BASE_DIR = os.path.abspath(
 
 SITE_ID=1
 
+BASE_URL = 'http://localhost:8000/'
 
 DEBUG = os.environ.get('DJANGO_DEBUG', 'true').lower() == 'true'
 # TEMPLATE_DEBUG = DEBUG

@@ -2,23 +2,23 @@
 from rest_framework import status
 # Local Imports
 from ava_core.abstract.test import AvaCoreTest
-from ava_core.notify.test_data import NotificationEmailTestData
+from ava_core.gather.gather_abstract.test_data import GatherHistoryTestData
 
 
 # Implementation
-class NotificationEmailTest(AvaCoreTest):
+class GatherHistoryTest(AvaCoreTest):
     """
-    NotificationEmail Test
+    GatherHistory Test
     """
 
     def setUp(self):
         # Make call to super.
-        super(NotificationEmailTest, self).setUp()
+        super(GatherHistoryTest, self).setUp()
 
         # Set the data type.
-        self.data = NotificationEmailTestData()
+        self.data = GatherHistoryTestData()
 
-    def test_notification_email_create_as_user(self):
+    def test_gather_history_create_as_user(self):
         # Log in as user.
         self.login_user(self.user_user)
 
@@ -34,7 +34,7 @@ class NotificationEmailTest(AvaCoreTest):
         self.assertEqual(self.data.model.objects.count(), count + 1)
         self.assertTrue(self.does_contain_data(response.data, data))
 
-    def test_notification_email_create_as_admin(self):
+    def test_gather_history_create_as_admin(self):
         # Log in as admin.
         self.login_user(self.user_admin)
 
@@ -50,7 +50,7 @@ class NotificationEmailTest(AvaCoreTest):
         self.assertEqual(self.data.model.objects.count(), count + 1)
         self.assertTrue(self.does_contain_data(response.data, data))
 
-    def test_notification_email_create_as_unauthenticated(self):
+    def test_gather_history_create_as_unauthenticated(self):
         # Take count.
         count = self.data.model.objects.count()
 
@@ -62,8 +62,8 @@ class NotificationEmailTest(AvaCoreTest):
         self.assertIn(response.status_code, self.status_forbidden)
         self.assertEqual(self.data.model.objects.count(), count)
 
-    def test_notification_email_retrieve_single_as_user(self):
-        # Create new NotificationEmail models, storing URL.
+    def test_gather_history_retrieve_single_as_user(self):
+        # Create new GatherHistory models, storing URL.
         url = self.create_model_logout(self.data, data_name='standard', owner=self.user_user)
 
         # Log in as user.
@@ -74,8 +74,8 @@ class NotificationEmailTest(AvaCoreTest):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(self.does_contain_data(response.data, self.data.standard))
 
-    def test_notification_email_retrieve_all_as_user(self):
-        # Create new NotificationEmail models.
+    def test_gather_history_retrieve_all_as_user(self):
+        # Create new GatherHistory models.
         self.create_model_logout(self.data, data_name='standard', owner=self.user_user)
         self.create_model_logout(self.data, data_name='modified', owner=self.user_user)
 
@@ -87,8 +87,8 @@ class NotificationEmailTest(AvaCoreTest):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
 
-    def test_notification_email_retrieve_single_as_admin(self):
-        # Create new NotificationEmail models, storing URL.
+    def test_gather_history_retrieve_single_as_admin(self):
+        # Create new GatherHistory models, storing URL.
         url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
 
         # Log in as admin.
@@ -99,8 +99,8 @@ class NotificationEmailTest(AvaCoreTest):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(self.does_contain_data(response.data, self.data.standard))
 
-    def test_notification_email_retrieve_all_as_admin(self):
-        # Create new NotificationEmail models.
+    def test_gather_history_retrieve_all_as_admin(self):
+        # Create new GatherHistory models.
         self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
         self.create_model_logout(self.data, data_name='modified', owner=self.user_admin)
 
@@ -112,16 +112,16 @@ class NotificationEmailTest(AvaCoreTest):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
 
-    def test_notification_email_retrieve_single_as_unauthorized(self):
-        # Create new NotificationEmail models, storing URL.
+    def test_gather_history_retrieve_single_as_unauthorized(self):
+        # Create new GatherHistory models, storing URL.
         url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
 
         # Make get request and ensure unauthorized response
         response = self.client.get(url)
         self.assertIn(response.status_code, self.status_forbidden)
 
-    def test_notification_email_retrieve_all_as_unauthorized(self):
-        # Create new NotificationEmail models.
+    def test_gather_history_retrieve_all_as_unauthorized(self):
+        # Create new GatherHistory models.
         self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
         self.create_model_logout(self.data, data_name='modified', owner=self.user_admin)
 
@@ -129,8 +129,8 @@ class NotificationEmailTest(AvaCoreTest):
         response = self.client.get(self.format_url(self.data.url))
         self.assertIn(response.status_code, self.status_forbidden)
 
-    # TODO:    Write retrieve owner tests    def test_notification_email_update_exists_as_user(self):
-        # Create new NotificationEmail models, storing URL.
+    # TODO:    Write retrieve owner tests    def test_gather_history_update_exists_as_user(self):
+        # Create new GatherHistory models, storing URL.
         url = self.create_model_logout(self.data, data_name='standard', owner=self.user_user)
         # Log in as user.
         self.login_user(self.user_user)
@@ -140,7 +140,7 @@ class NotificationEmailTest(AvaCoreTest):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(self.does_contain_data_url(url, self.data.unique))
 
-    def test_notification_email_update_does_not_exist_as_user(self):
+    def test_gather_history_update_does_not_exist_as_user(self):
         # Log in as user.
         self.login_user(self.user_user)
 
@@ -148,8 +148,8 @@ class NotificationEmailTest(AvaCoreTest):
         response = self.client.put(self.format_url(self.data.url + '/9999'), self.data.get_data('unique'))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_notification_email_update_exists_as_admin(self):
-        # Create new NotificationEmail models, storing URL.
+    def test_gather_history_update_exists_as_admin(self):
+        # Create new GatherHistory models, storing URL.
         url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
         # Log in as admin.
         self.login_user(self.user_admin)
@@ -159,7 +159,7 @@ class NotificationEmailTest(AvaCoreTest):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(self.does_contain_data_url(url, self.data.unique))
 
-    def test_notification_email_update_does_not_exist_as_admin(self):
+    def test_gather_history_update_does_not_exist_as_admin(self):
         # Log in as admin.
         self.login_user(self.user_admin)
 
@@ -167,21 +167,21 @@ class NotificationEmailTest(AvaCoreTest):
         response = self.client.put(self.format_url(self.data.url + '/9999'), self.data.get_data('unique'))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_notification_email_update_exists_as_unauthorized(self):
-        # Create new NotificationEmail models, storing URL.
+    def test_gather_history_update_exists_as_unauthorized(self):
+        # Create new GatherHistory models, storing URL.
         url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
         # Make put request and ensure unauthorized response.
         response = self.client.put(url, self.data.get_data('unique'))
         self.assertIn(response.status_code, self.status_forbidden)
         self.assertTrue(self.does_contain_data_url(url, self.data.standard))
 
-    def test_notification_email_update_does_not_exist_as_unauthorized(self):
+    def test_gather_history_update_does_not_exist_as_unauthorized(self):
         # Make put request and ensure unauthorized response.
         response = self.client.put(self.format_url(self.data.url + '/9999'), self.data.get_data('unique'))
         self.assertIn(response.status_code, self.status_forbidden)
 
-    # TODO:    Write update owner tests    def test_notification_email_delete_exists_as_user(self):
-        # Create new NotificationEmail models, storing URL.
+    # TODO:    Write update owner tests    def test_gather_history_delete_exists_as_user(self):
+        # Create new GatherHistory models, storing URL.
         url = self.create_model_logout(self.data, data_name='standard', owner=self.user_user)
         # Log in as user.
         self.login_user(self.user_user)
@@ -191,7 +191,7 @@ class NotificationEmailTest(AvaCoreTest):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(self.data.models.objects.count(), 0)
 
-    def test_notification_email_delete_does_not_exist_as_user(self):
+    def test_gather_history_delete_does_not_exist_as_user(self):
         # Log in as user.
         self.login_user(self.user_user)
 
@@ -199,8 +199,8 @@ class NotificationEmailTest(AvaCoreTest):
         response = self.client.get(self.format_url(self.data.url + '/9999'))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_notification_email_delete_exists_as_admin(self):
-        # Create new NotificationEmail models, storing URL.
+    def test_gather_history_delete_exists_as_admin(self):
+        # Create new GatherHistory models, storing URL.
         url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
         # Log in as admin.
         self.login_user(self.user_admin)
@@ -210,7 +210,7 @@ class NotificationEmailTest(AvaCoreTest):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(self.data.models.objects.count(), 0)
 
-    def test_notification_email_delete_does_not_exist_as_admin(self):
+    def test_gather_history_delete_does_not_exist_as_admin(self):
         # Log in as admin.
         self.login_user(self.user_admin)
 
@@ -218,15 +218,15 @@ class NotificationEmailTest(AvaCoreTest):
         response = self.client.get(self.format_url(self.data.url + '/9999'))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_notification_email_delete_exists_as_unauthorized(self):
-        # Create new NotificationEmail models, storing URL.
+    def test_gather_history_delete_exists_as_unauthorized(self):
+        # Create new GatherHistory models, storing URL.
         url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
         # Make delete request and ensure unauthorized response
         response = self.client.get(url)
         self.assertIn(response.status_code, self.status_forbidden)
         self.assertEqual(self.data.models.objects.count(), 1)
 
-    def test_notification_email_delete_does_not_exist_as_unauthorized(self):
+    def test_gather_history_delete_does_not_exist_as_unauthorized(self):
         # Make delete request and ensure unauthorized response
         response = self.client.get(self.format_url(self.data.url + '/9999'))
         self.assertIn(response.status_code, self.status_forbidden)

@@ -29,7 +29,7 @@ class NotificationEmailTest(AvaCoreTest):
         data = self.data.get_data()
 
         # Make push request and ensure created response.
-        response = self.client.post(self.format_url(self.data.url), data, format='json')
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(self.data.model.objects.count(), count + 1)
         self.assertTrue(self.does_contain_data(response.data, data))
@@ -45,7 +45,7 @@ class NotificationEmailTest(AvaCoreTest):
         data = self.data.get_data()
 
         # Make push request and ensure created response.
-        response = self.client.post(self.format_url(self.data.url), data, format='json')
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(self.data.model.objects.count(), count + 1)
         self.assertTrue(self.does_contain_data(response.data, data))
@@ -58,13 +58,13 @@ class NotificationEmailTest(AvaCoreTest):
         data = self.data.get_data()
 
         # Make push request and ensure unauthorized response.
-        response = self.client.post(self.format_url(self.data.url), data, format='json')
+        response = self.client.push(self.format_url(self.data.url), data, format='json')
         self.assertIn(response.status_code, self.status_forbidden)
         self.assertEqual(self.data.model.objects.count(), count)
 
     def test_notification_email_retrieve_single_as_user(self):
         # Create new NotificationEmail models, storing URL.
-        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_user)
+        url = self.create_model_logout(self.data, 'standard', self.user_user)
 
         # Log in as user.
         self.login_user(self.user_user)
@@ -76,8 +76,8 @@ class NotificationEmailTest(AvaCoreTest):
 
     def test_notification_email_retrieve_all_as_user(self):
         # Create new NotificationEmail models.
-        self.create_model_logout(self.data, data_name='standard', owner=self.user_user)
-        self.create_model_logout(self.data, data_name='modified', owner=self.user_user)
+        self.create_model_logout(self.data, 'standard', self.user_user)
+        self.create_model_logout(self.data, 'modified', self.user_user)
 
         # Log in as user.
         self.login_user(self.user_user)
@@ -89,7 +89,7 @@ class NotificationEmailTest(AvaCoreTest):
 
     def test_notification_email_retrieve_single_as_admin(self):
         # Create new NotificationEmail models, storing URL.
-        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
 
         # Log in as admin.
         self.login_user(self.user_admin)
@@ -101,8 +101,8 @@ class NotificationEmailTest(AvaCoreTest):
 
     def test_notification_email_retrieve_all_as_admin(self):
         # Create new NotificationEmail models.
-        self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
-        self.create_model_logout(self.data, data_name='modified', owner=self.user_admin)
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
 
         # Log in as admin.
         self.login_user(self.user_admin)
@@ -114,7 +114,7 @@ class NotificationEmailTest(AvaCoreTest):
 
     def test_notification_email_retrieve_single_as_unauthorized(self):
         # Create new NotificationEmail models, storing URL.
-        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
 
         # Make get request and ensure unauthorized response
         response = self.client.get(url)
@@ -122,8 +122,8 @@ class NotificationEmailTest(AvaCoreTest):
 
     def test_notification_email_retrieve_all_as_unauthorized(self):
         # Create new NotificationEmail models.
-        self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
-        self.create_model_logout(self.data, data_name='modified', owner=self.user_admin)
+        self.create_model_logout(self.data, 'standard', self.user_admin)
+        self.create_model_logout(self.data, 'modified', self.user_admin)
 
         # Make get request and ensure unauthorized response
         response = self.client.get(self.format_url(self.data.url))
@@ -131,7 +131,7 @@ class NotificationEmailTest(AvaCoreTest):
 
     # TODO:    Write retrieve owner tests    def test_notification_email_update_exists_as_user(self):
         # Create new NotificationEmail models, storing URL.
-        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_user)
+        url = self.create_model_logout(self.data, 'standard', self.user_user)
         # Log in as user.
         self.login_user(self.user_user)
 
@@ -150,7 +150,7 @@ class NotificationEmailTest(AvaCoreTest):
 
     def test_notification_email_update_exists_as_admin(self):
         # Create new NotificationEmail models, storing URL.
-        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
         # Log in as admin.
         self.login_user(self.user_admin)
 
@@ -169,7 +169,7 @@ class NotificationEmailTest(AvaCoreTest):
 
     def test_notification_email_update_exists_as_unauthorized(self):
         # Create new NotificationEmail models, storing URL.
-        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
         # Make put request and ensure unauthorized response.
         response = self.client.put(url, self.data.get_data('unique'))
         self.assertIn(response.status_code, self.status_forbidden)
@@ -182,7 +182,7 @@ class NotificationEmailTest(AvaCoreTest):
 
     # TODO:    Write update owner tests    def test_notification_email_delete_exists_as_user(self):
         # Create new NotificationEmail models, storing URL.
-        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_user)
+        url = self.create_model_logout(self.data, 'standard', self.user_user)
         # Log in as user.
         self.login_user(self.user_user)
 
@@ -201,7 +201,7 @@ class NotificationEmailTest(AvaCoreTest):
 
     def test_notification_email_delete_exists_as_admin(self):
         # Create new NotificationEmail models, storing URL.
-        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
         # Log in as admin.
         self.login_user(self.user_admin)
 
@@ -220,7 +220,7 @@ class NotificationEmailTest(AvaCoreTest):
 
     def test_notification_email_delete_exists_as_unauthorized(self):
         # Create new NotificationEmail models, storing URL.
-        url = self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
+        url = self.create_model_logout(self.data, 'standard', self.user_admin)
         # Make delete request and ensure unauthorized response
         response = self.client.get(url)
         self.assertIn(response.status_code, self.status_forbidden)

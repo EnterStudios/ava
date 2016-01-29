@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APITestCase
 # Local Imports
-
+from {project_name_snake}.notify.models import NotificationEmail
 
 
 # Implementation
@@ -15,7 +15,11 @@ class {project_name_bumpy}Test(APITestCase):
     """
 
     def setUp(self):
-
+        # Setup a verification email
+        NotificationEmail.objects.create(notification_type=NotificationEmail.VERIFICATION,
+                                         address_from=settings.DEFAULT_FROM_EMAIL,
+                                         subject='Subject',
+                                         body='Body')
 
         # Create required users
         self.user_admin = {{'email': 'admin@test.com', 'password': 'test'}}
@@ -43,13 +47,16 @@ class {project_name_bumpy}Test(APITestCase):
 
     def create_model(self, data_set, data_name='standard', owner=None):
         data = data_set.get_data(data_name)
-        if owner is not None and 'owner' in data:
-            user = self.login_user(owner)
-            data['owner'] = user
+        if data:
+            if owner and 'owner' in data:
+                user = self.login_user(owner)
+                data['owner'] = user
 
-        model = data_set.model.objects.create(data)
+            model = data_set.model.objects.create(**data)
 
-        return '{{}}{{}}{{}}'.format(settings.BASE_URL, data.url, model.id)
+            return '{{}}{{}}{{}}'.format(settings.BASE_URL, data_set.url, model.id)
+        else:
+            return False
 
     def create_model_logout(self, data_set, data_name='standard', owner=None):
         url = self.create_model(data_set=data_set,

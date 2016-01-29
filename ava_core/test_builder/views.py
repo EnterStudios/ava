@@ -2,6 +2,7 @@
 from logging import getLogger
 import json
 import os
+import shutil
 # Django Imports
 from django.apps import *
 from django.conf import settings
@@ -80,6 +81,47 @@ def snake_to_bumpy(snake):
     return plain_to_bumpy(snake_to_plain(snake))
 
 
+def write_to_file(path, data, archive_old=False):
+    # Check that the setting for storing locally is true.
+    # True - Update path to be within the media file for test builder.
+    if settings.TEST_BUILDER_STORE_TEMP:
+        path_split = path.rsplit('/', 1)
+        directory = '{}output/{}/'.format(settings.TEST_BUILDER_DIRECTORY, path_split[0])
+
+        # Attempt to create the new directory.
+        # Directory exists on exception.
+        try:
+            os.makedirs(directory)
+        except FileExistsError:
+            pass
+
+        # Update the used path variable
+        path = directory + path_split[1]
+
+    # Check that the file already exists and archiving is set.
+    # True - copy current file with '.old_n' prefixed (where n is the first available digit).
+    if os.path.isfile(path) and archive_old and not settings.TEST_BUILDER_FORCE_NO_ARCHIVE:
+        # Create template for path format.
+        path_template = '{}.old_{{}}'.format(path)
+
+        # Create initial path
+        archive_digit = 0
+        old_path = path_template.format(archive_digit)
+
+        # Increment archive digit until a file is not found.
+        while os.path.isfile(old_path):
+            archive_digit += 1
+            old_path = path_template.format(archive_digit)
+
+        # Copy current file to old file.
+        shutil.copyfile(path, old_path)
+
+    # Output data to path
+    with open(path, 'w') as outfile:
+        print(data, file=outfile)
+    outfile.close()
+
+
 """
 Creates the data for a project
 """
@@ -88,7 +130,7 @@ Creates the data for a project
 class ProjectDataBuilder(APIView):
     def get(self, request):
         # Load settings from Django.
-        prefix = settings.TEST_BUILDER_PREFIX
+        prefix = settings.TEST_BUILDER_INPUT_APP_PREFIX
         ignore_apps = settings.TEST_BUILDER_IGNORED_APPS
         ignore_models = settings.TEST_BUILDER_IGNORED_MODELS
 
@@ -114,7 +156,7 @@ class ProjectDataBuilder(APIView):
 
         # Attempt to create directory for files.
         # Passing if already created.
-        directory_name = '{}project_data/'.format(settings.TEST_BUILDER_DIRECTORY)
+        directory_name = settings.TEST_BUILDER_DIRECTORY
         try:
             os.makedirs(directory_name)
         except FileExistsError:
@@ -122,13 +164,11 @@ class ProjectDataBuilder(APIView):
 
         # Format output file name and output json dump of project data.
         file_name = '{}{}.json'.format(directory_name, settings.TEST_BUILDER_PROJECT_DATA_OUTPUT)
-        with open(file_name, 'w') as outfile:
-            print(json.dumps(obj=project_data,
-                             sort_keys=True,
-                             indent=4,
-                             separators=(',', ': ')),
-                  file=outfile)
-        outfile.close()
+        json_data = json.dumps(obj=project_data,
+                               sort_keys=True,
+                               indent=4,
+                               separators=(',', ': '))
+        write_to_file(file_name, json_data, True)
 
         return HttpResponse('Success', status=status.HTTP_200_OK)
 
@@ -215,71 +255,92 @@ class ProjectTestBuilder(APIView):
         # Attempt to open JSON input file with project information.
         # Return bad request response on failure.
         try:
-            file_name = '{}project_data/{}.json'.format(settings.TEST_BUILDER_DIRECTORY,
-                                                        settings.TEST_BUILDER_PROJECT_DATA_INPUT)
+            file_name = '{}{}.json'.format(settings.TEST_BUILDER_DIRECTORY,
+                                           settings.TEST_BUILDER_PROJECT_DATA_INPUT)
             with open(file_name) as data_file:
-                project_data = json.load(data_file)
+                self.project_data = json.load(data_file)
             data_file.close()
         except:
             return HttpResponse('No input file.', status=status.HTTP_400_BAD_REQUEST)
 
-        # Attempt to create directory for files.
-        # Passing if already created.
+        # Attempt to copy template file to new directory.
+        # Return bad request response on failure.
         try:
-            os.makedirs(settings.TEST_BUILDER_ABSTRACT_DIRECTORY)
-        except FileExistsError:
-            pass
+            # Take a copy of the template data.
+            file_name = '{}test_template.py'.format(settings.TEST_BUILDER_DIRECTORY)
+            with open(file_name) as data_file:
+                # Create file path for the output of copy.
+                directory_name = '{}/test.py'.format(settings.TEST_BUILDER_ABSTRACT_DIRECTORY)
 
-        # Take copy of template classes
-        file_name = '{}project_data/test_template.py'.format(settings.TEST_BUILDER_DIRECTORY)
-        with open(file_name) as data_file:
-            directory_name = '{}/test.py'.format(settings.TEST_BUILDER_ABSTRACT_DIRECTORY)
-            with open(directory_name, 'w') as outfile:
-                print(data_file.read().format(project_name_snake=settings.TEST_BUILDER_PREFIX,
-                                              project_name_bumpy=snake_to_bumpy(settings.TEST_BUILDER_PREFIX)),
-                      file=outfile)
-            outfile.close()
-        data_file.close()
+                # Format the data for appropriate usage.
+                data = data_file.read().format(project_name_snake=settings.TEST_BUILDER_INPUT_APP_PREFIX,
+                                               project_name_bumpy=snake_to_bumpy(
+                                                   settings.TEST_BUILDER_OUTPUT_APP_PREFIX))
 
-        file_name = '{}project_data/test_data_template.py'.format(settings.TEST_BUILDER_DIRECTORY)
-        with open(file_name) as data_file:
-            directory_name = '{}/test_data.py'.format(settings.TEST_BUILDER_ABSTRACT_DIRECTORY)
-            with open(directory_name, 'w') as outfile:
-                print(data_file.read().format(project_name=snake_to_bumpy(settings.TEST_BUILDER_PREFIX)),
-                      file=outfile)
-            outfile.close()
-        data_file.close()
+                # Write the data to file.
+                write_to_file(directory_name, data)
+
+            # Close the file handle.
+            data_file.close()
+        except FileNotFoundError:
+            return HttpResponse('No test template file.', status=status.HTTP_400_BAD_REQUEST)
+
+        # Attempt to copy template file to new directory.
+        # Return bad request response on failure.
+        try:
+            # Take a copy of the template data.
+            file_name = '{}test_data_template.py'.format(settings.TEST_BUILDER_DIRECTORY)
+            with open(file_name) as data_file:
+                # Create file path for the output of copy.
+                directory_name = '{}/test_data.py'.format(settings.TEST_BUILDER_ABSTRACT_DIRECTORY)
+
+                # Format the data for appropriate usage.
+                data = data_file.read().format(project_name=snake_to_bumpy(settings.TEST_BUILDER_OUTPUT_APP_PREFIX))
+
+                # Write the data to file.
+                write_to_file(directory_name, data)
+
+            # Close the file handle.
+            data_file.close()
+        except FileNotFoundError:
+            return HttpResponse('No test data template file.', status=status.HTTP_400_BAD_REQUEST)
 
         # Iterate over apps in project data, creating all necessary files.
-        for app in project_data:
+        for app, app_name in self.project_data.items():
             # Create the test and data files for app.
             test_output = self.generate_app_test(app_name=app,
-                                                 app_data=project_data[app])
+                                                 app_data=self.project_data[app])
             data_output = self.generate_app_data(app_name=app,
-                                                 app_data=project_data[app])
+                                                 app_data=self.project_data[app])
 
-            # Attempt to create directory for files.
-            # Passing if already created.
-            directory_name = '{}{}/'.format(settings.TEST_BUILDER_DIRECTORY, app)
-            try:
-                os.makedirs(directory_name)
-            except FileExistsError:
-                pass
+            # Create output directory name.
+            directory_name = '{}/{}/'.format(settings.TEST_BUILDER_OUTPUT_APP_PREFIX,
+                                             app.split('.', 1)[1].replace('.', '/'))
 
-            # Format output file name and output json dump of project data.
-            test_file = '{}tests.py'.format(directory_name, settings.TEST_BUILDER_PROJECT_DATA_OUTPUT)
-            with open(test_file, 'w') as outfile:
-                print(test_output,
-                      file=outfile)
-            outfile.close()
+            # Format output file name and output test and test data.
+            test_file = '{}tests.py'.format(directory_name)
+            write_to_file(test_file, test_output, True)
 
-            test_file = '{}test_data.py'.format(directory_name, settings.TEST_BUILDER_PROJECT_DATA_OUTPUT)
-            with open(test_file, 'w') as outfile:
-                print(data_output,
-                      file=outfile)
-            outfile.close()
+            test_file = '{}test_data.py'.format(directory_name)
+            write_to_file(test_file, data_output, True)
 
         return HttpResponse('Success.', status=status.HTTP_200_OK)
+
+    """
+        Helper functions
+    """
+
+    def get_model_data_from_name(self, model_name):
+        # Iterate over apps in project.
+        for app, app_data in self.project_data.items():
+            # Iterate over models in app.
+            for model, model_data in app_data.items():
+                # Check if current model name is the same as that passed.
+                # True - return the models data
+                if model in model_name:
+                    return model_data
+
+        return None
 
     """
     Output formatting for tests
@@ -289,13 +350,16 @@ class ProjectTestBuilder(APIView):
         # Create empty string for app file.
         app_string = str()
 
+        # Add header data to out string.
         app_string += self.generate_header_test(app_name=app_name,
                                                 app_data=app_data) + '\n\n'
 
+        # Iterate over models in app, adding data to out string.
         app_string += '# Implementation\n'
-        for model in app_data:
+        for model, model_data in app_data.items():
             app_string += self.generate_model_test(model_name=model,
-                                                   model_data=app_data[model]) + '\n\n'
+                                                   model_data=model_data)
+            app_string += '\n'
 
         # Replace tabs with spaces
         out_string = str()
@@ -316,22 +380,20 @@ class ProjectTestBuilder(APIView):
 
         # Format the local imports header for app file.
         out_string += '# Local Imports\n'
-        out_string += 'from {}.abstract.tests import {}Test\n'.format(settings.TEST_BUILDER_PREFIX,
-                                                                      snake_to_bumpy(
-                                                                              settings.TEST_BUILDER_PREFIX))
+        out_string += 'from {}.abstract.test import {}Test\n' \
+            .format(settings.TEST_BUILDER_OUTPUT_APP_PREFIX,
+                    snake_to_bumpy(settings.TEST_BUILDER_OUTPUT_APP_PREFIX))
 
         # Make initial formatting for model imports
-        model_import = 'from {}.models import'.format(app_name)
-        data_import = 'from {}.test_data import'.format(app_name)
+        data_import = 'from {}.{}.test_data import'.format(settings.TEST_BUILDER_OUTPUT_APP_PREFIX,
+                                                           app_name.split('.', 1)[1])
 
         # Iterate over apps models, creating necessary imports.
         first_iteration = True
         for model in app_data:
-            model_import += (' ' if first_iteration else ', ') + model
             data_import += (' ' if first_iteration else ', ') + model + 'TestData'
             first_iteration = False
 
-        out_string += model_import + '\n'
         out_string += data_import + '\n'
 
         return out_string
@@ -340,20 +402,20 @@ class ProjectTestBuilder(APIView):
         out_string = str()
 
         # Create test model header
-        out_string += 'class {}Test({}Test):\n'.format(plain_to_bumpy(model_name),
-                                                       snake_to_bumpy(settings.TEST_BUILDER_PREFIX))
+        out_string += 'class {}Test({}Test):\n'.format(model_name,
+                                                       snake_to_bumpy(settings.TEST_BUILDER_OUTPUT_APP_PREFIX))
         out_string += '\t\"\"\"\n'
-        out_string += '{} Test'.format(plain_to_bumpy(model_name))
+        out_string += '\t{} Test\n'.format(model_name)
         out_string += '\t\"\"\"\n'
         out_string += '\n'
 
         # Create setup for tests
         out_string += '\tdef setUp(self):\n'
-        out_string += '\t\t# Make call to super.'
-        out_string += '\t\tsuper({}Test, self).setUp()\n'.format(plain_to_bumpy(model_name))
+        out_string += '\t\t# Make call to super.\n'
+        out_string += '\t\tsuper({}Test, self).setUp()\n'.format(snake_to_bumpy(model_name))
         out_string += '\n'
         out_string += '\t\t# Set the data type.\n'
-        out_string += '\t\tself.data = {}TestData\n'.format(plain_to_bumpy(model_name))
+        out_string += '\t\tself.data = {}TestData()\n'.format(model_name)
         out_string += '\n'
 
         # Create each of the CRUD test functions
@@ -367,6 +429,7 @@ class ProjectTestBuilder(APIView):
     def generate_create_tests(self, model_name, model_data):
         out_string = str()
 
+        # Create tests as user, admin and unauthenticated.
         out_string += self.generate_create_as_tests(model_name, model_data, 'user')
         out_string += self.generate_create_as_tests(model_name, model_data, 'admin')
         out_string += self.generate_create_as_tests(model_name, model_data)
@@ -405,8 +468,8 @@ class ProjectTestBuilder(APIView):
 
         # Create push request
         out_string += '\t\t# Make push request and ensure {} response.\n'.format(
-                'created' if create_successful else 'unauthorized')
-        out_string += '\t\tresponse = self.client.push(self.format_url(self.data.url), data, format=\'json\')\n'
+            'created' if create_successful else 'unauthorized')
+        out_string += '\t\tresponse = self.client.post(self.format_url(self.data.url), data, format=\'json\')\n'
 
         if create_successful:
             out_string += '\t\tself.assertEqual(response.status_code, status.HTTP_201_CREATED)\n'
@@ -430,6 +493,9 @@ class ProjectTestBuilder(APIView):
         out_string += self.generate_retrieve_as_tests(model_name, model_data, False)
         out_string += self.generate_retrieve_as_tests(model_name, model_data, True)
 
+        if 'requires_owner' in model_data and model_data['requires_owner']:
+            out_string += '\t# TODO:\tWrite retrieve owner tests'
+            pass
         return out_string
 
     def generate_retrieve_as_tests(self, model_name, model_data, all=False, user=None):
@@ -441,15 +507,15 @@ class ProjectTestBuilder(APIView):
 
         if all:
             out_string += '\t\t# Create new {} models.\n'.format(model_name)
-            out_string += '\t\tself.create_model_logout(self.data, \'standard\', self.user_{})\n'.format(
-                    user if user is not None else 'admin')
-            out_string += '\t\tself.create_model_logout(self.data, \'modified\', self.user_{})\n'.format(
-                    user if user is not None else 'admin')
+            out_string += '\t\tself.create_model_logout(self.data, data_name=\'standard\', owner=self.user_{})\n'.format(
+                user if user is not None else 'admin')
+            out_string += '\t\tself.create_model_logout(self.data, data_name=\'modified\', owner=self.user_{})\n'.format(
+                user if user is not None else 'admin')
             out_string += '\n'
         else:
             out_string += '\t\t# Create new {} models, storing URL.\n'.format(model_name)
-            out_string += '\t\turl = self.create_model_logout(self.data, \'standard\', self.user_{})\n'.format(
-                    user if user is not None else 'admin')
+            out_string += '\t\turl = self.create_model_logout(self.data, data_name=\'standard\', owner=self.user_{})\n'.format(
+                user if user is not None else 'admin')
             out_string += '\n'
 
         # Create required login
@@ -466,7 +532,7 @@ class ProjectTestBuilder(APIView):
             retrieve_successful = True
 
         out_string += '\t\t# Make get request and ensure {} response\n'.format(
-                'OK' if retrieve_successful else 'unauthorized')
+            'OK' if retrieve_successful else 'unauthorized')
         out_string += '\t\tresponse = self.client.get({})\n'.format('self.format_url(self.data.url)' if all else 'url')
 
         if retrieve_successful:
@@ -478,15 +544,133 @@ class ProjectTestBuilder(APIView):
         else:
             out_string += '\t\tself.assertIn(response.status_code, self.status_forbidden)\n'
 
-        out_string += '\n\n'
+        out_string += '\n'
 
         return out_string
 
     def generate_update_tests(self, model_name, model_data):
-        return '\t# TODO: Write update tests\n'
+        out_string = str()
+
+        out_string += self.generate_update_as_tests(model_name, model_data, True, 'user')
+        out_string += self.generate_update_as_tests(model_name, model_data, False, 'user')
+        out_string += self.generate_update_as_tests(model_name, model_data, True, 'admin')
+        out_string += self.generate_update_as_tests(model_name, model_data, False, 'admin')
+        out_string += self.generate_update_as_tests(model_name, model_data, True)
+        out_string += self.generate_update_as_tests(model_name, model_data, False)
+
+        if 'requires_owner' in model_data and model_data['requires_owner']:
+            out_string += '\t# TODO:\tWrite update owner tests'
+            pass
+
+        return out_string
+
+    def generate_update_as_tests(self, model_name, model_data, exists=False, user=None):
+        out_string = str()
+
+        out_string += '\tdef test_{}_update_{}_as_{}(self):\n'.format(bumpy_to_snake(model_name),
+                                                                      'exists' if exists else 'does_not_exist',
+                                                                      user if user is not None else 'unauthorized')
+
+        if exists:
+            out_string += '\t\t# Create new {} models, storing URL.\n'.format(model_name)
+            out_string += '\t\turl = self.create_model_logout(self.data, data_name=\'standard\', owner=self.user_{})\n' \
+                .format(user if user is not None else 'admin')
+
+        # Create required login
+        if user is not None:
+            out_string += '\t\t# Log in as {}.\n'.format(user)
+            out_string += '\t\tself.login_user(self.user_{})\n'.format(user)
+            out_string += '\n'
+
+        # Determine if delete was successful
+        put_successful = False
+        if user in model_data['permissions'] and 'PUT' in model_data['permissions'][user]:
+            put_successful = True
+        elif user is None and not model_data['requires_authentication']:
+            put_successful = True
+
+        out_string += '\t\t# Make put request and ensure {} response.\n'\
+            .format(('OK' if exists else 'not found') if put_successful else 'unauthorized')
+        out_string += '\t\tresponse = self.client.put({}, self.data.get_data(\'unique\'))\n' \
+            .format('url' if exists else 'self.format_url(self.data.url + \'/9999\')')
+
+        if put_successful:
+            if exists:
+                out_string += '\t\tself.assertEqual(response.status_code, status.HTTP_200_OK)\n'
+            else:
+                out_string += '\t\tself.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)\n'
+        else:
+            out_string += '\t\tself.assertIn(response.status_code, self.status_forbidden)\n'
+
+        if exists:
+            out_string += '\t\tself.assertTrue(self.does_contain_data_url(url, self.data.{}))\n'\
+                .format('unique' if put_successful else 'standard')
+
+        out_string += '\n'
+
+        return out_string
 
     def generate_delete_tests(self, model_name, model_data):
-        return '\t# TODO: Write delete tests\n'
+        out_string = str()
+
+        out_string += self.generate_delete_as_tests(model_name, model_data, True, 'user')
+        out_string += self.generate_delete_as_tests(model_name, model_data, False, 'user')
+        out_string += self.generate_delete_as_tests(model_name, model_data, True, 'admin')
+        out_string += self.generate_delete_as_tests(model_name, model_data, False, 'admin')
+        out_string += self.generate_delete_as_tests(model_name, model_data, True)
+        out_string += self.generate_delete_as_tests(model_name, model_data, False)
+
+        if 'requires_owner' in model_data and model_data['requires_owner']:
+            out_string += '\t# TODO:\tWrite delete owner tests'
+            pass
+
+        return out_string
+
+    def generate_delete_as_tests(self, model_name, model_data, exists=False, user=None):
+        out_string = str()
+
+        out_string += '\tdef test_{}_delete_{}_as_{}(self):\n'.format(bumpy_to_snake(model_name),
+                                                                      'exists' if exists else 'does_not_exist',
+                                                                      user if user is not None else 'unauthorized')
+
+        if exists:
+            out_string += '\t\t# Create new {} models, storing URL.\n'.format(model_name)
+            out_string += '\t\turl = self.create_model_logout(self.data, data_name=\'standard\', owner=self.user_{})\n' \
+                .format(user if user is not None else 'admin')
+
+        # Create required login
+        if user is not None:
+            out_string += '\t\t# Log in as {}.\n'.format(user)
+            out_string += '\t\tself.login_user(self.user_{})\n'.format(user)
+            out_string += '\n'
+
+        # Determine if delete was successful
+        delete_successful = False
+        if user in model_data['permissions'] and 'DELETE' in model_data['permissions'][user]:
+            delete_successful = True
+        elif user is None and not model_data['requires_authentication']:
+            delete_successful = True
+
+        out_string += '\t\t# Make delete request and ensure {} response\n' \
+            .format(('no content' if exists else 'not found') if delete_successful else 'unauthorized')
+        out_string += '\t\tresponse = self.client.get({})\n' \
+            .format('url' if exists else 'self.format_url(self.data.url + \'/9999\')')
+
+        if delete_successful:
+            if exists:
+                out_string += '\t\tself.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)\n'
+            else:
+                out_string += '\t\tself.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)\n'
+        else:
+            out_string += '\t\tself.assertIn(response.status_code, self.status_forbidden)\n'
+
+        if exists:
+                out_string += '\t\tself.assertEqual(self.data.models.objects.count(), {})\n'\
+                    .format('0' if delete_successful else '1')
+
+        out_string += '\n'
+
+        return out_string
 
     """
     Output formatting for test data
@@ -522,36 +706,128 @@ class ProjectTestBuilder(APIView):
 
         # Format the local imports header for app file.
         out_string += '# Local Imports\n'
-        out_string += 'from {}.abstract.test_data import {}TestData\n'.format(settings.TEST_BUILDER_PREFIX,
-                                                                              snake_to_bumpy(
-                                                                                      settings.TEST_BUILDER_PREFIX))
+        out_string += 'from {}.abstract.test_data import {}TestData\n' \
+            .format(settings.TEST_BUILDER_OUTPUT_APP_PREFIX, snake_to_bumpy(settings.TEST_BUILDER_OUTPUT_APP_PREFIX))
 
-        # Make initial formatting for model imports
-        model_import = 'from {}.models import'.format(app_name)
+        # Create a dictionary that contains all files that need to be imported.
+        requirements_dict = dict()
 
-        # Iterate over apps models, creating necessary imports.
-        first_iteration = True
-        for model in app_data:
-            model_import += (' ' if first_iteration else ', ') + model
-            first_iteration = False
+        # Iterate over the models in the current app and add them.
+        requirements_dict[app_name] = list()
+        for model, model_data in app_data.items():
+            # Check if current model isn't in the ignored list and currently in dictionary.
+            # True - add to dictionary for current model.
+            if model not in settings.TEST_BUILDER_IGNORED_MODELS and model not in requirements_dict[app_name]:
+                requirements_dict[app_name].append(model)
 
-        out_string += model_import + '\n'
+            # Iterate over the fields of the models.
+            for field, field_data in model_data['fields'].items():
+                # Check if the field has a related_model attribute.
+                # True - Add the model to the imports list for file.
+                if 'related_model' in field_data:
+                    # Get the related models name and splitting at '.' from the reverse.
+                    # NOTE: The string is split two from reverse to separate the string into
+                    # app name, "model", model name. The word model is discarded, hence the use of 0 and 2 indexes.
+                    related_model = field_data['related_model'].rsplit('.', 2)
+
+                    # Check that the model starts with the prefix.
+                    # True - Add the model to the imports list for file.
+                    if related_model[0].startswith(settings.TEST_BUILDER_INPUT_APP_PREFIX):
+                        # Check it the models app is in the requirements dictionary.
+                        # True - Add the model name to the existing list.
+                        # False - Create a new list for the app and add the model.
+                        if related_model[0] in requirements_dict:
+                            # Check that the model isn't already in the dictionary.
+                            # True - Add the model name to the list.
+                            if related_model[2] not in requirements_dict[related_model[0]]:
+                                requirements_dict[related_model[0]].append(related_model[2])
+                        else:
+                            requirements_dict[related_model[0]] = list()
+                            requirements_dict[related_model[0]].append(related_model[2])
+
+        # Iterate over the app, model pairs in required imports.
+        for app, models in requirements_dict.items():
+            # Format the start of the import lines.
+            required_models = 'from {}.{}.models import' \
+                .format(settings.TEST_BUILDER_INPUT_APP_PREFIX, app.split('.', 1)[1])
+            required_tests = 'from {}.{}.test_data import' \
+                .format(settings.TEST_BUILDER_OUTPUT_APP_PREFIX, app.split('.', 1)[1])
+
+            # Iterate over models using enumerate to keep a number.
+            for count, model in enumerate(models):
+                # Add formatted model to each string.
+                # Use count to determine if space or comma used.
+                required_models += (' ' if count == 0 else ', ') + model
+                required_tests += '{}{}TestData'.format((' ' if count == 0 else ', '), model)
+
+            # Add required models to the output string.
+            out_string += required_models + '\n'
+
+            # Check that the app isn't the current app.
+            # True - Add required test data to output string.
+            # NOTE: This is done as the current apps test data will be the file it is written to.
+            if app != app_name:
+                out_string += required_tests + '\n'
 
         return out_string
 
     def generate_model_data(self, model_name, model_data):
         out_string = str()
 
-        out_string += 'class {}TestData({}TestData):\n'.format(model_name,
-                                                               snake_to_bumpy(settings.TEST_BUILDER_PREFIX))
+        out_string += 'class {}TestData({}TestData):\n' \
+            .format(model_name, snake_to_bumpy(settings.TEST_BUILDER_OUTPUT_APP_PREFIX))
         out_string += '\t\"\"\"\n'
         out_string += '\tTest data for {}\n'.format(model_name)
         out_string += '\t\"\"\"\n'
         out_string += '\n'
-        out_string += '\tmodel = {}\n'.format(plain_to_bumpy(model_name))
-        out_string += '\turl = \'{}\'\n'.format(model_data['url'])
+
+        # Create init function
+        out_string += '\tdef __init__(self):\n'
+        out_string += '\t\t# Store self information\n'
+        out_string += '\t\tself.model = {}\n'.format(plain_to_bumpy(model_name))
+        out_string += '\t\tself.url = \'{}\'\n'.format(model_data['url'])
+        out_string += '\n'
+        out_string += '\t\t# Create any necessary required models.\n'
+        out_string += '\t\tself.init_requirements()\n'
         out_string += '\n'
 
+        # Create init requirements function
+        related_string = str()
+        # related_string += "\t@staticmethod\n"
+        related_string += "\tdef init_requirements(self):\n"
+
+        had_requirement = False
+        # Iterate over the fields of the models.
+        for field, field_data in model_data['fields'].items():
+            # Check if the field has a related_model attribute.
+            # True - Create model for data.
+            if 'related_model' in field_data:
+                # Get the related models name and splitting at '.' from the reverse.
+                # NOTE: The string is split two from reverse to separate the string into
+                # app name, "model", model name. The word model is discarded, hence the use of 0 and 2 indexes.
+                related_model = field_data['related_model'].rsplit('.', 2)
+
+                # Check that the model starts with the prefix.
+                # True - Create model for data.
+                if related_model[0].startswith(settings.TEST_BUILDER_INPUT_APP_PREFIX):
+                    had_requirement = True
+                    required_name = related_model[2]
+                    related_string += '\t\t# Check that requirements haven\'t already been created.\n'
+                    related_string += '\t\t# True - Create necessary requirements.\n'
+                    related_string += '\t\tif {}.objects.count() == 0:\n'.format(required_name)
+                    related_string += '\t\t\t{}TestData.init_requirements()\n'.format(required_name)
+                    related_string += '\t\t\t{0}.objects.create(**{0}TestData.get_data(\'standard\'))\n'.format(
+                        required_name)
+                    related_string += '\t\t\t{0}.objects.create(**{0}TestData.get_data(\'unique\'))\n'.format(
+                        required_name)
+
+        # Check that the model hasn't had any requirements.
+        # True - Add pass to the function body for init_requirements.
+        if not had_requirement:
+            related_string += '\t\tpass\n'
+
+        out_string += '{}\n'.format(related_string)
+        # Create the test data and add to out string.
         out_string += self.generate_test_data(model_data=model_data)
 
         return out_string
@@ -559,37 +835,53 @@ class ProjectTestBuilder(APIView):
     def generate_test_data(self, model_data):
         out_string = str()
 
-        field_data = model_data['fields']
-        out_string += self.generate_formatted_data(field_data=field_data)
-        out_string += '\n'
-        out_string += self.generate_formatted_data(field_data=field_data,
-                                                   name='modified')
+        # Take reference to models field data.
+        fields = model_data['fields']
+
+        # Create standard formatted data and add to out string.
+        out_string += self.generate_formatted_data(field_data=fields)
         out_string += '\n'
 
-        for field in field_data:
-            varient_data = self.generate_varient_data(field_name=field,
-                                                      field_data=field_data[field])
-            for varient in varient_data:
-                out_string += self.generate_formatted_data(field_data=field_data,
-                                                           name=varient,
-                                                           modified_field=varient_data[varient])
-                out_string += '\n'
+        # Create unique formatted data and add to out string.
+        out_string += '\tunique = {\n'
+        # Iterate over fields creating the appropriate data for each.
+        for field, field_data in fields.items():
+            out_string += '\t\t\'{}\': {},\n' \
+                .format(field, self.generate_data(field_name=field, field_data=field_data, prefix='unique'))
+        out_string += '\t}\n\n'
+
+        # Iterate over fields for model creating the required variant pairs for each, outputting formatted data.
+        for field, field_data in fields.items():
+            variant_dict = self.generate_variant_data(field_name=field,
+                                                      field_data=field_data)
+            # Iterate over variant dictionary creating the appropriately formatted data for out string.
+            for variant, variant_data in variant_dict.items():
+                out_string += self.generate_formatted_data(field_data=fields,
+                                                           name=variant,
+                                                           modified_field=variant_data)
+            out_string += '\n'
 
         return out_string
 
     def generate_formatted_data(self, field_data, name='standard', modified_field=None):
         out_string = str()
 
+        # Create data header
         out_string += '\t{} = {{\n'.format(name)
 
-        for field in field_data:
+        # Iterate over fields, creating appropriate data given passed parameters.
+        for field, attributes in field_data.items():
+            # Check that the current field is the desired modified field.
+            # True - Add variant line to out string.
+            # False - Add standard formatted line to outstring.
             if modified_field is not None and field is modified_field['field']:
+                # Check that line isn't blank.
+                # True - Add line to out string.
                 if modified_field['line'] is not None:
                     out_string += modified_field['line']
             else:
-                out_string += '\t\t\'{}\': {},\n'.format(field,
-                                                         self.generate_data(field_name=field,
-                                                                            field_data=field_data[field]))
+                out_string += '\t\t\'{}\': {},\n' \
+                    .format(field, self.generate_data(field_name=field, field_data=attributes))
 
         out_string += '\t}\n'
 
@@ -598,6 +890,7 @@ class ProjectTestBuilder(APIView):
     def generate_data(self, field_name, field_data, prefix='standard'):
         out_string = str()
 
+        # This is a mess of code that needs to be refactored at sometime in the hopefully near future TODO:
         if 'default' in field_data:
             out_string += field_data['default']
         elif 'choices' in field_data:
@@ -612,11 +905,11 @@ class ProjectTestBuilder(APIView):
                 out_string = '\'{}\''.format(char[:field_data['max_length']])
             elif field_type == 'DateField':
                 out_string = '\'{}\''.format(
-                        '2015-01-20' if prefix == 'standard' else '2015-02-20')  # TODO: Figure out if this needs anything more complex
+                    '2015-01-20' if prefix == 'standard' else '2015-02-20')  # TODO: Figure out if this needs anything more complex
             elif field_type == 'EmailField':
                 email = '{}_email'.format(prefix)
                 out_string = '\'{}\'@d.io'.format(
-                        email[:-field_data['max_length']])  # TODO:  Check that this is how this field actually works
+                    email[:-field_data['max_length']])  # TODO:  Check that this is how this field actually works
             elif field_type == 'IntegerField':
                 integer = '12345' if prefix == 'standard' else '54321'
                 if 'max_length' in field_data:
@@ -629,17 +922,29 @@ class ProjectTestBuilder(APIView):
                 text = '{}_text'.format(prefix)
                 out_string = '\'{}\''.format(text[:field_data['max_length']])
             elif field_type == 'ForeignKey':
-                out_string += '\'REQUIRES: {}\''.format(field_data['related_model'])  # TODO:   Make this work properly
+                model_data = self.get_model_data_from_name(field_data['related_model'])
+                if model_data is not None:
+                    out_string += '\'{}/{}/\''.format(model_data['url'], '1' if prefix == 'standard' else '2')
+                else:  # TODO:   This will occur when user is the related field
+                    out_string += '\'\''
             elif field_type == 'OneToOne':
-                out_string += '\'REQUIRES: {}\''.format(field_data['related_model'])  # TODO:   Make this work properly
+                model_data = self.get_model_data_from_name(field_data['related_model'])
+                if model_data is not None:
+                    out_string += '\'{}/{}/\''.format(model_data['url'], '1' if prefix == 'standard' else '2')
+                else:  # TODO:   This will occur when user is the related field
+                    out_string += '\'\''
             elif field_type == 'ManyToMany':
-                out_string += '\'REQUIRES: {}\''.format(field_data['related_model'])  # TODO:   Make this work properly
+                model_data = self.get_model_data_from_name(field_data['related_model'])
+                if model_data is not None:
+                    out_string += '\'{}/{}/\''.format(model_data['url'], '1' if prefix == 'standard' else '2')
+                else:  # TODO:   This will occur when user is the related field
+                    out_string += '\'\''
             else:
                 out_string = '\'default\''
 
         return out_string
 
-    def generate_varient_data(self, field_name, field_data):
+    def generate_variant_data(self, field_name, field_data):
         out_dict = dict()
         out_dict.update({
             'missing_{}'.format(field_name): {
@@ -654,6 +959,6 @@ class ProjectTestBuilder(APIView):
             }
         })
 
-        # TODO: Get individual model varients
+        # TODO: Get individual model variants
 
         return out_dict
