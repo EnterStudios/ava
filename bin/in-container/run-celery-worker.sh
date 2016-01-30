@@ -9,4 +9,4 @@ DIRECTORY=$(dirname $0)/../..
 PYTHON=python
 MANAGE=${DIRECTORY}/manage.py
 
-celery worker -A ava.celery_app -l debug
+celery worker -A ava_core.celery_app -l debug

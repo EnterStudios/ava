@@ -1,28 +1,31 @@
-celery[redis]
-Django
-django-haystack
-djrill
-oauthlib
-psycopg2
-ldap3
-pytz
-redis
-twython
-twython-django
-django-html5-boilerplate
-django-bootstrap3
-django-bootstrap-form
-django-d3
-django_csp
 
+Django
+
+django_csp
+django-cors-headers
+
+psycopg2
+
+redis
+celery[redis]
 django-redis-sessions
 django-redis-cache
 hiredis
 
 flake8
 
+djangorestframework
+markdown
+djangorestframework-jwt
+
+ldap3
+pytz
+
 oauth2client
 google-api-python-client
 
-django-debug-toolbar
+pylint
+
+requests
+
 

@@ -1,0 +1,746 @@
+{
+    "dfend_core.alert": {
+        "Alert": {
+            "fields": {
+                "alert_type": {
+                    "blank": false,
+                    "choices": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                    ],
+                    "null": false,
+                    "type": "IntegerField",
+                    "unique": false
+                },
+                "message": {
+                    "blank": false,
+                    "max_length": 1000,
+                    "null": false,
+                    "type": "TextField",
+                    "unique": false
+                },
+                "severity": {
+                    "blank": false,
+                    "choices": [
+                        5,
+                        4,
+                        3,
+                        2,
+                        1
+                    ],
+                    "null": false,
+                    "type": "IntegerField",
+                    "unique": false
+                },
+                "technology": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "dfend_core.compendium.models.Technology",
+                    "type": "ForeignKey",
+                    "unique": false
+                },
+                "title": {
+                    "blank": false,
+                    "max_length": 100,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        },
+        "RequiredAction": {
+            "fields": {
+                "action_type": {
+                    "blank": false,
+                    "choices": [
+                        5,
+                        3,
+                        2,
+                        1,
+                        4,
+                        0
+                    ],
+                    "null": false,
+                    "type": "IntegerField",
+                    "unique": false
+                },
+                "alert": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "dfend_core.alert.models.Alert",
+                    "type": "ForeignKey",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        }
+    },
+    "dfend_core.compendium": {
+        "ExternalSystemId": {
+            "fields": {
+                "identifier": {
+                    "blank": false,
+                    "max_length": 100,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "technology": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "dfend_core.compendium.models.Technology",
+                    "type": "ForeignKey",
+                    "unique": false
+                },
+                "type": {
+                    "blank": false,
+                    "choices": [
+                        2,
+                        0,
+                        1
+                    ],
+                    "null": false,
+                    "type": "IntegerField",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        },
+        "StandardLicense": {
+            "fields": {
+                "license_url": {
+                    "blank": false,
+                    "max_length": 200,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "name": {
+                    "blank": false,
+                    "max_length": 100,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        },
+        "Technology": {
+            "fields": {
+                "blog_url": {
+                    "blank": true,
+                    "max_length": 200,
+                    "null": true,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "description": {
+                    "blank": true,
+                    "max_length": 1000,
+                    "null": true,
+                    "type": "TextField",
+                    "unique": false
+                },
+                "homepage": {
+                    "blank": false,
+                    "max_length": 200,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "license": {
+                    "blank": true,
+                    "null": true,
+                    "related_model": "dfend_core.compendium.models.StandardLicense",
+                    "type": "ForeignKey",
+                    "unique": false
+                },
+                "license_url": {
+                    "blank": true,
+                    "max_length": 200,
+                    "null": true,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "moderation_state": {
+                    "blank": false,
+                    "choices": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "null": false,
+                    "type": "IntegerField",
+                    "unique": false
+                },
+                "name": {
+                    "blank": false,
+                    "max_length": 100,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "privacy_url": {
+                    "blank": true,
+                    "max_length": 200,
+                    "null": true,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "security_url": {
+                    "blank": true,
+                    "max_length": 200,
+                    "null": true,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "suggested_by": {
+                    "blank": true,
+                    "null": true,
+                    "related_model": "django.contrib.auth.models.User",
+                    "type": "ForeignKey",
+                    "unique": false
+                },
+                "support_url": {
+                    "blank": true,
+                    "max_length": 200,
+                    "null": true,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "tags": {
+                    "blank": true,
+                    "null": false,
+                    "related_model": "dfend_core.compendium.models.TechnologyTag",
+                    "type": "ManyToManyField",
+                    "unique": false
+                },
+                "terms_url": {
+                    "blank": true,
+                    "max_length": 200,
+                    "null": true,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "type": {
+                    "blank": false,
+                    "choices": [
+                        0,
+                        1
+                    ],
+                    "null": false,
+                    "type": "IntegerField",
+                    "unique": false
+                },
+                "vendor": {
+                    "blank": true,
+                    "max_length": 100,
+                    "null": true,
+                    "type": "CharField",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        },
+        "TechnologyTag": {
+            "fields": {
+                "moderation_state": {
+                    "blank": false,
+                    "choices": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "null": false,
+                    "type": "IntegerField",
+                    "unique": false
+                },
+                "suggested_by": {
+                    "blank": true,
+                    "null": true,
+                    "related_model": "django.contrib.auth.models.User",
+                    "type": "ForeignKey",
+                    "unique": false
+                },
+                "tag": {
+                    "blank": false,
+                    "max_length": 50,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        }
+    },
+    "dfend_core.my": {
+        "DependencyList": {
+            "fields": {
+                "description": {
+                    "blank": true,
+                    "max_length": 200,
+                    "null": true,
+                    "type": "TextField",
+                    "unique": false
+                },
+                "name": {
+                    "blank": false,
+                    "max_length": 50,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": true
+                },
+                "owner": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "django.contrib.auth.models.User",
+                    "type": "ForeignKey",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        },
+        "DependencyListItem": {
+            "fields": {
+                "dependency_list": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "dfend_core.my.models.DependencyList",
+                    "type": "ForeignKey",
+                    "unique": false
+                },
+                "owner": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "django.contrib.auth.models.User",
+                    "type": "ForeignKey",
+                    "unique": false
+                },
+                "technology": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "dfend_core.compendium.models.Technology",
+                    "type": "ForeignKey",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        },
+        "PersonalAlert": {
+            "fields": {
+                "alert": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "dfend_core.alert.models.Alert",
+                    "type": "ForeignKey",
+                    "unique": false
+                },
+                "alert_status": {
+                    "blank": false,
+                    "choices": [
+                        1,
+                        5,
+                        0,
+                        4,
+                        3,
+                        2
+                    ],
+                    "null": false,
+                    "type": "IntegerField",
+                    "unique": false
+                },
+                "list_item": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "dfend_core.my.models.DependencyListItem",
+                    "type": "ForeignKey",
+                    "unique": false
+                },
+                "owner": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "django.contrib.auth.models.User",
+                    "type": "ForeignKey",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        }
+    },
+    "dfend_core.notify": {
+        "NotificationEmail": {
+            "fields": {
+                "address_from": {
+                    "blank": false,
+                    "max_length": 254,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "body": {
+                    "blank": false,
+                    "max_length": 128,
+                    "null": false,
+                    "type": "TextField",
+                    "unique": false
+                },
+                "description": {
+                    "blank": true,
+                    "max_length": 1000,
+                    "null": true,
+                    "type": "TextField",
+                    "unique": false
+                },
+                "name": {
+                    "blank": false,
+                    "max_length": 100,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "notification_type": {
+                    "blank": false,
+                    "choices": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4
+                    ],
+                    "null": false,
+                    "type": "IntegerField",
+                    "unique": true
+                },
+                "subject": {
+                    "blank": false,
+                    "max_length": 128,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        }
+    },
+    "dfend_core.preferences": {
+        "NotificationSetting": {
+            "fields": {
+                "notification_email": {
+                    "blank": false,
+                    "max_length": 254,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "owner": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "django.contrib.auth.models.User",
+                    "type": "ForeignKey",
+                    "unique": false
+                },
+                "threshold": {
+                    "blank": false,
+                    "choices": [
+                        4,
+                        5,
+                        3,
+                        1,
+                        6,
+                        2
+                    ],
+                    "null": false,
+                    "type": "IntegerField",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        },
+        "SubscriptionSetting": {
+            "fields": {
+                "owner": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "django.contrib.auth.models.User",
+                    "type": "ForeignKey",
+                    "unique": false
+                },
+                "subscription": {
+                    "blank": true,
+                    "null": true,
+                    "related_model": "dfend_core.subscriptions.models.SubscriptionTier",
+                    "type": "ForeignKey",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        }
+    },
+    "dfend_core.subscriptions": {
+        "SubscriptionTier": {
+            "fields": {
+                "description": {
+                    "blank": true,
+                    "max_length": 1000,
+                    "null": true,
+                    "type": "TextField",
+                    "unique": false
+                },
+                "name": {
+                    "blank": false,
+                    "max_length": 100,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "no_alerts": {
+                    "blank": false,
+                    "null": false,
+                    "type": "IntegerField",
+                    "unique": false
+                },
+                "no_integrations": {
+                    "blank": false,
+                    "null": false,
+                    "type": "IntegerField",
+                    "unique": false
+                },
+                "no_lists": {
+                    "blank": false,
+                    "null": false,
+                    "type": "IntegerField",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        }
+    }
+}

@@ -1,5 +1,7 @@
 ![ava-large](https://cloud.githubusercontent.com/assets/228527/9003419/fc1107b0-37c1-11e5-9faf-f4157d9c9b1a.png)
 
+This is the backend repository for the AVA Human Vulnerability Scanner. This will require http://github.com/SafeStack/ava_ui if you want a traditional UI.
+
 [![Build Status](https://travis-ci.org/SafeStack/ava.svg?branch=master)](https://travis-ci.org/SafeStack/ava)   [![Coverage Status](https://coveralls.io/repos/SafeStack/ava/badge.svg?branch=master)](https://coveralls.io/r/SafeStack/ava?branch=master)
 
 Visit our [homepage](http://avasecure.com), join our [mailing list](https://groups.google.com/forum/#!forum/avasecure) or get an invite to our [slack community](http://avasecure.slack.com). The AVA slack community is the central place to meet other contributors, get help/support and discuss new features/bugs. Please email [hello@avasecure.com](mailto:hello@avasecure.com) for an invite.
@@ -10,8 +12,7 @@ For step-by-step instructions on how to download and run ava, please read the [I
 We are on the look out for testers, Django/Python developers, documentation folk, graphics wizards, and UX people to help make AVA awesome. If you have some spare cycles and want to contribute get stuck in.
 
 ### Project Status
-This project is under heavy development and should be considered unstable.
-A stable release should be expected in August 2015. Please use the mailing list or issues tracker to report issues.
+This project is under heavy development and should be considered unstable. Please use the mailing list or issues tracker to report issues.
 
 ### What is AVA?
 Information security is often misunderstood. Most people believe that if you throw enough gadgets at an organisation you will mitigate any potential vulnerability. Technology is only a fraction of the picture.
@@ -28,7 +29,7 @@ AVA Secure puts the people first in security assessment, leaving your organisati
 ### License and Open sourcing
 We believe that security tools based on secret recipes are dangerous. Security solutions should always be subject to scrutiny. Open sourcing AVA allows us to be seen and for collaborators to get involved. Only together can we make AVA the best first step to protecting your people.
 
-AVA is released under GPL v2. If you aren't sure what this means then you should probably [read this](http://www.gnu.org/licenses/gpl-2.0.html).
+AVA is released under GPL v3. If you aren't sure what this means then you should probably [read this](http://www.gnu.org/licenses/gpl-3.0.html).
 If the terms of GPL are not suitable to your environment, please get in touch. We would be happy to discuss this with you.
 
 Eventually there may be paid services or components based around AVA. The core will always remain free and open source for those who want to run it internally.

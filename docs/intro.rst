@@ -36,9 +36,9 @@ scrutiny. Open sourcing AVA allows us to be seen and for collaborators
 to get involved. Only together can we make AVA the best first step to
 protecting your people.
 
-AVA is released under GPL v2. If you aren't sure what this means then
+AVA is released under GPL v3. If you aren't sure what this means then
 you should probably `read
-this <http://www.gnu.org/licenses/gpl-2.0.html>`_.  If the terms of GPL
+this <http://www.gnu.org/licenses/gpl-3.0.html>`_.  If the terms of GPL
 are not suitable to your environment, please get in touch. We would be
 happy to discuss this with you.
 

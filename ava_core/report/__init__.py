@@ -1,0 +1,1 @@
+default_app_config = 'ava_core.report.apps.ReportConfig'
