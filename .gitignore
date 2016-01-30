@@ -63,15 +63,11 @@ twitter_settings*
 
 *~
 
-## Many .bak files were created during the 2to3 run
+# Many .bak files were created during the 2to3 run
 *.bak
-
 secrets.env
 media/testdata/google/*
 media/testdata/ldap/*
 
-
-
 .DS_Store
 
-secrets.env
