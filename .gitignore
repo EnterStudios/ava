@@ -73,3 +73,5 @@ media/testdata/ldap/*
 
 
 .DS_Store
+
+secrets.env
