@@ -2,22 +2,17 @@ import json
 import logging
 import os
 
-import django.core.exceptions
-import django.http
-import django.views.generic
-import oauth2client.client
 from django.conf import settings
 from rest_framework import permissions
 from rest_framework import status, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-from ava_core.integration.integration_office365.utils import get_signin_url, get_signout_url, \
-    get_token_from_code, get_user_info_from_token
-
 from ava_core.integration.integration_abstract.utils import store_credential_in_database, \
     store_temporary_flow_data_in_database, retrieve_temporary_flow_data_from_database, \
     remove_temporary_flow_data_from_database
+from ava_core.integration.integration_office365.utils import get_token_from_code, get_user_info_from_token, \
+    get_signin_url
 from .models import Office365IntegrationAdapter
 from .serializers import Office365IntegrationSerializer
 
@@ -28,24 +23,6 @@ MODEL_NAME = 'integration_google.Office365IntegrationAdapter'
 TEMP_MODEL_NAME = 'integration_google.Office365AuthorizationStore'
 
 
-def build_flow():
-    """Build and return a OAuth2WebServerFlow object."""
-    if settings.OFFICE365_OAUTH2_CLIENT_ID is None or settings.OFFICE365_OAUTH2_CLIENT_SECRET is None:
-        raise django.core.exceptions.ImproperlyConfigured(
-            'Google OAuth2 Credentials have not been configured.'
-        )
-    flow = oauth2client.client.OAuth2WebServerFlow(
-        client_id=settings.OFFICE365_OAUTH2_CLIENT_ID,
-        client_secret=settings.OFFICE365_OAUTH2_CLIENT_SECRET,
-        scope=settings.OFFICE365_OAUTH2_SCOPE,
-        user_agent='ava/0.1',
-
-        redirect_uri=settings.OFFICE365_OAUTH2_REDIRECT_URL,
-
-    )
-    return flow
-
-
 # API Declarations
 
 @api_view(['GET'])
@@ -53,25 +30,19 @@ def build_flow():
 # Not considered harmful so ok to allow all on this
 @permission_classes([permissions.AllowAny, ])
 def callback(request):
-
     # The web browser has just completed the integration_google auth stuff and has been
     # sent back here for the next step.
     log.debug("CallbackAPI:GET - Reached GET request")
-    # First: rebuild the flow object.
-    log.debug("CallbackAPI:GET - Flow client id:: " + flow.client_id)
-    # now we (the AVA app server) sends a web request directly to Google asking
-    # for OAuth2Credentials.
-    log.debug("CallbackAPI:GET - Attempting credential exchange")
-    code = request.query_params['code']
 
     auth_code = request.GET['code']
-    redirect_uri = request.build_absolute_uri(settings.OFFICE365_OAUTH2_REDIRECT_URL)
-    token = get_token_from_code(auth_code, redirect_uri)
+
+    token = get_token_from_code(auth_code)
+
     access_token = token['access_token']
+
     user_info = get_user_info_from_token(token['id_token'])
 
-
-    log.debug("CallbackAPI:GET - Request Code:: " + code)
+    log.debug("CallbackAPI:GET - Request Code:: " + auth_code)
 
     log.debug("CallbackAPI:GET - Attempting to store credential in session")
 
@@ -108,12 +79,6 @@ def redirect(request, **kwargs):
     # bypass the integration_google auth flow if using the mock local version
     log.debug("RedirectAPI:GET - Reached GET request")
 
-#   redirect_uri = request.build_absolute_uri(reverse('connect:get_token'))
-#   sign_in_url = get_signin_url(redirect_uri)
-#   request.session['logoutUrl'] = get_signout_url(redirect_uri)
-
-
-
     if os.environ.get('USE_MOCK_OFFICE365'):
 
         log.debug("RedirectAPI:GET - USE_MOCK_OFFICE365 found - switching to local import")
@@ -127,10 +92,11 @@ def redirect(request, **kwargs):
 
         store_temporary_flow_data_in_database(TEMP_MODEL_NAME, pk)
 
-        flow = build_flow()
+        sign_in_url = get_signin_url()
+
         # Build the URI that we send the client browser to.
         log.debug("RedirectAPI:GET - Asking for authorize url")
-        authorize_url = flow.step1_get_authorize_url()
+        authorize_url = sign_in_url
         # Send the client web browser to the authorize_url
         log.debug("RedirectAPI:GET - Returning authorise URL in response :: " + authorize_url)
         return Response({"authorize_url": authorize_url}, status=status.HTTP_200_OK)
@@ -145,16 +111,3 @@ class Office365AdapterAPI(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Office365IntegrationAdapter.objects.all()
-
-
-
-
-#
-# # This is the route that is called when the user clicks the disconnect
-# # button in the navigation bar. Clear user identifying information from
-# # the session and redirect to the home page.
-# def disconnect(request):
-#   request.session['access_token'] = None
-#   request.session['alias'] = None
-#   request.session['emailAddress'] = None
-#   return HttpResponseRedirect(reverse('connect:home'))
