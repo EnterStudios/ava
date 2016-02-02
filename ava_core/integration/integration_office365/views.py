@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 
@@ -11,6 +12,9 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
+from ava_core.integration.integration_office365.utils import get_signin_url, get_signout_url, \
+    get_token_from_code, get_user_info_from_token
+
 from ava_core.integration.integration_abstract.utils import store_credential_in_database, \
     store_temporary_flow_data_in_database, retrieve_temporary_flow_data_from_database, \
     remove_temporary_flow_data_from_database
@@ -19,24 +23,24 @@ from .serializers import Office365IntegrationSerializer
 
 log = logging.getLogger(__name__)
 
-INTEGRATION_NAME = 'google_integration'
-MODEL_NAME = 'integration_google.GoogleIntegrationAdapter'
-TEMP_MODEL_NAME = 'integration_google.GoogleAuthorizationStore'
+INTEGRATION_NAME = 'office365_integration'
+MODEL_NAME = 'integration_google.Office365IntegrationAdapter'
+TEMP_MODEL_NAME = 'integration_google.Office365AuthorizationStore'
 
 
 def build_flow():
     """Build and return a OAuth2WebServerFlow object."""
-    if settings.GOOGLE_OAUTH2_CLIENT_ID is None or settings.GOOGLE_OAUTH2_CLIENT_SECRET is None:
+    if settings.OFFICE365_OAUTH2_CLIENT_ID is None or settings.OFFICE365_OAUTH2_CLIENT_SECRET is None:
         raise django.core.exceptions.ImproperlyConfigured(
             'Google OAuth2 Credentials have not been configured.'
         )
     flow = oauth2client.client.OAuth2WebServerFlow(
-        client_id=settings.GOOGLE_OAUTH2_CLIENT_ID,
-        client_secret=settings.GOOGLE_OAUTH2_CLIENT_SECRET,
-        scope=settings.GOOGLE_OAUTH2_SCOPE,
+        client_id=settings.OFFICE365_OAUTH2_CLIENT_ID,
+        client_secret=settings.OFFICE365_OAUTH2_CLIENT_SECRET,
+        scope=settings.OFFICE365_OAUTH2_SCOPE,
         user_agent='ava/0.1',
 
-        redirect_uri=settings.GOOGLE_OAUTH2_REDIRECT_URL,
+        redirect_uri=settings.OFFICE365_OAUTH2_REDIRECT_URL,
 
     )
     return flow
@@ -49,28 +53,44 @@ def build_flow():
 # Not considered harmful so ok to allow all on this
 @permission_classes([permissions.AllowAny, ])
 def callback(request):
+
     # The web browser has just completed the integration_google auth stuff and has been
     # sent back here for the next step.
     log.debug("CallbackAPI:GET - Reached GET request")
     # First: rebuild the flow object.
-    flow = build_flow()
     log.debug("CallbackAPI:GET - Flow client id:: " + flow.client_id)
     # now we (the AVA app server) sends a web request directly to Google asking
     # for OAuth2Credentials.
     log.debug("CallbackAPI:GET - Attempting credential exchange")
     code = request.query_params['code']
+
+    auth_code = request.GET['code']
+    redirect_uri = request.build_absolute_uri(settings.OFFICE365_OAUTH2_REDIRECT_URL)
+    token = get_token_from_code(auth_code, redirect_uri)
+    access_token = token['access_token']
+    user_info = get_user_info_from_token(token['id_token'])
+
+
     log.debug("CallbackAPI:GET - Request Code:: " + code)
-    credential = flow.step2_exchange(code)
-    # One we have them, we store them in the session, since we don't need to keep
-    # them very long.
+
     log.debug("CallbackAPI:GET - Attempting to store credential in session")
 
     integration_id = retrieve_temporary_flow_data_from_database(TEMP_MODEL_NAME)
 
-    store_credential_in_database(MODEL_NAME, integration_id, credential)
+    credential = {}
+    credential['access_token'] = access_token
+    credential['alias'] = user_info['upn'].split('@')[0]
+    credential['emailAddress'] = user_info['upn']
+    credential['showSuccess'] = 'false'
+    credential['showError'] = 'false'
+    credential['pageRefresh'] = 'true'
+
+    json_credential = json.dumps(credential)
+
+    store_credential_in_database(MODEL_NAME, integration_id, json_credential)
 
     log.debug("CallbackAPI:GET - Access Token ::" + credential.access_token)
-    log.debug("CallbackAPI:GET - Refresh Token ::" + str(credential.refresh_token))
+    # log.debug("CallbackAPI:GET - Refresh Token ::" + str(credential.refresh_token))
 
     remove_temporary_flow_data_from_database(TEMP_MODEL_NAME, integration_id)
 
@@ -79,17 +99,26 @@ def callback(request):
     return Response({"message": "Completed callback"}, status=status.HTTP_200_OK)
 
 
+# This is the route that is the redirect URI of your registered
+# Azure application. An authorization code is returned here that
+# is swapped for an access token in auth_helper.
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated, ])
 def redirect(request, **kwargs):
     # bypass the integration_google auth flow if using the mock local version
     log.debug("RedirectAPI:GET - Reached GET request")
 
-    if os.environ.get('USE_MOCK_GOOGLE'):
+#   redirect_uri = request.build_absolute_uri(reverse('connect:get_token'))
+#   sign_in_url = get_signin_url(redirect_uri)
+#   request.session['logoutUrl'] = get_signout_url(redirect_uri)
 
-        log.debug("RedirectAPI:GET - USE_MOCK_GOOGLE found - switching to local import")
+
+
+    if os.environ.get('USE_MOCK_OFFICE365'):
+
+        log.debug("RedirectAPI:GET - USE_MOCK_OFFICE365 found - switching to local import")
         request.session['integration_id'] = None
-        return Response({"message": "USE_MOCK_GOOGLE found. Aborting OAUTH"}, status=status.HTTP_200_OK)
+        return Response({"message": "USE_MOCK_OFFICE365 found. Aborting OAUTH"}, status=status.HTTP_200_OK)
     else:
         log.debug("RedirectAPI:GET - Proceeding with live import")
 
@@ -117,3 +146,15 @@ class Office365AdapterAPI(viewsets.ModelViewSet):
     def get_queryset(self):
         return Office365IntegrationAdapter.objects.all()
 
+
+
+
+#
+# # This is the route that is called when the user clicks the disconnect
+# # button in the navigation bar. Clear user identifying information from
+# # the session and redirect to the home page.
+# def disconnect(request):
+#   request.session['access_token'] = None
+#   request.session['alias'] = None
+#   request.session['emailAddress'] = None
+#   return HttpResponseRedirect(reverse('connect:home'))
