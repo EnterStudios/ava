@@ -16,7 +16,8 @@ class LDAPGatherHistoryTest(AvaCoreTest):
         super(LDAPGatherHistoryTest, self).setUp()
 
         # Set the data type.
-        self.data = LDAPGatherHistoryTestData()
+        self.data = LDAPGatherHistoryTestData
+        self.data.init_requirements()
 
     def test_l_d_a_p_gather_history_create_as_user(self):
         # Log in as user.
@@ -26,9 +27,9 @@ class LDAPGatherHistoryTest(AvaCoreTest):
         count = self.data.model.objects.count()
 
         # Store data to use.
-        data = self.data.get_data()
+        data = self.data.get_data('standard')
 
-        # Make push request and ensure created response.
+        # Make post request and ensure created response.
         response = self.client.post(self.format_url(self.data.url), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(self.data.model.objects.count(), count + 1)
@@ -42,9 +43,9 @@ class LDAPGatherHistoryTest(AvaCoreTest):
         count = self.data.model.objects.count()
 
         # Store data to use.
-        data = self.data.get_data()
+        data = self.data.get_data('standard')
 
-        # Make push request and ensure created response.
+        # Make post request and ensure created response.
         response = self.client.post(self.format_url(self.data.url), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(self.data.model.objects.count(), count + 1)
@@ -55,9 +56,9 @@ class LDAPGatherHistoryTest(AvaCoreTest):
         count = self.data.model.objects.count()
 
         # Store data to use.
-        data = self.data.get_data()
+        data = self.data.get_data('standard')
 
-        # Make push request and ensure unauthorized response.
+        # Make post request and ensure unauthorized response.
         response = self.client.post(self.format_url(self.data.url), data, format='json')
         self.assertIn(response.status_code, self.status_forbidden)
         self.assertEqual(self.data.model.objects.count(), count)
@@ -189,7 +190,7 @@ class LDAPGatherHistoryTest(AvaCoreTest):
         # Make delete request and ensure no content response
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(self.data.models.objects.count(), 0)
+        self.assertEqual(self.data.model.objects.count(), 0)
 
     def test_l_d_a_p_gather_history_delete_does_not_exist_as_user(self):
         # Log in as user.
@@ -208,7 +209,7 @@ class LDAPGatherHistoryTest(AvaCoreTest):
         # Make delete request and ensure no content response
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(self.data.models.objects.count(), 0)
+        self.assertEqual(self.data.model.objects.count(), 0)
 
     def test_l_d_a_p_gather_history_delete_does_not_exist_as_admin(self):
         # Log in as admin.
@@ -224,7 +225,7 @@ class LDAPGatherHistoryTest(AvaCoreTest):
         # Make delete request and ensure unauthorized response
         response = self.client.get(url)
         self.assertIn(response.status_code, self.status_forbidden)
-        self.assertEqual(self.data.models.objects.count(), 1)
+        self.assertEqual(self.data.model.objects.count(), 1)
 
     def test_l_d_a_p_gather_history_delete_does_not_exist_as_unauthorized(self):
         # Make delete request and ensure unauthorized response

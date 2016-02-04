@@ -11,129 +11,126 @@ class NotificationEmailTestData(AvaCoreTestData):
     Test data for NotificationEmail
     """
 
-    def __init__(self):
-        # Store self information
-        self.model = NotificationEmail
-        self.url = '/example'
-
-        # Create any necessary required models.
-        self.init_requirements()
-
-    def init_requirements(self):
+    @staticmethod
+    def init_requirements():
         pass
+
+    # Store self information
+    model = NotificationEmail
+    url = '/example'
 
     standard = {
         'notification_type': 0,
-        'address_from': 'standard_char',
         'description': 'standard_text',
+        'body': 'standard_text',
+        'address_from': 'standard_char',
         'subject': 'standard_char',
         'name': 'standard_char',
-        'body': 'standard_text',
     }
 
     unique = {
         'notification_type': 5,
-        'address_from': 'unique_char',
         'description': 'unique_text',
+        'body': 'unique_text',
+        'address_from': 'unique_char',
         'subject': 'unique_char',
         'name': 'unique_char',
-        'body': 'unique_text',
     }
 
     modified_notification_type = {
         'notification_type': 5,
-        'address_from': 'standard_char',
         'description': 'standard_text',
+        'body': 'standard_text',
+        'address_from': 'standard_char',
         'subject': 'standard_char',
         'name': 'standard_char',
-        'body': 'standard_text',
     }
     missing_notification_type = {
-        'address_from': 'standard_char',
         'description': 'standard_text',
+        'body': 'standard_text',
+        'address_from': 'standard_char',
         'subject': 'standard_char',
         'name': 'standard_char',
-        'body': 'standard_text',
     }
 
+    modified_description = {
+        'notification_type': 0,
+        'description': 'modified_text',
+        'body': 'standard_text',
+        'address_from': 'standard_char',
+        'subject': 'standard_char',
+        'name': 'standard_char',
+    }
+    missing_description = {
+        'notification_type': 0,
+        'body': 'standard_text',
+        'address_from': 'standard_char',
+        'subject': 'standard_char',
+        'name': 'standard_char',
+    }
+
+    modified_body = {
+        'notification_type': 0,
+        'description': 'standard_text',
+        'body': 'modified_text',
+        'address_from': 'standard_char',
+        'subject': 'standard_char',
+        'name': 'standard_char',
+    }
+    missing_body = {
+        'notification_type': 0,
+        'description': 'standard_text',
+        'address_from': 'standard_char',
+        'subject': 'standard_char',
+        'name': 'standard_char',
+    }
+
+    modified_address_from = {
+        'notification_type': 0,
+        'description': 'standard_text',
+        'body': 'standard_text',
+        'address_from': 'modified_char',
+        'subject': 'standard_char',
+        'name': 'standard_char',
+    }
     missing_address_from = {
         'notification_type': 0,
         'description': 'standard_text',
+        'body': 'standard_text',
         'subject': 'standard_char',
         'name': 'standard_char',
-        'body': 'standard_text',
-    }
-    modified_address_from = {
-        'notification_type': 0,
-        'address_from': 'modified_char',
-        'description': 'standard_text',
-        'subject': 'standard_char',
-        'name': 'standard_char',
-        'body': 'standard_text',
     }
 
-    missing_description = {
-        'notification_type': 0,
-        'address_from': 'standard_char',
-        'subject': 'standard_char',
-        'name': 'standard_char',
-        'body': 'standard_text',
-    }
-    modified_description = {
-        'notification_type': 0,
-        'address_from': 'standard_char',
-        'description': 'modified_text',
-        'subject': 'standard_char',
-        'name': 'standard_char',
-        'body': 'standard_text',
-    }
-
-    modified_subject = {
-        'notification_type': 0,
-        'address_from': 'standard_char',
-        'description': 'standard_text',
-        'subject': 'modified_char',
-        'name': 'standard_char',
-        'body': 'standard_text',
-    }
     missing_subject = {
         'notification_type': 0,
-        'address_from': 'standard_char',
         'description': 'standard_text',
-        'name': 'standard_char',
         'body': 'standard_text',
+        'address_from': 'standard_char',
+        'name': 'standard_char',
+    }
+    modified_subject = {
+        'notification_type': 0,
+        'description': 'standard_text',
+        'body': 'standard_text',
+        'address_from': 'standard_char',
+        'subject': 'modified_char',
+        'name': 'standard_char',
     }
 
     modified_name = {
         'notification_type': 0,
-        'address_from': 'standard_char',
         'description': 'standard_text',
+        'body': 'standard_text',
+        'address_from': 'standard_char',
         'subject': 'standard_char',
         'name': 'modified_char',
-        'body': 'standard_text',
     }
     missing_name = {
         'notification_type': 0,
-        'address_from': 'standard_char',
         'description': 'standard_text',
-        'subject': 'standard_char',
         'body': 'standard_text',
-    }
-
-    missing_body = {
-        'notification_type': 0,
         'address_from': 'standard_char',
-        'description': 'standard_text',
         'subject': 'standard_char',
-        'name': 'standard_char',
-    }
-    modified_body = {
-        'notification_type': 0,
-        'address_from': 'standard_char',
-        'description': 'standard_text',
-        'subject': 'standard_char',
-        'name': 'standard_char',
-        'body': 'modified_text',
     }
 
 

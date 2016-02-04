@@ -350,6 +350,10 @@ class ProjectTestBuilder(APIView):
         # Create empty string for app file.
         app_string = str()
 
+        # Store app information for future reference.
+        self.current_app_name = app_name
+        self.current_app_data = app_data
+
         # Add header data to out string.
         app_string += self.generate_header_test(app_name=app_name,
                                                 app_data=app_data) + '\n\n'
@@ -415,7 +419,8 @@ class ProjectTestBuilder(APIView):
         out_string += '\t\tsuper({}Test, self).setUp()\n'.format(snake_to_bumpy(model_name))
         out_string += '\n'
         out_string += '\t\t# Set the data type.\n'
-        out_string += '\t\tself.data = {}TestData()\n'.format(model_name)
+        out_string += '\t\tself.data = {}TestData\n'.format(model_name)
+        out_string += '\t\tself.data.init_requirements()\n'
         out_string += '\n'
 
         # Create each of the CRUD test functions
@@ -463,11 +468,11 @@ class ProjectTestBuilder(APIView):
 
         # Create data storage
         out_string += '\t\t# Store data to use.\n'
-        out_string += '\t\tdata = self.data.get_data()\n'
+        out_string += '\t\tdata = self.data.get_data(\'standard\')\n'
         out_string += '\n'
 
         # Create push request
-        out_string += '\t\t# Make push request and ensure {} response.\n'.format(
+        out_string += '\t\t# Make post request and ensure {} response.\n'.format(
             'created' if create_successful else 'unauthorized')
         out_string += '\t\tresponse = self.client.post(self.format_url(self.data.url), data, format=\'json\')\n'
 
@@ -665,7 +670,7 @@ class ProjectTestBuilder(APIView):
             out_string += '\t\tself.assertIn(response.status_code, self.status_forbidden)\n'
 
         if exists:
-                out_string += '\t\tself.assertEqual(self.data.models.objects.count(), {})\n'\
+                out_string += '\t\tself.assertEqual(self.data.model.objects.count(), {})\n'\
                     .format('0' if delete_successful else '1')
 
         out_string += '\n'
@@ -720,54 +725,21 @@ class ProjectTestBuilder(APIView):
             if model not in settings.TEST_BUILDER_IGNORED_MODELS and model not in requirements_dict[app_name]:
                 requirements_dict[app_name].append(model)
 
-            # Iterate over the fields of the models.
-            for field, field_data in model_data['fields'].items():
-                # Check if the field has a related_model attribute.
-                # True - Add the model to the imports list for file.
-                if 'related_model' in field_data:
-                    # Get the related models name and splitting at '.' from the reverse.
-                    # NOTE: The string is split two from reverse to separate the string into
-                    # app name, "model", model name. The word model is discarded, hence the use of 0 and 2 indexes.
-                    related_model = field_data['related_model'].rsplit('.', 2)
-
-                    # Check that the model starts with the prefix.
-                    # True - Add the model to the imports list for file.
-                    if related_model[0].startswith(settings.TEST_BUILDER_INPUT_APP_PREFIX):
-                        # Check it the models app is in the requirements dictionary.
-                        # True - Add the model name to the existing list.
-                        # False - Create a new list for the app and add the model.
-                        if related_model[0] in requirements_dict:
-                            # Check that the model isn't already in the dictionary.
-                            # True - Add the model name to the list.
-                            if related_model[2] not in requirements_dict[related_model[0]]:
-                                requirements_dict[related_model[0]].append(related_model[2])
-                        else:
-                            requirements_dict[related_model[0]] = list()
-                            requirements_dict[related_model[0]].append(related_model[2])
-
         # Iterate over the app, model pairs in required imports.
         for app, models in requirements_dict.items():
             # Format the start of the import lines.
             required_models = 'from {}.{}.models import' \
                 .format(settings.TEST_BUILDER_INPUT_APP_PREFIX, app.split('.', 1)[1])
-            required_tests = 'from {}.{}.test_data import' \
-                .format(settings.TEST_BUILDER_OUTPUT_APP_PREFIX, app.split('.', 1)[1])
 
             # Iterate over models using enumerate to keep a number.
             for count, model in enumerate(models):
                 # Add formatted model to each string.
                 # Use count to determine if space or comma used.
                 required_models += (' ' if count == 0 else ', ') + model
-                required_tests += '{}{}TestData'.format((' ' if count == 0 else ', '), model)
 
             # Add required models to the output string.
             out_string += required_models + '\n'
 
-            # Check that the app isn't the current app.
-            # True - Add required test data to output string.
-            # NOTE: This is done as the current apps test data will be the file it is written to.
-            if app != app_name:
-                out_string += required_tests + '\n'
 
         return out_string
 
@@ -781,20 +753,11 @@ class ProjectTestBuilder(APIView):
         out_string += '\t\"\"\"\n'
         out_string += '\n'
 
-        # Create init function
-        out_string += '\tdef __init__(self):\n'
-        out_string += '\t\t# Store self information\n'
-        out_string += '\t\tself.model = {}\n'.format(plain_to_bumpy(model_name))
-        out_string += '\t\tself.url = \'{}\'\n'.format(model_data['url'])
-        out_string += '\n'
-        out_string += '\t\t# Create any necessary required models.\n'
-        out_string += '\t\tself.init_requirements()\n'
-        out_string += '\n'
 
         # Create init requirements function
         related_string = str()
-        # related_string += "\t@staticmethod\n"
-        related_string += "\tdef init_requirements(self):\n"
+        related_string += "\t@staticmethod\n"
+        related_string += "\tdef init_requirements():\n"
 
         had_requirement = False
         # Iterate over the fields of the models.
@@ -812,21 +775,43 @@ class ProjectTestBuilder(APIView):
                 if related_model[0].startswith(settings.TEST_BUILDER_INPUT_APP_PREFIX):
                     had_requirement = True
                     required_name = related_model[2]
+
+                    split_name = related_model[0].split('.', 1)[1]
+                    if split_name not in self.current_app_name:
+                        related_string += '\t\t# Import the required model and data\n'
+                        related_string += '\t\tfrom {}.models import {}\n'\
+                            .format(related_model[0], required_name)
+
+                        related_string += '\t\tfrom {}.{}.test_data import {}TestData\n'\
+                            .format(settings.TEST_BUILDER_OUTPUT_APP_PREFIX,
+                                    split_name,
+                                    required_name)
+
                     related_string += '\t\t# Check that requirements haven\'t already been created.\n'
                     related_string += '\t\t# True - Create necessary requirements.\n'
                     related_string += '\t\tif {}.objects.count() == 0:\n'.format(required_name)
                     related_string += '\t\t\t{}TestData.init_requirements()\n'.format(required_name)
-                    related_string += '\t\t\t{0}.objects.create(**{0}TestData.get_data(\'standard\'))\n'.format(
+                    related_string += '\t\t\tmodel = {0}.objects.create(**{0}TestData.get_data(\'standard\'))\n'.format(
                         required_name)
-                    related_string += '\t\t\t{0}.objects.create(**{0}TestData.get_data(\'unique\'))\n'.format(
+                    related_string += '\t\t\tmodel.save()\n'
+                    related_string += '\t\t\tmodel = {0}.objects.create(**{0}TestData.get_data(\'unique\'))\n'.format(
                         required_name)
+                    related_string += '\t\t\tmodel.save()\n'
+                    related_string += '\n'
 
         # Check that the model hasn't had any requirements.
         # True - Add pass to the function body for init_requirements.
         if not had_requirement:
-            related_string += '\t\tpass\n'
+            related_string += '\t\tpass\n\n'
 
-        out_string += '{}\n'.format(related_string)
+        out_string += '{}'.format(related_string)
+
+        # Create required info
+        out_string += '\t# Store self information\n'
+        out_string += '\tmodel = {}\n'.format(plain_to_bumpy(model_name))
+        out_string += '\turl = \'{}\'\n'.format(model_data['url'])
+        out_string += '\n'
+
         # Create the test data and add to out string.
         out_string += self.generate_test_data(model_data=model_data)
 
