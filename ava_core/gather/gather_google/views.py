@@ -22,6 +22,7 @@ log = logging.getLogger(__name__)
 class GoogleImportAPI(GatherImportAPI):
     MODEL_NAME = 'integration_google.GoogleIntegrationAdapter'
     DIRECTORY_INTERFACE = GoogleDirectoryHelper()
+    INTEGRATION_NAME = 'google'
 
     def get(self, request, **kwargs):
         super(GoogleImportAPI, self).get(request, **kwargs)
