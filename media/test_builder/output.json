@@ -449,6 +449,11 @@
                     "null": true,
                     "type": "IntegerField",
                     "unique": false
+                },
+                "office365gatherhistory": {
+                    "null": true,
+                    "related_model": "ava_core.gather.gather_office365.models.Office365GatherHistory",
+                    "type": "OneToOneField"
                 }
             },
             "permissions": {
@@ -523,6 +528,44 @@
                     "blank": false,
                     "null": false,
                     "related_model": "ava_core.integration.integration_ldap.models.LDAPIntegrationAdapter",
+                    "type": "ForeignKey",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        }
+    },
+    "ava_core.gather.gather_office365": {
+        "Office365GatherHistory": {
+            "fields": {
+                "gatherhistory_ptr": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "ava_core.gather.gather_abstract.models.GatherHistory",
+                    "type": "OneToOneField",
+                    "unique": true
+                },
+                "integration": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "ava_core.integration.integration_office365.models.Office365IntegrationAdapter",
                     "type": "ForeignKey",
                     "unique": false
                 }
@@ -674,6 +717,84 @@
                     "null": false,
                     "type": "CharField",
                     "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        }
+    },
+    "ava_core.integration.integration_office365": {
+        "Office365AuthorizationStore": {
+            "fields": {
+                "integration_id": {
+                    "blank": false,
+                    "null": false,
+                    "type": "IntegerField",
+                    "unique": false
+                }
+            },
+            "permissions": {
+                "admin": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "user": [
+                    "PUSH",
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ]
+            },
+            "requires_authentication": true,
+            "requires_owner": true,
+            "unique_together": [],
+            "url": "/example"
+        },
+        "Office365IntegrationAdapter": {
+            "fields": {
+                "description": {
+                    "blank": false,
+                    "max_length": 500,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": false
+                },
+                "domain": {
+                    "blank": false,
+                    "max_length": 200,
+                    "null": false,
+                    "type": "CharField",
+                    "unique": true
+                },
+                "integrationadapter_ptr": {
+                    "blank": false,
+                    "null": false,
+                    "related_model": "ava_core.integration.integration_abstract.models.IntegrationAdapter",
+                    "type": "OneToOneField",
+                    "unique": true
+                },
+                "office365_integration_history": {
+                    "null": true,
+                    "related_model": "ava_core.gather.gather_office365.models.Office365GatherHistory",
+                    "type": "ForeignKey"
                 }
             },
             "permissions": {
