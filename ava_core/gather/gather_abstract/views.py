@@ -13,41 +13,43 @@ log = logging.getLogger(__name__)
 
 class GatherImportAPI(APIView):
     MODEL_NAME = ''
+    INTEGRATION_NAME=''
     DIRECTORY_INTERFACE = None
     PERSON_MODEL = 'organize.PersonIdentifier'
     GROUP_MODEL = 'organize.GroupIdentifier'
     IMPORT_DATA = {}
 
     def get(self, request, **kwargs):
-        log.debug(str(self.__class__) + "::POST - Entered post ")
+        log.debug("::POST - Entered post ")
 
-        if settings.GATHER_USE_LOCAL:
+        if settings.GATHER_USE_LOCAL[self.INTEGRATION_NAME]:
             credential = None
         else:
 
             pk = self.kwargs.get('pk')
+            log.debug("::POST -  Attempting  to retrieve credential for :: " + str(pk))
 
-            credential = retrieve_credential_from_database(self.MODEL_NAME, pk)
+            credential = retrieve_credential_from_database(self.MODEL_NAME, pk, integration_name=self.INTEGRATION_NAME)
 
-        log.debug(str(self.__class__) + "::POST -  Attempting data import")
+        log.debug("::POST -  Attempting data import")
 
         self.IMPORT_DATA = self.DIRECTORY_INTERFACE.import_directory(credential)
 
         # parse and store the users
-        log.debug(str(self.__class__) + "::POST - Attempting user import")
+        log.debug("::POST - Attempting user import")
         self.import_users_from_json(self.IMPORT_DATA['users'])
 
-        log.debug(str(self.__class__) + "::POST - Attempting group import")
+        log.debug("::POST - Attempting group import")
         self.import_groups_from_json(self.IMPORT_DATA['groups'])
 
         return Response({'message': "Import complete"}, status=status.HTTP_200_OK)
 
     def import_users_from_json(self, users):
-        log.debug(str(self.__class__) + "::import_users_from_json - Entered method")
+        log.debug("::import_users_from_json - Entered method")
         pass
 
     def import_groups_from_json(self, groups):
-        log.debug(str(self.__class__) + "::import_groups_from_json -  Entered method")
+        log.debug("::import_groups_from_json -  Entered method")
         pass
 
 
