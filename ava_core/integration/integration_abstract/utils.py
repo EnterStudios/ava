@@ -22,7 +22,12 @@ def retrieve_credential_from_session(request):
 def store_credential_in_database(model_name, integration_id, credential):
     adapter = apps.get_model(model_name)
     oauth_adapter, created = adapter.objects.get_or_create(pk=integration_id)
-    oauth_adapter.credential = credential.to_json()
+    log.debug("Preparing to store credential " + str(credential))
+    try:
+        oauth_adapter.credential = credential.to_json()
+    except Exception as e:
+        oauth_adapter.credential = str(credential)
+
     oauth_adapter.save()
 
 

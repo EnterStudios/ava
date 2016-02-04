@@ -20,4 +20,4 @@ class Office365IntegrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Office365IntegrationAdapter
-        fields = ('id', 'name', 'description', 'domain', 'credential', 'google_integration_history')
+        fields = ('id', 'name', 'description', 'domain', 'credential', 'office365_integration_history')

@@ -19,8 +19,8 @@ from .serializers import Office365IntegrationSerializer
 log = logging.getLogger(__name__)
 
 INTEGRATION_NAME = 'office365_integration'
-MODEL_NAME = 'integration_google.Office365IntegrationAdapter'
-TEMP_MODEL_NAME = 'integration_google.Office365AuthorizationStore'
+MODEL_NAME = 'integration_office365.Office365IntegrationAdapter'
+TEMP_MODEL_NAME = 'integration_office365.Office365AuthorizationStore'
 
 
 # API Declarations
@@ -56,11 +56,11 @@ def callback(request):
     credential['showError'] = 'false'
     credential['pageRefresh'] = 'true'
 
-    json_credential = json.dumps(credential)
+    # json_credential = json.dumps(credential)
 
-    store_credential_in_database(MODEL_NAME, integration_id, json_credential)
+    store_credential_in_database(MODEL_NAME, integration_id, credential)
 
-    log.debug("CallbackAPI:GET - Access Token ::" + credential.access_token)
+    log.debug("CallbackAPI:GET - Access Token ::" + credential['access_token'])
     # log.debug("CallbackAPI:GET - Refresh Token ::" + str(credential.refresh_token))
 
     remove_temporary_flow_data_from_database(TEMP_MODEL_NAME, integration_id)
