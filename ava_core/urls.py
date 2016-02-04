@@ -15,6 +15,7 @@ urlpatterns = [
     # url(r'^notify/', include('ava_core.notify.urls')),
     url(r'^gather/google/', include('ava_core.gather.gather_google.urls')),
     url(r'^gather/ldap/', include('ava_core.gather.gather_ldap.urls')),
+    url(r'^gather/office365/', include('ava_core.gather.gather_office365.urls')),
     url(r'^integration/google/', include('ava_core.integration.integration_google.urls')),
     url(r'^integration/ldap/', include('ava_core.integration.integration_ldap.urls')),
     url(r'^integration/office365/', include('ava_core.integration.integration_office365.urls')),
