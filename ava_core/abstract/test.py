@@ -15,7 +15,12 @@ class AvaCoreTest(APITestCase):
     """
 
     def setUp(self):
-
+        # Setup a verification email
+        # TODO: Add this in where appropriate.
+        # NotificationEmail.objects.create(notification_type=NotificationEmail.VERIFICATION,
+        #                                  address_from=settings.DEFAULT_FROM_EMAIL,
+        #                                  subject='Subject',
+        #                                  body='Body')
 
         # Create required users
         self.user_admin = {'email': 'admin@test.com', 'password': 'test'}

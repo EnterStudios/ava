@@ -2,27 +2,27 @@
 from rest_framework import status
 # Local Imports
 from ava_core.abstract.test_data import AvaCoreTestData
-from ava_core.gather.gather_ldap.models import LDAPGatherHistory
+from ava_core.gather.gather_office365.models import Office365GatherHistory
 
 
 # Implementation
-class LDAPGatherHistoryTestData(AvaCoreTestData):
+class Office365GatherHistoryTestData(AvaCoreTestData):
     """
-    Test data for LDAPGatherHistory
+    Test data for Office365GatherHistory
     """
 
     @staticmethod
     def init_requirements():
         # Import the required model and data
-        from ava_core.integration.integration_ldap.models import LDAPIntegrationAdapter
-        from ava_core.integration.integration_ldap.test_data import LDAPIntegrationAdapterTestData
+        from ava_core.integration.integration_office365.models import Office365IntegrationAdapter
+        from ava_core.integration.integration_office365.test_data import Office365IntegrationAdapterTestData
         # Check that requirements haven't already been created.
         # True - Create necessary requirements.
-        if LDAPIntegrationAdapter.objects.count() == 0:
-            LDAPIntegrationAdapterTestData.init_requirements()
-            model = LDAPIntegrationAdapter.objects.create(**LDAPIntegrationAdapterTestData.get_data('standard'))
+        if Office365IntegrationAdapter.objects.count() == 0:
+            Office365IntegrationAdapterTestData.init_requirements()
+            model = Office365IntegrationAdapter.objects.create(**Office365IntegrationAdapterTestData.get_data('standard'))
             model.save()
-            model = LDAPIntegrationAdapter.objects.create(**LDAPIntegrationAdapterTestData.get_data('unique'))
+            model = Office365IntegrationAdapter.objects.create(**Office365IntegrationAdapterTestData.get_data('unique'))
             model.save()
 
         # Import the required model and data
@@ -38,7 +38,7 @@ class LDAPGatherHistoryTestData(AvaCoreTestData):
             model.save()
 
     # Store self information
-    model = LDAPGatherHistory
+    model = Office365GatherHistory
     url = '/example'
 
     standard = {

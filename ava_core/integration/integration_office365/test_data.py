@@ -2,56 +2,27 @@
 from rest_framework import status
 # Local Imports
 from ava_core.abstract.test_data import AvaCoreTestData
-from ava_core.integration.integration_google.models import GoogleAuthorizationStore, GoogleIntegrationAdapter
+from ava_core.integration.integration_office365.models import Office365IntegrationAdapter, Office365AuthorizationStore
 
 
 # Implementation
-class GoogleAuthorizationStoreTestData(AvaCoreTestData):
+class Office365IntegrationAdapterTestData(AvaCoreTestData):
     """
-    Test data for GoogleAuthorizationStore
-    """
-
-    @staticmethod
-    def init_requirements():
-        pass
-
-    # Store self information
-    model = GoogleAuthorizationStore
-    url = '/example'
-
-    standard = {
-        'integration_id': 12345,
-    }
-
-    unique = {
-        'integration_id': 54321,
-    }
-
-    modified_integration_id = {
-        'integration_id': 54321,
-    }
-    missing_integration_id = {
-    }
-
-
-
-class GoogleIntegrationAdapterTestData(AvaCoreTestData):
-    """
-    Test data for GoogleIntegrationAdapter
+    Test data for Office365IntegrationAdapter
     """
 
     @staticmethod
     def init_requirements():
         # Import the required model and data
-        from ava_core.gather.gather_google.models import GoogleGatherHistory
-        from ava_core.gather.gather_google.test_data import GoogleGatherHistoryTestData
+        from ava_core.gather.gather_office365.models import Office365GatherHistory
+        from ava_core.gather.gather_office365.test_data import Office365GatherHistoryTestData
         # Check that requirements haven't already been created.
         # True - Create necessary requirements.
-        if GoogleGatherHistory.objects.count() == 0:
-            GoogleGatherHistoryTestData.init_requirements()
-            model = GoogleGatherHistory.objects.create(**GoogleGatherHistoryTestData.get_data('standard'))
+        if Office365GatherHistory.objects.count() == 0:
+            Office365GatherHistoryTestData.init_requirements()
+            model = Office365GatherHistory.objects.create(**Office365GatherHistoryTestData.get_data('standard'))
             model.save()
-            model = GoogleGatherHistory.objects.create(**GoogleGatherHistoryTestData.get_data('unique'))
+            model = Office365GatherHistory.objects.create(**Office365GatherHistoryTestData.get_data('unique'))
             model.save()
 
         # Import the required model and data
@@ -67,69 +38,98 @@ class GoogleIntegrationAdapterTestData(AvaCoreTestData):
             model.save()
 
     # Store self information
-    model = GoogleIntegrationAdapter
+    model = Office365IntegrationAdapter
     url = '/example'
 
     standard = {
-        'google_integration_history': '/example/1/',
+        'office365_integration_history': '/example/1/',
         'domain': 'standard_char',
         'integrationadapter_ptr': 'default',
         'description': 'standard_char',
     }
 
     unique = {
-        'google_integration_history': '/example/2/',
+        'office365_integration_history': '/example/2/',
         'domain': 'unique_char',
         'integrationadapter_ptr': 'default',
         'description': 'unique_char',
     }
 
-    modified_google_integration_history = {
-        'google_integration_history': '/example/2/',
+    modified_office365_integration_history = {
+        'office365_integration_history': '/example/2/',
         'domain': 'standard_char',
         'integrationadapter_ptr': 'default',
         'description': 'standard_char',
     }
-    missing_google_integration_history = {
+    missing_office365_integration_history = {
         'domain': 'standard_char',
         'integrationadapter_ptr': 'default',
         'description': 'standard_char',
     }
 
     missing_domain = {
-        'google_integration_history': '/example/1/',
+        'office365_integration_history': '/example/1/',
         'integrationadapter_ptr': 'default',
         'description': 'standard_char',
     }
     modified_domain = {
-        'google_integration_history': '/example/1/',
+        'office365_integration_history': '/example/1/',
         'domain': 'modified_char',
         'integrationadapter_ptr': 'default',
         'description': 'standard_char',
     }
 
     modified_integrationadapter_ptr = {
-        'google_integration_history': '/example/1/',
+        'office365_integration_history': '/example/1/',
         'domain': 'standard_char',
         'integrationadapter_ptr': 'default',
         'description': 'standard_char',
     }
     missing_integrationadapter_ptr = {
-        'google_integration_history': '/example/1/',
+        'office365_integration_history': '/example/1/',
         'domain': 'standard_char',
         'description': 'standard_char',
     }
 
     modified_description = {
-        'google_integration_history': '/example/1/',
+        'office365_integration_history': '/example/1/',
         'domain': 'standard_char',
         'integrationadapter_ptr': 'default',
         'description': 'modified_char',
     }
     missing_description = {
-        'google_integration_history': '/example/1/',
+        'office365_integration_history': '/example/1/',
         'domain': 'standard_char',
         'integrationadapter_ptr': 'default',
+    }
+
+
+
+class Office365AuthorizationStoreTestData(AvaCoreTestData):
+    """
+    Test data for Office365AuthorizationStore
+    """
+
+    @staticmethod
+    def init_requirements():
+        pass
+
+    # Store self information
+    model = Office365AuthorizationStore
+    url = '/example'
+
+    standard = {
+        'integration_id': 12345,
+    }
+
+    unique = {
+        'integration_id': 54321,
+    }
+
+    modified_integration_id = {
+        'integration_id': 54321,
+    }
+    missing_integration_id = {
     }
 
 
