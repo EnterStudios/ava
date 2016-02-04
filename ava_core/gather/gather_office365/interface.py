@@ -1,13 +1,15 @@
 # flake8: noqa
 import logging
+import uuid
 
 import httplib2
+import requests
 from apiclient import errors
 from apiclient.discovery import build
-from ava_core.gather.gather_abstract.utils import load_local_test_data, create_local_test_data
 from django.conf import settings
 
 from ava_core.gather.gather_abstract.interface import DirectoryHelper
+from ava_core.gather.gather_abstract.utils import load_local_test_data, create_local_test_data
 
 log = logging.getLogger(__name__)
 
@@ -26,6 +28,11 @@ class Office365DirectoryHelper(DirectoryHelper):
         'group_members': 'group_members',
     }
 
+    # The base URL for the Microsoft Graph API.
+    graph_api_endpoint = 'https://graph.microsoft.com/v1.0{0}'
+
+    request_urls = {'users': 'https://graph.microsoft.com/v1.0/users',
+                    'groups': 'https://graph.microsoft.com/v1.0/groups'}
 
     def import_directory(self, credential):
         # Feature and testing toggle to allow developers to test GATHER locally
@@ -55,176 +62,50 @@ class Office365DirectoryHelper(DirectoryHelper):
 
         return results
 
-
     def setup(self, credential):
-        http = httplib2.Http()
-        http = credential.authorize(http)
-        self.DIRECTORY_SERVICE = build('admin', 'directory_v1', http=http)
+        self.access_token = credential['access_token']
 
+    def get_data(self, access_token, request_url):
+        # Set request headers.
+        headers = {
+            'User-Agent': 'ava_gather_office365/1.0',
+            'Authorization': 'Bearer {0}'.format(access_token),
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+
+        # Use these headers to instrument calls. Makes it easier
+        # to correlate requests and responses in case of problems
+        # and is a recommended best practice.
+        request_id = str(uuid.uuid4())
+        instrumentation = {
+            'client-request-id': request_id,
+            'return-client-request-id': 'true'
+        }
+        headers.update(instrumentation)
+
+        response = requests.get(url=request_url, headers=headers, params=None)
+
+        # Check if the response is 202 (success) or not (failure).
+        if response.status_code == requests.codes.accepted:
+            return response.content
+        else:
+            return "{0}: {1}".format(response.status_code, response.text)
 
     def get_users(self):
-        page_token = None
-
-        params = {'customer': 'my_customer'}
-        all_users = []
-        while True:
-            try:
-                if page_token:
-                    params['pageToken'] = page_token
-                current_page = self.DIRECTORY_SERVICE.users().list(**params).execute()
-
-                all_users.extend(current_page['users'])
-                page_token = current_page.get('nextPageToken')
-                if not page_token:
-                    break
-
-            except errors.HttpError as error:
-                print('An error occurred: %s' % error)
-                break
-
-        return all_users
-
+        try:
+            response = self.get_data(access_token=self.access_token, request_url=self.request_urls['users'])
+            log.debug("get_users :: " + str(response.content))
+            return response.content.to_json()
+        except Exception as e:
+            log.error("Exception thrown :: " + str(e))
 
     def get_groups(self):
-        page_token = None
-        params = {'customer': 'my_customer'}
-        all_groups = []
-        while True:
-            try:
-                if page_token:
-                    params['pageToken'] = page_token
-                current_page = self.DIRECTORY_SERVICE.groups().list(**params).execute()
-
-                all_groups.extend(current_page['groups'])
-                page_token = current_page.get('nextPageToken')
-                if not page_token:
-                    break
-
-            except errors.HttpError as error:
-                print('An error occurred: %s' % error)
-                break
-
-        return all_groups
+        try:
+            response = self.get_data(access_token=self.access_token, request_url=self.request_urls['groups'])
+            log.debug("get_groups :: " + str(response.content))
+            return response.content.to_json()
+        except Exception as e:
+            log.error("Exception thrown :: " + str(e))
 
 
-    def get_user_groups(self, all_users):
-        page_token = None
-        params = {}
-        user_groups = {}
-
-        for user in all_users:
-            user_groups[user['primaryEmail']] = []
-
-            while True:
-                try:
-                    if page_token:
-                        params['pageToken'] = page_token
-
-                    params['userKey'] = user['id']
-                    current_page = self.DIRECTORY_SERVICE.groups().list(**params).execute()
-                    curr_groups = []
-
-                    if 'groups' in current_page:
-                        curr_groups.extend(current_page['groups'])
-                        # print current_page['groups']
-
-                    page_token = current_page.get('nextPageToken')
-                    if not page_token:
-                        user_groups[user['primaryEmail']] = curr_groups
-                        break
-
-                except errors.HttpError as error:
-                    print('An error occurred: %s' % error)
-                    break
-
-        return user_groups
-
-
-    def get_group_members(self, all_groups):
-        page_token = None
-        params = {}
-        group_members = {}
-
-        for group in all_groups:
-            group_members[group['id']] = []
-
-            while True:
-                try:
-                    if page_token:
-                        params['pageToken'] = page_token
-
-                    params['groupKey'] = group['id']
-                    current_page = self.DIRECTORY_SERVICE.members().list(**params).execute()
-                    curr_members = []
-
-                    if 'members' in current_page:
-                        curr_members.extend(current_page['members'])
-
-                    page_token = current_page.get('nextPageToken')
-                    if not page_token:
-                        group_members[group['id']] = curr_members
-                        break
-
-                except errors.HttpError as error:
-                    print('An error occurred: %s' % error)
-                    break
-
-        return group_members
-
-
-# import requests
-# import uuid
-# import json
-# from connect.data import get_email_text
-#
-# # The base URL for the Microsoft Graph API.
-# graph_api_endpoint = 'https://graph.microsoft.com/v1.0{0}'
-#
-# def call_sendMail_endpoint(access_token, alias, emailAddress):
-# 	# The resource URL for the sendMail action.
-#   send_mail_url = graph_api_endpoint.format('/me/microsoft.graph.sendMail')
-#
-# 	# Set request headers.
-#   headers = {
-# 		'User-Agent' : 'python_tutorial/1.0',
-# 		'Authorization' : 'Bearer {0}'.format(access_token),
-# 		'Accept' : 'application/json',
-# 		'Content-Type' : 'application/json'
-# 	}
-#
-# 	# Use these headers to instrument calls. Makes it easier
-# 	# to correlate requests and responses in case of problems
-# 	# and is a recommended best practice.
-#   request_id = str(uuid.uuid4())
-#   instrumentation = {
-# 		'client-request-id' : request_id,
-# 		'return-client-request-id' : 'true'
-# 	}
-#   headers.update(instrumentation)
-#
-# 	# Create the email that is to be sent with API.
-#   email = {
-# 		'Message': {
-# 			'Subject': 'Welcome to Office 365 development with Python and the Office 365 Connect sample',
-# 			'Body': {
-# 				'ContentType': 'HTML',
-# 				'Content': get_email_text(alias)
-# 			},
-# 			'ToRecipients': [
-# 				{
-# 					'EmailAddress': {
-# 						'Address': emailAddress
-# 					}
-# 				}
-# 			]
-# 		},
-# 		'SaveToSentItems': 'true'
-# 	}
-#
-#   response = requests.post(url = send_mail_url, headers = headers, data = json.dumps(email), params = None)
-#
-# 	# Check if the response is 202 (success) or not (failure).
-#   if (response.status_code == requests.codes.accepted):
-#     return response.status_code
-#   else:
-#     return "{0}: {1}".format(response.status_code, response.text)
