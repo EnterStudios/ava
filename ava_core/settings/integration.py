@@ -18,6 +18,6 @@ GOOGLE_OAUTH2_USE_LOCAL = False
 OFFICE365_OAUTH2_CLIENT_ID = os.environ.get('OFFICE365_OAUTH2_CLIENT_ID', None)
 OFFICE365_OAUTH2_CLIENT_SECRET = os.environ.get('OFFICE365_OAUTH2_CLIENT_SECRET', None)
 
-OFFICE365_OAUTH2_REDIRECT_URL = 'http://avasecure.com:8000/integration/office365/callback/'
+OFFICE365_OAUTH2_REDIRECT_URL = 'http://avasecure.com:9000/integration/office365/callback/'
 
 OFFICE365_OAUTH2_USE_LOCAL = False
