@@ -1,8 +1,8 @@
-class AvaCoreTestData(object):
+class {project_name}TestData(object):
     def get_data(self, name='standard'):
         data = getattr(self, name, None)
         if not data:
-            raise Exception('Data <{}> not found in <AvaCoreTestData>.'.format(name))
+            raise Exception('Data <{{}}> not found in <{project_name}TestData>.'.format(name))
         return data
 
     def get_data_with_owner(self, owner, name='standard'):
@@ -23,7 +23,6 @@ class AvaCoreTestData(object):
                 else:
                     raise Exception('Cannot give owner as None to model when owner is requested.')
         else:
-            raise Exception('Data <{}> not found in <AvaCoreTestData>.'.format(name))
+            raise Exception('Data <{{}}> not found in <{project_name}TestData>.'.format(name))
 
         return data
-

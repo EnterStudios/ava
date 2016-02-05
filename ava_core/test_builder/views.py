@@ -134,6 +134,24 @@ class ProjectDataBuilder(APIView):
         ignore_apps = settings.TEST_BUILDER_IGNORED_APPS
         ignore_models = settings.TEST_BUILDER_IGNORED_MODELS
 
+        # Attempt to create directory for files.
+        # Passing if already created.
+        directory_name = settings.TEST_BUILDER_DIRECTORY
+        try:
+            os.makedirs(directory_name)
+        except FileExistsError:
+            pass
+
+        # Initialise value of old data to None.
+        self.old_data = None
+
+        # Check if file already exists and if values should be used.
+        file_name = '{}{}.json'.format(directory_name, settings.TEST_BUILDER_PROJECT_DATA_OUTPUT)
+        if os.path.isfile(file_name) and settings.TEST_BUILDER_USE_OLD_DATA:
+            with open(file_name) as data_file:
+                self.old_data = json.load(data_file)
+            data_file.close()
+
         # Iterate over app configs, storing related data.
         project_data = dict()
         for app in apps.get_app_configs():
@@ -149,18 +167,10 @@ class ProjectDataBuilder(APIView):
                     if app.name in str(model) and str(model) not in ignore_models:
                         # Strip the model name from string
                         model_name = str(model).split('\'')[1].split('.')[-1]
-                        app_data[model_name] = self.generate_model_data(model)
+                        app_data[model_name] = self.generate_model_data(app.name, model_name, model)
 
                 # Add apps model data to dict.
                 project_data[app.name] = app_data
-
-        # Attempt to create directory for files.
-        # Passing if already created.
-        directory_name = settings.TEST_BUILDER_DIRECTORY
-        try:
-            os.makedirs(directory_name)
-        except FileExistsError:
-            pass
 
         # Format output file name and output json dump of project data.
         file_name = '{}{}.json'.format(directory_name, settings.TEST_BUILDER_PROJECT_DATA_OUTPUT)
@@ -172,13 +182,13 @@ class ProjectDataBuilder(APIView):
 
         return HttpResponse('Success', status=status.HTTP_200_OK)
 
-    def generate_model_data(self, model):
+    def generate_model_data(self, app_name, model_name, model_data):
         # Load settings from Django.
         ignore_fields = settings.TEST_BUILDER_IGNORED_FIELDS
 
         # Iterate over all fields on the model, gathering relevant data.
         field_data = dict()
-        for field in model._meta.get_fields(include_parents=False, include_hidden=False):
+        for field in model_data._meta.get_fields(include_parents=False, include_hidden=False):
             # Check that field is not in ignored fields settings.
             # True - Store field data for return.
             if field.name not in ignore_fields:
@@ -187,18 +197,18 @@ class ProjectDataBuilder(APIView):
                     field_data[field.name] = fields_data
 
         # Populate the model data with default values to be processed by user.
-        model_data = dict()
-        model_data['fields'] = field_data
-        model_data['url'] = '/example'
-        model_data['permissions'] = {
+        model_dict = dict()
+        model_dict['fields'] = field_data
+        model_dict['url'] = self.old_data[app_name][model_name]['url'] if self.old_data else 'example/'
+        model_dict['permissions'] = self.old_data[app_name][model_name]['permissions'] if self.old_data else {
             'admin': ['PUSH', 'GET', 'PUT', 'DELETE'],
             'user': ['PUSH', 'GET', 'PUT', 'DELETE']
         }
-        model_data['requires_owner'] = True
-        model_data['requires_authentication'] = True
-        model_data['unique_together'] = []
+        model_dict['requires_owner'] = self.old_data[app_name][model_name]['requires_owner'] if self.old_data else True
+        model_dict['requires_authentication'] = self.old_data[app_name][model_name]['requires_authentication'] if self.old_data else True
+        model_dict['unique_together'] = self.old_data[app_name][model_name]['unique_together'] if self.old_data else []
 
-        return model_data
+        return model_dict
 
     def generate_field_data(self, field):
         # Attempt to get the internal type of the field.
@@ -267,29 +277,28 @@ class ProjectTestBuilder(APIView):
         # Return bad request response on failure.
         try:
             # Take a copy of the template data.
-            file_name = '{}test_template.py'.format(settings.TEST_BUILDER_DIRECTORY)
+            file_name = '{}test_template.tmp'.format(settings.TEST_BUILDER_DIRECTORY)
             with open(file_name) as data_file:
                 # Create file path for the output of copy.
                 directory_name = '{}/test.py'.format(settings.TEST_BUILDER_ABSTRACT_DIRECTORY)
 
                 # Format the data for appropriate usage.
-                data = data_file.read().format(project_name_snake=settings.TEST_BUILDER_INPUT_APP_PREFIX,
-                                               project_name_bumpy=snake_to_bumpy(
-                                                   settings.TEST_BUILDER_OUTPUT_APP_PREFIX))
+                data = data_file.read()\
+                    .format(project_name_bumpy=snake_to_bumpy(settings.TEST_BUILDER_OUTPUT_APP_PREFIX))
 
                 # Write the data to file.
                 write_to_file(directory_name, data)
 
             # Close the file handle.
             data_file.close()
-        except FileNotFoundError:
-            return HttpResponse('No test template file.', status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return HttpResponse(str(e), status=status.HTTP_400_BAD_REQUEST)
 
         # Attempt to copy template file to new directory.
         # Return bad request response on failure.
         try:
             # Take a copy of the template data.
-            file_name = '{}test_data_template.py'.format(settings.TEST_BUILDER_DIRECTORY)
+            file_name = '{}test_data_template.tmp'.format(settings.TEST_BUILDER_DIRECTORY)
             with open(file_name) as data_file:
                 # Create file path for the output of copy.
                 directory_name = '{}/test_data.py'.format(settings.TEST_BUILDER_ABSTRACT_DIRECTORY)
@@ -302,8 +311,8 @@ class ProjectTestBuilder(APIView):
 
             # Close the file handle.
             data_file.close()
-        except FileNotFoundError:
-            return HttpResponse('No test data template file.', status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return HttpResponse(str(e), status=status.HTTP_400_BAD_REQUEST)
 
         # Iterate over apps in project data, creating all necessary files.
         for app, app_name in self.project_data.items():
@@ -419,8 +428,7 @@ class ProjectTestBuilder(APIView):
         out_string += '\t\tsuper({}Test, self).setUp()\n'.format(snake_to_bumpy(model_name))
         out_string += '\n'
         out_string += '\t\t# Set the data type.\n'
-        out_string += '\t\tself.data = {}TestData\n'.format(model_name)
-        out_string += '\t\tself.data.init_requirements()\n'
+        out_string += '\t\tself.data = {}TestData()\n'.format(model_name)
         out_string += '\n'
 
         # Create each of the CRUD test functions
@@ -543,7 +551,7 @@ class ProjectTestBuilder(APIView):
         if retrieve_successful:
             out_string += '\t\tself.assertEqual(response.status_code, status.HTTP_200_OK)\n'
             if all:
-                out_string += '\t\tself.assertTrue(self.does_contain_data_list(response.data[\'results\'], [self.data.standard, self.data.modified]))\n'
+                out_string += '\t\tself.assertTrue(self.does_contain_data_list(response.data[\'results\'], [self.data.standard, self.data.unique]))\n'
             else:
                 out_string += '\t\tself.assertTrue(self.does_contain_data(response.data, self.data.standard))\n'
         else:
@@ -594,10 +602,10 @@ class ProjectTestBuilder(APIView):
         elif user is None and not model_data['requires_authentication']:
             put_successful = True
 
-        out_string += '\t\t# Make put request and ensure {} response.\n'\
+        out_string += '\t\t# Make put request and ensure {} response.\n' \
             .format(('OK' if exists else 'not found') if put_successful else 'unauthorized')
         out_string += '\t\tresponse = self.client.put({}, self.data.get_data(\'unique\'))\n' \
-            .format('url' if exists else 'self.format_url(self.data.url + \'/9999\')')
+            .format('url' if exists else 'self.format_url(self.data.url + \'9999\')')
 
         if put_successful:
             if exists:
@@ -608,7 +616,7 @@ class ProjectTestBuilder(APIView):
             out_string += '\t\tself.assertIn(response.status_code, self.status_forbidden)\n'
 
         if exists:
-            out_string += '\t\tself.assertTrue(self.does_contain_data_url(url, self.data.{}))\n'\
+            out_string += '\t\tself.assertTrue(self.does_contain_data_url(url, self.data.{}))\n' \
                 .format('unique' if put_successful else 'standard')
 
         out_string += '\n'
@@ -659,7 +667,7 @@ class ProjectTestBuilder(APIView):
         out_string += '\t\t# Make delete request and ensure {} response\n' \
             .format(('no content' if exists else 'not found') if delete_successful else 'unauthorized')
         out_string += '\t\tresponse = self.client.get({})\n' \
-            .format('url' if exists else 'self.format_url(self.data.url + \'/9999\')')
+            .format('url' if exists else 'self.format_url(self.data.url + \'9999\')')
 
         if delete_successful:
             if exists:
@@ -670,8 +678,8 @@ class ProjectTestBuilder(APIView):
             out_string += '\t\tself.assertIn(response.status_code, self.status_forbidden)\n'
 
         if exists:
-                out_string += '\t\tself.assertEqual(self.data.model.objects.count(), {})\n'\
-                    .format('0' if delete_successful else '1')
+            out_string += '\t\tself.assertEqual(self.data.model.objects.count(), {})\n' \
+                .format('0' if delete_successful else '1')
 
         out_string += '\n'
 
@@ -740,7 +748,6 @@ class ProjectTestBuilder(APIView):
             # Add required models to the output string.
             out_string += required_models + '\n'
 
-
         return out_string
 
     def generate_model_data(self, model_name, model_data):
@@ -753,11 +760,10 @@ class ProjectTestBuilder(APIView):
         out_string += '\t\"\"\"\n'
         out_string += '\n'
 
-
         # Create init requirements function
         related_string = str()
         related_string += "\t@staticmethod\n"
-        related_string += "\tdef init_requirements():\n"
+        related_string += "\tdef init_requirements(owner):\n"
 
         had_requirement = False
         # Iterate over the fields of the models.
@@ -779,24 +785,32 @@ class ProjectTestBuilder(APIView):
                     split_name = related_model[0].split('.', 1)[1]
                     if split_name not in self.current_app_name:
                         related_string += '\t\t# Import the required model and data\n'
-                        related_string += '\t\tfrom {}.models import {}\n'\
+                        related_string += '\t\tfrom {}.models import {}\n' \
                             .format(related_model[0], required_name)
 
-                        related_string += '\t\tfrom {}.{}.test_data import {}TestData\n'\
+                        related_string += '\t\tfrom {}.{}.test_data import {}TestData\n' \
                             .format(settings.TEST_BUILDER_OUTPUT_APP_PREFIX,
                                     split_name,
                                     required_name)
 
+                    related_string += '\t\t# Grab data for object creation, with owner if required.\n'
+                    related_string += '\t\tdata_model = {}TestData()\n'\
+                        .format(required_name)
+                    related_string += '\t\tstandard_data = data_model.get_data_with_owner(owner=owner, name=\'standard\')\n'\
+                        .format(required_name)
+                    related_string += '\t\tunique_data = data_model.get_data_with_owner(owner=owner, name=\'unique\')\n'\
+                        .format(required_name)
+                    related_string += '\n'
+                    related_string += '\t\t# Grab the required data set depending on if an owner is required.\n'
+                    related_string += '\t\tquery_set = {0}.objects.filter(owner=owner[\'email\']) if \'email\' in standard_data else {0}.objects.all()\n'\
+                        .format(required_name)
+                    related_string += '\n'
                     related_string += '\t\t# Check that requirements haven\'t already been created.\n'
                     related_string += '\t\t# True - Create necessary requirements.\n'
-                    related_string += '\t\tif {}.objects.count() == 0:\n'.format(required_name)
-                    related_string += '\t\t\t{}TestData.init_requirements()\n'.format(required_name)
-                    related_string += '\t\t\tmodel = {0}.objects.create(**{0}TestData.get_data(\'standard\'))\n'.format(
-                        required_name)
-                    related_string += '\t\t\tmodel.save()\n'
-                    related_string += '\t\t\tmodel = {0}.objects.create(**{0}TestData.get_data(\'unique\'))\n'.format(
-                        required_name)
-                    related_string += '\t\t\tmodel.save()\n'
+                    related_string += '\t\tif query_set.count() == 0:\n'.format(required_name)
+                    related_string += '\t\t\t{}TestData.init_requirements(owner)\n'.format(required_name)
+                    related_string += '\t\t\tmodel = {}.objects.create(**standard_data)\n'.format(required_name)
+                    related_string += '\t\t\tmodel = {}.objects.create(**unique_data)\n'.format(required_name)
                     related_string += '\n'
 
         # Check that the model hasn't had any requirements.

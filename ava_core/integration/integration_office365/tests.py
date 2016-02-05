@@ -16,8 +16,7 @@ class Office365IntegrationAdapterTest(AvaCoreTest):
         super(Office365IntegrationAdapterTest, self).setUp()
 
         # Set the data type.
-        self.data = Office365IntegrationAdapterTestData
-        self.data.init_requirements()
+        self.data = Office365IntegrationAdapterTestData()
 
     def test_office365_integration_adapter_create_as_user(self):
         # Log in as user.
@@ -86,7 +85,7 @@ class Office365IntegrationAdapterTest(AvaCoreTest):
         # Make get request and ensure OK response
         response = self.client.get(self.format_url(self.data.url))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.unique]))
 
     def test_office365_integration_adapter_retrieve_single_as_admin(self):
         # Create new Office365IntegrationAdapter models, storing URL.
@@ -111,7 +110,7 @@ class Office365IntegrationAdapterTest(AvaCoreTest):
         # Make get request and ensure OK response
         response = self.client.get(self.format_url(self.data.url))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.unique]))
 
     def test_office365_integration_adapter_retrieve_single_as_unauthorized(self):
         # Create new Office365IntegrationAdapter models, storing URL.
@@ -146,7 +145,7 @@ class Office365IntegrationAdapterTest(AvaCoreTest):
         self.login_user(self.user_user)
 
         # Make put request and ensure not found response.
-        response = self.client.put(self.format_url(self.data.url + '/9999'), self.data.get_data('unique'))
+        response = self.client.put(self.format_url(self.data.url + '9999'), self.data.get_data('unique'))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_office365_integration_adapter_update_exists_as_admin(self):
@@ -165,7 +164,7 @@ class Office365IntegrationAdapterTest(AvaCoreTest):
         self.login_user(self.user_admin)
 
         # Make put request and ensure not found response.
-        response = self.client.put(self.format_url(self.data.url + '/9999'), self.data.get_data('unique'))
+        response = self.client.put(self.format_url(self.data.url + '9999'), self.data.get_data('unique'))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_office365_integration_adapter_update_exists_as_unauthorized(self):
@@ -178,7 +177,7 @@ class Office365IntegrationAdapterTest(AvaCoreTest):
 
     def test_office365_integration_adapter_update_does_not_exist_as_unauthorized(self):
         # Make put request and ensure unauthorized response.
-        response = self.client.put(self.format_url(self.data.url + '/9999'), self.data.get_data('unique'))
+        response = self.client.put(self.format_url(self.data.url + '9999'), self.data.get_data('unique'))
         self.assertIn(response.status_code, self.status_forbidden)
 
     # TODO:    Write update owner tests    def test_office365_integration_adapter_delete_exists_as_user(self):
@@ -197,7 +196,7 @@ class Office365IntegrationAdapterTest(AvaCoreTest):
         self.login_user(self.user_user)
 
         # Make delete request and ensure not found response
-        response = self.client.get(self.format_url(self.data.url + '/9999'))
+        response = self.client.get(self.format_url(self.data.url + '9999'))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_office365_integration_adapter_delete_exists_as_admin(self):
@@ -216,7 +215,7 @@ class Office365IntegrationAdapterTest(AvaCoreTest):
         self.login_user(self.user_admin)
 
         # Make delete request and ensure not found response
-        response = self.client.get(self.format_url(self.data.url + '/9999'))
+        response = self.client.get(self.format_url(self.data.url + '9999'))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_office365_integration_adapter_delete_exists_as_unauthorized(self):
@@ -229,7 +228,7 @@ class Office365IntegrationAdapterTest(AvaCoreTest):
 
     def test_office365_integration_adapter_delete_does_not_exist_as_unauthorized(self):
         # Make delete request and ensure unauthorized response
-        response = self.client.get(self.format_url(self.data.url + '/9999'))
+        response = self.client.get(self.format_url(self.data.url + '9999'))
         self.assertIn(response.status_code, self.status_forbidden)
 
     # TODO:    Write delete owner tests
@@ -243,8 +242,7 @@ class Office365AuthorizationStoreTest(AvaCoreTest):
         super(Office365AuthorizationStoreTest, self).setUp()
 
         # Set the data type.
-        self.data = Office365AuthorizationStoreTestData
-        self.data.init_requirements()
+        self.data = Office365AuthorizationStoreTestData()
 
     def test_office365_authorization_store_create_as_user(self):
         # Log in as user.
@@ -313,7 +311,7 @@ class Office365AuthorizationStoreTest(AvaCoreTest):
         # Make get request and ensure OK response
         response = self.client.get(self.format_url(self.data.url))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.unique]))
 
     def test_office365_authorization_store_retrieve_single_as_admin(self):
         # Create new Office365AuthorizationStore models, storing URL.
@@ -338,7 +336,7 @@ class Office365AuthorizationStoreTest(AvaCoreTest):
         # Make get request and ensure OK response
         response = self.client.get(self.format_url(self.data.url))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.modified]))
+        self.assertTrue(self.does_contain_data_list(response.data['results'], [self.data.standard, self.data.unique]))
 
     def test_office365_authorization_store_retrieve_single_as_unauthorized(self):
         # Create new Office365AuthorizationStore models, storing URL.
@@ -373,7 +371,7 @@ class Office365AuthorizationStoreTest(AvaCoreTest):
         self.login_user(self.user_user)
 
         # Make put request and ensure not found response.
-        response = self.client.put(self.format_url(self.data.url + '/9999'), self.data.get_data('unique'))
+        response = self.client.put(self.format_url(self.data.url + '9999'), self.data.get_data('unique'))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_office365_authorization_store_update_exists_as_admin(self):
@@ -392,7 +390,7 @@ class Office365AuthorizationStoreTest(AvaCoreTest):
         self.login_user(self.user_admin)
 
         # Make put request and ensure not found response.
-        response = self.client.put(self.format_url(self.data.url + '/9999'), self.data.get_data('unique'))
+        response = self.client.put(self.format_url(self.data.url + '9999'), self.data.get_data('unique'))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_office365_authorization_store_update_exists_as_unauthorized(self):
@@ -405,7 +403,7 @@ class Office365AuthorizationStoreTest(AvaCoreTest):
 
     def test_office365_authorization_store_update_does_not_exist_as_unauthorized(self):
         # Make put request and ensure unauthorized response.
-        response = self.client.put(self.format_url(self.data.url + '/9999'), self.data.get_data('unique'))
+        response = self.client.put(self.format_url(self.data.url + '9999'), self.data.get_data('unique'))
         self.assertIn(response.status_code, self.status_forbidden)
 
     # TODO:    Write update owner tests    def test_office365_authorization_store_delete_exists_as_user(self):
@@ -424,7 +422,7 @@ class Office365AuthorizationStoreTest(AvaCoreTest):
         self.login_user(self.user_user)
 
         # Make delete request and ensure not found response
-        response = self.client.get(self.format_url(self.data.url + '/9999'))
+        response = self.client.get(self.format_url(self.data.url + '9999'))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_office365_authorization_store_delete_exists_as_admin(self):
@@ -443,7 +441,7 @@ class Office365AuthorizationStoreTest(AvaCoreTest):
         self.login_user(self.user_admin)
 
         # Make delete request and ensure not found response
-        response = self.client.get(self.format_url(self.data.url + '/9999'))
+        response = self.client.get(self.format_url(self.data.url + '9999'))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_office365_authorization_store_delete_exists_as_unauthorized(self):
@@ -456,7 +454,7 @@ class Office365AuthorizationStoreTest(AvaCoreTest):
 
     def test_office365_authorization_store_delete_does_not_exist_as_unauthorized(self):
         # Make delete request and ensure unauthorized response
-        response = self.client.get(self.format_url(self.data.url + '/9999'))
+        response = self.client.get(self.format_url(self.data.url + '9999'))
         self.assertIn(response.status_code, self.status_forbidden)
 
     # TODO:    Write delete owner tests

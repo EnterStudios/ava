@@ -12,95 +12,107 @@ class Office365IntegrationAdapterTestData(AvaCoreTestData):
     """
 
     @staticmethod
-    def init_requirements():
-        # Import the required model and data
-        from ava_core.gather.gather_office365.models import Office365GatherHistory
-        from ava_core.gather.gather_office365.test_data import Office365GatherHistoryTestData
-        # Check that requirements haven't already been created.
-        # True - Create necessary requirements.
-        if Office365GatherHistory.objects.count() == 0:
-            Office365GatherHistoryTestData.init_requirements()
-            model = Office365GatherHistory.objects.create(**Office365GatherHistoryTestData.get_data('standard'))
-            model.save()
-            model = Office365GatherHistory.objects.create(**Office365GatherHistoryTestData.get_data('unique'))
-            model.save()
-
+    def init_requirements(owner):
         # Import the required model and data
         from ava_core.integration.integration_abstract.models import IntegrationAdapter
         from ava_core.integration.integration_abstract.test_data import IntegrationAdapterTestData
+        # Grab data for object creation, with owner if required.
+        data_model = IntegrationAdapterTestData()
+        standard_data = data_model.get_data_with_owner(owner=owner, name='standard')
+        unique_data = data_model.get_data_with_owner(owner=owner, name='unique')
+
+        # Grab the required data set depending on if an owner is required.
+        query_set = IntegrationAdapter.objects.filter(owner=owner['email']) if 'email' in standard_data else IntegrationAdapter.objects.all()
+
         # Check that requirements haven't already been created.
         # True - Create necessary requirements.
-        if IntegrationAdapter.objects.count() == 0:
-            IntegrationAdapterTestData.init_requirements()
-            model = IntegrationAdapter.objects.create(**IntegrationAdapterTestData.get_data('standard'))
-            model.save()
-            model = IntegrationAdapter.objects.create(**IntegrationAdapterTestData.get_data('unique'))
-            model.save()
+        if query_set.count() == 0:
+            IntegrationAdapterTestData.init_requirements(owner)
+            model = IntegrationAdapter.objects.create(**standard_data)
+            model = IntegrationAdapter.objects.create(**unique_data)
+
+        # Import the required model and data
+        from ava_core.gather.gather_office365.models import Office365GatherHistory
+        from ava_core.gather.gather_office365.test_data import Office365GatherHistoryTestData
+        # Grab data for object creation, with owner if required.
+        data_model = Office365GatherHistoryTestData()
+        standard_data = data_model.get_data_with_owner(owner=owner, name='standard')
+        unique_data = data_model.get_data_with_owner(owner=owner, name='unique')
+
+        # Grab the required data set depending on if an owner is required.
+        query_set = Office365GatherHistory.objects.filter(owner=owner['email']) if 'email' in standard_data else Office365GatherHistory.objects.all()
+
+        # Check that requirements haven't already been created.
+        # True - Create necessary requirements.
+        if query_set.count() == 0:
+            Office365GatherHistoryTestData.init_requirements(owner)
+            model = Office365GatherHistory.objects.create(**standard_data)
+            model = Office365GatherHistory.objects.create(**unique_data)
 
     # Store self information
     model = Office365IntegrationAdapter
-    url = '/example'
+    url = 'example/'
 
     standard = {
-        'office365_integration_history': '/example/1/',
         'domain': 'standard_char',
         'integrationadapter_ptr': 'default',
         'description': 'standard_char',
+        'office365_integration_history': 'example//1/',
     }
 
     unique = {
-        'office365_integration_history': '/example/2/',
         'domain': 'unique_char',
         'integrationadapter_ptr': 'default',
         'description': 'unique_char',
+        'office365_integration_history': 'example//2/',
     }
 
-    modified_office365_integration_history = {
-        'office365_integration_history': '/example/2/',
+    missing_domain = {
+        'integrationadapter_ptr': 'default',
+        'description': 'standard_char',
+        'office365_integration_history': 'example//1/',
+    }
+    modified_domain = {
+        'domain': 'modified_char',
+        'integrationadapter_ptr': 'default',
+        'description': 'standard_char',
+        'office365_integration_history': 'example//1/',
+    }
+
+    missing_integrationadapter_ptr = {
+        'domain': 'standard_char',
+        'description': 'standard_char',
+        'office365_integration_history': 'example//1/',
+    }
+    modified_integrationadapter_ptr = {
         'domain': 'standard_char',
         'integrationadapter_ptr': 'default',
         'description': 'standard_char',
+        'office365_integration_history': 'example//1/',
+    }
+
+    missing_description = {
+        'domain': 'standard_char',
+        'integrationadapter_ptr': 'default',
+        'office365_integration_history': 'example//1/',
+    }
+    modified_description = {
+        'domain': 'standard_char',
+        'integrationadapter_ptr': 'default',
+        'description': 'modified_char',
+        'office365_integration_history': 'example//1/',
+    }
+
+    modified_office365_integration_history = {
+        'domain': 'standard_char',
+        'integrationadapter_ptr': 'default',
+        'description': 'standard_char',
+        'office365_integration_history': 'example//2/',
     }
     missing_office365_integration_history = {
         'domain': 'standard_char',
         'integrationadapter_ptr': 'default',
         'description': 'standard_char',
-    }
-
-    missing_domain = {
-        'office365_integration_history': '/example/1/',
-        'integrationadapter_ptr': 'default',
-        'description': 'standard_char',
-    }
-    modified_domain = {
-        'office365_integration_history': '/example/1/',
-        'domain': 'modified_char',
-        'integrationadapter_ptr': 'default',
-        'description': 'standard_char',
-    }
-
-    modified_integrationadapter_ptr = {
-        'office365_integration_history': '/example/1/',
-        'domain': 'standard_char',
-        'integrationadapter_ptr': 'default',
-        'description': 'standard_char',
-    }
-    missing_integrationadapter_ptr = {
-        'office365_integration_history': '/example/1/',
-        'domain': 'standard_char',
-        'description': 'standard_char',
-    }
-
-    modified_description = {
-        'office365_integration_history': '/example/1/',
-        'domain': 'standard_char',
-        'integrationadapter_ptr': 'default',
-        'description': 'modified_char',
-    }
-    missing_description = {
-        'office365_integration_history': '/example/1/',
-        'domain': 'standard_char',
-        'integrationadapter_ptr': 'default',
     }
 
 
@@ -111,12 +123,12 @@ class Office365AuthorizationStoreTestData(AvaCoreTestData):
     """
 
     @staticmethod
-    def init_requirements():
+    def init_requirements(owner):
         pass
 
     # Store self information
     model = Office365AuthorizationStore
-    url = '/example'
+    url = 'example/'
 
     standard = {
         'integration_id': 12345,
@@ -126,10 +138,10 @@ class Office365AuthorizationStoreTestData(AvaCoreTestData):
         'integration_id': 54321,
     }
 
+    missing_integration_id = {
+    }
     modified_integration_id = {
         'integration_id': 54321,
-    }
-    missing_integration_id = {
     }
 
 

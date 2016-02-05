@@ -4,8 +4,6 @@ from django.contrib.auth.models import User
 # Rest Imports
 from rest_framework import status
 from rest_framework.test import APITestCase
-# Local Imports
-from ava_core.notify.models import NotificationEmail
 
 
 # Implementation
@@ -15,13 +13,6 @@ class AvaCoreTest(APITestCase):
     """
 
     def setUp(self):
-        # Setup a verification email
-        # TODO: Add this in where appropriate.
-        # NotificationEmail.objects.create(notification_type=NotificationEmail.VERIFICATION,
-        #                                  address_from=settings.DEFAULT_FROM_EMAIL,
-        #                                  subject='Subject',
-        #                                  body='Body')
-
         # Create required users
         self.user_admin = {'email': 'admin@test.com', 'password': 'test'}
         self.user_user = {'email': 'user@test.com', 'password': 'test'}
@@ -47,12 +38,9 @@ class AvaCoreTest(APITestCase):
         return '{}{}'.format(settings.BASE_URL, extension)
 
     def create_model(self, data_set, data_name='standard', owner=None):
-        data = data_set.get_data(data_name)
+        data = data_set.get_data_with_owner(owner=owner, name=data_name)
         if data:
-            if owner and 'owner' in data:
-                user = self.login_user(owner)
-                data['owner'] = user
-
+            data_set.init_requirements(owner)
             model = data_set.model.objects.create(**data)
 
             return '{}{}{}'.format(settings.BASE_URL, data_set.url, model.id)

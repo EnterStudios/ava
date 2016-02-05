@@ -12,59 +12,71 @@ class LDAPGatherHistoryTestData(AvaCoreTestData):
     """
 
     @staticmethod
-    def init_requirements():
-        # Import the required model and data
-        from ava_core.integration.integration_ldap.models import LDAPIntegrationAdapter
-        from ava_core.integration.integration_ldap.test_data import LDAPIntegrationAdapterTestData
-        # Check that requirements haven't already been created.
-        # True - Create necessary requirements.
-        if LDAPIntegrationAdapter.objects.count() == 0:
-            LDAPIntegrationAdapterTestData.init_requirements()
-            model = LDAPIntegrationAdapter.objects.create(**LDAPIntegrationAdapterTestData.get_data('standard'))
-            model.save()
-            model = LDAPIntegrationAdapter.objects.create(**LDAPIntegrationAdapterTestData.get_data('unique'))
-            model.save()
-
+    def init_requirements(owner):
         # Import the required model and data
         from ava_core.gather.gather_abstract.models import GatherHistory
         from ava_core.gather.gather_abstract.test_data import GatherHistoryTestData
+        # Grab data for object creation, with owner if required.
+        data_model = GatherHistoryTestData()
+        standard_data = data_model.get_data_with_owner(owner=owner, name='standard')
+        unique_data = data_model.get_data_with_owner(owner=owner, name='unique')
+
+        # Grab the required data set depending on if an owner is required.
+        query_set = GatherHistory.objects.filter(owner=owner['email']) if 'email' in standard_data else GatherHistory.objects.all()
+
         # Check that requirements haven't already been created.
         # True - Create necessary requirements.
-        if GatherHistory.objects.count() == 0:
-            GatherHistoryTestData.init_requirements()
-            model = GatherHistory.objects.create(**GatherHistoryTestData.get_data('standard'))
-            model.save()
-            model = GatherHistory.objects.create(**GatherHistoryTestData.get_data('unique'))
-            model.save()
+        if query_set.count() == 0:
+            GatherHistoryTestData.init_requirements(owner)
+            model = GatherHistory.objects.create(**standard_data)
+            model = GatherHistory.objects.create(**unique_data)
+
+        # Import the required model and data
+        from ava_core.integration.integration_ldap.models import LDAPIntegrationAdapter
+        from ava_core.integration.integration_ldap.test_data import LDAPIntegrationAdapterTestData
+        # Grab data for object creation, with owner if required.
+        data_model = LDAPIntegrationAdapterTestData()
+        standard_data = data_model.get_data_with_owner(owner=owner, name='standard')
+        unique_data = data_model.get_data_with_owner(owner=owner, name='unique')
+
+        # Grab the required data set depending on if an owner is required.
+        query_set = LDAPIntegrationAdapter.objects.filter(owner=owner['email']) if 'email' in standard_data else LDAPIntegrationAdapter.objects.all()
+
+        # Check that requirements haven't already been created.
+        # True - Create necessary requirements.
+        if query_set.count() == 0:
+            LDAPIntegrationAdapterTestData.init_requirements(owner)
+            model = LDAPIntegrationAdapter.objects.create(**standard_data)
+            model = LDAPIntegrationAdapter.objects.create(**unique_data)
 
     # Store self information
     model = LDAPGatherHistory
-    url = '/example'
+    url = 'example/'
 
     standard = {
-        'integration': '/example/1/',
         'gatherhistory_ptr': 'default',
+        'integration': 'example//1/',
     }
 
     unique = {
-        'integration': '/example/2/',
         'gatherhistory_ptr': 'default',
-    }
-
-    modified_integration = {
-        'integration': '/example/2/',
-        'gatherhistory_ptr': 'default',
-    }
-    missing_integration = {
-        'gatherhistory_ptr': 'default',
+        'integration': 'example//2/',
     }
 
     modified_gatherhistory_ptr = {
-        'integration': '/example/1/',
         'gatherhistory_ptr': 'default',
+        'integration': 'example//1/',
     }
     missing_gatherhistory_ptr = {
-        'integration': '/example/1/',
+        'integration': 'example//1/',
+    }
+
+    missing_integration = {
+        'gatherhistory_ptr': 'default',
+    }
+    modified_integration = {
+        'gatherhistory_ptr': 'default',
+        'integration': 'example//2/',
     }
 
 
