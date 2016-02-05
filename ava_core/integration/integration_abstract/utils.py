@@ -43,9 +43,9 @@ def retrieve_credential_from_database(model_name, integration_id, integration_na
         credential = oauth2client.client.OAuth2Credentials.from_json(credential_json)
     else:
         integration_adapter = adapter.objects.get(pk=integration_id)
-        log.debug("Credential from database = :: " + str(integration_adapter.credential))
-        credential = json.dumps(obj=integration_adapter.credential)
-        log.debug("Credential after dumps = :: " + str(credential))
+        # log.debug("Credential from database = :: " + str(integration_adapter.credential))
+        credential = json.loads(s=integration_adapter.credential)
+
     return credential
 
 # retrieve the credential from the database
