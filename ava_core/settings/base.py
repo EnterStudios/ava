@@ -121,6 +121,7 @@ LOCAL_APPS = (
     'ava_core.gather.gather_google',
     'ava_core.gather.gather_ldap',
     'ava_core.gather.gather_office365',
+    'ava_core.outreach',
     'ava_core.learn',
     'ava_core.my',
     'ava_core.game',
@@ -132,7 +133,7 @@ LOCAL_APPS = (
     'ava_core.evaluate',
     'ava_core.test_builder',
     'ava_core.accounts',
-    'ava_core.report',
+
 )
 
 THIRD_PARTY_APPS = (

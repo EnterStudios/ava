@@ -4,27 +4,25 @@ from django.contrib.auth.models import User
 # Rest Imports
 from rest_framework import status
 from rest_framework.test import APITestCase
-# Local Imports
-
 
 
 # Implementation
-class AvaTest(APITestCase):
+class {project_name_bumpy}Test(APITestCase):
     """
     Test setup
     """
 
     def setUp(self):
         # Create required users
-        self.user_admin = {'email': 'admin@test.com', 'password': 'test'}
-        self.user_user = {'email': 'user@test.com', 'password': 'test'}
-        self.user_other = {'email': 'other@test.com', 'password': 'test'}
+        self.user_admin = {{'email': 'admin@test.com', 'password': 'test'}}
+        self.user_user = {{'email': 'user@test.com', 'password': 'test'}}
+        self.user_other = {{'email': 'other@test.com', 'password': 'test'}}
         self.create_user(self.user_admin)
         self.create_user(self.user_user)
         self.create_user(self.user_other)
 
         # Create assert testing variables
-        self.status_forbidden = {status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN}
+        self.status_forbidden = {{status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN}}
 
     """
     Helper methods
@@ -37,17 +35,17 @@ class AvaTest(APITestCase):
         return self.client.login(username=user['email'], email=user['email'], password=user['password'])
 
     def format_url(self, extension):
-        return '{}{}'.format(settings.BASE_URL, extension)
+        return '{{}}{{}}'.format(settings.BASE_URL, extension)
 
     def create_model(self, data_set, data_name='standard', owner=None):
-        data = data_set.get_data(data_name)
-        if owner is not None and 'owner' in data:
-            user = self.login_user(owner)
-            data['owner'] = user
+        data = data_set.get_data_with_owner(owner=owner, name=data_name)
+        if data:
+            data_set.init_requirements(owner)
+            model = data_set.model.objects.create(**data)
 
-        model = data_set.model.objects.create(data)
-
-        return '{}{}{}'.format(settings.BASE_URL, data.url, model.id)
+            return '{{}}{{}}{{}}'.format(settings.BASE_URL, data_set.url, model.id)
+        else:
+            return False
 
     def create_model_logout(self, data_set, data_name='standard', owner=None):
         url = self.create_model(data_set=data_set,
@@ -93,4 +91,3 @@ class AvaTest(APITestCase):
 
         # Return if data contains source
         return self.does_contain_data(response.data, data_source)
-
