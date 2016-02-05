@@ -51,7 +51,7 @@ class Office365DirectoryHelper(DirectoryHelper):
             results = {
                 'users': self.get_users(),
                 'groups': groups,
-                'group_members': self.get_group_members(groups),
+                # 'group_members': self.get_group_members(groups),
             }
 
             # Feature and testing toggle to allow developers to test export new test data from gather
@@ -87,24 +87,26 @@ class Office365DirectoryHelper(DirectoryHelper):
         response = requests.get(url=request_url, headers=headers, params=None)
 
         # Check if the response is 202 (success) or not (failure).
-        if response.status_code == requests.codes.accepted:
-            return response.content
+        if response.status_code is 200:
+            return response
         else:
             return "{0}: {1}".format(response.status_code, response.text)
 
     def get_users(self):
         try:
             response = self.get_data(access_token=self.access_token, request_url=self.request_urls['users'])
-            log.debug("get_users :: " + str(response.content))
-            return response.content.to_json()
+            log.debug("get_users :: status code :: " + str(response.status_code))
+            log.debug("get_users :: content :: " + str(response.text))
+            return response.text
         except Exception as e:
             log.error("Exception thrown :: " + str(e))
 
     def get_groups(self):
         try:
             response = self.get_data(access_token=self.access_token, request_url=self.request_urls['groups'])
-            log.debug("get_groups :: " + str(response.content))
-            return response.content.to_json()
+            log.debug("get_groups :: status code :: " + str(response.status_code))
+            log.debug("get_groups :: content :: " + str(response.text))
+            return response.text
         except Exception as e:
             log.error("Exception thrown :: " + str(e))
 
