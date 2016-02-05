@@ -9,7 +9,7 @@ from logging import getLogger
 from ava_core.abstract.permissions import IsAdminOrOwner, IsDeleteDenied, IsRetrieveOnly
 from ava_core.evaluate.models import EvaluateController, EvaluateSender, EvaluateResult, EvaluateTest, \
     EvaluateTemplate
-from ava_core.evaluate.serializer import EvaluateControllerSerializer, EvaluateResultSerializer, \
+from ava_core.evaluate.serializers import EvaluateControllerSerializer, EvaluateResultSerializer, \
     EvaluateSenderSerializer, EvaluateTestSerializer, EvaluateTemplateSerializer, \
     EvaluateSimpleTargetSerializer
 # Logging

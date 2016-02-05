@@ -1,8 +1,7 @@
 from django.conf.urls import url, include
 from rest_framework.routers import DefaultRouter
 
-from .views import FriendAPI, LearningHistoryAPI, LearningProfileAPI, ActivityLogAPI, ScoreCardAPI, \
-    LearningQueueAPI, PeopleAPI, TestResultsAPI, SuspiciousAPI, QuestionsAPI
+from ava_core.my.views import *
 
 router = DefaultRouter()
 router.register(r'friends', FriendAPI)

@@ -5,9 +5,11 @@ from rest_framework import viewsets
 
 from ava_core.abstract.permissions import IsOwner, IsRetrieveOnly, IsUpdateDenied
 from ava_core.evaluate.models import EvaluateResult
-from ava_core.evaluate.serializer import EvaluateResultSerializer
-from ava_core.report.models import Question, Suspicious
-from ava_core.report.serializers import QuestionSerializer, SuspiciousSerializer
+from ava_core.evaluate.serializers import EvaluateResultSerializer
+
+from ava_core.outreach.models import Question, Suspicious
+from ava_core.outreach.serializers import QuestionSerializer, SuspiciousSerializer
+
 from .models import Friend, LearningHistory, ActivityLog, LearningProfile, ScoreCard, LearningQueue, People
 from .serializers import FriendSerializer, LearningHistorySerializer, ActivityLogSerializer, \
     LearningProfileSerializer, ScoreCardSerializer, LearningQueueSerializer, PeopleSerializer
