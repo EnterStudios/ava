@@ -54,10 +54,10 @@ class Question(TimeStampedModel):
     def get_display_priority_type(self, lookup):
         return self.TYPE_PRIORITY[lookup]
 
+
 class Suspicious(Question):
     url = models.URLField()
     incident_date = models.DateTimeField()
-    pass
 
 
 class ReportResponse(TimeStampedModel):

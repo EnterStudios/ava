@@ -4,5 +4,6 @@ from django.apps import AppConfig
 
 # Implementation
 class ReportConfig(AppConfig):
-    name = 'ava_core.report'
-    verbose_name = 'Report Application'
+    name = 'ava.report'
+    label = 'ava_report'
+    # verbose_name = 'Report Application'
