@@ -17,120 +17,120 @@ class NotificationEmailTestData(AvaCoreTestData):
 
     # Store self information
     model = NotificationEmail
-    url = 'example/'
+    url = 'notify/'
 
     standard = {
+        'name': 'standard_char',
+        'notification_type': 0,
+        'description': 'standard_text',
         'subject': 'standard_char',
         'address_from': 'standard_char',
         'body': 'standard_text',
-        'notification_type': 0,
-        'description': 'standard_text',
-        'name': 'standard_char',
     }
 
     unique = {
+        'name': 'unique_char',
+        'notification_type': 5,
+        'description': 'unique_text',
         'subject': 'unique_char',
         'address_from': 'unique_char',
         'body': 'unique_text',
-        'notification_type': 5,
-        'description': 'unique_text',
-        'name': 'unique_char',
-    }
-
-    modified_subject = {
-        'subject': 'modified_char',
-        'address_from': 'standard_char',
-        'body': 'standard_text',
-        'notification_type': 0,
-        'description': 'standard_text',
-        'name': 'standard_char',
-    }
-    missing_subject = {
-        'address_from': 'standard_char',
-        'body': 'standard_text',
-        'notification_type': 0,
-        'description': 'standard_text',
-        'name': 'standard_char',
-    }
-
-    modified_address_from = {
-        'subject': 'standard_char',
-        'address_from': 'modified_char',
-        'body': 'standard_text',
-        'notification_type': 0,
-        'description': 'standard_text',
-        'name': 'standard_char',
-    }
-    missing_address_from = {
-        'subject': 'standard_char',
-        'body': 'standard_text',
-        'notification_type': 0,
-        'description': 'standard_text',
-        'name': 'standard_char',
-    }
-
-    missing_body = {
-        'subject': 'standard_char',
-        'address_from': 'standard_char',
-        'notification_type': 0,
-        'description': 'standard_text',
-        'name': 'standard_char',
-    }
-    modified_body = {
-        'subject': 'standard_char',
-        'address_from': 'standard_char',
-        'body': 'modified_text',
-        'notification_type': 0,
-        'description': 'standard_text',
-        'name': 'standard_char',
-    }
-
-    missing_notification_type = {
-        'subject': 'standard_char',
-        'address_from': 'standard_char',
-        'body': 'standard_text',
-        'description': 'standard_text',
-        'name': 'standard_char',
-    }
-    modified_notification_type = {
-        'subject': 'standard_char',
-        'address_from': 'standard_char',
-        'body': 'standard_text',
-        'notification_type': 5,
-        'description': 'standard_text',
-        'name': 'standard_char',
-    }
-
-    missing_description = {
-        'subject': 'standard_char',
-        'address_from': 'standard_char',
-        'body': 'standard_text',
-        'notification_type': 0,
-        'name': 'standard_char',
-    }
-    modified_description = {
-        'subject': 'standard_char',
-        'address_from': 'standard_char',
-        'body': 'standard_text',
-        'notification_type': 0,
-        'description': 'modified_text',
-        'name': 'standard_char',
     }
 
     modified_name = {
+        'name': 'modified_char',
+        'notification_type': 0,
+        'description': 'standard_text',
         'subject': 'standard_char',
         'address_from': 'standard_char',
         'body': 'standard_text',
-        'notification_type': 0,
-        'description': 'standard_text',
-        'name': 'modified_char',
     }
     missing_name = {
+        'notification_type': 0,
+        'description': 'standard_text',
         'subject': 'standard_char',
         'address_from': 'standard_char',
         'body': 'standard_text',
+    }
+
+    modified_notification_type = {
+        'name': 'standard_char',
+        'notification_type': 5,
+        'description': 'standard_text',
+        'subject': 'standard_char',
+        'address_from': 'standard_char',
+        'body': 'standard_text',
+    }
+    missing_notification_type = {
+        'name': 'standard_char',
+        'description': 'standard_text',
+        'subject': 'standard_char',
+        'address_from': 'standard_char',
+        'body': 'standard_text',
+    }
+
+    missing_description = {
+        'name': 'standard_char',
+        'notification_type': 0,
+        'subject': 'standard_char',
+        'address_from': 'standard_char',
+        'body': 'standard_text',
+    }
+    modified_description = {
+        'name': 'standard_char',
+        'notification_type': 0,
+        'description': 'modified_text',
+        'subject': 'standard_char',
+        'address_from': 'standard_char',
+        'body': 'standard_text',
+    }
+
+    modified_subject = {
+        'name': 'standard_char',
         'notification_type': 0,
         'description': 'standard_text',
+        'subject': 'modified_char',
+        'address_from': 'standard_char',
+        'body': 'standard_text',
+    }
+    missing_subject = {
+        'name': 'standard_char',
+        'notification_type': 0,
+        'description': 'standard_text',
+        'address_from': 'standard_char',
+        'body': 'standard_text',
+    }
+
+    missing_address_from = {
+        'name': 'standard_char',
+        'notification_type': 0,
+        'description': 'standard_text',
+        'subject': 'standard_char',
+        'body': 'standard_text',
+    }
+    modified_address_from = {
+        'name': 'standard_char',
+        'notification_type': 0,
+        'description': 'standard_text',
+        'subject': 'standard_char',
+        'address_from': 'modified_char',
+        'body': 'standard_text',
+    }
+
+    missing_body = {
+        'name': 'standard_char',
+        'notification_type': 0,
+        'description': 'standard_text',
+        'subject': 'standard_char',
+        'address_from': 'standard_char',
+    }
+    modified_body = {
+        'name': 'standard_char',
+        'notification_type': 0,
+        'description': 'standard_text',
+        'subject': 'standard_char',
+        'address_from': 'standard_char',
+        'body': 'modified_text',
     }
 
 

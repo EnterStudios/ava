@@ -2,10 +2,39 @@
 from rest_framework import status
 # Local Imports
 from ava_core.abstract.test_data import AvaCoreTestData
-from ava_core.integration.integration_google.models import GoogleIntegrationAdapter, GoogleAuthorizationStore
+from ava_core.integration.integration_google.models import GoogleAuthorizationStore, GoogleIntegrationAdapter
 
 
 # Implementation
+class GoogleAuthorizationStoreTestData(AvaCoreTestData):
+    """
+    Test data for GoogleAuthorizationStore
+    """
+
+    @staticmethod
+    def init_requirements(owner):
+        pass
+
+    # Store self information
+    model = GoogleAuthorizationStore
+    url = 'example/'
+
+    standard = {
+        'integration_id': 12345,
+    }
+
+    unique = {
+        'integration_id': 54321,
+    }
+
+    missing_integration_id = {
+    }
+    modified_integration_id = {
+        'integration_id': 54321,
+    }
+
+
+
 class GoogleIntegrationAdapterTestData(AvaCoreTestData):
     """
     Test data for GoogleIntegrationAdapter
@@ -54,94 +83,65 @@ class GoogleIntegrationAdapterTestData(AvaCoreTestData):
     url = 'example/'
 
     standard = {
-        'domain': 'standard_char',
         'google_integration_history': 'example//1/',
-        'integrationadapter_ptr': 'default',
         'description': 'standard_char',
+        'domain': 'standard_char',
+        'integrationadapter_ptr': 'default',
     }
 
     unique = {
-        'domain': 'unique_char',
         'google_integration_history': 'example//2/',
-        'integrationadapter_ptr': 'default',
         'description': 'unique_char',
+        'domain': 'unique_char',
+        'integrationadapter_ptr': 'default',
     }
 
-    missing_domain = {
-        'google_integration_history': 'example//1/',
-        'integrationadapter_ptr': 'default',
-        'description': 'standard_char',
-    }
-    modified_domain = {
-        'domain': 'modified_char',
-        'google_integration_history': 'example//1/',
-        'integrationadapter_ptr': 'default',
-        'description': 'standard_char',
-    }
-
-    missing_google_integration_history = {
-        'domain': 'standard_char',
-        'integrationadapter_ptr': 'default',
-        'description': 'standard_char',
-    }
     modified_google_integration_history = {
-        'domain': 'standard_char',
         'google_integration_history': 'example//2/',
-        'integrationadapter_ptr': 'default',
         'description': 'standard_char',
-    }
-
-    missing_integrationadapter_ptr = {
         'domain': 'standard_char',
-        'google_integration_history': 'example//1/',
-        'description': 'standard_char',
-    }
-    modified_integrationadapter_ptr = {
-        'domain': 'standard_char',
-        'google_integration_history': 'example//1/',
         'integrationadapter_ptr': 'default',
+    }
+    missing_google_integration_history = {
         'description': 'standard_char',
+        'domain': 'standard_char',
+        'integrationadapter_ptr': 'default',
     }
 
     missing_description = {
-        'domain': 'standard_char',
         'google_integration_history': 'example//1/',
+        'domain': 'standard_char',
         'integrationadapter_ptr': 'default',
     }
     modified_description = {
-        'domain': 'standard_char',
         'google_integration_history': 'example//1/',
-        'integrationadapter_ptr': 'default',
         'description': 'modified_char',
+        'domain': 'standard_char',
+        'integrationadapter_ptr': 'default',
     }
 
-
-
-class GoogleAuthorizationStoreTestData(AvaCoreTestData):
-    """
-    Test data for GoogleAuthorizationStore
-    """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
-    # Store self information
-    model = GoogleAuthorizationStore
-    url = 'example/'
-
-    standard = {
-        'integration_id': 12345,
+    modified_domain = {
+        'google_integration_history': 'example//1/',
+        'description': 'standard_char',
+        'domain': 'modified_char',
+        'integrationadapter_ptr': 'default',
+    }
+    missing_domain = {
+        'google_integration_history': 'example//1/',
+        'description': 'standard_char',
+        'integrationadapter_ptr': 'default',
     }
 
-    unique = {
-        'integration_id': 54321,
+    missing_integrationadapter_ptr = {
+        'google_integration_history': 'example//1/',
+        'description': 'standard_char',
+        'domain': 'standard_char',
     }
-
-    missing_integration_id = {
-    }
-    modified_integration_id = {
-        'integration_id': 54321,
+    modified_integrationadapter_ptr = {
+        'google_integration_history': 'example//1/',
+        'description': 'standard_char',
+        'domain': 'standard_char',
+        'integrationadapter_ptr': 'default',
     }
 
 

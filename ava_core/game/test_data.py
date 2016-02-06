@@ -36,89 +36,89 @@ class AchievementTestData(AvaCoreTestData):
     url = 'example/'
 
     standard = {
+        'name': 'standard_char',
         'score': 12345,
         'description': 'standard_text',
-        'user_achievements': 'example//1/',
-        'name': 'standard_char',
         'icon_url': 'standard_char',
+        'user_achievements': 'example//1/',
     }
 
     unique = {
+        'name': 'unique_char',
         'score': 54321,
         'description': 'unique_text',
-        'user_achievements': 'example//2/',
-        'name': 'unique_char',
         'icon_url': 'unique_char',
-    }
-
-    modified_score = {
-        'score': 54321,
-        'description': 'standard_text',
-        'user_achievements': 'example//1/',
-        'name': 'standard_char',
-        'icon_url': 'standard_char',
-    }
-    missing_score = {
-        'description': 'standard_text',
-        'user_achievements': 'example//1/',
-        'name': 'standard_char',
-        'icon_url': 'standard_char',
-    }
-
-    missing_description = {
-        'score': 12345,
-        'user_achievements': 'example//1/',
-        'name': 'standard_char',
-        'icon_url': 'standard_char',
-    }
-    modified_description = {
-        'score': 12345,
-        'description': 'modified_text',
-        'user_achievements': 'example//1/',
-        'name': 'standard_char',
-        'icon_url': 'standard_char',
-    }
-
-    missing_user_achievements = {
-        'score': 12345,
-        'description': 'standard_text',
-        'name': 'standard_char',
-        'icon_url': 'standard_char',
-    }
-    modified_user_achievements = {
-        'score': 12345,
-        'description': 'standard_text',
         'user_achievements': 'example//2/',
-        'name': 'standard_char',
-        'icon_url': 'standard_char',
     }
 
     modified_name = {
+        'name': 'modified_char',
         'score': 12345,
         'description': 'standard_text',
-        'user_achievements': 'example//1/',
-        'name': 'modified_char',
         'icon_url': 'standard_char',
+        'user_achievements': 'example//1/',
     }
     missing_name = {
         'score': 12345,
         'description': 'standard_text',
-        'user_achievements': 'example//1/',
         'icon_url': 'standard_char',
+        'user_achievements': 'example//1/',
+    }
+
+    missing_score = {
+        'name': 'standard_char',
+        'description': 'standard_text',
+        'icon_url': 'standard_char',
+        'user_achievements': 'example//1/',
+    }
+    modified_score = {
+        'name': 'standard_char',
+        'score': 54321,
+        'description': 'standard_text',
+        'icon_url': 'standard_char',
+        'user_achievements': 'example//1/',
+    }
+
+    missing_description = {
+        'name': 'standard_char',
+        'score': 12345,
+        'icon_url': 'standard_char',
+        'user_achievements': 'example//1/',
+    }
+    modified_description = {
+        'name': 'standard_char',
+        'score': 12345,
+        'description': 'modified_text',
+        'icon_url': 'standard_char',
+        'user_achievements': 'example//1/',
     }
 
     missing_icon_url = {
+        'name': 'standard_char',
         'score': 12345,
         'description': 'standard_text',
         'user_achievements': 'example//1/',
-        'name': 'standard_char',
     }
     modified_icon_url = {
+        'name': 'standard_char',
         'score': 12345,
         'description': 'standard_text',
-        'user_achievements': 'example//1/',
-        'name': 'standard_char',
         'icon_url': 'modified_char',
+        'user_achievements': 'example//1/',
+    }
+
+    missing_user_achievements = {
+        'name': 'standard_char',
+        'score': 12345,
+        'description': 'standard_text',
+        'icon_url': 'standard_char',
+    }
+    modified_user_achievements = {
+        'name': 'standard_char',
+        'score': 12345,
+        'description': 'standard_text',
+        'icon_url': 'standard_char',
+        'user_achievements': 'example//2/',
     }
 
 

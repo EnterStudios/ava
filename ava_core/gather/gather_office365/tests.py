@@ -77,7 +77,7 @@ class Office365GatherHistoryTest(AvaCoreTest):
     def test_office365_gather_history_retrieve_all_as_user(self):
         # Create new Office365GatherHistory models.
         self.create_model_logout(self.data, data_name='standard', owner=self.user_user)
-        self.create_model_logout(self.data, data_name='modified', owner=self.user_user)
+        self.create_model_logout(self.data, data_name='unique', owner=self.user_user)
 
         # Log in as user.
         self.login_user(self.user_user)
@@ -102,7 +102,7 @@ class Office365GatherHistoryTest(AvaCoreTest):
     def test_office365_gather_history_retrieve_all_as_admin(self):
         # Create new Office365GatherHistory models.
         self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
-        self.create_model_logout(self.data, data_name='modified', owner=self.user_admin)
+        self.create_model_logout(self.data, data_name='unique', owner=self.user_admin)
 
         # Log in as admin.
         self.login_user(self.user_admin)
@@ -123,7 +123,7 @@ class Office365GatherHistoryTest(AvaCoreTest):
     def test_office365_gather_history_retrieve_all_as_unauthorized(self):
         # Create new Office365GatherHistory models.
         self.create_model_logout(self.data, data_name='standard', owner=self.user_admin)
-        self.create_model_logout(self.data, data_name='modified', owner=self.user_admin)
+        self.create_model_logout(self.data, data_name='unique', owner=self.user_admin)
 
         # Make get request and ensure unauthorized response
         response = self.client.get(self.format_url(self.data.url))

@@ -63,11 +63,11 @@ class LDAPGatherHistoryTestData(AvaCoreTestData):
         'integration': 'example//2/',
     }
 
-    modified_gatherhistory_ptr = {
-        'gatherhistory_ptr': 'default',
+    missing_gatherhistory_ptr = {
         'integration': 'example//1/',
     }
-    missing_gatherhistory_ptr = {
+    modified_gatherhistory_ptr = {
+        'gatherhistory_ptr': 'default',
         'integration': 'example//1/',
     }
 

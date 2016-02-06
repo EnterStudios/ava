@@ -14,24 +14,6 @@ class IntegrationAdapterTestData(AvaCoreTestData):
     @staticmethod
     def init_requirements(owner):
         # Import the required model and data
-        from ava_core.integration.integration_office365.models import Office365IntegrationAdapter
-        from ava_core.integration.integration_office365.test_data import Office365IntegrationAdapterTestData
-        # Grab data for object creation, with owner if required.
-        data_model = Office365IntegrationAdapterTestData()
-        standard_data = data_model.get_data_with_owner(owner=owner, name='standard')
-        unique_data = data_model.get_data_with_owner(owner=owner, name='unique')
-
-        # Grab the required data set depending on if an owner is required.
-        query_set = Office365IntegrationAdapter.objects.filter(owner=owner['email']) if 'email' in standard_data else Office365IntegrationAdapter.objects.all()
-
-        # Check that requirements haven't already been created.
-        # True - Create necessary requirements.
-        if query_set.count() == 0:
-            Office365IntegrationAdapterTestData.init_requirements(owner)
-            model = Office365IntegrationAdapter.objects.create(**standard_data)
-            model = Office365IntegrationAdapter.objects.create(**unique_data)
-
-        # Import the required model and data
         from ava_core.integration.integration_google.models import GoogleIntegrationAdapter
         from ava_core.integration.integration_google.test_data import GoogleIntegrationAdapterTestData
         # Grab data for object creation, with owner if required.
@@ -67,94 +49,112 @@ class IntegrationAdapterTestData(AvaCoreTestData):
             model = LDAPIntegrationAdapter.objects.create(**standard_data)
             model = LDAPIntegrationAdapter.objects.create(**unique_data)
 
+        # Import the required model and data
+        from ava_core.integration.integration_office365.models import Office365IntegrationAdapter
+        from ava_core.integration.integration_office365.test_data import Office365IntegrationAdapterTestData
+        # Grab data for object creation, with owner if required.
+        data_model = Office365IntegrationAdapterTestData()
+        standard_data = data_model.get_data_with_owner(owner=owner, name='standard')
+        unique_data = data_model.get_data_with_owner(owner=owner, name='unique')
+
+        # Grab the required data set depending on if an owner is required.
+        query_set = Office365IntegrationAdapter.objects.filter(owner=owner['email']) if 'email' in standard_data else Office365IntegrationAdapter.objects.all()
+
+        # Check that requirements haven't already been created.
+        # True - Create necessary requirements.
+        if query_set.count() == 0:
+            Office365IntegrationAdapterTestData.init_requirements(owner)
+            model = Office365IntegrationAdapter.objects.create(**standard_data)
+            model = Office365IntegrationAdapter.objects.create(**unique_data)
+
     # Store self information
     model = IntegrationAdapter
     url = 'example/'
 
     standard = {
-        'office365integrationadapter': 'default',
-        'googleintegrationadapter': 'default',
-        'credential': 'default',
         'name': 'standard_char',
+        'credential': 'default',
+        'googleintegrationadapter': 'default',
         'ldapintegrationadapter': 'default',
+        'office365integrationadapter': 'default',
     }
 
     unique = {
-        'office365integrationadapter': 'default',
-        'googleintegrationadapter': 'default',
-        'credential': 'default',
         'name': 'unique_char',
-        'ldapintegrationadapter': 'default',
-    }
-
-    missing_office365integrationadapter = {
-        'googleintegrationadapter': 'default',
         'credential': 'default',
-        'name': 'standard_char',
-        'ldapintegrationadapter': 'default',
-    }
-    modified_office365integrationadapter = {
-        'office365integrationadapter': 'default',
         'googleintegrationadapter': 'default',
-        'credential': 'default',
-        'name': 'standard_char',
         'ldapintegrationadapter': 'default',
-    }
-
-    missing_googleintegrationadapter = {
         'office365integrationadapter': 'default',
-        'credential': 'default',
-        'name': 'standard_char',
-        'ldapintegrationadapter': 'default',
-    }
-    modified_googleintegrationadapter = {
-        'office365integrationadapter': 'default',
-        'googleintegrationadapter': 'default',
-        'credential': 'default',
-        'name': 'standard_char',
-        'ldapintegrationadapter': 'default',
-    }
-
-    missing_credential = {
-        'office365integrationadapter': 'default',
-        'googleintegrationadapter': 'default',
-        'name': 'standard_char',
-        'ldapintegrationadapter': 'default',
-    }
-    modified_credential = {
-        'office365integrationadapter': 'default',
-        'googleintegrationadapter': 'default',
-        'credential': 'default',
-        'name': 'standard_char',
-        'ldapintegrationadapter': 'default',
     }
 
     modified_name = {
-        'office365integrationadapter': 'default',
-        'googleintegrationadapter': 'default',
-        'credential': 'default',
         'name': 'modified_char',
+        'credential': 'default',
+        'googleintegrationadapter': 'default',
         'ldapintegrationadapter': 'default',
+        'office365integrationadapter': 'default',
     }
     missing_name = {
-        'office365integrationadapter': 'default',
+        'credential': 'default',
         'googleintegrationadapter': 'default',
+        'ldapintegrationadapter': 'default',
+        'office365integrationadapter': 'default',
+    }
+
+    missing_credential = {
+        'name': 'standard_char',
+        'googleintegrationadapter': 'default',
+        'ldapintegrationadapter': 'default',
+        'office365integrationadapter': 'default',
+    }
+    modified_credential = {
+        'name': 'standard_char',
+        'credential': 'default',
+        'googleintegrationadapter': 'default',
+        'ldapintegrationadapter': 'default',
+        'office365integrationadapter': 'default',
+    }
+
+    missing_googleintegrationadapter = {
+        'name': 'standard_char',
         'credential': 'default',
         'ldapintegrationadapter': 'default',
+        'office365integrationadapter': 'default',
+    }
+    modified_googleintegrationadapter = {
+        'name': 'standard_char',
+        'credential': 'default',
+        'googleintegrationadapter': 'default',
+        'ldapintegrationadapter': 'default',
+        'office365integrationadapter': 'default',
     }
 
     missing_ldapintegrationadapter = {
-        'office365integrationadapter': 'default',
-        'googleintegrationadapter': 'default',
-        'credential': 'default',
         'name': 'standard_char',
+        'credential': 'default',
+        'googleintegrationadapter': 'default',
+        'office365integrationadapter': 'default',
     }
     modified_ldapintegrationadapter = {
-        'office365integrationadapter': 'default',
-        'googleintegrationadapter': 'default',
-        'credential': 'default',
         'name': 'standard_char',
+        'credential': 'default',
+        'googleintegrationadapter': 'default',
         'ldapintegrationadapter': 'default',
+        'office365integrationadapter': 'default',
+    }
+
+    missing_office365integrationadapter = {
+        'name': 'standard_char',
+        'credential': 'default',
+        'googleintegrationadapter': 'default',
+        'ldapintegrationadapter': 'default',
+    }
+    modified_office365integrationadapter = {
+        'name': 'standard_char',
+        'credential': 'default',
+        'googleintegrationadapter': 'default',
+        'ldapintegrationadapter': 'default',
+        'office365integrationadapter': 'default',
     }
 
 

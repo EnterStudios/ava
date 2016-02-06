@@ -7,32 +7,32 @@ from .models import Question, Suspicious, ReportResponse
 log = logging.getLogger(__name__)
 
 
-class QuestionSerializer(serializers.ModelSerializer):
+class QuestionSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.email')
     is_resolved = serializers.ReadOnlyField()
 
     class Meta:
         model = Question
         fields = (
-            'id', 'created', 'modified', 'owner', 'status_type', 'priority_type', 'description',
+            'url', 'id', 'created', 'modified', 'owner', 'status_type', 'priority_type', 'description',
             'is_resolved')
 
 
-class SuspiciousSerializer(serializers.ModelSerializer):
+class SuspiciousSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.email')
     is_resolved = serializers.ReadOnlyField()
 
     class Meta:
         model = Suspicious
         fields = (
-            'id', 'created', 'modified', 'owner', 'status_type', 'priority_type', 'description',
-            'is_resolved', 'url', 'incident_date')
+            'url','id', 'created', 'modified', 'owner', 'status_type', 'priority_type', 'description',
+            'is_resolved', 'suspicious_url', 'incident_date')
 
 
-class ReportResponseSerializer(serializers.ModelSerializer):
+class ReportResponseSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.email')
 
     class Meta:
         model = ReportResponse
         fields = (
-            'id', 'owner', 'message', 'parent_response', 'question')
+            'url','id', 'owner', 'message', 'parent_response', 'question')

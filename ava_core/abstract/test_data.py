@@ -19,7 +19,7 @@ class AvaCoreTestData(object):
                 # True - Set owner field to passed owner.
                 # False - Return none.
                 if owner:
-                    data['owner'] = owner
+                    data['owner'] = owner['id']
                 else:
                     raise Exception('Cannot give owner as None to model when owner is requested.')
         else:

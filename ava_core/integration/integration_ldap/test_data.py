@@ -54,148 +54,148 @@ class LDAPIntegrationAdapterTestData(AvaCoreTestData):
     url = 'example/'
 
     standard = {
-        'ldap_integration_history': 'example//1/',
-        'ldap_user': 'standard_char',
-        'ldap_password': 'standard_char',
-        'integrationadapter_ptr': 'default',
         'salt': 'standard_char',
+        'ldap_password': 'standard_char',
+        'ldap_integration_history': 'example//1/',
         'dump_dn': 'standard_char',
+        'integrationadapter_ptr': 'default',
+        'ldap_user': 'standard_char',
         'server': 'standard_char',
     }
 
     unique = {
-        'ldap_integration_history': 'example//2/',
-        'ldap_user': 'unique_char',
-        'ldap_password': 'unique_char',
-        'integrationadapter_ptr': 'default',
         'salt': 'unique_char',
+        'ldap_password': 'unique_char',
+        'ldap_integration_history': 'example//2/',
         'dump_dn': 'unique_char',
+        'integrationadapter_ptr': 'default',
+        'ldap_user': 'unique_char',
         'server': 'unique_char',
     }
 
-    modified_ldap_integration_history = {
-        'ldap_integration_history': 'example//2/',
-        'ldap_user': 'standard_char',
+    modified_salt = {
+        'salt': 'modified_char',
         'ldap_password': 'standard_char',
-        'integrationadapter_ptr': 'default',
-        'salt': 'standard_char',
+        'ldap_integration_history': 'example//1/',
         'dump_dn': 'standard_char',
+        'integrationadapter_ptr': 'default',
+        'ldap_user': 'standard_char',
         'server': 'standard_char',
     }
-    missing_ldap_integration_history = {
-        'ldap_user': 'standard_char',
+    missing_salt = {
         'ldap_password': 'standard_char',
-        'integrationadapter_ptr': 'default',
-        'salt': 'standard_char',
+        'ldap_integration_history': 'example//1/',
         'dump_dn': 'standard_char',
+        'integrationadapter_ptr': 'default',
+        'ldap_user': 'standard_char',
         'server': 'standard_char',
     }
 
-    missing_ldap_user = {
-        'ldap_integration_history': 'example//1/',
-        'ldap_password': 'standard_char',
-        'integrationadapter_ptr': 'default',
-        'salt': 'standard_char',
-        'dump_dn': 'standard_char',
-        'server': 'standard_char',
-    }
-    modified_ldap_user = {
-        'ldap_integration_history': 'example//1/',
-        'ldap_user': 'modified_char',
-        'ldap_password': 'standard_char',
-        'integrationadapter_ptr': 'default',
-        'salt': 'standard_char',
-        'dump_dn': 'standard_char',
-        'server': 'standard_char',
-    }
-
-    modified_ldap_password = {
-        'ldap_integration_history': 'example//1/',
-        'ldap_user': 'standard_char',
-        'ldap_password': 'modified_char',
-        'integrationadapter_ptr': 'default',
-        'salt': 'standard_char',
-        'dump_dn': 'standard_char',
-        'server': 'standard_char',
-    }
     missing_ldap_password = {
-        'ldap_integration_history': 'example//1/',
-        'ldap_user': 'standard_char',
-        'integrationadapter_ptr': 'default',
         'salt': 'standard_char',
+        'ldap_integration_history': 'example//1/',
         'dump_dn': 'standard_char',
+        'integrationadapter_ptr': 'default',
+        'ldap_user': 'standard_char',
+        'server': 'standard_char',
+    }
+    modified_ldap_password = {
+        'salt': 'standard_char',
+        'ldap_password': 'modified_char',
+        'ldap_integration_history': 'example//1/',
+        'dump_dn': 'standard_char',
+        'integrationadapter_ptr': 'default',
+        'ldap_user': 'standard_char',
+        'server': 'standard_char',
+    }
+
+    missing_ldap_integration_history = {
+        'salt': 'standard_char',
+        'ldap_password': 'standard_char',
+        'dump_dn': 'standard_char',
+        'integrationadapter_ptr': 'default',
+        'ldap_user': 'standard_char',
+        'server': 'standard_char',
+    }
+    modified_ldap_integration_history = {
+        'salt': 'standard_char',
+        'ldap_password': 'standard_char',
+        'ldap_integration_history': 'example//2/',
+        'dump_dn': 'standard_char',
+        'integrationadapter_ptr': 'default',
+        'ldap_user': 'standard_char',
+        'server': 'standard_char',
+    }
+
+    missing_dump_dn = {
+        'salt': 'standard_char',
+        'ldap_password': 'standard_char',
+        'ldap_integration_history': 'example//1/',
+        'integrationadapter_ptr': 'default',
+        'ldap_user': 'standard_char',
+        'server': 'standard_char',
+    }
+    modified_dump_dn = {
+        'salt': 'standard_char',
+        'ldap_password': 'standard_char',
+        'ldap_integration_history': 'example//1/',
+        'dump_dn': 'modified_char',
+        'integrationadapter_ptr': 'default',
+        'ldap_user': 'standard_char',
         'server': 'standard_char',
     }
 
     missing_integrationadapter_ptr = {
-        'ldap_integration_history': 'example//1/',
-        'ldap_user': 'standard_char',
-        'ldap_password': 'standard_char',
         'salt': 'standard_char',
+        'ldap_password': 'standard_char',
+        'ldap_integration_history': 'example//1/',
         'dump_dn': 'standard_char',
+        'ldap_user': 'standard_char',
         'server': 'standard_char',
     }
     modified_integrationadapter_ptr = {
-        'ldap_integration_history': 'example//1/',
-        'ldap_user': 'standard_char',
-        'ldap_password': 'standard_char',
-        'integrationadapter_ptr': 'default',
         'salt': 'standard_char',
+        'ldap_password': 'standard_char',
+        'ldap_integration_history': 'example//1/',
         'dump_dn': 'standard_char',
+        'integrationadapter_ptr': 'default',
+        'ldap_user': 'standard_char',
         'server': 'standard_char',
     }
 
-    missing_salt = {
-        'ldap_integration_history': 'example//1/',
-        'ldap_user': 'standard_char',
-        'ldap_password': 'standard_char',
-        'integrationadapter_ptr': 'default',
-        'dump_dn': 'standard_char',
-        'server': 'standard_char',
-    }
-    modified_salt = {
-        'ldap_integration_history': 'example//1/',
-        'ldap_user': 'standard_char',
-        'ldap_password': 'standard_char',
-        'integrationadapter_ptr': 'default',
-        'salt': 'modified_char',
-        'dump_dn': 'standard_char',
-        'server': 'standard_char',
-    }
-
-    modified_dump_dn = {
-        'ldap_integration_history': 'example//1/',
-        'ldap_user': 'standard_char',
-        'ldap_password': 'standard_char',
-        'integrationadapter_ptr': 'default',
+    modified_ldap_user = {
         'salt': 'standard_char',
-        'dump_dn': 'modified_char',
+        'ldap_password': 'standard_char',
+        'ldap_integration_history': 'example//1/',
+        'dump_dn': 'standard_char',
+        'integrationadapter_ptr': 'default',
+        'ldap_user': 'modified_char',
         'server': 'standard_char',
     }
-    missing_dump_dn = {
-        'ldap_integration_history': 'example//1/',
-        'ldap_user': 'standard_char',
-        'ldap_password': 'standard_char',
-        'integrationadapter_ptr': 'default',
+    missing_ldap_user = {
         'salt': 'standard_char',
+        'ldap_password': 'standard_char',
+        'ldap_integration_history': 'example//1/',
+        'dump_dn': 'standard_char',
+        'integrationadapter_ptr': 'default',
         'server': 'standard_char',
     }
 
     missing_server = {
-        'ldap_integration_history': 'example//1/',
-        'ldap_user': 'standard_char',
-        'ldap_password': 'standard_char',
-        'integrationadapter_ptr': 'default',
         'salt': 'standard_char',
+        'ldap_password': 'standard_char',
+        'ldap_integration_history': 'example//1/',
         'dump_dn': 'standard_char',
+        'integrationadapter_ptr': 'default',
+        'ldap_user': 'standard_char',
     }
     modified_server = {
-        'ldap_integration_history': 'example//1/',
-        'ldap_user': 'standard_char',
-        'ldap_password': 'standard_char',
-        'integrationadapter_ptr': 'default',
         'salt': 'standard_char',
+        'ldap_password': 'standard_char',
+        'ldap_integration_history': 'example//1/',
         'dump_dn': 'standard_char',
+        'integrationadapter_ptr': 'default',
+        'ldap_user': 'standard_char',
         'server': 'modified_char',
     }
 

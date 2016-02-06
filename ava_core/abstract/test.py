@@ -1,4 +1,6 @@
 # Django Imports
+import json
+
 from django.conf import settings
 from django.contrib.auth.models import User
 # Rest Imports
@@ -12,14 +14,22 @@ class AvaCoreTest(APITestCase):
     Test setup
     """
 
+    user_ids = {}
+
     def setUp(self):
         # Create required users
         self.user_admin = {'email': 'admin@test.com', 'password': 'test'}
         self.user_user = {'email': 'user@test.com', 'password': 'test'}
         self.user_other = {'email': 'other@test.com', 'password': 'test'}
         self.create_user(self.user_admin)
+        user = User.objects.get(email=self.user_admin['email'])
+        self.user_admin['id'] = user.id
         self.create_user(self.user_user)
+        user = User.objects.get(email=self.user_user['email'])
+        self.user_user['id'] = user.id
         self.create_user(self.user_other)
+        user = User.objects.get(email=self.user_other['email'])
+        self.user_other['id'] = user.id
 
         # Create assert testing variables
         self.status_forbidden = {status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN}
@@ -39,11 +49,21 @@ class AvaCoreTest(APITestCase):
 
     def create_model(self, data_set, data_name='standard', owner=None):
         data = data_set.get_data_with_owner(owner=owner, name=data_name)
+
+        # Log in as user.
+        self.login_user(self.user_user)
+
         if data:
             data_set.init_requirements(owner)
-            model = data_set.model.objects.create(**data)
 
-            return '{}{}{}'.format(settings.BASE_URL, data_set.url, model.id)
+            # Make post request and ensure created response.
+            response = self.client.post(self.format_url(data_set.url), data, format='json')
+            # model = data_set.model.objects.create(**data)
+            if response.status_code is 201:
+                url = response.data['url']
+                return url
+            else:
+                print("Failed to create model : " + str(response) + " Data :: " + str(response.data))
         else:
             return False
 
@@ -61,6 +81,10 @@ class AvaCoreTest(APITestCase):
 
         # Iterate over source items checking that target has matching items
         for key in data_source.keys():
+            if key not in data_target:
+                return_value = False
+                break
+
             if data_source[key] != data_target[key]:
                 return_value = False
                 break
@@ -91,4 +115,3 @@ class AvaCoreTest(APITestCase):
 
         # Return if data contains source
         return self.does_contain_data(response.data, data_source)
-

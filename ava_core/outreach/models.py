@@ -56,7 +56,7 @@ class Question(TimeStampedModel):
 
 
 class Suspicious(Question):
-    url = models.URLField()
+    suspicious_url = models.URLField()
     incident_date = models.DateTimeField()
 
 
