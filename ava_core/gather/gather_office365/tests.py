@@ -6,7 +6,7 @@ from ava_core.gather.gather_office365.test_data import Office365GatherHistoryTes
 
 # Implementation
 class Office365GatherTest(AvaCoreTest):
-    
+
     def setUp(self):
         pass
         # # Make call to super.
