@@ -1,4 +1,5 @@
 # flake8: noqa
+import json
 import logging
 import uuid
 
@@ -90,23 +91,33 @@ class Office365DirectoryHelper(DirectoryHelper):
         if response.status_code is 200:
             return response
         else:
+            log.error("{0}: {1}".format(response.status_code, response.text))
             return "{0}: {1}".format(response.status_code, response.text)
 
     def get_users(self):
         try:
             response = self.get_data(access_token=self.access_token, request_url=self.request_urls['users'])
-            log.debug("get_users :: status code :: " + str(response.status_code))
-            log.debug("get_users :: content :: " + str(response.text))
-            return response.text
+            # log.debug("get_users :: status code :: " + str(response.status_code))
+            # log.debug("get_users :: content :: " + str(response.text))
+            # log.debug("type " + str(type(response.text)))
+            if type(response.text) is str:
+                json_results = json.loads(s=response.text)
+                if 'value' in json_results:
+                    return json_results['value']
+            return False
         except Exception as e:
             log.error("Exception thrown :: " + str(e))
 
     def get_groups(self):
         try:
             response = self.get_data(access_token=self.access_token, request_url=self.request_urls['groups'])
-            log.debug("get_groups :: status code :: " + str(response.status_code))
-            log.debug("get_groups :: content :: " + str(response.text))
-            return response.text
+            # log.debug("get_groups :: status code :: " + str(response.status_code))
+            # log.debug("get_groups :: content :: " + str(response.text))
+            if type(response.text) is str:
+                json_results = json.loads(s=response.text)
+                if 'value' in json_results:
+                    return json_results['value']
+            return False
         except Exception as e:
             log.error("Exception thrown :: " + str(e))
 
