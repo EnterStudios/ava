@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^api-token-verify/', verify_jwt_token),
     url(r'^accounts/', include('ava_core.accounts.urls')),
 
-    url(r'^test/', include('ava_core.test_builder.urls')),
+
 
 
     # REMOVE OR COMMENT OUT BEFORE GOING INTO PRODUCTION ENVIRONMENTS
