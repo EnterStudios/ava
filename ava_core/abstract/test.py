@@ -20,7 +20,7 @@ class AvaCoreTest(APITestCase):
 
     def setUp(self):
         # Create required users
-        for user in self.users:
+        for key, user in self.users.items():
             self.create_user(user)
             new_user = User.objects.get(email=user['email'])
             user['id'] = new_user.id
