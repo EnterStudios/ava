@@ -4,10 +4,6 @@ from ava_core.abstract.test_data import AvaCoreTestData
 from ava_core.outreach.models import Suspicious, ReportResponse, Question
 
 
-# Implementation
-
-
-
 class SuspiciousTestData(AvaCoreTestData):
     """
     Test data for Suspicious
@@ -15,7 +11,7 @@ class SuspiciousTestData(AvaCoreTestData):
 
     @staticmethod
     def init_requirements(owner):
-      pass
+        pass
 
     # Store self information
     model = Suspicious
@@ -33,6 +29,7 @@ class SuspiciousTestData(AvaCoreTestData):
         'incident_date': '2016-01-31T09:00',
     }
 
+
 class ReportResponseTestData(AvaCoreTestData):
     """
     Test data for ReportResponse
@@ -41,8 +38,6 @@ class ReportResponseTestData(AvaCoreTestData):
     @staticmethod
     def init_requirements(owner):
         pass
-
-
 
     # Store self information
     model = ReportResponse
@@ -61,6 +56,7 @@ class ReportResponseTestData(AvaCoreTestData):
         'question': 'report/question/2/',
         'owner': '',
     }
+
 
 class QuestionTestData(AvaCoreTestData):
     """
