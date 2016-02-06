@@ -131,7 +131,6 @@ LOCAL_APPS = (
     'ava_core.integration.integration_ldap',
     'ava_core.integration.integration_office365',
     'ava_core.evaluate',
-    'ava_core.test_builder',
     'ava_core.accounts',
 
 )
@@ -152,6 +151,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly'
     ],
     'PAGE_SIZE': 10,
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         # 'rest_framework.authentication.TokenAuthentication',
