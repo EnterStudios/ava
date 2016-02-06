@@ -27,6 +27,7 @@ class Person(TimeStampedModel):
     groups = models.ManyToManyField('Group', blank=True, related_name='members')
     google_identity_data = JSONField(null=True, blank=True, verbose_name='Google Data')
     ldap_identity_data = JSONField(null=True, blank=True, verbose_name='LDAP Data')
+    office365_identity_data = JSONField(null=True, blank=True, verbose_name='Office365 Data')
 
     def __str__(self):
         return self.surname + ', ' + self.first_name or ''
@@ -141,6 +142,7 @@ class Identifier(TimeStampedModel):
     TWITTER = 'TWITTER'
     NAME = 'NAME'
     GOOGLE_ID = 'GOOGLE_ID'
+    OFFICE_ID = 'OFFICE_ID'
     GUID = 'GUID'
     SID = 'SID'
 
@@ -152,6 +154,7 @@ class Identifier(TimeStampedModel):
         (TWITTER, 'Twitter ID'),
         (NAME, 'Other name'),
         (GOOGLE_ID, 'Google ID'),
+        (OFFICE_ID, 'Office ID'),
         (GUID, 'Guid'),
         (SID, 'Sid'),
     )
