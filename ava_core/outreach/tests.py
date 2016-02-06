@@ -244,6 +244,20 @@ class ReportResponseTest(AvaCoreTest):
         # Set the data type.
         self.data = ReportResponseTestData()
 
+        question_standard_url = self.create_model_logout(QuestionTestData(), data_name='standard', owner=self.user_user)
+        question_unique_url = self.create_model_logout(QuestionTestData(), data_name='unique', owner=self.user_user)
+
+        response_unique_url = self.create_model_logout(ReportResponseTestData(), data_name='unique', owner=self.user_user)
+
+        self.data.standard['question'] = question_standard_url
+        self.data.unique['question'] = question_unique_url
+
+        self.data.standard['parent_response'] = response_unique_url
+        self.data.unique['parent_response'] = response_unique_url
+
+
+
+
     def test_report_response_create_as_user(self):
         # Log in as user.
         self.login_user(self.user_user)
