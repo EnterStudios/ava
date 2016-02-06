@@ -63,17 +63,6 @@ TEMPLATES = [
     },
 ]
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DB_ENV_DB', 'postgres'),
-        'USER': os.environ.get('DB_ENV_POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_ENV_POSTGRES_PASSWORD', ''),
-        'HOST': os.environ.get('DB_PORT_5432_TCP_ADDR', ''),
-        'PORT': os.environ.get('DB_PORT_5432_TCP_PORT', ''),
-    }
-}
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 LANGUAGE_CODE = 'en-nz'
@@ -338,7 +327,10 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': _show_toolbar_callback,
 }
 
-
+try:
+    from ava_core.settings.database import *
+except ImportError:
+    pass
 
 ################################################################################
 # Import settings from integration settings
