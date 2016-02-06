@@ -9,11 +9,12 @@ from ava_core.gather.gather_google.test_data import GoogleGatherHistoryTestData
 class GoogleGatherTest(AvaCoreTest):
 
     def setUp(self):
-        # Make call to super.
-        super(GoogleGatherHistoryTest, self).setUp()
-
-        # Set the data type.
-        self.data = GoogleGatherHistoryTestData()
+        pass
+        # # Make call to super.
+        # super(GoogleGatherTest, self).setUp()
+        #
+        # # Set the data type.
+        # self.data = GoogleGatherTestData()
 
     def test_google_gather_import(self):
         pass

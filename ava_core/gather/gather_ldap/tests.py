@@ -8,11 +8,12 @@ from ava_core.gather.gather_ldap.test_data import LDAPGatherHistoryTestData
 class LDAPGatherTest(AvaCoreTest):
 
     def setUp(self):
-        # Make call to super.
-        super(GoogleGatherHistoryTest, self).setUp()
-
-        # Set the data type.
-        self.data = GoogleGatherHistoryTestData()
+        pass
+        # # Make call to super.
+        # super(LDAPGatherTest, self).setUp()
+        #
+        # # Set the data type.
+        # self.data = LDAPGatherTestData()
 
     def test_ldap_gather_import(self):
         pass
