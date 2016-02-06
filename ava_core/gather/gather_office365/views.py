@@ -41,35 +41,28 @@ class Office365ImportAPI(GatherImportAPI):
     def import_users_from_json(self, users):
         super(Office365ImportAPI, self).import_users_from_json(users)
 
-        # for user in users:
-        #     # for key, value in user.items():
-        #     #     log.debug("Office365ImportAPI::import_users_from_json -Key :: " + str(key) + " value :: " + str(value))
-        #
-        #     # check if we've already seen this person - assumes office365_id is unique
-        #     if PersonIdentifier.objects.filter(identifier=user['id'],
-        #                                        identifier_type=Identifier.OFFICE_ID).exists():
-        #
-        #         person = PersonIdentifier.objects.get(identifier=user['id'],
-        #                                               identifier_type=Identifier.OFFICE_ID).belongs_to
-        #     else:
-        #         # create a person
-        #         person, p_created = Person.objects.update_or_create(first_name=user['name']['givenName'],
-        #                                                             surname=user['name']['familyName'],
-        #                                                             office365_identity_data=json.dumps(user))
-        #
-        #     fullname = user['name']['fullName']
-        #     add_identifier(self.PERSON_MODEL, person, Identifier.NAME, fullname)
-        #
-        #     if user.get('id'):
-        #         add_identifier(self.PERSON_MODEL, person, Identifier.OFFICE_ID, user['id'])
-        #
-        #     # customer id is the id for the company - weird edge case so we need to handle this here
-        #     office365_group, id_created = Group.objects.update_or_create(name=user['customerId'],
-        #                                                               group_type=Group.OFFICE,
-        #                                                               description="Office365 Customer Group - Organisation",
-        #                                                               office365_group_data='')
-        #     person.groups.add(office365_group)
-        #
+        for user in users:
+            # for key, value in user.items():
+            #     log.debug("Office365ImportAPI::import_users_from_json -Key :: " + str(key) + " value :: " + str(value))
+
+            # check if we've already seen this person - assumes office365_id is unique
+            if PersonIdentifier.objects.filter(identifier=user['id'],
+                                               identifier_type=Identifier.OFFICE_ID).exists():
+
+                person = PersonIdentifier.objects.get(identifier=user['id'],
+                                                      identifier_type=Identifier.OFFICE_ID).belongs_to
+            else:
+                # create a person
+                person, p_created = Person.objects.update_or_create(first_name=user['givenName'],
+                                                                    surname=user['surname'],
+                                                                    office365_identity_data=json.dumps(user))
+
+            fullname = user['displayName']
+            add_identifier(self.PERSON_MODEL, person, Identifier.NAME, fullname)
+
+            if user.get('id'):
+                add_identifier(self.PERSON_MODEL, person, Identifier.OFFICE_ID, user['id'])
+
         #     if user.get('emails'):
         #         email_addresses = user['emails']
         #         for email_item in email_addresses:
