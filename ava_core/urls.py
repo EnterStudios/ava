@@ -21,9 +21,9 @@ urlpatterns = [
     url(r'^integration/ldap/', include('ava_core.integration.integration_ldap.urls')),
     url(r'^integration/office365/', include('ava_core.integration.integration_office365.urls')),
 
-    url(r'^login/', obtain_jwt_token),
-    url(r'^api-token-refresh/', refresh_jwt_token),
-    url(r'^api-token-verify/', verify_jwt_token),
+    url(r'^login/', obtain_jwt_token, name="jwt_login"),
+    url(r'^api-token-refresh/', refresh_jwt_token, name='jwt_refresh'),
+    url(r'^api-token-verify/', verify_jwt_token, name='jwt_verify'),
     url(r'^accounts/', include('ava_core.accounts.urls')),
 
 
