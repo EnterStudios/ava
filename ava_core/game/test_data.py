@@ -22,7 +22,7 @@ class AchievementTestData(AvaCoreTestData):
         'name': 'standard_char',
         'score': 12345,
         'description': 'standard_text',
-        'icon_url': 'standard_char',
+        'icon_url': 'http://example.com',
         'user_achievements': 'example//1/',
     }
 
@@ -30,6 +30,6 @@ class AchievementTestData(AvaCoreTestData):
         'name': 'unique_char',
         'score': 54321,
         'description': 'unique_text',
-        'icon_url': 'unique_char',
+        'icon_url': 'http://www.example2.com',
         'user_achievements': 'example//2/',
     }
