@@ -1,5 +1,5 @@
 # Django Imports
-
+from django.apps import apps
 from django.contrib.auth.models import User
 # Rest Imports
 from rest_framework import status
@@ -11,11 +11,12 @@ from rest_framework.test import APITestCase, APIClient
 class AvaCoreTest(APITestCase):
     users = {
         'admin': {'username': 'admin@test.com', 'email': 'admin@test.com', 'password': 'test'},
-        'normal': {'username': 'user@test.com', 'email': 'user@test.com', 'password': 'test'},
+        'standard': {'username': 'user@test.com', 'email': 'user@test.com', 'password': 'test'},
         'other': {'username': 'other@test.com', 'email': 'other@test.com', 'password': 'test'},
     }
 
     status_forbidden = {status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN}
+    status_ok = {status.HTTP_200_OK, status.HTTP_201_CREATED}
 
     login_url = reverse("jwt_login")
 
@@ -41,3 +42,20 @@ class AvaCoreTest(APITestCase):
 
     def logout_user(self):
         self.client.credentials()
+
+    def check_api_results(self, response, request_type, model_name, permitted=True):
+
+        results_size = {
+            'create': {'permitted': 1, 'not-permitted': 0},
+            'retrieve': {'permitted': 1, 'not-permitted': 1},
+            'update': {'permitted': 1, 'not-permitted': 1},
+            'delete': {'permitted': 0, 'not-permitted': 1},
+        }
+
+        model = apps.get_model(model_name)
+        if permitted:
+            self.assertIn(response.status_code, self.status_ok)
+            self.assertEqual(model.objects.count(), results_size[request_type]['permitted'])
+        else:
+            self.assertIn(response.status_code, self.status_forbidden)
+            self.assertEqual(model.objects.count(), results_size[request_type]['not-permitted'])
