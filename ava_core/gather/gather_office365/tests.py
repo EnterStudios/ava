@@ -16,7 +16,7 @@ class Office365GatherTest(AvaCoreTest):
         # self.data = Office365GatherHistoryTestData()
 
     def test_office365_gather_import(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
 
 # Implementation
@@ -33,64 +33,64 @@ class Office365GatherHistoryTest(AvaCoreTest):
         self.data = Office365GatherHistoryTestData()
 
     def test_office365_gather_history_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_delete_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_gather_history_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")

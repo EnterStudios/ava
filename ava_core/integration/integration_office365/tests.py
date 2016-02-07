@@ -19,7 +19,7 @@ class Office365AuthorizationStoreTest(AvaCoreTest):
         self.data = Office365AuthorizationStoreTestData()
 
     def test_office365_authorization_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
 
 class Office365IntegrationAdapterTest(AvaCoreTest):
@@ -35,64 +35,64 @@ class Office365IntegrationAdapterTest(AvaCoreTest):
         self.data = Office365IntegrationAdapterTestData()
 
     def test_office365_integration_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_delete_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_office365_integration_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")

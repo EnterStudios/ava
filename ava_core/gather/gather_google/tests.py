@@ -17,7 +17,7 @@ class GoogleGatherTest(AvaCoreTest):
         # self.data = GoogleGatherTestData()
 
     def test_google_gather_import(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
 # Implementation
 class GoogleGatherHistoryTest(AvaCoreTest):
@@ -33,65 +33,65 @@ class GoogleGatherHistoryTest(AvaCoreTest):
         self.data = GoogleGatherHistoryTestData()
 
     def test_google_gather_history_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
     
     def test_google_gather_history_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
  
     def test_google_gather_history_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
        
     def test_google_gather_history_delete_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
        
     def test_google_gather_history_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_gather_history_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 

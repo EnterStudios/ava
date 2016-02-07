@@ -18,64 +18,64 @@ class LDAPIntegrationAdapterTest(AvaCoreTest):
         self.data = LDAPIntegrationAdapterTestData()
 
     def test_ldap_integration_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_delete_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_ldap_integration_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")

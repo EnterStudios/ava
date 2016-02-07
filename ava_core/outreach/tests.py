@@ -18,64 +18,64 @@ class SuspiciousTest(AvaCoreTest):
         self.data = SuspiciousTestData()
 
     def test_suspicious_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_suspicious_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
 
 class ReportResponseTest(AvaCoreTest):
@@ -84,7 +84,7 @@ class ReportResponseTest(AvaCoreTest):
     """
 
     def setUp(self):
-        pass
+        self.assertEqual(1,"Test not written")
         # # Make call to super.
         # super(ReportResponseTest, self).setUp()
         #
@@ -104,64 +104,64 @@ class ReportResponseTest(AvaCoreTest):
         # self.data.unique['parent_response'] = response_unique_url
 
     def test_report_response_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_report_response_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
 
 class QuestionTest(AvaCoreTest):
@@ -177,61 +177,61 @@ class QuestionTest(AvaCoreTest):
         self.data = QuestionTestData()
 
     def test_question_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_question_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")

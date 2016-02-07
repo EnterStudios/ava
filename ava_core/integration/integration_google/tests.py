@@ -19,7 +19,7 @@ class GoogleAuthorizationStoreTest(AvaCoreTest):
         self.data = GoogleAuthorizationStoreTestData()
 
     def test_google_authorization_store_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
 
 class GoogleIntegrationAdapterTest(AvaCoreTest):
@@ -35,64 +35,64 @@ class GoogleIntegrationAdapterTest(AvaCoreTest):
         self.data = GoogleIntegrationAdapterTestData()
 
     def test_google_integration_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_delete_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_google_integration_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")

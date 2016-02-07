@@ -20,67 +20,67 @@ class GroupIdentifierAttributeTest(AvaCoreTest):
         self.data = GroupIdentifierAttributeTestData()
 
     def test_group_identifier_attribute_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_delete_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_attribute_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
 
 class PersonIdentifierAttributeTest(AvaCoreTest):
@@ -96,67 +96,67 @@ class PersonIdentifierAttributeTest(AvaCoreTest):
         self.data = PersonIdentifierAttributeTestData()
 
     def test_person_identifier_attribute_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_delete_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
 
 class GroupReportTest(AvaCoreTest):
@@ -172,67 +172,67 @@ class GroupReportTest(AvaCoreTest):
         self.data = GroupReportTestData()
 
     def test_group_report_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_delete_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_report_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
 
 class PersonIdentifierReportTest(AvaCoreTest):
@@ -248,67 +248,67 @@ class PersonIdentifierReportTest(AvaCoreTest):
         self.data = PersonIdentifierReportTestData()
 
     def test_person_identifier_report_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_delete_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_report_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
 
 class PersonTest(AvaCoreTest):
@@ -324,67 +324,67 @@ class PersonTest(AvaCoreTest):
         self.data = PersonTestData()
 
     def test_person_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_delete_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
 
 class PersonAttributeTest(AvaCoreTest):
@@ -400,67 +400,67 @@ class PersonAttributeTest(AvaCoreTest):
         self.data = PersonAttributeTestData()
 
     def test_person_attribute_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_delete_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_attribute_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
 
 class GroupTest(AvaCoreTest):
@@ -476,67 +476,67 @@ class GroupTest(AvaCoreTest):
         self.data = GroupTestData()
 
     def test_group_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_delete_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
 
 class GroupIdentifierTest(AvaCoreTest):
@@ -552,67 +552,67 @@ class GroupIdentifierTest(AvaCoreTest):
         self.data = GroupIdentifierTestData()
 
     def test_group_identifier_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_delete_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_group_identifier_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
 
 class PersonIdentifierTest(AvaCoreTest):
@@ -628,64 +628,64 @@ class PersonIdentifierTest(AvaCoreTest):
         self.data = PersonIdentifierTestData()
 
     def test_person_identifier_attribute_create_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_create_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_create_as_unauthenticated(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_retrieve_single_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_retrieve_all_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_retrieve_single_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_retrieve_all_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_retrieve_single_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_retrieve_all_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_update_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_update_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_update_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_update_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_update_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_update_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_delete_exists_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_delete_does_not_exist_as_user(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_delete_exists_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_delete_does_not_exist_as_admin(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_delete_exists_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
 
     def test_person_identifier_attribute_delete_does_not_exist_as_unauthorized(self):
-        pass
+        self.assertEqual(1,"Test not written")
