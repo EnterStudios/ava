@@ -53,7 +53,7 @@ class IsAdminOrReadOnly(permissions.BasePermission):
             return True
 
         # Write permissions are only allowed to admin.
-        return request.user.is_staff
+        return request.user.is_superuser
 
 
 class IsAccessDenied(permissions.BasePermission):
