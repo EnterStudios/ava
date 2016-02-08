@@ -20,24 +20,18 @@ class GatherHistoryTestData(AvaCoreTestData):
 
     standard = {
         'no_people': 12345,
-        'office365gatherhistory': 'default',
         'message': 'standard_char',
         'no_groups': 12345,
         'no_identifiers': 12345,
-        'googlegatherhistory': 'default',
         'next_scheduled': 'default',
-        'ldapgatherhistory': 'default',
         'import_status': 0,
     }
 
     unique = {
         'no_people': 54321,
-        'office365gatherhistory': 'default',
         'message': 'unique_char',
         'no_groups': 54321,
         'no_identifiers': 54321,
-        'googlegatherhistory': 'default',
         'next_scheduled': 'default',
-        'ldapgatherhistory': 'default',
         'import_status': 1,
     }

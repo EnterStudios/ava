@@ -6,24 +6,27 @@ from ava_core.gather.gather_office365.models import Office365GatherHistory
 
 # Implementation
 class Office365GatherHistoryTestData(AvaCoreTestData):
-    """
-    Test data for Office365GatherHistory
-    """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = Office365GatherHistory
-    url = 'example/'
+    url = 'gather/office365/'
 
     standard = {
-        'gatherhistory_ptr': 'default',
-        'integration': 'example//1/',
+        'no_people': 12345,
+        'message': 'standard_char',
+        'no_groups': 12345,
+        'no_identifiers': 12345,
+        'next_scheduled': 'default',
+        'import_status': 0,
+        'integration_id': 1,
     }
 
     unique = {
-        'gatherhistory_ptr': 'default',
-        'integration': 'example//2/',
+        'no_people': 54321,
+        'message': 'unique_char',
+        'no_groups': 54321,
+        'no_identifiers': 54321,
+        'next_scheduled': 'default',
+        'import_status': 1,
+        'integration_id': 1,
     }

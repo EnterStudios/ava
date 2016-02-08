@@ -41,15 +41,15 @@ class Office365IntegrationAdapterTestData(AvaCoreTestData):
     url = 'example/'
 
     standard = {
-        'office365_integration_history': 'example//1/',
+        'name': 'standard_char',
         'description': 'standard_char',
-        'domain': 'standard_char',
-        'integrationadapter_ptr': 'default',
+        'domain': 'http://www.example.com',
+        'credential': 'standard_char',
     }
 
     unique = {
-        'office365_integration_history': 'example//2/',
+        'name': 'unique_char',
         'description': 'unique_char',
-        'domain': 'unique_char',
-        'integrationadapter_ptr': 'default',
+        'domain': 'http://www.example.com',
+        'credential': 'unique_char',
     }
