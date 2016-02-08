@@ -3,13 +3,13 @@ from rest_framework.reverse import reverse
 
 from ava_core.abstract.test import AvaCoreTest
 # step 1: import the test data for your model
-from ava_core.game.test_data import AchievementTestData
+# from ava_core.appName.test_data import ModelNameTestData
 
 
 # Implementation
-class AchievementTest(AvaCoreTest):
-    # step 2: replace game and Achievement
-    model_name = 'game.Achievement'
+class ModelNameTest(AvaCoreTest):
+    # step 2: replace appName and ModelName
+    model_name = 'appName.ModelName'
 
     has_owner = False
 
@@ -23,17 +23,17 @@ class AchievementTest(AvaCoreTest):
 
     # step 4: update with the model name for apiviewset urls (for apiviews and custom api's this won't work
     api_urls = {
-        'create': 'achievement-list',
-        'retrieve': 'achievement-detail',
-        'retrieve_all': 'achievement-list',
-        'update': 'achievement-detail',
-        'delete': 'achievement-detail',
+        'create': 'MODELNAME-list',
+        'retrieve': 'MODELNAME-detail',
+        'retrieve_all': 'MODELNAME-list',
+        'update': 'MODELNAME-detail',
+        'delete': 'MODELNAME-detail',
     }
 
     def setUp(self):
         #step 5: Update with Model Names
-        super(AchievementTest, self).setUp()
-        self.data = AchievementTestData()
+        super(ModelNameTest, self).setUp()
+        self.data = ModelNameTestData()
 
     def create_object_via_api(self, data):
         # step 6: you will need to write this method.... this template only works with single models
@@ -53,8 +53,8 @@ class AchievementTest(AvaCoreTest):
         # return the id of the model you are testing
         return response.data['id']
 
-    # step 7: replace achievement globally with your model name in lowercase
-    def test_achievement_create_as_user(self):
+    # step 7: replace MODELNAME globally with your model name in lowercase
+    def test_MODELNAME_create_as_user(self):
         url = reverse(self.api_urls['create'])
         data = self.data.standard
 
@@ -65,7 +65,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
                                permitted=self.api_permissions['create']['standard'])
 
-    def test_achievement_create_as_admin(self):
+    def test_MODELNAME_create_as_admin(self):
         url = reverse(self.api_urls['create'])
         data = self.data.standard
 
@@ -76,7 +76,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
                                permitted=self.api_permissions['create']['admin'])
 
-    def test_achievement_create_as_unauthenticated(self):
+    def test_MODELNAME_create_as_unauthenticated(self):
         url = reverse(self.api_urls['create'])
         data = self.data.standard
 
@@ -87,7 +87,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
                                permitted=self.api_permissions['create']['unauthenticated'])
 
-    def test_achievement_retrieve_single_as_user(self):
+    def test_MODELNAME_retrieve_single_as_user(self):
         object_id = self.create_object_via_api(data=self.data.standard)
 
         self.login_user(user='standard')
@@ -98,7 +98,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
                                permitted=self.api_permissions['retrieve']['standard'])
 
-    def test_achievement_retrieve_all_as_user(self):
+    def test_MODELNAME_retrieve_all_as_user(self):
         self.create_object_via_api(data=self.data.standard)
 
         self.login_user(user='standard')
@@ -109,7 +109,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
                                permitted=self.api_permissions['retrieve']['standard'])
 
-    def test_achievement_retrieve_single_as_admin(self):
+    def test_MODELNAME_retrieve_single_as_admin(self):
         object_id = self.create_object_via_api(data=self.data.standard)
 
         self.login_user(user='admin')
@@ -120,7 +120,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
                                permitted=self.api_permissions['retrieve']['admin'])
 
-    def test_achievement_retrieve_all_as_admin(self):
+    def test_MODELNAME_retrieve_all_as_admin(self):
         self.create_object_via_api(data=self.data.standard)
 
         self.login_user(user='admin')
@@ -131,7 +131,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
                                permitted=self.api_permissions['retrieve']['admin'])
 
-    def test_achievement_retrieve_single_as_unauthenticated(self):
+    def test_MODELNAME_retrieve_single_as_unauthenticated(self):
         object_id = self.create_object_via_api(data=self.data.standard)
 
         self.logout_user()
@@ -142,7 +142,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
                                permitted=self.api_permissions['retrieve']['unauthenticated'])
 
-    def test_achievement_retrieve_all_as_unauthenticated(self):
+    def test_MODELNAME_retrieve_all_as_unauthenticated(self):
         self.create_object_via_api(data=self.data.standard)
 
         self.logout_user()
@@ -153,7 +153,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
                                permitted=self.api_permissions['retrieve']['unauthenticated'])
 
-    def test_achievement_update_exists_as_user(self):
+    def test_MODELNAME_update_exists_as_user(self):
         object_id = self.create_object_via_api(data=self.data.standard)
 
         self.login_user(user="standard")
@@ -164,7 +164,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='update', model_name=self.model_name,
                                permitted=self.api_permissions['update']['standard'])
 
-    def test_achievement_update_does_not_exist_as_user(self):
+    def test_MODELNAME_update_does_not_exist_as_user(self):
         self.login_user(user="standard")
 
         url = reverse(self.api_urls['update'], kwargs={'pk': 1})
@@ -173,7 +173,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='update', model_name=self.model_name,
                                permitted=self.api_permissions['update']['standard'])
 
-    def test_achievement_update_exists_as_admin(self):
+    def test_MODELNAME_update_exists_as_admin(self):
         object_id = self.create_object_via_api(data=self.data.standard)
 
         self.login_user(user="admin")
@@ -184,7 +184,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='update', model_name=self.model_name,
                                permitted=self.api_permissions['update']['admin'])
 
-    def test_achievement_update_does_not_exist_as_admin(self):
+    def test_MODELNAME_update_does_not_exist_as_admin(self):
         self.login_user(user="admin")
 
         url = reverse(self.api_urls['update'], kwargs={'pk': 1})
@@ -192,7 +192,7 @@ class AchievementTest(AvaCoreTest):
 
         self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_achievement_update_exists_as_unauthenticated(self):
+    def test_MODELNAME_update_exists_as_unauthenticated(self):
         object_id = self.create_object_via_api(data=self.data.standard)
 
         self.logout_user()
@@ -203,7 +203,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='update', model_name=self.model_name,
                                permitted=self.api_permissions['update']['standard'])
 
-    def test_achievement_update_does_not_exist_as_unauthenticated(self):
+    def test_MODELNAME_update_does_not_exist_as_unauthenticated(self):
         self.logout_user()
 
         url = reverse(self.api_urls['update'], kwargs={'pk': 1})
@@ -212,7 +212,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='update', model_name=self.model_name,
                                permitted=self.api_permissions['update']['standard'])
 
-    def test_achievement_delete_does_not_exist_as_user(self):
+    def test_MODELNAME_delete_does_not_exist_as_user(self):
         self.login_user(user="standard")
 
         url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
@@ -221,7 +221,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
                                permitted=self.api_permissions['delete']['standard'])
 
-    def test_achievement_delete_exists_as_user(self):
+    def test_MODELNAME_delete_exists_as_user(self):
         object_id = self.create_object_via_api(data=self.data.standard)
 
         self.login_user(user="standard")
@@ -232,7 +232,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
                                permitted=self.api_permissions['delete']['standard'])
 
-    def test_achievement_delete_exists_as_admin(self):
+    def test_MODELNAME_delete_exists_as_admin(self):
         object_id = self.create_object_via_api(data=self.data.standard)
 
         self.login_user(user="admin")
@@ -243,7 +243,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
                                permitted=self.api_permissions['delete']['admin'])
 
-    def test_achievement_delete_does_not_exist_as_admin(self):
+    def test_MODELNAME_delete_does_not_exist_as_admin(self):
         self.login_user(user="admin")
 
         url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
@@ -251,7 +251,7 @@ class AchievementTest(AvaCoreTest):
 
         self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_achievement_delete_exists_as_unauthenticated(self):
+    def test_MODELNAME_delete_exists_as_unauthenticated(self):
         self.create_object_via_api(data=self.data.standard)
 
         self.logout_user()
@@ -262,7 +262,7 @@ class AchievementTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
                                permitted=self.api_permissions['delete']['unauthenticated'])
 
-    def test_achievement_delete_does_not_exist_as_unauthenticated(self):
+    def test_MODELNAME_delete_does_not_exist_as_unauthenticated(self):
         self.logout_user()
 
         url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
