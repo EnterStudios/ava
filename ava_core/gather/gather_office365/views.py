@@ -5,7 +5,7 @@ import logging
 from rest_framework import permissions,status, viewsets
 from rest_framework.response import Response
 
-from ava_core.abstract.permissions import IsRetrieveOnly
+from ava_core.abstract.permissions import IsRetrieveOnly, IsUpdateDenied, IsDeleteDenied, IsCreateOrRetrieveOnly
 from ava_core.gather.gather_abstract.views import GatherImportAPI
 from ava_core.organize.models import Person, Identifier, Group, GroupIdentifier, PersonIdentifier
 from ava_core.organize.tasks import task_run_intro_email
@@ -131,8 +131,7 @@ class Office365GatherHistoryAPI(viewsets.ModelViewSet):
     serializer_class = Office365GatherHistorySerializer
 
     permission_classes = (permissions.IsAuthenticated,
-                          permissions.IsAdminUser,
-                          IsRetrieveOnly)
+                          permissions.IsAdminUser, IsCreateOrRetrieveOnly)
 
     def get_queryset(self):
         return Office365GatherHistory.objects.all()
