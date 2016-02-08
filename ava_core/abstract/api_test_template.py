@@ -51,7 +51,8 @@ class ModelNameTest(AvaCoreTest):
         self.logout_user()
 
         # return the id of the model you are testing
-        return response.data['id']
+        if 'id' in response.data:
+            return response.data['id']
 
     # step 7: replace MODELNAME globally with your model name in lowercase
     def test_MODELNAME_create_as_user(self):
