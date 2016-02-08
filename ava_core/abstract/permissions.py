@@ -90,20 +90,31 @@ class IsUpdateDenied(permissions.BasePermission):
     """
     Custom permission to prevent update.
     """
+    BANNED_METHODS = ('PUT')
 
     def has_permission(self, request, view):
-        # Update permissions is removed.
-        return request.method is not 'PUT'
+        if request.method in self.BANNED_METHODS:
+            return False
+
+            # def has_permission(self, request, view):
+            #     # Update permissions is removed.
+            #     return request.method is not 'PUT'
 
 
 class IsDeleteDenied(permissions.BasePermission):
-    """
-    Custom permission to prevent delete.
-    """
+    BANNED_METHODS = ('DELETE')
 
     def has_permission(self, request, view):
-        # Delete permissions is removed.
-        return request.method is not 'DELETE'
+        if request.method in self.BANNED_METHODS:
+            return False
+
+
+class IsCreateOrRetrieveOnly(permissions.BasePermission):
+    SAFE_METHODS = ('GET', 'POST', 'HEAD', 'OPTIONS')
+
+    def has_permission(self, request, view):
+        if request.method in self.SAFE_METHODS:
+            return True
 
 
 class IsAdminOrCreateDenied(permissions.BasePermission):
