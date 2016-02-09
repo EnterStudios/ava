@@ -1,81 +1,273 @@
-# Rest Imports
-# Local Imports
+from rest_framework import status
+from rest_framework.reverse import reverse
+
 from ava_core.abstract.test import AvaCoreTest
+# step 1: import the test data for your model
 from ava_core.integration.integration_ldap.test_data import LDAPIntegrationAdapterTestData
 
 
 # Implementation
 class LDAPIntegrationAdapterTest(AvaCoreTest):
-    """
-    LDAPIntegrationAdapter Test
-    """
+    # step 2: replace appName and LDAPIntegrationAdapter
+    model_name = 'integration_ldap.LDAPIntegrationAdapter'
+
+    has_owner = False
+
+    # step 3: populate this section to define what you expect the API permissions will be
+    api_permissions = {
+        'create': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'retrieve': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'update': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'delete': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+    }
+
+    # step 4: update with the model name for apiviewset urls (for apiviews and custom api's this won't work
+    api_urls = {
+        'create': 'ldap-setup-list',
+        'retrieve': 'ldap-setup-detail',
+        'retrieve_all': 'ldap-setup-list',
+        'update': 'ldap-setup-detail',
+        'delete': 'ldap-setup-detail',
+    }
 
     def setUp(self):
-        # Make call to super.
+        # step 5: Update with Model Names
         super(LDAPIntegrationAdapterTest, self).setUp()
-
-        # Set the data type.
         self.data = LDAPIntegrationAdapterTestData()
 
-    def test_ldap_integration_create_as_user(self):
-        self.assertEqual(1,"Test not written")
+    def create_object_via_api(self, data):
+        # step 6: you will need to write this method.... this template only works with single models
+        # with no relationships
+        url = reverse(self.api_urls['create'])
 
-    def test_ldap_integration_create_as_admin(self):
-        self.assertEqual(1,"Test not written")
+        # must be admin to create
+        self.login_user(user='admin')
 
-    def test_ldap_integration_create_as_unauthenticated(self):
-        self.assertEqual(1,"Test not written")
+        response = self.client.post(url, data, format='json')
 
-    def test_ldap_integration_retrieve_single_as_user(self):
-        self.assertEqual(1,"Test not written")
+        self.check_api_results(response=response, request_type='create', model_name=self.model_name,
+                               permitted=self.api_permissions['create']['admin'])
 
-    def test_ldap_integration_retrieve_all_as_user(self):
-        self.assertEqual(1,"Test not written")
+        self.logout_user()
 
-    def test_ldap_integration_retrieve_single_as_admin(self):
-        self.assertEqual(1,"Test not written")
+        # return the id of the model you are testing
+        if 'id' in response.data:
+            return response.data['id']
 
-    def test_ldap_integration_retrieve_all_as_admin(self):
-        self.assertEqual(1,"Test not written")
+    # step 7: replace ldapintegrationadapter globally with your model name in lowercase
+    def test_ldapintegrationadapter_create_as_user(self):
+        url = reverse(self.api_urls['create'])
+        data = self.data.standard
 
-    def test_ldap_integration_retrieve_single_as_unauthorized(self):
-        self.assertEqual(1,"Test not written")
+        self.login_user(user='standard')
 
-    def test_ldap_integration_retrieve_all_as_unauthorized(self):
-        self.assertEqual(1,"Test not written")
+        response = self.client.post(url, data, format='json')
 
-    def test_ldap_integration_update_exists_as_user(self):
-        self.assertEqual(1,"Test not written")
+        self.check_api_results(response=response, request_type='create', model_name=self.model_name,
+                               permitted=self.api_permissions['create']['standard'])
 
-    def test_ldap_integration_update_does_not_exist_as_user(self):
-        self.assertEqual(1,"Test not written")
+    def test_ldapintegrationadapter_create_as_admin(self):
+        url = reverse(self.api_urls['create'])
+        data = self.data.standard
 
-    def test_ldap_integration_update_exists_as_admin(self):
-        self.assertEqual(1,"Test not written")
+        self.login_user(user='admin')
 
-    def test_ldap_integration_update_does_not_exist_as_admin(self):
-        self.assertEqual(1,"Test not written")
+        response = self.client.post(url, data, format='json')
 
-    def test_ldap_integration_update_exists_as_unauthorized(self):
-        self.assertEqual(1,"Test not written")
+        self.check_api_results(response=response, request_type='create', model_name=self.model_name,
+                               permitted=self.api_permissions['create']['admin'])
 
-    def test_ldap_integration_update_does_not_exist_as_unauthorized(self):
-        self.assertEqual(1,"Test not written")
+    def test_ldapintegrationadapter_create_as_unauthenticated(self):
+        url = reverse(self.api_urls['create'])
+        data = self.data.standard
 
-    def test_ldap_integration_delete_exists_as_user(self):
-        self.assertEqual(1,"Test not written")
+        self.logout_user()
 
-    def test_ldap_integration_delete_does_not_exist_as_user(self):
-        self.assertEqual(1,"Test not written")
+        response = self.client.post(url, data, format='json')
 
-    def test_ldap_integration_delete_exists_as_admin(self):
-        self.assertEqual(1,"Test not written")
+        self.check_api_results(response=response, request_type='create', model_name=self.model_name,
+                               permitted=self.api_permissions['create']['unauthenticated'])
 
-    def test_ldap_integration_delete_does_not_exist_as_admin(self):
-        self.assertEqual(1,"Test not written")
+    def test_ldapintegrationadapter_retrieve_single_as_user(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
 
-    def test_ldap_integration_delete_exists_as_unauthorized(self):
-        self.assertEqual(1,"Test not written")
+        self.login_user(user='standard')
 
-    def test_ldap_integration_delete_does_not_exist_as_unauthorized(self):
-        self.assertEqual(1,"Test not written")
+        url = reverse(self.api_urls['retrieve'], kwargs={'pk': object_id})
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['standard'])
+
+    def test_ldapintegrationadapter_retrieve_all_as_user(self):
+        self.create_object_via_api(data=self.data.standard)
+
+        self.login_user(user='standard')
+
+        url = reverse(self.api_urls['retrieve_all'])
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['standard'])
+
+    def test_ldapintegrationadapter_retrieve_single_as_admin(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
+
+        self.login_user(user='admin')
+
+        url = reverse(self.api_urls['retrieve'], kwargs={'pk': object_id})
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['admin'])
+
+    def test_ldapintegrationadapter_retrieve_all_as_admin(self):
+        self.create_object_via_api(data=self.data.standard)
+
+        self.login_user(user='admin')
+
+        url = reverse(self.api_urls['retrieve_all'])
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['admin'])
+
+    def test_ldapintegrationadapter_retrieve_single_as_unauthenticated(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
+
+        self.logout_user()
+
+        url = reverse(self.api_urls['retrieve'], kwargs={'pk': object_id})
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['unauthenticated'])
+
+    def test_ldapintegrationadapter_retrieve_all_as_unauthenticated(self):
+        self.create_object_via_api(data=self.data.standard)
+
+        self.logout_user()
+
+        url = reverse(self.api_urls['retrieve_all'])
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['unauthenticated'])
+
+    def test_ldapintegrationadapter_update_exists_as_user(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
+
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': object_id})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['standard'])
+
+    def test_ldapintegrationadapter_update_does_not_exist_as_user(self):
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': 1})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['standard'])
+
+    def test_ldapintegrationadapter_update_exists_as_admin(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
+
+        self.login_user(user="admin")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': object_id})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['admin'])
+
+    def test_ldapintegrationadapter_update_does_not_exist_as_admin(self):
+        self.login_user(user="admin")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': 1})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_ldapintegrationadapter_update_exists_as_unauthenticated(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
+
+        self.logout_user()
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': object_id})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['standard'])
+
+    def test_ldapintegrationadapter_update_does_not_exist_as_unauthenticated(self):
+        self.logout_user()
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': 1})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['standard'])
+
+    def test_ldapintegrationadapter_delete_does_not_exist_as_user(self):
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['standard'])
+
+    def test_ldapintegrationadapter_delete_exists_as_user(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
+
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': object_id})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['standard'])
+
+    def test_ldapintegrationadapter_delete_exists_as_admin(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
+
+        self.login_user(user="admin")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': object_id})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['admin'])
+
+    def test_ldapintegrationadapter_delete_does_not_exist_as_admin(self):
+        self.login_user(user="admin")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
+        response = self.client.delete(url)
+
+        self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_ldapintegrationadapter_delete_exists_as_unauthenticated(self):
+        self.create_object_via_api(data=self.data.standard)
+
+        self.logout_user()
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['unauthenticated'])
+
+    def test_ldapintegrationadapter_delete_does_not_exist_as_unauthenticated(self):
+        self.logout_user()
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['unauthenticated'])
