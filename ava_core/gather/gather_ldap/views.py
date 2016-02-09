@@ -4,7 +4,7 @@ import logging
 from rest_framework import status, viewsets, permissions
 from rest_framework.response import Response
 
-from ava_core.abstract.permissions import IsRetrieveOnly
+from ava_core.abstract.permissions import IsRetrieveOnly, IsCreateOrRetrieveOnly
 from ava_core.organize.models import Group, Person, Identifier
 from ava_core.organize.tasks import task_run_intro_email
 from ava_core.organize.utils import add_identifier
@@ -225,8 +225,7 @@ class LDAPGatherHistoryAPI(viewsets.ModelViewSet):
     serializer_class = LDAPGatherHistorySerializer
 
     permission_classes = (permissions.IsAuthenticated,
-                          permissions.IsAdminUser,
-                          IsRetrieveOnly)
+                          permissions.IsAdminUser, IsCreateOrRetrieveOnly)
 
     def get_queryset(self):
         return LDAPGatherHistory.objects.all()

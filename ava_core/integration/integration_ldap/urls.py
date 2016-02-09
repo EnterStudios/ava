@@ -5,7 +5,7 @@ from .views import LDAPAdapterAPI
 
 router = DefaultRouter()
 
-router.register(r'setup', LDAPAdapterAPI)
+router.register(r'setup', LDAPAdapterAPI, "ldap-setup")
 
 urlpatterns = [
     url(r'^', include(router.urls)),

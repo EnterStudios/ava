@@ -20,21 +20,19 @@ class LDAPIntegrationAdapterTestData(AvaCoreTestData):
     url = 'example/'
 
     standard = {
+        'name': 'standard_char',
         'salt': 'standard_char',
         'ldap_password': 'standard_char',
-        'ldap_integration_history': 'example//1/',
         'dump_dn': 'standard_char',
-        'integrationadapter_ptr': 'default',
         'ldap_user': 'standard_char',
         'server': 'standard_char',
     }
 
     unique = {
+        'name': 'unique_char',
         'salt': 'unique_char',
         'ldap_password': 'unique_char',
-        'ldap_integration_history': 'example//2/',
         'dump_dn': 'unique_char',
-        'integrationadapter_ptr': 'default',
         'ldap_user': 'unique_char',
         'server': 'unique_char',
     }
