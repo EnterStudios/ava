@@ -9,7 +9,7 @@ install:
 script:
   "coverage run manage.py test -v3"
 env:
- - DJANGO_SETTINGS_MODULE=ava.settings.travis
+ - DJANGO_SETTINGS_MODULE=ava_core.settings.travis
 addons:
   postgresql: 9.3
 cache:
