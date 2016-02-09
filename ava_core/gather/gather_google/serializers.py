@@ -11,5 +11,5 @@ class GoogleGatherHistorySerializer(serializers.ModelSerializer):
         model = GoogleGatherHistory
         fields = (
             'id', 'import_status', 'created', 'message', 'no_people', 'no_groups',
-            'no_identifiers',
+            'no_identifiers', 'integration',
             'next_scheduled')

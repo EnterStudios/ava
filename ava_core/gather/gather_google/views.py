@@ -2,16 +2,16 @@
 import json
 import logging
 
-from rest_framework import permissions,status, viewsets
+from rest_framework import permissions, status, viewsets
 from rest_framework.response import Response
 
-from ava_core.abstract.permissions import IsRetrieveOnly
+from ava_core.abstract.permissions import IsCreateOrRetrieveOnly
+from ava_core.gather.gather_abstract.models import GatherHistory
 from ava_core.gather.gather_abstract.views import GatherImportAPI
+from ava_core.integration.integration_abstract.utils import retrieve_integration_from_database
 from ava_core.organize.models import Person, Identifier, Group, GroupIdentifier, PersonIdentifier
 from ava_core.organize.tasks import task_run_intro_email
 from ava_core.organize.utils import add_identifier
-from ava_core.gather.gather_abstract.models import GatherHistory
-from ava_core.integration.integration_abstract.utils import retrieve_integration_from_database
 from .interface import GoogleDirectoryHelper
 from .models import GoogleGatherHistory
 from .serializers import GoogleGatherHistorySerializer
@@ -34,7 +34,8 @@ class GoogleImportAPI(GatherImportAPI):
         integration = retrieve_integration_from_database(self.MODEL_NAME, pk)
 
         return_message = "Imported completed"
-        GoogleGatherHistory.objects.create(integration=integration,message=return_message, import_status=GatherHistory.COMPLETED)
+        GoogleGatherHistory.objects.create(integration=integration, message=return_message,
+                                           import_status=GatherHistory.COMPLETED)
 
         return Response({'message': "Import complete"}, status=status.HTTP_200_OK)
 
@@ -138,8 +139,8 @@ class GoogleGatherHistoryAPI(viewsets.ModelViewSet):
     serializer_class = GoogleGatherHistorySerializer
 
     permission_classes = (permissions.IsAuthenticated,
-                          permissions.IsAdminUser,
-                          IsRetrieveOnly)
+                          permissions.IsAdminUser
+                          , IsCreateOrRetrieveOnly)
 
     def get_queryset(self):
         return GoogleGatherHistory.objects.all()
