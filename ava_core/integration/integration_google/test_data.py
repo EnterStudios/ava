@@ -28,28 +28,22 @@ class GoogleAuthorizationStoreTestData(AvaCoreTestData):
 
 
 class GoogleIntegrationAdapterTestData(AvaCoreTestData):
-    """
-    Test data for GoogleIntegrationAdapter
-    """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = GoogleIntegrationAdapter
     url = 'example/'
 
     standard = {
-        'google_integration_history': 'example//1/',
+        'name': 'standard_char',
         'description': 'standard_char',
-        'domain': 'standard_char',
-        'integrationadapter_ptr': 'default',
+        'domain': 'http://www.example.com',
+        'credential': 'standard_char',
     }
 
     unique = {
-        'google_integration_history': 'example//2/',
+        'name': 'unique_char',
         'description': 'unique_char',
-        'domain': 'unique_char',
-        'integrationadapter_ptr': 'default',
+        'domain': 'http://www.example.com',
+        'credential': 'unique_char',
     }
+
