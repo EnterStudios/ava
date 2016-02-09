@@ -11,3 +11,6 @@ DATABASES = {
         'USER': 'postgres',
     }
 }
+
+
+SECRET_KEY='this is not a very secret secret key'
