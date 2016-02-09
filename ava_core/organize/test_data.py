@@ -250,6 +250,35 @@ class GroupIdentifierTestData(AvaCoreTestData):
         'groupidentifierattribute': 'example//2/',
         'belongs_to': 'example//2/',
     }
+    
+class PersonIdentifierTestData(AvaCoreTestData):
+    """
+    Test data for PersonIdentifier
+    """
+
+    @staticmethod
+    def init_requirements(owner):
+        pass
+
+    # Store self information
+    model = PersonIdentifier
+    url = 'example/'
+
+    standard = {
+        'identifier': 'standard_char',
+        'identifier_type': 'EMAIL',
+        'primary_identifier': True,
+        'groupidentifierattribute': 'example//1/',
+        'belongs_to': 'example//1/',
+    }
+
+    unique = {
+        'identifier': 'unique_char',
+        'identifier_type': 'SID',
+        'primary_identifier': False,
+        'groupidentifierattribute': 'example//2/',
+        'belongs_to': 'example//2/',
+    }
 
 
 class PersonIdentifierTestData(AvaCoreTestData):
