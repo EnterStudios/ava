@@ -1,97 +1,292 @@
 # Rest Imports
-from rest_framework import status
 # Local Imports
+from rest_framework.reverse import reverse
+
 from ava_core.abstract.test import AvaCoreTest
 from ava_core.gather.gather_google.test_data import GoogleGatherHistoryTestData
-
-
 # Implementation
-class GoogleGatherTest(AvaCoreTest):
+from ava_core.integration.integration_google.test_data import GoogleIntegrationAdapterTestData
 
+
+class GoogleGatherTest(AvaCoreTest):
     def setUp(self):
         pass
         # # Make call to super.
-        # super(GoogleGatherTest, self).setUp()
+        # super(GoogleGatherHistoryTest, self).setUp()
         #
         # # Set the data type.
-        # self.data = GoogleGatherTestData()
+        # self.data = GoogleGatherHistoryTestData()
 
     def test_google_gather_import(self):
-        self.assertEqual(1,"Test not written")
+        self.assertEqual(1, "Test not written")
+
 
 # Implementation
 class GoogleGatherHistoryTest(AvaCoreTest):
-    """
-    GoogleGatherHistory Test
-    """
+    # step 2: replace appName and GoogleGatherHistory
+    model_name = 'gather_google.GoogleGatherHistory'
+
+    has_owner = False
+
+    # step 3: populate this section to define what you expect the API permissions will be
+    api_permissions = {
+        'create': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'retrieve': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'update': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'delete': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+    }
+
+    # step 4: update with the model name for apiviewset urls (for apiviews and custom api's this won't work
+    api_urls = {
+        'create': 'googlegatherhistory-list',
+        'retrieve': 'googlegatherhistory-detail',
+        'retrieve_all': 'googlegatherhistory-list',
+        'update': 'googlegatherhistory-detail',
+        'delete': 'googlegatherhistory-detail',
+    }
 
     def setUp(self):
-        # Make call to super.
+        # step 5: Update with Model Names
         super(GoogleGatherHistoryTest, self).setUp()
-
-        # Set the data type.
         self.data = GoogleGatherHistoryTestData()
 
-    def test_google_gather_history_create_as_user(self):
-        self.assertEqual(1,"Test not written")
+    def create_object_via_api(self, data, user='admin'):
+        # step 6: you will need to write this method.... this template only works with single models
+        # with no relationships
 
-    def test_google_gather_history_create_as_admin(self):
-        self.assertEqual(1,"Test not written")
+        # This model requires a valid integration object
 
-    def test_google_gather_history_create_as_unauthenticated(self):
-        self.assertEqual(1,"Test not written")
+        url = reverse("google-setup-list")
+        integration = GoogleIntegrationAdapterTestData()
 
-    def test_google_gather_history_retrieve_single_as_user(self):
-        self.assertEqual(1,"Test not written")
+        if user:
+            # must be admin to create
+            self.login_user(user=user)
+        else:
+            self.logout_user()
 
-    def test_google_gather_history_retrieve_all_as_user(self):
-        self.assertEqual(1,"Test not written")
-    
-    def test_google_gather_history_retrieve_single_as_admin(self):
-        self.assertEqual(1,"Test not written")
+        response = self.client.post(url, integration.standard, format='json')
+        # print("Response :: " + str(response.data))
 
-    def test_google_gather_history_retrieve_all_as_admin(self):
-        self.assertEqual(1,"Test not written")
+        # return the id of the model you are testing
+        if 'id' in response.data:
+            data['integration'] = response.data['id']
 
-    def test_google_gather_history_retrieve_single_as_unauthorized(self):
-        self.assertEqual(1,"Test not written")
+            url = reverse(self.api_urls['create'])
 
-    def test_google_gather_history_retrieve_all_as_unauthorized(self):
-        self.assertEqual(1,"Test not written")
+            if user:
+                # must be admin to create
+                self.login_user(user=user)
+            else:
+                self.logout_user()
+                user = 'unauthenticated'
 
-    def test_google_gather_history_update_exists_as_user(self):
-        self.assertEqual(1,"Test not written")
- 
-    def test_google_gather_history_update_does_not_exist_as_user(self):
-        self.assertEqual(1,"Test not written")
+            # print("Data :: " + str(data))
+            response = self.client.post(url, data, format='json')
+            # print("Response :: " + str(response.data))
+            self.check_api_results(response=response, request_type='create', model_name=self.model_name,
+                                   permitted=self.api_permissions['create'][user])
 
-    def test_google_gather_history_update_exists_as_admin(self):
-        self.assertEqual(1,"Test not written")
+            self.logout_user()
 
-    def test_google_gather_history_update_does_not_exist_as_admin(self):
-        self.assertEqual(1,"Test not written")
+            # return the id of the model you are testing
+            if 'id' in response.data:
+                return response.data['id']
+        else:
+            self.assertIn(response.status_code, self.status_forbidden)
 
-    def test_google_gather_history_update_exists_as_unauthorized(self):
-        self.assertEqual(1,"Test not written")
+    # step 7: replace googlegatherhistory globally with your model name in lowercase
+    def test_googlegatherhistory_create_as_user(self):
+        self.create_object_via_api(data=self.data.standard, user='standard')
 
-    def test_google_gather_history_update_does_not_exist_as_unauthorized(self):
-        self.assertEqual(1,"Test not written")
-       
-    def test_google_gather_history_delete_exists_as_user(self):
-        self.assertEqual(1,"Test not written")
+    def test_googlegatherhistory_create_as_admin(self):
+        self.create_object_via_api(data=self.data.standard, user='admin')
 
-    def test_google_gather_history_delete_does_not_exist_as_user(self):
-        self.assertEqual(1,"Test not written")
+    def test_googlegatherhistory_create_as_unauthenticated(self):
+        self.create_object_via_api(data=self.data.standard, user=None)
 
-    def test_google_gather_history_delete_exists_as_admin(self):
-        self.assertEqual(1,"Test not written")
-       
-    def test_google_gather_history_delete_does_not_exist_as_admin(self):
-        self.assertEqual(1,"Test not written")
+    def test_googlegatherhistory_retrieve_single_as_user(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
 
-    def test_google_gather_history_delete_exists_as_unauthorized(self):
-        self.assertEqual(1,"Test not written")
+        self.login_user(user='standard')
 
-    def test_google_gather_history_delete_does_not_exist_as_unauthorized(self):
-        self.assertEqual(1,"Test not written")
+        url = reverse(self.api_urls['retrieve'], kwargs={'pk': object_id})
+        response = self.client.get(url)
 
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['standard'])
+
+    def test_googlegatherhistory_retrieve_all_as_user(self):
+        self.create_object_via_api(data=self.data.standard)
+
+        self.login_user(user='standard')
+
+        url = reverse(self.api_urls['retrieve_all'])
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['standard'])
+
+    def test_googlegatherhistory_retrieve_single_as_admin(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
+
+        self.login_user(user='admin')
+
+        url = reverse(self.api_urls['retrieve'], kwargs={'pk': object_id})
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['admin'])
+
+    def test_googlegatherhistory_retrieve_all_as_admin(self):
+        self.create_object_via_api(data=self.data.standard)
+
+        self.login_user(user='admin')
+
+        url = reverse(self.api_urls['retrieve_all'])
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['admin'])
+
+    def test_googlegatherhistory_retrieve_single_as_unauthenticated(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
+
+        self.logout_user()
+
+        url = reverse(self.api_urls['retrieve'], kwargs={'pk': object_id})
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['unauthenticated'])
+
+    def test_googlegatherhistory_retrieve_all_as_unauthenticated(self):
+        self.create_object_via_api(data=self.data.standard)
+
+        self.logout_user()
+
+        url = reverse(self.api_urls['retrieve_all'])
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['unauthenticated'])
+
+    def test_googlegatherhistory_update_exists_as_user(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
+
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': object_id})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['standard'])
+
+    def test_googlegatherhistory_update_does_not_exist_as_user(self):
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': 1})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['standard'])
+
+    def test_googlegatherhistory_update_exists_as_admin(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
+
+        self.login_user(user="admin")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': object_id})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['admin'])
+
+    def test_googlegatherhistory_update_does_not_exist_as_admin(self):
+        self.login_user(user="admin")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': 1})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['admin'])
+
+    def test_googlegatherhistory_update_exists_as_unauthenticated(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
+
+        self.logout_user()
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': object_id})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['standard'])
+
+    def test_googlegatherhistory_update_does_not_exist_as_unauthenticated(self):
+        self.logout_user()
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': 1})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['standard'])
+
+    def test_googlegatherhistory_delete_does_not_exist_as_user(self):
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['standard'])
+
+    def test_googlegatherhistory_delete_exists_as_user(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
+
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': object_id})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['standard'])
+
+    def test_googlegatherhistory_delete_exists_as_admin(self):
+        object_id = self.create_object_via_api(data=self.data.standard)
+
+        self.login_user(user="admin")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': object_id})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['admin'])
+
+    def test_googlegatherhistory_delete_does_not_exist_as_admin(self):
+        self.login_user(user="admin")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['admin'])
+
+    def test_googlegatherhistory_delete_exists_as_unauthenticated(self):
+        self.create_object_via_api(data=self.data.standard)
+
+        self.logout_user()
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['unauthenticated'])
+
+    def test_googlegatherhistory_delete_does_not_exist_as_unauthenticated(self):
+        self.logout_user()
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['unauthenticated'])
