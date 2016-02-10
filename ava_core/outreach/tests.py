@@ -14,9 +14,9 @@ class SuspiciousTest(AvaCoreTest):
 
     # step 3: populate this section to define what you expect the API permissions will be
     api_permissions = {
-        'create': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'create': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
         'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
-        'update': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'update': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
         'delete': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
     }
 
@@ -43,7 +43,7 @@ class SuspiciousTest(AvaCoreTest):
         self.login_user(user='admin')
 
         response = self.client.post(url, data, format='json')
-
+        # print("Response :: " + str(response.data))
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
                                permitted=self.api_permissions['create']['admin'])
 
@@ -170,8 +170,7 @@ class SuspiciousTest(AvaCoreTest):
         url = reverse(self.api_urls['update'], kwargs={'pk': 1})
         response = self.client.put(url, self.data.unique, format='json')
 
-        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
-                               permitted=self.api_permissions['update']['standard'])
+        self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_suspicious_update_exists_as_admin(self):
         object_id = self.create_object_via_api(data=self.data.standard)
@@ -201,7 +200,7 @@ class SuspiciousTest(AvaCoreTest):
         response = self.client.put(url, self.data.unique, format='json')
 
         self.check_api_results(response=response, request_type='update', model_name=self.model_name,
-                               permitted=self.api_permissions['update']['standard'])
+                               permitted=self.api_permissions['update']['unauthenticated'])
 
     def test_suspicious_update_does_not_exist_as_unauthenticated(self):
         self.logout_user()
@@ -210,7 +209,7 @@ class SuspiciousTest(AvaCoreTest):
         response = self.client.put(url, self.data.unique, format='json')
 
         self.check_api_results(response=response, request_type='update', model_name=self.model_name,
-                               permitted=self.api_permissions['update']['standard'])
+                               permitted=self.api_permissions['update']['unauthenticated'])
 
     def test_suspicious_delete_does_not_exist_as_user(self):
         self.login_user(user="standard")
@@ -280,8 +279,8 @@ class ReportResponseTest(AvaCoreTest):
 
     # step 3: populate this section to define what you expect the API permissions will be
     api_permissions = {
-        'create': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
+        'create': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': True},
+        'retrieve': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': True},
         'update': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
         'delete': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
     }
@@ -300,24 +299,49 @@ class ReportResponseTest(AvaCoreTest):
         super(ReportResponseTest, self).setUp()
         self.data = ReportResponseTestData()
 
-    def create_object_via_api(self, data):
+    def create_object_via_api(self, data, user='admin'):
         # step 6: you will need to write this method.... this template only works with single models
         # with no relationships
-        url = reverse(self.api_urls['create'])
+        # This model requires a valid integration object
 
-        # must be admin to create
-        self.login_user(user='admin')
+        url = reverse("question-list")
+        integration = QuestionTestData()
 
-        response = self.client.post(url, data, format='json')
+        if user:
+            # must be admin to create
+            self.login_user(user=user)
+        else:
+            self.logout_user()
 
-        self.check_api_results(response=response, request_type='create', model_name=self.model_name,
-                               permitted=self.api_permissions['create']['admin'])
-
-        self.logout_user()
+        response = self.client.post(url, integration.standard, format='json')
+        # print("Response :: " + str(response.data))
 
         # return the id of the model you are testing
         if 'id' in response.data:
-            return response.data['id']
+            data['question'] = response.data['id']
+
+            url = reverse(self.api_urls['create'])
+
+            if user:
+                # must be admin to create
+                self.login_user(user=user)
+            else:
+                self.logout_user()
+                user = 'unauthenticated'
+
+            # print("Data :: " + str(data))
+            response = self.client.post(url, data, format='json')
+            # print("Response :: " + str(response.data))
+            self.check_api_results(response=response, request_type='create', model_name=self.model_name,
+                                   permitted=self.api_permissions['create'][user])
+
+            self.logout_user()
+
+            # return the id of the model you are testing
+            if 'id' in response.data:
+                return response.data['id']
+        else:
+            self.assertIn(response.status_code, self.status_forbidden)
 
     # step 7: replace reportresponse globally with your model name in lowercase
     def test_reportresponse_create_as_user(self):
@@ -436,8 +460,7 @@ class ReportResponseTest(AvaCoreTest):
         url = reverse(self.api_urls['update'], kwargs={'pk': 1})
         response = self.client.put(url, self.data.unique, format='json')
 
-        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
-                               permitted=self.api_permissions['update']['standard'])
+        self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_reportresponse_update_exists_as_admin(self):
         object_id = self.create_object_via_api(data=self.data.standard)
@@ -467,7 +490,7 @@ class ReportResponseTest(AvaCoreTest):
         response = self.client.put(url, self.data.unique, format='json')
 
         self.check_api_results(response=response, request_type='update', model_name=self.model_name,
-                               permitted=self.api_permissions['update']['standard'])
+                               permitted=self.api_permissions['update']['unauthenticated'])
 
     def test_reportresponse_update_does_not_exist_as_unauthenticated(self):
         self.logout_user()
@@ -476,7 +499,7 @@ class ReportResponseTest(AvaCoreTest):
         response = self.client.put(url, self.data.unique, format='json')
 
         self.check_api_results(response=response, request_type='update', model_name=self.model_name,
-                               permitted=self.api_permissions['update']['standard'])
+                               permitted=self.api_permissions['update']['unauthenticated'])
 
     def test_reportresponse_delete_does_not_exist_as_user(self):
         self.login_user(user="standard")
@@ -546,9 +569,9 @@ class QuestionTest(AvaCoreTest):
 
     # step 3: populate this section to define what you expect the API permissions will be
     api_permissions = {
-        'create': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'create': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
         'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
-        'update': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'update': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
         'delete': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
     }
 
@@ -575,6 +598,7 @@ class QuestionTest(AvaCoreTest):
         self.login_user(user='admin')
 
         response = self.client.post(url, data, format='json')
+        # print("Response :: " + str(response.data))
 
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
                                permitted=self.api_permissions['create']['admin'])
@@ -702,8 +726,7 @@ class QuestionTest(AvaCoreTest):
         url = reverse(self.api_urls['update'], kwargs={'pk': 1})
         response = self.client.put(url, self.data.unique, format='json')
 
-        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
-                               permitted=self.api_permissions['update']['standard'])
+        self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_question_update_exists_as_admin(self):
         object_id = self.create_object_via_api(data=self.data.standard)
@@ -733,7 +756,7 @@ class QuestionTest(AvaCoreTest):
         response = self.client.put(url, self.data.unique, format='json')
 
         self.check_api_results(response=response, request_type='update', model_name=self.model_name,
-                               permitted=self.api_permissions['update']['standard'])
+                               permitted=self.api_permissions['update']['unauthenticated'])
 
     def test_question_update_does_not_exist_as_unauthenticated(self):
         self.logout_user()

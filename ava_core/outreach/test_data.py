@@ -44,16 +44,15 @@ class ReportResponseTestData(AvaCoreTestData):
     url = 'report/response/'
 
     standard = {
-        'parent_response': 'report/response/1/',
         'message': 'standard_text',
-        'question': 'report/question/1/',
+        'question': 1,
         'owner': '',
     }
 
     unique = {
-        'parent_response': 'report/response/2/',
+        'parent_response': 1,
         'message': 'unique_text',
-        'question': 'report/question/2/',
+        'question': 2,
         'owner': '',
     }
 
@@ -77,7 +76,7 @@ class QuestionTestData(AvaCoreTestData):
         'owner': 1,
         'status_type': 0,
         'suspicious': 'default',
-        'question_responses': 'report/response/1/',
+        'question_responses': [],
         'priority_type': 0,
     }
 
@@ -87,6 +86,6 @@ class QuestionTestData(AvaCoreTestData):
         'owner': 1,
         'status_type': 4,
         'suspicious': 'default',
-        'question_responses': 'report/response/2/',
+        'question_responses': [],
         'priority_type': 3,
     }

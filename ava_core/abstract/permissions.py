@@ -36,8 +36,13 @@ class IsAdminOrOwner(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         # Permissions are only available to admin or the owner of the item.
-        return request.user.is_staff or \
-               request.user is obj.owner
+        if request.user.is_superuser:
+            return True
+
+        if request.user == obj.owner:
+            return True
+
+        return False
 
 
 class IsAdminOrReadOnly(permissions.BasePermission):
@@ -83,7 +88,7 @@ class IsRetrieveDenied(permissions.BasePermission):
 
     def has_permission(self, request, view):
         # Retrieve permission is removed.
-        return request.method is not 'GET'
+        return request.method != 'GET'
 
 
 class IsUpdateDenied(permissions.BasePermission):
@@ -125,7 +130,7 @@ class IsAdminOrCreateDenied(permissions.BasePermission):
     def has_permission(self, request, view):
         # Create permission is removed if not admin
         return request.user.is_staff or \
-               request.method is not 'PUSH'
+               request.method != 'PUSH'
 
 
 class IsAdminOrRetrieveDenied(permissions.BasePermission):
@@ -136,7 +141,7 @@ class IsAdminOrRetrieveDenied(permissions.BasePermission):
     def has_permission(self, request, view):
         # Retrieve permission is removed if not admin
         return request.user.is_staff or \
-               request.method is not 'GET'
+               request.method != 'GET'
 
 
 class IsAdminOrUpdateDenied(permissions.BasePermission):
@@ -147,7 +152,7 @@ class IsAdminOrUpdateDenied(permissions.BasePermission):
     def has_permission(self, request, view):
         # Update permission is removed if not admin
         return request.user.is_staff or \
-               request.method is not 'PUT'
+               request.method != 'PUT'
 
 
 class IsAdminOrDeleteDenied(permissions.BasePermission):
