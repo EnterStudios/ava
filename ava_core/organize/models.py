@@ -1,7 +1,6 @@
 # Django Imports
 from django.conf import settings
 from django.contrib.auth.models import User
-
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email, validate_slug, validate_ipv46_address
@@ -25,9 +24,9 @@ class Person(TimeStampedModel):
     first_name = models.CharField(max_length=75, validators=[validate_slug])
     surname = models.CharField(max_length=75, validators=[validate_slug], null=True, blank=True, )
     groups = models.ManyToManyField('Group', blank=True, related_name='members')
-    google_identity_data = models.CharField(max_length=10000,null=True, blank=True, verbose_name='Google Data')
-    ldap_identity_data = models.CharField(max_length=10000,null=True, blank=True, verbose_name='LDAP Data')
-    office365_identity_data = models.CharField(max_length=10000,null=True, blank=True, verbose_name='Office365 Data')
+    google_identity_data = models.CharField(max_length=10000, null=True, blank=True, verbose_name='Google Data')
+    ldap_identity_data = models.CharField(max_length=10000, null=True, blank=True, verbose_name='LDAP Data')
+    office365_identity_data = models.CharField(max_length=10000, null=True, blank=True, verbose_name='Office365 Data')
 
     def __str__(self):
         return self.surname + ', ' + self.first_name or ''
@@ -237,8 +236,8 @@ class Group(TimeStampedModel):
     description = models.TextField(max_length=500)
     group_type = models.CharField(max_length=20, choices=GROUP_TYPE_CHOICES, default=GENERIC, verbose_name='Group Type')
     parent = models.ForeignKey('Group', null=True, blank=True, related_name='parent_group')
-    google_group_data = models.CharField(max_length=10000,null=True, blank=True)
-    ldap_group_data = models.CharField(max_length=10000,null=True, blank=True)
+    google_group_data = models.CharField(max_length=10000, null=True, blank=True)
+    ldap_group_data = models.CharField(max_length=10000, null=True, blank=True)
 
     def __str__(self):
         return self.name or ''
