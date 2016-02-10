@@ -37,7 +37,7 @@ web:
     - DJANGO_SETTINGS_MODULE=ava_core.settings.base
     - USE_MOCK_LDAP=true
   env_file:
-    - secrets.env
+    - not_so_secret.env
 
 ## AVA Asynchronous Task Worker
 worker:
@@ -52,4 +52,4 @@ worker:
     - DJANGO_SETTINGS_MODULE=ava_core.settings.base
     - C_FORCE_ROOT="true"  ## Get this the flip out of here DO NOT USE IN PRODUCTION
   env_file:
-    - secrets.env
+    - not_so_secret.env
