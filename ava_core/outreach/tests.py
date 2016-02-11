@@ -1,4 +1,5 @@
 # Rest Imports
+from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.reverse import reverse
 # Local Imports
@@ -14,9 +15,9 @@ class SuspiciousTest(AvaCoreTest):
 
     # step 3: populate this section to define what you expect the API permissions will be
     api_permissions = {
-        'create': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
-        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
-        'update': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
+        'create': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': True},
+        'retrieve': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': True},
+        'update': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
         'delete': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
     }
 
@@ -34,18 +35,21 @@ class SuspiciousTest(AvaCoreTest):
         super(SuspiciousTest, self).setUp()
         self.data = SuspiciousTestData()
 
-    def create_object_via_api(self, data):
+    def create_object_via_api(self, data, user='admin'):
         # step 6: you will need to write this method.... this template only works with single models
         # with no relationships
         url = reverse(self.api_urls['create'])
 
-        # must be admin to create
-        self.login_user(user='admin')
+        if user:
+            # must be admin to create
+            self.login_user(user=user)
+        else:
+            self.logout_user()
 
         response = self.client.post(url, data, format='json')
         # print("Response :: " + str(response.data))
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
-                               permitted=self.api_permissions['create']['admin'])
+                               permitted=self.api_permissions['create'][user])
 
         self.logout_user()
 
@@ -97,6 +101,7 @@ class SuspiciousTest(AvaCoreTest):
 
         self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
                                permitted=self.api_permissions['retrieve']['standard'])
+        # self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_suspicious_retrieve_all_as_user(self):
         self.create_object_via_api(data=self.data.standard)
@@ -106,8 +111,8 @@ class SuspiciousTest(AvaCoreTest):
         url = reverse(self.api_urls['retrieve_all'])
         response = self.client.get(url)
 
-        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
-                               permitted=self.api_permissions['retrieve']['standard'])
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data['count'], 0)
 
     def test_suspicious_retrieve_single_as_admin(self):
         object_id = self.create_object_via_api(data=self.data.standard)
@@ -141,6 +146,7 @@ class SuspiciousTest(AvaCoreTest):
 
         self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
                                permitted=self.api_permissions['retrieve']['unauthenticated'])
+        # self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_suspicious_retrieve_all_as_unauthenticated(self):
         self.create_object_via_api(data=self.data.standard)
@@ -152,6 +158,9 @@ class SuspiciousTest(AvaCoreTest):
 
         self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
                                permitted=self.api_permissions['retrieve']['unauthenticated'])
+
+        # you can make the call but it returns no results
+        # self.assertEquals(response.data['count'], 0)
 
     def test_suspicious_update_exists_as_user(self):
         object_id = self.create_object_via_api(data=self.data.standard)
@@ -270,6 +279,66 @@ class SuspiciousTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
                                permitted=self.api_permissions['delete']['unauthenticated'])
 
+    def test_suspicious_retrieve_single_as_owner(self):
+        object_id = self.create_object_via_api(data=self.data.standard, user='standard')
+
+        self.login_user(user='standard')
+
+        url = reverse(self.api_urls['retrieve'], kwargs={'pk': object_id})
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['owner'])
+
+    def test_suspicious_retrieve_all_as_owner(self):
+        self.create_object_via_api(data=self.data.standard, user='standard')
+
+        self.login_user(user='standard')
+
+        url = reverse(self.api_urls['retrieve_all'])
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['owner'])
+
+    def test_suspicious_update_exists_as_owner(self):
+        object_id = self.create_object_via_api(data=self.data.standard, user="standard")
+
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': object_id})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['owner'])
+
+    def test_suspicious_update_does_not_exist_as_owner(self):
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': 1})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_suspicious_delete_does_not_exist_as_owner(self):
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
+        response = self.client.delete(url)
+
+        self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_suspicious_delete_exists_as_owner(self):
+        object_id = self.create_object_via_api(data=self.data.standard, user='standard')
+
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': object_id})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['owner'])
+
 
 class ReportResponseTest(AvaCoreTest):
     # step 2: replace outreach and ReportResponse
@@ -319,6 +388,9 @@ class ReportResponseTest(AvaCoreTest):
         # return the id of the model you are testing
         if 'id' in response.data:
             data['question'] = response.data['id']
+
+            # if 'owner' in data:
+            #     data['owner'] = User.objects.filter(email=self.users[user]['email']).first().id
 
             url = reverse(self.api_urls['create'])
 
@@ -396,8 +468,8 @@ class ReportResponseTest(AvaCoreTest):
         url = reverse(self.api_urls['retrieve_all'])
         response = self.client.get(url)
 
-        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
-                               permitted=self.api_permissions['retrieve']['standard'])
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data['count'], 0)
 
     def test_reportresponse_retrieve_single_as_admin(self):
         object_id = self.create_object_via_api(data=self.data.standard)
@@ -560,6 +632,66 @@ class ReportResponseTest(AvaCoreTest):
         self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
                                permitted=self.api_permissions['delete']['unauthenticated'])
 
+    def test_reportresponse_retrieve_single_as_owner(self):
+        object_id = self.create_object_via_api(data=self.data.standard, user='standard')
+
+        self.login_user(user='standard')
+
+        url = reverse(self.api_urls['retrieve'], kwargs={'pk': object_id})
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['owner'])
+
+    def test_reportresponse_retrieve_all_as_owner(self):
+        self.create_object_via_api(data=self.data.standard, user='standard')
+
+        self.login_user(user='standard')
+
+        url = reverse(self.api_urls['retrieve_all'])
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['owner'])
+
+    def test_reportresponse_update_exists_as_owner(self):
+        object_id = self.create_object_via_api(data=self.data.standard, user="standard")
+
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': object_id})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['owner'])
+
+    def test_reportresponse_update_does_not_exist_as_owner(self):
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': 1})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_reportresponse_delete_does_not_exist_as_owner(self):
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
+        response = self.client.delete(url)
+
+        self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_reportresponse_delete_exists_as_owner(self):
+        object_id = self.create_object_via_api(data=self.data.standard, user='standard')
+
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': object_id})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['owner'])
+
 
 class QuestionTest(AvaCoreTest):
     # step 2: replace outreach and Question
@@ -569,9 +701,9 @@ class QuestionTest(AvaCoreTest):
 
     # step 3: populate this section to define what you expect the API permissions will be
     api_permissions = {
-        'create': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
-        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
-        'update': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
+        'create': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': True},
+        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': True},
+        'update': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
         'delete': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
     }
 
@@ -589,19 +721,23 @@ class QuestionTest(AvaCoreTest):
         super(QuestionTest, self).setUp()
         self.data = QuestionTestData()
 
-    def create_object_via_api(self, data):
+    def create_object_via_api(self, data, user='admin'):
         # step 6: you will need to write this method.... this template only works with single models
         # with no relationships
         url = reverse(self.api_urls['create'])
 
-        # must be admin to create
-        self.login_user(user='admin')
+        if user:
+            # must be admin to create
+            self.login_user(user=user)
+        else:
+            self.logout_user()
 
         response = self.client.post(url, data, format='json')
+        # print("URL:: " + str(url))
         # print("Response :: " + str(response.data))
 
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
-                               permitted=self.api_permissions['create']['admin'])
+                               permitted=self.api_permissions['create'][user])
 
         self.logout_user()
 
@@ -706,6 +842,8 @@ class QuestionTest(AvaCoreTest):
         url = reverse(self.api_urls['retrieve_all'])
         response = self.client.get(url)
 
+        # you can make the call but it returns no results
+
         self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
                                permitted=self.api_permissions['retrieve']['unauthenticated'])
 
@@ -765,7 +903,7 @@ class QuestionTest(AvaCoreTest):
         response = self.client.put(url, self.data.unique, format='json')
 
         self.check_api_results(response=response, request_type='update', model_name=self.model_name,
-                               permitted=self.api_permissions['update']['standard'])
+                               permitted=self.api_permissions['update']['unauthenticated'])
 
     def test_question_delete_does_not_exist_as_user(self):
         self.login_user(user="standard")
@@ -773,8 +911,7 @@ class QuestionTest(AvaCoreTest):
         url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
         response = self.client.delete(url)
 
-        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
-                               permitted=self.api_permissions['delete']['standard'])
+        self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_question_delete_exists_as_user(self):
         object_id = self.create_object_via_api(data=self.data.standard)
@@ -825,3 +962,63 @@ class QuestionTest(AvaCoreTest):
 
         self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
                                permitted=self.api_permissions['delete']['unauthenticated'])
+
+    def test_question_retrieve_single_as_owner(self):
+        object_id = self.create_object_via_api(data=self.data.standard, user='standard')
+
+        self.login_user(user='standard')
+
+        url = reverse(self.api_urls['retrieve'], kwargs={'pk': object_id})
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['owner'])
+
+    def test_question_retrieve_all_as_owner(self):
+        self.create_object_via_api(data=self.data.standard, user='standard')
+
+        self.login_user(user='standard')
+
+        url = reverse(self.api_urls['retrieve_all'])
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['owner'])
+
+    def test_question_update_exists_as_owner(self):
+        object_id = self.create_object_via_api(data=self.data.standard, user="standard")
+
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': object_id})
+        response = self.client.put(url, self.data.unique, format='json')
+
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['owner'])
+
+    def test_question_update_does_not_exist_as_owner(self):
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': 1})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_question_delete_does_not_exist_as_owner(self):
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
+        response = self.client.delete(url)
+
+        self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_question_delete_exists_as_owner(self):
+        object_id = self.create_object_via_api(data=self.data.standard, user='standard')
+
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': object_id})
+        response = self.client.delete(url)
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['owner'])

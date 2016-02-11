@@ -53,6 +53,7 @@ class AvaCoreTest(APITestCase):
         }
 
         model = apps.get_model(model_name)
+        # print("CHECK API RESPONSE" + str(response.data))
         if permitted:
             self.assertIn(response.status_code, self.status_ok)
             # self.assertEqual(model.objects.count(), results_size[request_type]['permitted'])

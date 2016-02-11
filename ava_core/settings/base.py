@@ -137,7 +137,7 @@ INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
+        'rest_framework.permissions.IsAuthenticated'
     ],
     'PAGE_SIZE': 10,
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',

@@ -19,14 +19,24 @@ class SuspiciousTestData(AvaCoreTestData):
 
     standard = {
         'suspicious_url': 'http://example.com',
-        'question_ptr': 'default',
         'incident_date': '2016-01-31T09:00',
+        'is_resolved': True,
+        'description': 'standard_text',
+        'owner': 1,
+        'status_type': 0,
+        'question_responses': [],
+        'priority_type': 0,
     }
 
     unique = {
         'suspicious_url': 'http://example1.com',
-        'question_ptr': 'default',
         'incident_date': '2016-01-31T09:00',
+        'is_resolved': False,
+        'description': 'unique_text',
+        'owner': 1,
+        'status_type': 4,
+        'question_responses': [],
+        'priority_type': 3,
     }
 
 
@@ -75,8 +85,6 @@ class QuestionTestData(AvaCoreTestData):
         'description': 'standard_text',
         'owner': 1,
         'status_type': 0,
-        'suspicious': 'default',
-        'question_responses': [],
         'priority_type': 0,
     }
 
@@ -85,7 +93,5 @@ class QuestionTestData(AvaCoreTestData):
         'description': 'unique_text',
         'owner': 1,
         'status_type': 4,
-        'suspicious': 'default',
-        'question_responses': [],
         'priority_type': 3,
     }

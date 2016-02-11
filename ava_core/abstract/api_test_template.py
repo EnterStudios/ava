@@ -15,8 +15,8 @@ class ModelNameTest(AvaCoreTest):
 
     # step 3: populate this section to define what you expect the API permissions will be
     api_permissions = {
-        'create': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
+        'create': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': True},
+        'retrieve': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': True},
         'update': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
         'delete': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
     }
@@ -35,10 +35,16 @@ class ModelNameTest(AvaCoreTest):
         super(ModelNameTest, self).setUp()
         self.data = ModelNameTestData()
 
-    def create_object_via_api(self, data):
+    def create_object_via_api(self, data, user='admin'):
         # step 6: you will need to write this method.... this template only works with single models
         # with no relationships
         url = reverse(self.api_urls['create'])
+
+        if user:
+            # must be admin to create
+            self.login_user(user=user)
+        else:
+            self.logout_user()
 
         # must be admin to create
         self.login_user(user='admin')
@@ -202,7 +208,7 @@ class ModelNameTest(AvaCoreTest):
         response = self.client.put(url, self.data.unique, format='json')
 
         self.check_api_results(response=response, request_type='update', model_name=self.model_name,
-                               permitted=self.api_permissions['update']['standard'])
+                               permitted=self.api_permissions['update']['unauthenticated'])
 
     def test_MODELNAME_update_does_not_exist_as_unauthenticated(self):
         self.logout_user()
@@ -211,7 +217,7 @@ class ModelNameTest(AvaCoreTest):
         response = self.client.put(url, self.data.unique, format='json')
 
         self.check_api_results(response=response, request_type='update', model_name=self.model_name,
-                               permitted=self.api_permissions['update']['standard'])
+                               permitted=self.api_permissions['update']['unauthenticated'])
 
     def test_MODELNAME_delete_does_not_exist_as_user(self):
         self.login_user(user="standard")
@@ -271,3 +277,65 @@ class ModelNameTest(AvaCoreTest):
 
         self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
                                permitted=self.api_permissions['delete']['unauthenticated'])
+        
+            
+    def test_MODELNAME_retrieve_single_as_owner(self):
+        object_id = self.create_object_via_api(data=self.data.standard,user='standard')
+
+        self.login_user(user='standard')
+
+        url = reverse(self.api_urls['retrieve'], kwargs={'pk': object_id})
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['owner'])
+
+    def test_MODELNAME_retrieve_all_as_owner(self):
+        self.create_object_via_api(data=self.data.standard,user='standard')
+
+        self.login_user(user='standard')
+
+        url = reverse(self.api_urls['retrieve_all'])
+        response = self.client.get(url)
+
+        self.check_api_results(response=response, request_type='retrieve', model_name=self.model_name,
+                               permitted=self.api_permissions['retrieve']['owner'])
+    
+    def test_MODELNAME_update_exists_as_owner(self):
+        object_id = self.create_object_via_api(data=self.data.standard,user="standard")
+
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': object_id})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.check_api_results(response=response, request_type='update', model_name=self.model_name,
+                               permitted=self.api_permissions['update']['owner'])
+
+    def test_MODELNAME_update_does_not_exist_as_owner(self):
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['update'], kwargs={'pk': 1})
+        response = self.client.put(url, self.data.unique, format='json')
+
+        self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
+    
+    def test_MODELNAME_delete_does_not_exist_as_owner(self):
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': 1})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['owner'])
+
+    def test_MODELNAME_delete_exists_as_owner(self):
+        object_id =  self.create_object_via_api(data=self.data.standard,user='standard')
+
+        self.login_user(user="standard")
+
+        url = reverse(self.api_urls['delete'], kwargs={'pk': object_id})
+        response = self.client.delete(url)
+
+        self.check_api_results(response=response, request_type='delete', model_name=self.model_name,
+                               permitted=self.api_permissions['delete']['owner'])
