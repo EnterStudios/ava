@@ -138,8 +138,7 @@ class IsCreateOrRetrieveOnly(permissions.BasePermission):
     SAFE_METHODS = ('GET', 'POST', 'HEAD', 'OPTIONS')
 
     def has_permission(self, request, view):
-        if request.method in self.SAFE_METHODS:
-            return True
+        return request.method in self.SAFE_METHODS
 
 
 class IsAdminOrCreateDenied(permissions.BasePermission):
@@ -210,7 +209,6 @@ class IsCreateOnly(permissions.BasePermission):
     SAFE_METHODS = ('POST', 'HEAD', 'OPTIONS')
 
     def has_permission(self, request, view):
-        # Only accept post request.
         return request.method in self.SAFE_METHODS
 
 

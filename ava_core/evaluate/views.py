@@ -6,7 +6,8 @@ from rest_framework.views import APIView
 # Python Imports
 from logging import getLogger
 # Local Imports
-from ava_core.abstract.permissions import IsAdminOrOwner, IsDeleteDenied, IsRetrieveOnly, IsCreateOnly
+from ava_core.abstract.permissions import IsAdminOrOwner, IsDeleteDenied, IsRetrieveOnly, IsCreateOnly, \
+    IsCreateOrRetrieveOnly
 from ava_core.evaluate.models import EvaluateController, EvaluateSender, EvaluateResult, EvaluateTest, \
     EvaluateTemplate
 from ava_core.evaluate.serializers import EvaluateControllerSerializer, EvaluateResultSerializer, \
@@ -31,8 +32,7 @@ class EvaluateResultAPI(viewsets.ModelViewSet):
     queryset = EvaluateResult.objects.all()
     serializer_class = EvaluateResultSerializer
     permission_classes = (permissions.IsAuthenticated,
-                          IsAdminOrOwner,
-                          IsRetrieveOnly)
+                          permissions.IsAdminUser, IsCreateOrRetrieveOnly)
 
 
 class EvaluateSenderAPI(viewsets.ModelViewSet):
@@ -50,8 +50,7 @@ class EvaluateTestAPI(viewsets.ModelViewSet):
     queryset = EvaluateTest.objects.all()
     serializer_class = EvaluateTestSerializer
     permission_classes = (permissions.IsAuthenticated,
-                          permissions.IsAdminUser,
-                          IsRetrieveOnly)
+                          permissions.IsAdminUser, IsCreateOrRetrieveOnly)
 
 
 class EvaluateTemplateAPI(viewsets.ModelViewSet):

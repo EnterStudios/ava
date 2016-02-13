@@ -25,12 +25,15 @@ class AvaCoreTest(APITestCase):
     def setUp(self):
         # Create required users
         for key, user in self.users.items():
-            if key is 'admin':
-                User.objects.create_superuser(username=user['email'], email=user['email'], password=user['password'])
-                # user.is_staff = True
-                # user.save()
-            else:
-                User.objects.create_user(username=user['email'], email=user['email'], password=user['password'])
+            try:
+                User.objects.get(email=user['email'])
+            except User.DoesNotExist as e:
+                if key is 'admin':
+                    User.objects.create_superuser(username=user['email'], email=user['email'], password=user['password'])
+                    # user.is_staff = True
+                    # user.save()
+                else:
+                    User.objects.create_user(username=user['email'], email=user['email'], password=user['password'])
 
         self.client = APIClient(enforce_csrf_checks=self.enforce_csrf)
 
