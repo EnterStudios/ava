@@ -35,30 +35,30 @@ class ModelNameTest(AvaCoreTest):
         super(ModelNameTest, self).setUp()
         self.data = ModelNameTestData()
 
-    def create_object_via_api(self, data, user='admin'):
-        # step 6: you will need to write this method.... this template only works with single models
-        # with no relationships
-        url = reverse(self.api_urls['create'])
-
-        if user:
-            # must be admin to create
-            self.login_user(user=user)
-        else:
-            self.logout_user()
-
-        # must be admin to create
-        self.login_user(user='admin')
-
-        response = self.client.post(url, data, format='json')
-
-        self.check_api_results(response=response, request_type='create', model_name=self.model_name,
-                               permitted=self.api_permissions['create']['admin'])
-
-        self.logout_user()
-
-        # return the id of the model you are testing
-        if 'id' in response.data:
-            return response.data['id']
+    # def create_object_via_api(self, data, user='admin'):
+    #     # step 6: you will need to write this method.... this template only works with single models
+    #     # with no relationships
+    #     url = reverse(self.api_urls['create'])
+    #
+    #     if user:
+    #         # must be admin to create
+    #         self.login_user(user=user)
+    #     else:
+    #         self.logout_user()
+    #
+    #     # must be admin to create
+    #     self.login_user(user='admin')
+    #
+    #     response = self.client.post(url, data, format='json')
+    #
+    #     self.check_api_results(response=response, request_type='create', model_name=self.model_name,
+    #                            permitted=self.api_permissions['create']['admin'])
+    #
+    #     self.logout_user()
+    #
+    #     # return the id of the model you are testing
+    #     if 'id' in response.data:
+    #         return response.data['id']
 
     # step 7: replace MODELNAME globally with your model name in lowercase
     def test_MODELNAME_create_as_user(self):

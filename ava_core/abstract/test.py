@@ -27,6 +27,8 @@ class AvaCoreTest(APITestCase):
         for key, user in self.users.items():
             if key is 'admin':
                 User.objects.create_superuser(username=user['email'], email=user['email'], password=user['password'])
+                # user.is_staff = True
+                # user.save()
             else:
                 User.objects.create_user(username=user['email'], email=user['email'], password=user['password'])
 
@@ -43,16 +45,33 @@ class AvaCoreTest(APITestCase):
     def logout_user(self):
         self.client.credentials()
 
+    def create_object_via_api(self, data, user='admin'):
+        # step 6: you will need to write this method.... this template only works with single models
+        # with no relationships
+        url = reverse(self.api_urls['create'])
+
+        if user:
+            # must be admin to create
+            self.login_user(user=user)
+        else:
+            self.logout_user()
+
+        # must be admin to create
+        self.login_user(user='admin')
+
+        response = self.client.post(url, data, format='json')
+
+        self.check_api_results(response=response, request_type='create', model_name=self.model_name,
+                               permitted=self.api_permissions['create']['admin'])
+
+        self.logout_user()
+
+        # return the id of the model you are testing
+        if 'id' in response.data:
+            return response.data['id']
+
     def check_api_results(self, response, request_type, model_name, permitted=True):
-
-        results_size = {
-            'create': {'permitted': 1, 'not-permitted': 0},
-            'retrieve': {'permitted': 1, 'not-permitted': 1},
-            'update': {'permitted': 1, 'not-permitted': 1},
-            'delete': {'permitted': 0, 'not-permitted': 1},
-        }
-
-        model = apps.get_model(model_name)
+        # model = apps.get_model(model_name)
         # print("CHECK API RESPONSE" + str(response.data))
         if permitted:
             self.assertIn(response.status_code, self.status_ok)
