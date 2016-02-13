@@ -60,9 +60,8 @@ class ReportResponseTestData(AvaCoreTestData):
     }
 
     unique = {
-        'parent_response': 1,
         'message': 'unique_text',
-        'question': 2,
+        'question': 1,
         'owner': '',
     }
 
