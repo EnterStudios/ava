@@ -16,8 +16,6 @@ class NotBlankWhenTypeValidator(object):
         self.message = '\'{}\' field may not be blank.'
 
     def __call__(self, value):
-        logger.debug('Function called'
-                     ' - NotBlankWhenTypeValidator::__call__')
         if value[self.type_field] is self.desired_type:
             if value[self.validate_field] is '':
                 raise ValidationError(self.message.format(self.validate_field))

@@ -16,22 +16,20 @@ class EvaluateSenderTestData(AvaCoreTestData):
 
     # Store self information
     model = EvaluateSender
-    url = 'example/'
+    url = 'evaluate/sender/'
 
     standard = {
         'last_name': 'standard_char',
-        'email_address': 'standard_char',
+        'email_address': 'test@example.com',
         'hidden': True,
-        'evaluatecontroller': 'example//1/',
         'slack_name': 'standard_char',
         'first_name': 'standard_char',
     }
 
     unique = {
         'last_name': 'unique_char',
-        'email_address': 'unique_char',
+        'email_address': 'second@example.com',
         'hidden': False,
-        'evaluatecontroller': 'example//2/',
         'slack_name': 'unique_char',
         'first_name': 'unique_char',
     }
@@ -48,16 +46,16 @@ class EvaluateResultTestData(AvaCoreTestData):
 
     # Store self information
     model = EvaluateResult
-    url = 'example/'
+    url = 'evaluate/result/'
 
     standard = {
         'result': 0,
-        'target_profile': 'example//1/',
+        'target_profile': 'REPLACE',
     }
 
     unique = {
         'result': 1,
-        'target_profile': 'example//2/',
+        'target_profile': 'REPLACE',
     }
 
 
@@ -72,14 +70,13 @@ class EvaluateTemplateTestData(AvaCoreTestData):
 
     # Store self information
     model = EvaluateTemplate
-    url = 'example/'
+    url = 'evaluate/template/'
 
     standard = {
         'name': 'standard_char',
         'template_type': 0,
         'description': 'standard_text',
         'hidden': True,
-        'evaluatecontroller': 'example//1/',
         'email_body': 'standard_text',
         'email_subject': 'standard_char',
     }
@@ -89,7 +86,6 @@ class EvaluateTemplateTestData(AvaCoreTestData):
         'template_type': 1,
         'description': 'unique_text',
         'hidden': False,
-        'evaluatecontroller': 'example//2/',
         'email_body': 'unique_text',
         'email_subject': 'unique_char',
     }
@@ -106,34 +102,34 @@ class EvaluateControllerTestData(AvaCoreTestData):
 
     # Store self information
     model = EvaluateController
-    url = 'example/'
+    url = 'evaluate/controller/'
 
     standard = {
         'expiry_type': 0,
         'name': 'standard_char',
-        'sender': 'example//1/',
+        'sender': 'REPLACE',
         'status': 0,
         'description': 'standard_text',
-        'scheduled_time': 'default',
-        'template': 'example//1/',
+        'scheduled_time': '2016-01-31T09:00',
+        'template': 'REPLACE',
         'scheduled_type': 0,
-        'target_controller': 'example//1/',
-        'expiry_time': 'default',
-        'targets': 'default',
+        'target_controller': 'REPLACE',
+        'expiry_time': '2016-01-31T09:00',
+        'targets': [],
     }
 
     unique = {
         'expiry_type': 2,
         'name': 'unique_char',
-        'sender': 'example//2/',
+        'sender': 'REPLACE',
         'status': 4,
         'description': 'unique_text',
-        'scheduled_time': 'default',
-        'template': 'example//2/',
+        'scheduled_time': '2016-01-31T09:00',
+        'template': 'REPLACE',
         'scheduled_type': 1,
-        'target_controller': 'example//2/',
-        'expiry_time': 'default',
-        'targets': 'default',
+        'target_controller': 'REPLACE',
+        'expiry_time': '2016-01-31T09:00',
+        'targets': [],
     }
 
 
@@ -148,20 +144,18 @@ class EvaluateTestTestData(AvaCoreTestData):
 
     # Store self information
     model = EvaluateTest
-    url = 'example/'
+    url = 'evaluate/test/'
 
     standard = {
         'token': 'standard_char',
-        'controller': 'example//1/',
-        'target': 'example//1/',
-        'evaluateresult': 'example//1/',
+        'controller': 'REPLACE',
+        'target': 'REPLACE',
         'delivery_status': 0,
     }
 
     unique = {
         'token': 'unique_char',
-        'controller': 'example//2/',
-        'target': 'example//2/',
-        'evaluateresult': 'example//2/',
+        'controller': 'REPLACE',
+        'target': 'REPLACE',
         'delivery_status': 3,
     }
