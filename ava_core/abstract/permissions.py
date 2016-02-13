@@ -127,11 +127,11 @@ class IsUpdateDenied(permissions.BasePermission):
 
 
 class IsDeleteDenied(permissions.BasePermission):
-    BANNED_METHODS = ('DELETE')
+    SAFE_METHODS = ('GET','PUT','POST', 'HEAD', 'OPTIONS')
 
     def has_permission(self, request, view):
-        if request.method in self.BANNED_METHODS:
-            return False
+        # Only accept post request.
+        return request.method in self.SAFE_METHODS
 
 
 class IsCreateOrRetrieveOnly(permissions.BasePermission):
@@ -203,17 +203,17 @@ class IsAdminOrDeleteDenied(permissions.BasePermission):
 
 
 
-# class IsCreateOnly(permissions.BasePermission):
-#     """
-#     Custom permission to only enable create.
-#     """
-#     SAFE_METHODS = ('POST', 'HEAD', 'OPTIONS')
-#
-#     def has_permission(self, request, view):
-#         # Only accept post request.
-#         return request.method in self.SAFE_METHODS
-#
-#
+class IsCreateOnly(permissions.BasePermission):
+    """
+    Custom permission to only enable create.
+    """
+    SAFE_METHODS = ('POST', 'HEAD', 'OPTIONS')
+
+    def has_permission(self, request, view):
+        # Only accept post request.
+        return request.method in self.SAFE_METHODS
+
+
 class IsRetrieveOnly(permissions.BasePermission):
     """
     Custom permissions to only enable retrieve.
