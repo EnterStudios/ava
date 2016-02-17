@@ -6,4 +6,3 @@ from django.apps import AppConfig
 class MyConfig(AppConfig):
     name = 'ava.abstract'
     label = 'ava_abstract'
-
