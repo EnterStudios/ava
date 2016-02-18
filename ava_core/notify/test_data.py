@@ -10,10 +10,6 @@ class NotificationEmailTestData(AvaCoreTestData):
     Test data for NotificationEmail
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = NotificationEmail
     url = 'notify/'

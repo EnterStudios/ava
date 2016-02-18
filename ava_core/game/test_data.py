@@ -10,10 +10,6 @@ class AchievementTestData(AvaCoreTestData):
     Test data for Achievement
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = Achievement
     url = 'example/'

@@ -10,10 +10,6 @@ class EvaluateSenderTestData(AvaCoreTestData):
     Test data for EvaluateSender
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = EvaluateSender
     url = 'evaluate/sender/'
@@ -40,10 +36,6 @@ class EvaluateResultTestData(AvaCoreTestData):
     Test data for EvaluateResult
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = EvaluateResult
     url = 'evaluate/result/'
@@ -63,10 +55,6 @@ class EvaluateTemplateTestData(AvaCoreTestData):
     """
     Test data for EvaluateTemplate
     """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = EvaluateTemplate
@@ -95,10 +83,6 @@ class EvaluateControllerTestData(AvaCoreTestData):
     """
     Test data for EvaluateController
     """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = EvaluateController
@@ -137,10 +121,6 @@ class EvaluateTestTestData(AvaCoreTestData):
     """
     Test data for EvaluateTest
     """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = EvaluateTest

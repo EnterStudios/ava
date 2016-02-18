@@ -10,10 +10,6 @@ class FriendTestData(AvaCoreTestData):
     Test data for Friend
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = Friend
     url = 'example/'
@@ -33,10 +29,6 @@ class LearningHistoryTestData(AvaCoreTestData):
     """
     Test data for LearningHistory
     """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = LearningHistory
@@ -64,10 +56,6 @@ class PeopleTestData(AvaCoreTestData):
     Test data for People
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = People
     url = 'example/'
@@ -87,10 +75,6 @@ class LearningQueueTestData(AvaCoreTestData):
     """
     Test data for LearningQueue
     """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = LearningQueue
@@ -114,10 +98,6 @@ class ActivityLogTestData(AvaCoreTestData):
     Test data for ActivityLog
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = ActivityLog
     url = 'example/'
@@ -137,10 +117,6 @@ class LearningProfileTestData(AvaCoreTestData):
     """
     Test data for LearningProfile
     """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = LearningProfile
@@ -165,10 +141,6 @@ class ScoreCardTestData(AvaCoreTestData):
     """
     Test data for ScoreCard
     """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = ScoreCard

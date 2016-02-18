@@ -11,10 +11,6 @@ class GroupIdentifierAttributeTestData(AvaCoreTestData):
     Test data for GroupIdentifierAttribute
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = GroupIdentifierAttribute
     url = 'example/'
@@ -35,10 +31,6 @@ class PersonIdentifierAttributeTestData(AvaCoreTestData):
     Test data for PersonIdentifierAttribute
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = PersonIdentifierAttribute
     url = 'example/'
@@ -58,10 +50,6 @@ class GroupReportTestData(AvaCoreTestData):
     """
     Test data for GroupReport
     """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = GroupReport
@@ -91,10 +79,6 @@ class PersonIdentifierReportTestData(AvaCoreTestData):
     Test data for PersonIdentifierReport
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = PersonIdentifierReport
     url = 'example/'
@@ -122,10 +106,6 @@ class PersonTestData(AvaCoreTestData):
     """
     Test data for Person
     """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = Person
@@ -163,10 +143,6 @@ class PersonAttributeTestData(AvaCoreTestData):
     Test data for PersonAttribute
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = PersonAttribute
     url = 'example/'
@@ -186,10 +162,6 @@ class GroupTestData(AvaCoreTestData):
     """
     Test data for Group
     """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = Group
@@ -227,10 +199,6 @@ class GroupIdentifierTestData(AvaCoreTestData):
     Test data for GroupIdentifier
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = GroupIdentifier
     url = 'example/'
@@ -255,10 +223,6 @@ class PersonIdentifierTestData(AvaCoreTestData):
     """
     Test data for PersonIdentifier
     """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = PersonIdentifier
@@ -285,10 +249,6 @@ class PersonIdentifierTestData(AvaCoreTestData):
     """
     Test data for PersonIdentifier
     """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = PersonIdentifier

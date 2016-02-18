@@ -9,10 +9,6 @@ class SuspiciousTestData(AvaCoreTestData):
     Test data for Suspicious
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = Suspicious
     url = 'report/suspicious/'
@@ -45,10 +41,6 @@ class ReportResponseTestData(AvaCoreTestData):
     Test data for ReportResponse
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = ReportResponse
     url = 'report/response/'
@@ -70,10 +62,6 @@ class QuestionTestData(AvaCoreTestData):
     """
     Test data for Question
     """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = Question
