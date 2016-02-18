@@ -11,10 +11,6 @@ class LDAPIntegrationAdapterTestData(AvaCoreTestData):
     Test data for LDAPIntegrationAdapter
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = LDAPIntegrationAdapter
     url = 'example/'

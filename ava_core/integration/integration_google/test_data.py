@@ -10,10 +10,6 @@ class GoogleAuthorizationStoreTestData(AvaCoreTestData):
     Test data for GoogleAuthorizationStore
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = GoogleAuthorizationStore
     url = 'example/'

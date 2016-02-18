@@ -10,10 +10,6 @@ class Office365AuthorizationStoreTestData(AvaCoreTestData):
     Test data for Office365AuthorizationStore
     """
 
-    @staticmethod
-    def init_requirements(owner):
-        pass
-
     # Store self information
     model = Office365AuthorizationStore
     url = 'example/'
@@ -31,10 +27,6 @@ class Office365IntegrationAdapterTestData(AvaCoreTestData):
     """
     Test data for Office365IntegrationAdapter
     """
-
-    @staticmethod
-    def init_requirements(owner):
-        pass
 
     # Store self information
     model = Office365IntegrationAdapter
