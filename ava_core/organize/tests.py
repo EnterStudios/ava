@@ -16,10 +16,10 @@ class GroupIdentifierAttributeTest(AvaCoreTest):
 
     # step 3: populate this section to define what you expect the API permissions will be
     api_permissions = {
-        'create': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
-        'update': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'delete': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'create': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'retrieve': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'update': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'delete': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
     }
 
     # step 4: update with the model name for apiviewset urls (for apiviews and custom api's this won't work
@@ -36,18 +36,24 @@ class GroupIdentifierAttributeTest(AvaCoreTest):
         super(GroupIdentifierAttributeTest, self).setUp()
         self.data = GroupIdentifierAttributeTestData()
 
-    def create_object_via_api(self, data):
+    def create_object_via_api(self, data, user='admin'):
         # step 6: you will need to write this method.... this template only works with single models
         # with no relationships
         url = reverse(self.api_urls['create'])
 
-        # must be admin to create
-        self.login_user(user='admin')
+        # Check that a user has been passed.
+        # True - Log in as user.
+        # False - Ensure unauthenticated access.
+        if user:
+            self.login_user(user=user)
+        else:
+            self.logout_user()
+            user = 'unauthenticated'
 
         response = self.client.post(url, data, format='json')
 
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
-                               permitted=self.api_permissions['create']['admin'])
+                               permitted=self.api_permissions['create'][user])
 
         self.logout_user()
 
@@ -282,10 +288,10 @@ class PersonIdentifierAttributeTest(AvaCoreTest):
 
     # step 3: populate this section to define what you expect the API permissions will be
     api_permissions = {
-        'create': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
-        'update': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'delete': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'create': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'retrieve': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'update': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'delete': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
     }
 
     # step 4: update with the model name for apiviewset urls (for apiviews and custom api's this won't work
@@ -302,18 +308,24 @@ class PersonIdentifierAttributeTest(AvaCoreTest):
         super(PersonIdentifierAttributeTest, self).setUp()
         self.data = PersonIdentifierAttributeTestData()
 
-    def create_object_via_api(self, data):
+    def create_object_via_api(self, data, user='admin'):
         # step 6: you will need to write this method.... this template only works with single models
         # with no relationships
         url = reverse(self.api_urls['create'])
 
-        # must be admin to create
-        self.login_user(user='admin')
+        # Check that a user has been passed.
+        # True - Log in as user.
+        # False - Ensure unauthenticated access.
+        if user:
+            self.login_user(user=user)
+        else:
+            self.logout_user()
+            user = 'unauthenticated'
 
         response = self.client.post(url, data, format='json')
 
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
-                               permitted=self.api_permissions['create']['admin'])
+                               permitted=self.api_permissions['create'][user])
 
         self.logout_user()
 
@@ -548,9 +560,9 @@ class GroupReportTest(AvaCoreTest):
 
     # step 3: populate this section to define what you expect the API permissions will be
     api_permissions = {
-        'create': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
-        'update': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'create': {'unauthenticated': False, 'standard': True, 'admin': False, 'owner': False},
+        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': True},
+        'update': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
         'delete': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
     }
 
@@ -568,18 +580,24 @@ class GroupReportTest(AvaCoreTest):
         super(GroupReportTest, self).setUp()
         self.data = GroupReportTestData()
 
-    def create_object_via_api(self, data):
+    def create_object_via_api(self, data, user='admin'):
         # step 6: you will need to write this method.... this template only works with single models
         # with no relationships
         url = reverse(self.api_urls['create'])
 
-        # must be admin to create
-        self.login_user(user='admin')
+        # Check that a user has been passed.
+        # True - Log in as user.
+        # False - Ensure unauthenticated access.
+        if user:
+            self.login_user(user=user)
+        else:
+            self.logout_user()
+            user = 'unauthenticated'
 
         response = self.client.post(url, data, format='json')
 
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
-                               permitted=self.api_permissions['create']['admin'])
+                               permitted=self.api_permissions['create'][user])
 
         self.logout_user()
 
@@ -834,18 +852,24 @@ class PersonIdentifierReportTest(AvaCoreTest):
         super(PersonIdentifierReportTest, self).setUp()
         self.data = PersonIdentifierReportTestData()
 
-    def create_object_via_api(self, data):
+    def create_object_via_api(self, data, user='admin'):
         # step 6: you will need to write this method.... this template only works with single models
         # with no relationships
         url = reverse(self.api_urls['create'])
 
-        # must be admin to create
-        self.login_user(user='admin')
+        # Check that a user has been passed.
+        # True - Log in as user.
+        # False - Ensure unauthenticated access.
+        if user:
+            self.login_user(user=user)
+        else:
+            self.logout_user()
+            user = 'unauthenticated'
 
         response = self.client.post(url, data, format='json')
 
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
-                               permitted=self.api_permissions['create']['admin'])
+                               permitted=self.api_permissions['create'][user])
 
         self.logout_user()
 
@@ -1100,18 +1124,24 @@ class PersonAttributeTest(AvaCoreTest):
         super(PersonAttributeTest, self).setUp()
         self.data = PersonAttributeTestData()
 
-    def create_object_via_api(self, data):
+    def create_object_via_api(self, data, user='admin'):
         # step 6: you will need to write this method.... this template only works with single models
         # with no relationships
         url = reverse(self.api_urls['create'])
 
-        # must be admin to create
-        self.login_user(user='admin')
+        # Check that a user has been passed.
+        # True - Log in as user.
+        # False - Ensure unauthenticated access.
+        if user:
+            self.login_user(user=user)
+        else:
+            self.logout_user()
+            user = 'unauthenticated'
 
         response = self.client.post(url, data, format='json')
 
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
-                               permitted=self.api_permissions['create']['admin'])
+                               permitted=self.api_permissions['create'][user])
 
         self.logout_user()
 
@@ -1346,10 +1376,10 @@ class GroupTest(AvaCoreTest):
 
     # step 3: populate this section to define what you expect the API permissions will be
     api_permissions = {
-        'create': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
+        'create': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': True},
         'update': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'delete': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'delete': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
     }
 
     # step 4: update with the model name for apiviewset urls (for apiviews and custom api's this won't work
@@ -1366,18 +1396,24 @@ class GroupTest(AvaCoreTest):
         super(GroupTest, self).setUp()
         self.data = GroupTestData()
 
-    def create_object_via_api(self, data):
+    def create_object_via_api(self, data, user='admin'):
         # step 6: you will need to write this method.... this template only works with single models
         # with no relationships
         url = reverse(self.api_urls['create'])
 
-        # must be admin to create
-        self.login_user(user='admin')
+        # Check that a user has been passed.
+        # True - Log in as user.
+        # False - Ensure unauthenticated access.
+        if user:
+            self.login_user(user=user)
+        else:
+            self.logout_user()
+            user = 'unauthenticated'
 
         response = self.client.post(url, data, format='json')
 
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
-                               permitted=self.api_permissions['create']['admin'])
+                               permitted=self.api_permissions['create'][user])
 
         self.logout_user()
 
@@ -1612,10 +1648,10 @@ class PersonIdentifierTest(AvaCoreTest):
 
     # step 3: populate this section to define what you expect the API permissions will be
     api_permissions = {
-        'create': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
-        'update': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'delete': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'create': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'retrieve': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'update': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'delete': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
     }
 
     # step 4: update with the model name for apiviewset urls (for apiviews and custom api's this won't work
@@ -1632,18 +1668,24 @@ class PersonIdentifierTest(AvaCoreTest):
         super(PersonIdentifierTest, self).setUp()
         self.data = PersonIdentifierTestData()
 
-    def create_object_via_api(self, data):
+    def create_object_via_api(self, data, user='admin'):
         # step 6: you will need to write this method.... this template only works with single models
         # with no relationships
         url = reverse(self.api_urls['create'])
 
-        # must be admin to create
-        self.login_user(user='admin')
+        # Check that a user has been passed.
+        # True - Log in as user.
+        # False - Ensure unauthenticated access.
+        if user:
+            self.login_user(user=user)
+        else:
+            self.logout_user()
+            user = 'unauthenticated'
 
         response = self.client.post(url, data, format='json')
 
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
-                               permitted=self.api_permissions['create']['admin'])
+                               permitted=self.api_permissions['create'][user])
 
         self.logout_user()
 
@@ -1878,10 +1920,10 @@ class GroupIdentifierTest(AvaCoreTest):
 
     # step 3: populate this section to define what you expect the API permissions will be
     api_permissions = {
-        'create': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
-        'update': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'delete': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'create': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'retrieve': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'update': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'delete': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
     }
 
     # step 4: update with the model name for apiviewset urls (for apiviews and custom api's this won't work
@@ -1898,18 +1940,24 @@ class GroupIdentifierTest(AvaCoreTest):
         super(GroupIdentifierTest, self).setUp()
         self.data = GroupIdentifierTestData()
 
-    def create_object_via_api(self, data):
+    def create_object_via_api(self, data, user='admin'):
         # step 6: you will need to write this method.... this template only works with single models
         # with no relationships
         url = reverse(self.api_urls['create'])
 
-        # must be admin to create
-        self.login_user(user='admin')
+        # Check that a user has been passed.
+        # True - Log in as user.
+        # False - Ensure unauthenticated access.
+        if user:
+            self.login_user(user=user)
+        else:
+            self.logout_user()
+            user = 'unauthenticated'
 
         response = self.client.post(url, data, format='json')
 
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
-                               permitted=self.api_permissions['create']['admin'])
+                               permitted=self.api_permissions['create'][user])
 
         self.logout_user()
 
@@ -2144,10 +2192,10 @@ class PersonTest(AvaCoreTest):
 
     # step 3: populate this section to define what you expect the API permissions will be
     api_permissions = {
-        'create': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': False},
+        'create': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
+        'retrieve': {'unauthenticated': False, 'standard': True, 'admin': True, 'owner': True},
         'update': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
-        'delete': {'unauthenticated': False, 'standard': False, 'admin': True, 'owner': False},
+        'delete': {'unauthenticated': False, 'standard': False, 'admin': False, 'owner': False},
     }
 
     # step 4: update with the model name for apiviewset urls (for apiviews and custom api's this won't work
@@ -2164,18 +2212,24 @@ class PersonTest(AvaCoreTest):
         super(PersonTest, self).setUp()
         self.data = PersonTestData()
 
-    def create_object_via_api(self, data):
+    def create_object_via_api(self, data, user='admin'):
         # step 6: you will need to write this method.... this template only works with single models
         # with no relationships
         url = reverse(self.api_urls['create'])
 
-        # must be admin to create
-        self.login_user(user='admin')
+        # Check that a user has been passed.
+        # True - Log in as user.
+        # False - Ensure unauthenticated access.
+        if user:
+            self.login_user(user=user)
+        else:
+            self.logout_user()
+            user = 'unauthenticated'
 
         response = self.client.post(url, data, format='json')
 
         self.check_api_results(response=response, request_type='create', model_name=self.model_name,
-                               permitted=self.api_permissions['create']['admin'])
+                               permitted=self.api_permissions['create'][user])
 
         self.logout_user()
 

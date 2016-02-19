@@ -18,7 +18,7 @@ class PersonAPI(viewsets.ModelViewSet):
     queryset = Person.objects.none()  # Required for DjangoModelPermissions
     serializer_class = PersonSerializer
     permission_classes = (permissions.IsAuthenticated,
-                          permissions.IsAdminUser,
+                          IsAdminOrOwner,
                           IsRetrieveOnly)
 
     def get_queryset(self):
